@@ -707,7 +707,10 @@
             <span>Thành tích và đóng góp</span>
           </div>
           <div class="form-group">
-            <label>3.1. Thành tích đã đạt được trong năm học 2025 – 2026 và tính đến thời điểm hiện tại (nếu có — tối đa 04 thành tích cao nhất, nổi bật nhất)</label>
+            <label>3.1. Thành tích đã đạt được trong năm học 2025 – 2026 và tính đến thời điểm hiện tại (nếu có)</label>
+            <div class="alert alert-gold" style="margin-bottom: 12px; padding: 10px 14px; font-size: 0.86rem;">
+              <strong>* Lưu ý:</strong> Chỉ kê khai <strong>tối đa 04 loại thành tích cao nhất, nổi bật nhất</strong>. Nếu không có thành tích có thể để trống.
+            </div>
             <div class="contrib-table-wrap">
               <table class="contrib-table">
                 <thead>
@@ -739,8 +742,8 @@
                 </tbody>
               </table>
             </div>
-            <button type="button" id="btnAddAch" class="btn-add-row" onclick="addAchRow()">+ Thêm thành tích (tối đa 4)</button>
-            <div class="helper-text">Chỉ kê khai tối đa 04 loại thành tích cao nhất, nổi bật nhất. Nếu không có thành tích có thể để trống.</div>
+            <button type="button" id="btnAddAch" class="btn-add-row" onclick="addAchRow()">+ Thêm thành tích (1/4)</button>
+            <div id="achLimitNote" class="helper-text">Chỉ kê khai tối đa 04 thành tích cao nhất, nổi bật nhất (đang có 1/4 dòng).</div>
           </div>
 
           <div class="form-group" style="margin-top: 22px; padding-top: 18px; border-top: 1px dashed var(--border);">
@@ -1027,12 +1030,20 @@
     function updateAchControls() {
       const tbody = document.getElementById('achTableBody');
       const btn = document.getElementById('btnAddAch');
+      const note = document.getElementById('achLimitNote');
       if (!tbody || !btn) return;
-      const reachedMax = tbody.rows.length >= MAX_ACH_ROWS;
+      const count = tbody.rows.length;
+      const reachedMax = count >= MAX_ACH_ROWS;
+      btn.classList.toggle('hidden', reachedMax);
       btn.disabled = reachedMax;
-      btn.textContent = reachedMax
-        ? 'Đã đạt tối đa 4 thành tích'
-        : '+ Thêm thành tích (tối đa 4)';
+      if (!reachedMax) {
+        btn.textContent = `+ Thêm thành tích (${count}/${MAX_ACH_ROWS})`;
+      }
+      if (note) {
+        note.textContent = reachedMax
+          ? 'Đã đủ tối đa 04 thành tích cao nhất, nổi bật nhất.'
+          : `Chỉ kê khai tối đa 04 thành tích cao nhất, nổi bật nhất (đang có ${count}/${MAX_ACH_ROWS} dòng).`;
+      }
     }
 
     function addAchRow() {
@@ -1272,6 +1283,7 @@
   </script>
   <script>
     (function autoLogin() {
+      updateAchControls();
       try {
         const saved = JSON.parse(sessionStorage.getItem('CBSV1_AUTH') || 'null');
         if (saved && saved.mssv && saved.cccd) {
