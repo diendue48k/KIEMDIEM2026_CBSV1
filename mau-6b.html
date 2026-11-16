@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tạo Phiếu Bổ Sung Hồ Sơ Đảng Viên Mẫu 6b Năm 2026 - Chi Bộ Sinh Viên 1</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/pizzip@3.1.6/dist/pizzip.js"></script>
+  <script src="https://unpkg.com/docxtemplater@3.47.2/build/docxtemplater.js"></script>
+  <script src="https://unpkg.com/file-saver@2.0.5/dist/FileSaver.min.js"></script>
+  <style>
+    :root {
+      --crimson: #9e1b1e;
+      --crimson-dark: #781215;
+      --crimson-bright: #c62828;
+      --gold: #f59e0b;
+      --gold-bright: #facc15;
+      --gold-soft: #fef9c3;
+      --gold-tint: #fffbeb;
+
+      --bg-page: #fdf9f4;
+      --bg-card: #ffffff;
+      --bg-readonly: #f8f5f2;
+      --border: #e7dfd8;
+
+      --text-main: #1f1a18;
+      --text-secondary: #5c504a;
+      --text-muted: #857770;
+
+      --success-bg: #ecfdf5;
+      --success-border: #10b981;
+      --success-text: #065f46;
+
+      --danger-bg: #fef2f2;
+      --danger-border: #dc2626;
+      --danger-text: #991b1b;
+
+      --radius-lg: 18px;
+      --radius-md: 12px;
+      --radius-sm: 8px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-page);
+      background-image:
+        radial-gradient(at 0% 20%, rgba(158, 27, 30, 0.05) 0px, transparent 45%),
+        radial-gradient(at 100% 20%, rgba(250, 204, 21, 0.12) 0px, transparent 45%);
+      color: var(--text-main);
+      line-height: 1.55;
+      padding: 0 16px 64px;
+      min-height: 100vh;
+    }
+
+    .top-tricolor-bar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 5px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      z-index: 100;
+    }
+    .top-tricolor-bar span:nth-child(1),
+    .top-tricolor-bar span:nth-child(3) { background-color: var(--crimson); }
+    .top-tricolor-bar span:nth-child(2) { background-color: var(--gold-bright); }
+
+    .container {
+      max-width: 880px;
+      margin: 0 auto;
+      padding-top: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--crimson-dark);
+      font-size: 0.88rem;
+      font-weight: 700;
+      text-decoration: none;
+      align-self: flex-start;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: #ffffff;
+      border: 1px solid var(--border);
+    }
+    .back-link:hover { background: var(--crimson); color: #ffffff; border-color: var(--crimson); }
+
+    .hero-header {
+      text-align: center;
+      padding: 6px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .hero-logo {
+      width: 68px; height: 68px;
+      object-fit: contain;
+      border-radius: 50%;
+      margin-bottom: 10px;
+      filter: drop-shadow(0 4px 10px rgba(158, 27, 30, 0.16));
+    }
+    .org-pill {
+      display: inline-block;
+      background: #ffffff;
+      color: var(--crimson);
+      border: 1px solid #f0e6df;
+      padding: 5px 18px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      box-shadow: 0 2px 8px rgba(31, 26, 24, 0.05);
+      margin-bottom: 14px;
+    }
+    .hero-header h1 {
+      font-size: 1.7rem;
+      font-weight: 800;
+      color: var(--crimson);
+      text-transform: uppercase;
+      line-height: 1.25;
+      max-width: 700px;
+    }
+    .hero-underline {
+      width: 260px; max-width: 80%; height: 4px;
+      background-color: var(--gold-bright);
+      border-radius: 999px;
+      margin: 10px 0;
+    }
+    .hero-header p { font-size: 0.92rem; color: var(--text-secondary); max-width: 640px; }
+
+    .section-card {
+      background: var(--bg-card);
+      padding: 28px;
+      border-radius: var(--radius-lg);
+      box-shadow: 0 6px 24px -6px rgba(31, 26, 24, 0.07);
+      border: 1px solid var(--border);
+    }
+
+    @media (max-width: 640px) {
+      .hero-header h1 { font-size: 1.3rem; }
+      .section-card { padding: 20px 18px; }
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      padding-bottom: 14px;
+      border-bottom: 2px solid #f3ece7;
+    }
+
+    .roman-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 34px; height: 34px;
+      padding: 0 10px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--crimson) 0%, var(--crimson-dark) 100%);
+      color: var(--gold-bright);
+      font-size: 0.9rem;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .section-title {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--crimson);
+      text-transform: uppercase;
+    }
+
+    .subsection {
+      margin-top: 20px;
+      padding: 18px;
+      background-color: #fcfaf8;
+      border: 1px solid #ede5de;
+      border-radius: var(--radius-md);
+    }
+    .subsection:first-of-type { margin-top: 0; }
+    .subsection-title {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--crimson-dark);
+      margin-bottom: 14px;
+    }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: end; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; align-items: end; }
+    .grid-2 .form-group, .grid-3 .form-group { margin-bottom: 0; }
+    @media (max-width: 640px) {
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    }
+
+    .form-group { margin-bottom: 14px; }
+    .form-group:last-child { margin-bottom: 0; }
+
+    label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--text-main);
+    }
+
+    .required::after { content: ' *'; color: var(--crimson-bright); font-weight: 700; }
+
+    input[type="text"], select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 0.9rem;
+      font-family: inherit;
+      color: var(--text-main);
+      background: #ffffff;
+    }
+
+    input:focus, select:focus {
+      outline: none;
+      border-color: var(--crimson);
+      box-shadow: 0 0 0 3px rgba(158, 27, 30, 0.1);
+    }
+
+    input[readonly] {
+      background-color: var(--bg-readonly);
+      color: var(--text-secondary);
+      font-weight: 600;
+      border-color: #ece4de;
+    }
+
+    .icon-svg {
+      width: 17px;
+      height: 17px;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+      flex-shrink: 0;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 11px 20px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      font-family: inherit;
+      border-radius: var(--radius-sm);
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--crimson) 0%, var(--crimson-dark) 100%);
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(158, 27, 30, 0.24);
+    }
+    .btn-primary:hover:not(:disabled) { transform: translateY(-1px); }
+    .btn-primary:disabled { opacity: 0.65; cursor: not-allowed; }
+    .btn-block { width: 100%; padding: 14px 24px; font-size: 1rem; border-radius: var(--radius-md); }
+
+    .alert {
+      padding: 13px 16px;
+      border-radius: var(--radius-md);
+      font-size: 0.88rem;
+      margin-bottom: 16px;
+      border: 1px solid transparent;
+      border-left-width: 4px;
+    }
+    .alert-gold { background: var(--gold-tint); border-color: #fde68a; border-left-color: var(--gold); color: #78350f; }
+    .alert-danger { background: var(--danger-bg); border-color: #fecaca; border-left-color: var(--danger-border); color: var(--danger-text); }
+    .alert-success { background: var(--success-bg); border-color: #a7f3d0; border-left-color: var(--success-border); color: var(--success-text); }
+
+    .form-stack { display: flex; flex-direction: column; gap: 22px; }
+    .hidden { display: none !important; }
+    .footer-note { text-align: center; font-size: 0.8rem; color: var(--text-muted); }
+  </style>
+</head>
+<body>
+  <div class="top-tricolor-bar"><span></span><span></span><span></span></div>
+  <div class="container">
+    <a href="index.html" class="back-link">
+      <svg class="icon-svg" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+      <span>Quay lại Trang hướng dẫn &amp; Biểu mẫu</span>
+    </a>
+
+    <header class="hero-header">
+      <img src="logo.png" alt="Logo Chi bộ Sinh viên" class="hero-logo">
+      <div class="org-pill">Chi Bộ Sinh Viên 1</div>
+      <h1>Tạo Phiếu Bổ Sung Hồ Sơ Đảng Viên<br>Mẫu 6b Năm 2026 (.docx)</h1>
+      <div class="hero-underline"></div>
+      <p>Đăng nhập bằng MSSV và CCCD để tự động đổ thông tin có sẵn, bổ sung các mục thay đổi (nếu không thay đổi giữ nguyên "K") và xuất file Word.</p>
+    </header>
+
+    <!-- ĐĂNG NHẬP -->
+    <div class="section-card">
+      <div class="section-header">
+        <span class="roman-badge">I</span>
+        <h2 class="section-title">Đăng Nhập &amp; Tải Thông Tin Đảng Viên</h2>
+      </div>
+
+      <div class="grid-2">
+        <div class="form-group">
+          <label for="mssv" class="required">MSSV</label>
+          <input type="text" id="mssv" placeholder="Nhập MSSV của đồng chí">
+        </div>
+        <div class="form-group">
+          <label for="cccd" class="required">CCCD</label>
+          <input type="text" id="cccd" placeholder="Nhập số CCCD của đồng chí">
+        </div>
+      </div>
+
+      <div style="margin-top: 16px;">
+        <button type="button" id="btnLookup" class="btn btn-primary" onclick="handleLookup()">
+          Đăng nhập &amp; Lấy thông tin
+        </button>
+      </div>
+
+      <div id="lookupAlert" class="alert alert-danger hidden" style="margin-top: 16px; margin-bottom: 0;"></div>
+
+      <div id="memberInfoBox" class="hidden" style="margin-top: 22px; padding-top: 20px; border-top: 1.5px dashed var(--border);">
+        <div class="grid-2">
+          <div class="form-group"><label>Họ và tên (tự động viết IN HOA trên phiếu)</label><input type="text" id="hoTen" readonly></div>
+          <div class="form-group"><label>Ngày sinh</label><input type="text" id="ngaySinh" readonly></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FORM BỔ SUNG MẪU 6B -->
+    <form id="docForm" class="form-stack hidden" onsubmit="generateDocx(event)">
+      <div class="section-card">
+        <div class="section-header">
+          <span class="roman-badge">II</span>
+          <h2 class="section-title">Thông Tin Cần Nhập &amp; Bổ Sung</h2>
+        </div>
+
+        <div class="alert alert-gold">
+          <strong>Quy tắc ghi Mẫu 6b:</strong> Chỉ ghi những mục có nội dung thay đổi so với năm trước; nếu <strong>không thay đổi</strong> thì giữ nguyên chữ <strong>"K"</strong>.
+        </div>
+
+        <!-- Thông tin hồ sơ & cư trú -->
+        <div class="subsection">
+          <div class="subsection-title">1. Nơi ở &amp; Nghề nghiệp</div>
+          <div class="grid-2" style="align-items: start;">
+            <div class="form-group" style="grid-column: span 2;">
+              <label for="choOMoi" class="required">Mới thay đổi nơi ở (nếu có)</label>
+              <input type="text" id="choOMoi" value="K" required placeholder="Ghi địa chỉ mới hoặc K nếu không đổi">
+              <div style="font-size: 0.78rem; color: #92400e; margin-top: 5px;">
+                * Lưu ý: Nếu Đảng viên 52K ở trọ thì điền địa chỉ trọ vào; các Đảng viên khác nếu thay đổi trọ thì điền vào, nếu không có thì ghi <strong>K</strong>.
+              </div>
+            </div>
+            <div class="form-group" style="grid-column: span 2;">
+              <label for="ngheNghiepMoi" class="required">Nghề nghiệp; đơn vị công tác</label>
+              <input type="text" id="ngheNghiepMoi" value="K" required placeholder="Mặc định K; năm 1 (52K) ghi: Sinh viên - Khoa ...">
+              <div style="font-size: 0.78rem; color: #92400e; margin-top: 5px;">
+                * Lưu ý: Nếu Đảng viên 52K (năm 1) thì ghi <strong>Sinh viên - Khoa [Tên khoa]</strong>; các Đảng viên khác nếu không thay đổi thì ghi <strong>K</strong>.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Chức vụ -->
+        <div class="subsection">
+          <div class="subsection-title">2. Chức vụ mới được giao (mặc định "K")</div>
+          <div class="grid-2">
+            <div class="form-group"><label>Đảng</label><input type="text" id="cvDang" value="K"></div>
+            <div class="form-group"><label>Chính quyền</label><input type="text" id="cvChinhQuyen" value="K"></div>
+          </div>
+        </div>
+
+        <!-- Trình độ -->
+        <div class="subsection">
+          <div class="subsection-title">3. Mới thay đổi về trình độ; chuyên môn, nghiệp vụ (mặc định "K")</div>
+          <div class="grid-3">
+            <div class="form-group"><label>Giáo dục phổ thông</label><input type="text" id="tdPhoThong" value="K"></div>
+            <div class="form-group"><label>Học hàm (TS, Thạc sĩ)</label><input type="text" id="tdHocHam" value="K"></div>
+            <div class="form-group"><label>Học vị (GS, PGS)</label><input type="text" id="tdHocVi" value="K"></div>
+            <div class="form-group"><label>Lý luận chính trị</label><input type="text" id="tdLyLuan" value="K"></div>
+            <div class="form-group" style="grid-column: span 2;"><label>Ngoại ngữ (Anh, Nga, Pháp... Trình độ A, B, C, D)</label><input type="text" id="tdNgoaiNgu" value="K"></div>
+          </div>
+        </div>
+
+        <!-- Khen thưởng & Kỷ luật -->
+        <div class="subsection">
+          <div class="subsection-title">4. Khen thưởng &amp; Kỷ luật trong năm (mặc định "K")</div>
+          <div class="grid-2">
+            <div class="form-group"><label>Hình thức khen thưởng mới (từ bằng khen, huy chương trở lên)</label><input type="text" id="khenThuong" value="K"></div>
+            <div class="form-group"><label>Bị xử lý kỷ luật trong năm (Đảng, hành chính, pháp luật)</label><input type="text" id="kyLuat" value="K"></div>
+          </div>
+        </div>
+
+        <!-- Gia đình -->
+        <div class="subsection">
+          <div class="subsection-title">5. Gia đình có gì thay đổi trong năm (mặc định "K")</div>
+          <div class="grid-3">
+            <div class="form-group"><label>Cha đẻ</label><input type="text" id="gdChaDe" value="K"></div>
+            <div class="form-group"><label>Mẹ đẻ</label><input type="text" id="gdMeDe" value="K"></div>
+            <div class="form-group"><label>Cha (vợ hoặc chồng)</label><input type="text" id="gdChaVC" value="K"></div>
+            <div class="form-group"><label>Mẹ (vợ hoặc chồng)</label><input type="text" id="gdMeVC" value="K"></div>
+            <div class="form-group"><label>Vợ hoặc chồng</label><input type="text" id="gdVoChong" value="K"></div>
+            <div class="form-group"><label>Con</label><input type="text" id="gdCon" value="K"></div>
+          </div>
+        </div>
+
+        <!-- Kinh tế -->
+        <div class="subsection">
+          <div class="subsection-title">6. Thay đổi về kinh tế bản thân và gia đình (mặc định "K")</div>
+          <div class="grid-2">
+            <div class="form-group"><label>Tổng mức thu nhập hộ gia đình</label><input type="text" id="ktThuNhap" value="K"></div>
+            <div class="form-group"><label>Bình quân người/hộ (đồng)</label><input type="text" id="ktBinhQuan" value="K"></div>
+            <div class="form-group"><label>Nhà ở</label><input type="text" id="ktNhaO" value="K"></div>
+            <div class="form-group"><label>Đất ở</label><input type="text" id="ktDatO" value="K"></div>
+            <div class="form-group"><label>Hoạt động kinh tế</label><input type="text" id="ktHoatDong" value="K"></div>
+            <div class="form-group"><label>Được miễn công tác và SHĐ ngày</label><input type="text" id="mienCongTac" value="K"></div>
+            <div class="form-group"><label>Tài sản mới (>= 50 triệu): Tên tài sản</label><input type="text" id="ktTaiSanTen" value="K"></div>
+            <div class="form-group"><label>Giá trị tài sản mới (đồng)</label><input type="text" id="ktTaiSanGiaTri" value="K"></div>
+          </div>
+        </div>
+
+        <div id="docAlert" class="alert hidden" style="margin-top: 18px;"></div>
+
+        <button type="submit" id="btnGenerate" class="btn btn-primary btn-block" style="margin-top: 18px;">
+          <svg class="icon-svg" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <span>Xuất &amp; Tải File Word Phiếu Bổ Sung 6b (.docx)</span>
+        </button>
+      </div>
+    </form>
+
+    <div class="footer-note">
+      Chi bộ Sinh viên 1 — Công cụ tạo Phiếu bổ sung hồ sơ Đảng viên Mẫu 6b năm 2026
+    </div>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="mock-api.js"></script>
+  <script>
+    let currentMember = null;
+
+    async function callGasApi(bodyObj) {
+      if (typeof APP_CONFIG !== 'undefined' && APP_CONFIG.USE_MOCK_DATA && typeof MOCK_API !== 'undefined') {
+        return MOCK_API.handle(bodyObj);
+      }
+      if (typeof APP_CONFIG === 'undefined' || !APP_CONFIG.GAS_API_URL || APP_CONFIG.GAS_API_URL.includes('YOUR_DEPLOYMENT_ID')) {
+        throw new Error('Chưa cấu hình GAS_API_URL trong file config.js.');
+      }
+      const res = await fetch(APP_CONFIG.GAS_API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(bodyObj)
+      });
+      if (!res.ok) throw new Error('Lỗi kết nối (' + res.status + ').');
+      return await res.json();
+    }
+
+    async function handleLookup() {
+      const mssv = document.getElementById('mssv').value.trim();
+      const cccd = document.getElementById('cccd').value.trim();
+      const btn = document.getElementById('btnLookup');
+      const alertBox = document.getElementById('lookupAlert');
+      const memberBox = document.getElementById('memberInfoBox');
+      const docForm = document.getElementById('docForm');
+
+      alertBox.classList.add('hidden');
+      if (!mssv || !cccd) {
+        alertBox.textContent = 'Vui lòng nhập đầy đủ MSSV và CCCD.';
+        alertBox.classList.remove('hidden');
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Đang tải thông tin...';
+
+      try {
+        const res = await callGasApi({ action: 'lookup', mssv, cccd });
+        if (!res || !res.success) {
+          memberBox.classList.add('hidden');
+          docForm.classList.add('hidden');
+          currentMember = null;
+          alertBox.textContent = (res && res.message) ? res.message : 'Không tìm thấy Đảng viên.';
+          alertBox.classList.remove('hidden');
+          return;
+        }
+
+        currentMember = res.member;
+        sessionStorage.setItem('CBSV1_AUTH', JSON.stringify({ mssv, cccd }));
+        document.getElementById('hoTen').value = currentMember.hoTen || '';
+        document.getElementById('ngaySinh').value = currentMember.ngaySinh || '';
+
+        // Tự động điền nơi ở hiện nay nếu có từ hệ thống / lần kê khai trước
+        const diaChi = (res.existing && res.existing.noiOHienNay) || currentMember.diaChiHienTai || 'K';
+        document.getElementById('choOMoi').value = diaChi;
+
+        // Tự động điền nghề nghiệp nếu là Đảng viên năm 1 (52K)
+        if (String(currentMember.lop || '').toUpperCase().startsWith('52K')) {
+          document.getElementById('ngheNghiepMoi').value = `Sinh viên - Khoa ${currentMember.khoa || ''}`;
+        } else {
+          document.getElementById('ngheNghiepMoi').value = 'K';
+        }
+
+        memberBox.classList.remove('hidden');
+        docForm.classList.remove('hidden');
+      } catch (err) {
+        alertBox.textContent = 'Lỗi hệ thống: ' + err.message;
+        alertBox.classList.remove('hidden');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Đăng nhập & Lấy thông tin';
+      }
+    }
+
+    async function generateDocx(e) {
+      e.preventDefault();
+      if (!currentMember) return;
+
+      const btn = document.getElementById('btnGenerate');
+      const alertBox = document.getElementById('docAlert');
+      alertBox.classList.add('hidden');
+      alertBox.classList.remove('alert-success', 'alert-danger');
+
+      // Tách ngày/tháng/năm sinh từ dd/MM/yyyy
+      const dobParts = String(currentMember.ngaySinh || '').split('/');
+      const dobDay = dobParts[0] || '..';
+      const dobMonth = dobParts[1] || '..';
+      const dobYear = dobParts[2] || '....';
+
+      btn.disabled = true;
+      btn.textContent = 'Đang tạo file Word (.docx)...';
+
+      try {
+        const response = await fetch('templates/mau-6b.docx');
+        if (!response.ok) throw new Error('Không tải được file mẫu mau-6b.docx.');
+        const arrayBuffer = await response.arrayBuffer();
+
+        const zip = new PizZip(arrayBuffer);
+        const doc = new window.docxtemplater(zip, {
+          paragraphLoop: true,
+          linebreaks: true
+        });
+
+        const hoTen = currentMember.hoTen || '';
+        doc.render({
+          soLL: '................',
+          soTDV: currentMember.soTDV || '',
+          hoTenUpper: hoTen.toUpperCase(),
+          hoTen: hoTen,
+          'ngày': dobDay,
+          'tháng': dobMonth,
+          'năm': dobYear,
+          choOMoi: document.getElementById('choOMoi').value.trim() || 'K',
+          ngheNghiepMoi: document.getElementById('ngheNghiepMoi').value.trim() || 'K',
+          ketQuaPhanLoai: '……………………………………………………………………',
+          cvDang: document.getElementById('cvDang').value.trim() || 'K',
+          cvChinhQuyen: document.getElementById('cvChinhQuyen').value.trim() || 'K',
+          tdPhoThong: document.getElementById('tdPhoThong').value.trim() || 'K',
+          tdHocHam: document.getElementById('tdHocHam').value.trim() || 'K',
+          tdHocVi: document.getElementById('tdHocVi').value.trim() || 'K',
+          tdLyLuan: document.getElementById('tdLyLuan').value.trim() || 'K',
+          tdNgoaiNgu: document.getElementById('tdNgoaiNgu').value.trim() || 'K',
+          khenThuong: document.getElementById('khenThuong').value.trim() || 'K',
+          kyLuat: document.getElementById('kyLuat').value.trim() || 'K',
+          gdChaDe: document.getElementById('gdChaDe').value.trim() || 'K',
+          gdMeDe: document.getElementById('gdMeDe').value.trim() || 'K',
+          gdChaVC: document.getElementById('gdChaVC').value.trim() || 'K',
+          gdMeVC: document.getElementById('gdMeVC').value.trim() || 'K',
+          gdVoChong: document.getElementById('gdVoChong').value.trim() || 'K',
+          gdCon: document.getElementById('gdCon').value.trim() || 'K',
+          ktThuNhap: document.getElementById('ktThuNhap').value.trim() || 'K',
+          ktBinhQuan: document.getElementById('ktBinhQuan').value.trim() || 'K',
+          ktNhaO: document.getElementById('ktNhaO').value.trim() || 'K',
+          ktDatO: document.getElementById('ktDatO').value.trim() || 'K',
+          ktHoatDong: document.getElementById('ktHoatDong').value.trim() || 'K',
+          ktTaiSanTen: document.getElementById('ktTaiSanTen').value.trim() || 'K',
+          ktTaiSanGiaTri: document.getElementById('ktTaiSanGiaTri').value.trim() || 'K',
+          mienCongTac: document.getElementById('mienCongTac').value.trim() || 'K'
+        });
+
+        const out = doc.getZip().generate({
+          type: 'blob',
+          mimeType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+        });
+
+        const safeName = hoTen.replace(/\s+/g, '_');
+        saveAs(out, `PhieuBoSung_6b_${currentMember.mssv}_${safeName}.docx`);
+
+        // Ghi nhận lịch sử tạo biểu mẫu online
+        callGasApi({
+          action: 'logDocExport',
+          payload: {
+            mssv: currentMember.mssv,
+            hoTen: currentMember.hoTen,
+            nhom: currentMember.nhom,
+            khoa: currentMember.khoa,
+            loaiHoSo: 'Mẫu 6b (.docx)',
+            tongDiem: '',
+            xepLoai: ''
+          }
+        }).catch(() => {});
+
+        alertBox.textContent = 'Xuất file Phiếu bổ sung 6b (.docx) thành công! Vui lòng kiểm tra thư mục Tải xuống (Downloads).';
+        alertBox.classList.add('alert-success');
+        alertBox.classList.remove('hidden');
+      } catch (err) {
+        alertBox.textContent = 'Lỗi khi tạo file Word: ' + err.message;
+        alertBox.classList.add('alert-danger');
+        alertBox.classList.remove('hidden');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<svg class="icon-svg" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg><span>Xuất &amp; Tải File Word Phiếu Bổ Sung 6b (.docx)</span>';
+      }
+    }
+  </script>
+  <script>
+    (function autoLogin() {
+      try {
+        const saved = JSON.parse(sessionStorage.getItem('CBSV1_AUTH') || 'null');
+        if (saved && saved.mssv && saved.cccd) {
+          document.getElementById('mssv').value = saved.mssv;
+          document.getElementById('cccd').value = saved.cccd;
+          handleLookup();
+        }
+      } catch (e) {}
+    })();
+  </script>
+</body>
+</html>

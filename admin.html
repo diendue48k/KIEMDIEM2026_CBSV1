@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cổng Quản Trị - Chi Bộ Sinh Viên 1</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
+  <style>
+    :root {
+      --crimson: #9e1b1e;
+      --crimson-dark: #781215;
+      --crimson-bright: #c62828;
+      --gold: #f59e0b;
+      --gold-bright: #facc15;
+      --gold-soft: #fef9c3;
+      --gold-tint: #fffbeb;
+
+      --bg-page: #faf6f3;
+      --bg-card: #ffffff;
+      --border: #e7dfd8;
+
+      --text-main: #1f1a18;
+      --text-secondary: #5c504a;
+      --text-muted: #857770;
+
+      --success-bg: #ecfdf5;
+      --success-text: #065f46;
+      --danger-bg: #fef2f2;
+      --danger-text: #991b1b;
+
+      --radius-lg: 18px;
+      --radius-md: 12px;
+      --radius-sm: 8px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #fdf9f4;
+      background-image:
+        radial-gradient(at 0% 20%, rgba(158, 27, 30, 0.05) 0px, transparent 45%),
+        radial-gradient(at 100% 20%, rgba(250, 204, 21, 0.12) 0px, transparent 45%);
+      color: var(--text-main);
+      line-height: 1.55;
+      padding: 0 16px 64px;
+      min-height: 100vh;
+    }
+
+    .top-tricolor-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      z-index: 100;
+    }
+    .top-tricolor-bar span:nth-child(1),
+    .top-tricolor-bar span:nth-child(3) { background-color: var(--crimson); }
+    .top-tricolor-bar span:nth-child(2) { background-color: var(--gold-bright); }
+
+    .container {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding-top: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--crimson-dark);
+      font-size: 0.88rem;
+      font-weight: 700;
+      text-decoration: none;
+      padding: 7px 14px;
+      border-radius: 999px;
+      background: #ffffff;
+      border: 1px solid var(--border);
+    }
+
+    .back-link:hover { background: var(--crimson); color: #ffffff; border-color: var(--crimson); }
+
+    .hero-header {
+      text-align: center;
+      padding: 4px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .hero-logo {
+      width: 64px;
+      height: 64px;
+      object-fit: contain;
+      border-radius: 50%;
+      margin-bottom: 10px;
+      filter: drop-shadow(0 4px 10px rgba(158, 27, 30, 0.16));
+    }
+    .org-pill {
+      display: inline-block;
+      background: #ffffff;
+      color: var(--crimson);
+      border: 1px solid #f0e6df;
+      padding: 5px 18px;
+      border-radius: 8px;
+      font-size: 0.92rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      box-shadow: 0 2px 8px rgba(31, 26, 24, 0.05);
+      margin-bottom: 12px;
+    }
+    .hero-header h1 {
+      font-size: 1.65rem;
+      font-weight: 800;
+      color: var(--crimson);
+      text-transform: uppercase;
+      line-height: 1.25;
+    }
+    .hero-underline {
+      width: 240px;
+      height: 4px;
+      background-color: var(--gold-bright);
+      border-radius: 999px;
+      margin-top: 10px;
+      margin-bottom: 8px;
+    }
+    .hero-header p { font-size: 0.9rem; color: var(--text-secondary); }
+
+    .card {
+      background: var(--bg-card);
+      padding: 24px;
+      border-radius: var(--radius-lg);
+      box-shadow: 0 6px 24px -6px rgba(31, 26, 24, 0.07);
+      border: 1px solid var(--border);
+    }
+
+    .login-box { max-width: 440px; margin: 24px auto; width: 100%; }
+
+    .form-group { margin-bottom: 16px; }
+    label { display: block; font-size: 0.86rem; font-weight: 600; margin-bottom: 6px; }
+
+    input[type="text"],
+    input[type="password"],
+    input[type="url"],
+    select {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 0.92rem;
+      font-family: inherit;
+      background: #ffffff;
+    }
+
+    input:focus, select:focus {
+      outline: none;
+      border-color: var(--crimson);
+      box-shadow: 0 0 0 3px rgba(158, 27, 30, 0.1);
+    }
+
+    .icon-svg {
+      width: 17px;
+      height: 17px;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+      flex-shrink: 0;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 10px 18px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      font-family: inherit;
+      border-radius: var(--radius-sm);
+      border: none;
+      cursor: pointer;
+      transition: all 0.18s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--crimson) 0%, var(--crimson-dark) 100%);
+      color: #ffffff;
+    }
+    .btn-primary:hover:not(:disabled) { opacity: 0.92; }
+    .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    .btn-outline {
+      background: #ffffff;
+      color: var(--crimson-dark);
+      border: 1.5px solid var(--border);
+    }
+    .btn-outline:hover { border-color: var(--crimson); background: #fffafa; }
+
+    .btn-gold {
+      background: var(--gold-tint);
+      color: #92400e;
+      border: 1.5px solid #fcd34d;
+    }
+    .btn-gold:hover { background: var(--gold-soft); }
+
+    .btn-sm {
+      padding: 8px 13px;
+      font-size: 0.83rem;
+    }
+
+    .io-quickbar {
+      background: #fcfaf7;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+      margin-bottom: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .io-quickbar-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .io-btn-group {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .io-group-label {
+      font-size: 0.78rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-right: 4px;
+    }
+
+    /* Stats */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    @media (max-width: 768px) {
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .stat-card {
+      background: #ffffff;
+      padding: 18px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+    }
+
+    .stat-label { font-size: 0.8rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; }
+    .stat-value { font-size: 1.75rem; font-weight: 800; color: var(--crimson); margin-top: 4px; }
+    .stat-card.success .stat-value { color: #059669; }
+    .stat-card.warn .stat-value { color: #d97706; }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 12px;
+    }
+
+    .tab-btn {
+      padding: 10px 18px;
+      border-radius: var(--radius-sm);
+      border: 1px solid transparent;
+      background: transparent;
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+      cursor: pointer;
+    }
+
+    .tab-btn.active {
+      background: var(--crimson);
+      color: #ffffff;
+    }
+
+    .toolbar {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .toolbar input { flex: 1; min-width: 220px; }
+    .toolbar select { width: auto; min-width: 170px; }
+
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 760px;
+      font-size: 0.86rem;
+    }
+
+    thead th {
+      background: linear-gradient(135deg, var(--crimson) 0%, var(--crimson-dark) 100%);
+      color: #ffffff;
+      font-weight: 800;
+      text-transform: uppercase;
+      font-size: 0.76rem;
+      padding: 13px 12px;
+      text-align: left;
+      border-bottom: 3px solid var(--gold-bright);
+    }
+
+    tbody td {
+      padding: 11px 12px;
+      border-bottom: 1px solid #f0e8e2;
+      vertical-align: middle;
+    }
+
+    tbody tr:hover { background: #fcfaf8; }
+
+    .badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 0.76rem;
+      font-weight: 700;
+    }
+
+    .badge-success { background: var(--success-bg); color: var(--success-text); }
+    .badge-danger { background: var(--danger-bg); color: var(--danger-text); }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      border: 1px solid var(--border);
+      background: #ffffff;
+      color: var(--text-secondary);
+    }
+    .status-pill.connected {
+      background: var(--success-bg);
+      color: var(--success-text);
+      border-color: #a7f3d0;
+    }
+    .status-pill.fallback {
+      background: var(--gold-tint);
+      color: #92400e;
+      border-color: #fde68a;
+    }
+
+    .alert {
+      padding: 12px 16px;
+      border-radius: var(--radius-sm);
+      font-size: 0.88rem;
+      margin-bottom: 14px;
+    }
+    .alert-danger { background: var(--danger-bg); color: var(--danger-text); border: 1px solid #fecaca; }
+    .alert-success { background: var(--success-bg); color: var(--success-text); border: 1px solid #a7f3d0; }
+    .alert-warn { background: var(--gold-tint); color: #92400e; border: 1px solid #fcd34d; margin-bottom: 0; }
+
+    .hidden { display: none !important; }
+
+    /* Modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 999;
+    }
+
+    .modal-card {
+      background: #ffffff;
+      max-width: 680px;
+      width: 100%;
+      max-height: 85vh;
+      overflow-y: auto;
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+    }
+
+    .detail-row {
+      padding: 8px 0;
+      border-bottom: 1px dashed #eee;
+      font-size: 0.88rem;
+    }
+    .detail-row strong { color: var(--crimson-dark); display: block; margin-bottom: 2px; }
+    .detail-row pre {
+      font-family: inherit;
+      white-space: pre-wrap;
+      color: var(--text-main);
+    }
+  </style>
+</head>
+<body>
+  <div class="top-tricolor-bar"><span></span><span></span><span></span></div>
+  <div class="container">
+    <div class="topbar">
+      <a href="index.html" class="back-link">
+        <svg class="icon-svg" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+        <span>Về Trang chính</span>
+      </a>
+      <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+        <span id="firebaseStatusBadge" class="status-pill hidden"></span>
+        <button id="btnLogout" class="btn btn-outline hidden" onclick="logout()">Đăng xuất</button>
+      </div>
+    </div>
+
+    <header class="hero-header">
+      <img src="logo.png" alt="Logo Chi bộ Sinh viên" class="hero-logo">
+      <div class="org-pill">Chi Bộ Sinh Viên 1</div>
+      <h1>Cổng Quản Trị Hệ Thống Năm 2026</h1>
+      <div class="hero-underline"></div>
+      <p>Cấu hình đường link biểu mẫu, theo dõi tiến độ kê khai và xuất/nhập dữ liệu Đảng viên.</p>
+    </header>
+
+    <!-- ĐĂNG NHẬP -->
+    <div id="loginView" class="card login-box">
+      <h2 style="color: var(--crimson); margin-bottom: 14px; font-size: 1.15rem;">Đăng Nhập Quản Trị</h2>
+      <div id="loginAlert" class="alert alert-danger hidden"></div>
+      <form onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label for="adminPass">Mật khẩu quản trị</label>
+          <input type="password" id="adminPass" required placeholder="Nhập mật khẩu quản trị">
+        </div>
+        <button type="submit" id="btnLogin" class="btn btn-primary" style="width: 100%;">
+          Đăng nhập
+        </button>
+      </form>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div id="dashboardView" class="hidden" style="display: flex; flex-direction: column; gap: 20px;">
+      <div id="firebaseWarningBanner" class="alert alert-warn hidden"></div>
+      <!-- Thống kê -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">Tổng Đảng viên</div>
+          <div class="stat-value" id="statTotal">0</div>
+        </div>
+        <div class="stat-card success">
+          <div class="stat-label">Đã kê khai</div>
+          <div class="stat-value" id="statSubmitted">0</div>
+        </div>
+        <div class="stat-card warn">
+          <div class="stat-label">Chưa kê khai</div>
+          <div class="stat-value" id="statPending">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Tỷ lệ hoàn thành</div>
+          <div class="stat-value" id="statPercent">0%</div>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="card">
+        <div class="tabs">
+          <button class="tab-btn active" onclick="switchTab('progress', this)">1. Kiểm tra kê khai</button>
+          <button class="tab-btn" onclick="switchTab('logs', this)">2. Lịch sử tạo biểu mẫu online</button>
+          <button class="tab-btn" onclick="switchTab('links', this)">3. Cấu hình đường link</button>
+        </div>
+
+        <!-- TAB 1: TIẾN ĐỘ & XUẤT / NHẬP -->
+        <div id="tab-progress" style="margin-top: 20px;">
+          <div class="toolbar">
+            <input type="text" id="searchInput" placeholder="Tìm theo Họ tên, MSSV, Nhóm, Khoa..." oninput="renderMembersTable()">
+            <select id="groupFilter" onchange="renderMembersTable()">
+              <option value="all">Tất cả các nhóm</option>
+            </select>
+            <select id="statusFilter" onchange="renderMembersTable()">
+              <option value="all">Tất cả trạng thái</option>
+              <option value="submitted">Đã kê khai</option>
+              <option value="pending">Chưa kê khai</option>
+            </select>
+            <button class="btn btn-outline" onclick="loadDashboard()">
+              <svg class="icon-svg" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
+              <span>Làm mới</span>
+            </button>
+          </div>
+
+          <!-- Xuất / Nhập dữ liệu nhanh -->
+          <div class="io-quickbar">
+            <div class="io-quickbar-row">
+              <div class="io-btn-group">
+                <span class="io-group-label">Xuất Excel:</span>
+                <button type="button" class="btn btn-primary btn-sm" onclick="exportSubmissions()">
+                  <svg class="icon-svg" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  <span>Xuất ĐÃ kê khai (.xlsx)</span>
+                </button>
+                <button type="button" class="btn btn-gold btn-sm" onclick="exportPending()">
+                  <svg class="icon-svg" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  <span>Xuất CHƯA kê khai (.xlsx)</span>
+                </button>
+                <button type="button" class="btn btn-outline btn-sm" onclick="exportSourceMembers()">
+                  <svg class="icon-svg" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  <span>Xuất DS Đảng viên (.xlsx)</span>
+                </button>
+              </div>
+              <div class="io-btn-group">
+                <span class="io-group-label">Nhập DS Đảng viên:</span>
+                <button type="button" class="btn btn-gold btn-sm" onclick="downloadImportTemplate()">
+                  <svg class="icon-svg" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  <span>Tải mẫu nhập (.xlsx)</span>
+                </button>
+                <label for="importFile" class="btn btn-outline btn-sm" style="cursor: pointer;">
+                  <svg class="icon-svg" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                  <span>Nhập danh sách (.xlsx/.csv)</span>
+                </label>
+                <input type="file" id="importFile" accept=".xlsx,.xls,.csv" onchange="previewImportFile(event)" style="display: none;">
+                <button type="button" id="btnImport" class="btn btn-primary btn-sm hidden" onclick="confirmImport()">
+                  Xác nhận nhập vào Hệ thống
+                </button>
+              </div>
+            </div>
+            <div id="importPreview" style="font-size: 0.85rem; font-weight: 600; color: var(--crimson-dark); display: none;"></div>
+            <div id="importAlert" class="alert hidden" style="margin-bottom: 0;"></div>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>STT</th>
+                  <th>Họ và tên</th>
+                  <th>MSSV</th>
+                  <th>Nhóm</th>
+                  <th>Khoa</th>
+                  <th>Loại ĐV</th>
+                  <th>Trạng thái</th>
+                  <th>Tạo hồ sơ in</th>
+                  <th>Thời gian gửi</th>
+                  <th>Tự xếp loại</th>
+                  <th>Chi tiết</th>
+                </tr>
+              </thead>
+              <tbody id="membersTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- TAB 2: LỊCH SỬ TẠO BIỂU MẪU ONLINE -->
+        <div id="tab-logs" class="hidden" style="margin-top: 20px;">
+          <div class="toolbar" style="justify-content: space-between;">
+            <div style="font-size: 0.9rem; font-weight: 700; color: var(--crimson-dark);">
+              Lịch sử Đảng viên sử dụng công cụ tạo và tải biểu mẫu trực tuyến
+            </div>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+              <button class="btn btn-outline" onclick="loadDashboard()">
+                <svg class="icon-svg" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
+                <span>Làm mới</span>
+              </button>
+              <button class="btn btn-primary" onclick="exportDocLogs()">
+                <svg class="icon-svg" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                <span>Xuất lịch sử tạo hồ sơ (.xlsx)</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>STT</th>
+                  <th>Thời gian tải</th>
+                  <th>Họ và tên</th>
+                  <th>MSSV</th>
+                  <th>Nhóm</th>
+                  <th>Biểu mẫu đã tải</th>
+                  <th>Tổng điểm</th>
+                  <th>Mức đề xuất</th>
+                </tr>
+              </thead>
+              <tbody id="docLogsTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- TAB 3: CẤU HÌNH LINK -->
+        <div id="tab-links" class="hidden" style="margin-top: 20px;">
+          <div id="linksAlert" class="alert hidden"></div>
+          <form onsubmit="saveLinks(event)">
+            <div class="form-group">
+              <label for="cfg_LINK_TAI_TOAN_BO">Link nút "Tải mẫu trống" (Thư mục Google Drive chứa các biểu mẫu trống)</label>
+              <input type="url" id="cfg_LINK_TAI_TOAN_BO" placeholder="https://drive.google.com/drive/folders/...">
+            </div>
+            <div class="form-group">
+              <label for="cfg_LINK_HUONG_DAN_CHUNG">Link nút "Xem hướng dẫn ghi" (Thư mục Google Drive chứa file hướng dẫn ghi)</label>
+              <input type="url" id="cfg_LINK_HUONG_DAN_CHUNG" placeholder="https://drive.google.com/drive/folders/...">
+            </div>
+            <button type="submit" id="btnSaveLinks" class="btn btn-primary">Lưu cấu hình đường link</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL XEM CHI TIẾT -->
+  <div id="detailModal" class="modal-backdrop hidden" onclick="if(event.target===this) closeModal()">
+    <div class="modal-card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+        <h3 style="color: var(--crimson);" id="modalTitle">Chi tiết kê khai</h3>
+        <button class="btn btn-outline" style="padding: 4px 10px;" onclick="closeModal()">✕</button>
+      </div>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="mock-api.js"></script>
+  <script>
+    let adminPassword = sessionStorage.getItem('CBSV1_ADMIN_PASS') || '';
+    let dashboardData = null;
+    let parsedImportRows = [];
+
+    async function callGasApi(bodyObj) {
+      if (typeof APP_CONFIG !== 'undefined' && APP_CONFIG.USE_MOCK_DATA && typeof MOCK_API !== 'undefined') {
+        return MOCK_API.handle(bodyObj);
+      }
+      if (typeof APP_CONFIG === 'undefined' || !APP_CONFIG.GAS_API_URL || APP_CONFIG.GAS_API_URL.includes('YOUR_DEPLOYMENT_ID')) {
+        throw new Error('Chưa cấu hình GAS_API_URL trong file config.js.');
+      }
+      const res = await fetch(APP_CONFIG.GAS_API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(bodyObj)
+      });
+      if (!res.ok) throw new Error('Lỗi kết nối (' + res.status + ').');
+      return await res.json();
+    }
+
+    if (adminPassword) {
+      loadDashboard();
+    }
+
+    async function handleLogin(e) {
+      e.preventDefault();
+      adminPassword = document.getElementById('adminPass').value;
+      const alertBox = document.getElementById('loginAlert');
+      const btn = document.getElementById('btnLogin');
+      alertBox.classList.add('hidden');
+      btn.disabled = true;
+      btn.textContent = 'Đang kiểm tra...';
+
+      const ok = await loadDashboard();
+      btn.disabled = false;
+      btn.textContent = 'Đăng nhập';
+
+      if (!ok) {
+        adminPassword = '';
+        sessionStorage.removeItem('CBSV1_ADMIN_PASS');
+      }
+    }
+
+    async function loadDashboard() {
+      const alertBox = document.getElementById('loginAlert');
+      try {
+        const res = await callGasApi({ action: 'adminDashboard', password: adminPassword });
+        if (!res || !res.success) {
+          alertBox.textContent = (res && res.message) ? res.message : 'Đăng nhập thất bại.';
+          alertBox.classList.remove('hidden');
+          return false;
+        }
+        sessionStorage.setItem('CBSV1_ADMIN_PASS', adminPassword);
+        dashboardData = res;
+        document.getElementById('loginView').classList.add('hidden');
+        document.getElementById('dashboardView').classList.remove('hidden');
+        document.getElementById('btnLogout').classList.remove('hidden');
+
+        // Trạng thái kết nối Firebase
+        const fbBadge = document.getElementById('firebaseStatusBadge');
+        const fbBanner = document.getElementById('firebaseWarningBanner');
+        const fbProject = (typeof APP_CONFIG !== 'undefined' && APP_CONFIG.FIREBASE_CONFIG && APP_CONFIG.FIREBASE_CONFIG.projectId)
+          ? APP_CONFIG.FIREBASE_CONFIG.projectId
+          : 'csdlkiemdiem';
+        if (fbBadge) {
+          fbBadge.classList.remove('hidden', 'connected', 'fallback');
+          if (res.firebaseConnected) {
+            fbBadge.classList.add('connected');
+            fbBadge.textContent = 'Firebase: ' + fbProject;
+          } else {
+            fbBadge.classList.add('fallback');
+            fbBadge.textContent = 'Dự phòng cục bộ (LocalStorage)';
+          }
+        }
+        if (fbBanner) {
+          if (res.firebaseConnected) {
+            fbBanner.classList.add('hidden');
+            fbBanner.innerHTML = '';
+          } else {
+            fbBanner.classList.remove('hidden');
+            const errDetail = res.firebaseError ? escapeHtml(res.firebaseError) : 'Chưa kết nối được tới Cloud Firestore.';
+            fbBanner.innerHTML =
+              '<strong>Đang chạy ở chế độ dự phòng (LocalStorage) — dữ liệu chưa đồng bộ trực tuyến lên Firebase.</strong><br>' +
+              'Chi tiết: <code>' + errDetail + '</code><br>' +
+              'Vui lòng kiểm tra trong <strong>Firebase Console (' + escapeHtml(fbProject) + ')</strong>: ' +
+              '(1) Bật <strong>Firestore Database</strong> (Build &rarr; Firestore Database &rarr; Create database), và ' +
+              '(2) Mở quyền đọc/ghi trong tab <strong>Rules</strong> cho các collection <code>settings</code>, <code>members</code>, <code>submissions</code>, <code>docLogs</code>, sau đó nhấn <strong>Làm mới</strong>.';
+          }
+        }
+
+        // Stats
+        const { total, submitted, pending } = res.stats;
+        document.getElementById('statTotal').textContent = total;
+        document.getElementById('statSubmitted').textContent = submitted;
+        document.getElementById('statPending').textContent = pending;
+        document.getElementById('statPercent').textContent = total > 0 ? Math.round((submitted / total) * 100) + '%' : '0%';
+
+        // Populate group filter
+        const groupSelect = document.getElementById('groupFilter');
+        const currentGroup = groupSelect.value;
+        const groups = Array.from(new Set(res.members.map(m => m.nhom).filter(Boolean)));
+        groupSelect.innerHTML = '<option value="all">Tất cả các nhóm</option>' +
+          groups.map(g => `<option value="${escapeHtml(g)}">${escapeHtml(g)}</option>`).join('');
+        if (groups.includes(currentGroup)) groupSelect.value = currentGroup;
+
+        // Fill links
+        if (res.links) {
+          Object.keys(res.links).forEach(k => {
+            const el = document.getElementById('cfg_' + k);
+            if (el) el.value = res.links[k] || '';
+          });
+        }
+
+        renderMembersTable();
+        renderDocLogsTable();
+        return true;
+      } catch (err) {
+        alertBox.textContent = err.message;
+        alertBox.classList.remove('hidden');
+        return false;
+      }
+    }
+
+    function logout() {
+      sessionStorage.removeItem('CBSV1_ADMIN_PASS');
+      location.reload();
+    }
+
+    function switchTab(tabName, btn) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      ['progress', 'logs', 'links'].forEach(t => {
+        document.getElementById('tab-' + t).classList.toggle('hidden', t !== tabName);
+      });
+    }
+
+    function renderMembersTable() {
+      if (!dashboardData) return;
+      const q = document.getElementById('searchInput').value.trim().toLowerCase();
+      const groupFilter = document.getElementById('groupFilter').value;
+      const filter = document.getElementById('statusFilter').value;
+      const tbody = document.getElementById('membersTableBody');
+
+      const filtered = dashboardData.members.filter(m => {
+        if (groupFilter !== 'all' && m.nhom !== groupFilter) return false;
+        if (filter === 'submitted' && !m.daKeKhai) return false;
+        if (filter === 'pending' && m.daKeKhai) return false;
+        if (q) {
+          const hay = `${m.hoTen} ${m.mssv} ${m.nhom} ${m.khoa} ${m.loaiDangVien}`.toLowerCase();
+          if (!hay.includes(q)) return false;
+        }
+        return true;
+      });
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="11" style="text-align:center; padding: 24px;">Không có dữ liệu phù hợp.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = filtered.map((m, idx) => `
+        <tr>
+          <td>${idx + 1}</td>
+          <td><strong>${escapeHtml(m.hoTen)}</strong></td>
+          <td>${escapeHtml(m.mssv)}</td>
+          <td>${escapeHtml(m.nhom)}</td>
+          <td>${escapeHtml(m.khoa)}</td>
+          <td>${escapeHtml(m.loaiDangVien)}</td>
+          <td>
+            ${m.daKeKhai
+              ? '<span class="badge badge-success">Đã kê khai</span>'
+              : '<span class="badge badge-danger">Chưa kê khai</span>'}
+          </td>
+          <td>
+            ${m.daTaoHoSo
+              ? '<span class="badge badge-success">Đã tải</span>'
+              : '<span class="badge badge-danger">Chưa tạo</span>'}
+          </td>
+          <td>${escapeHtml(m.thoiGianGui || '-')}</td>
+          <td>${escapeHtml(m.tuXepLoai || '-')}</td>
+          <td>
+            ${m.daKeKhai
+              ? `<button class="btn btn-outline" style="padding:4px 10px; font-size:0.78rem;" onclick="openDetail('${escapeHtml(m.mssv)}')">Xem</button>`
+              : '-'}
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function renderDocLogsTable() {
+      if (!dashboardData) return;
+      const logs = dashboardData.docLogs || [];
+      const tbody = document.getElementById('docLogsTableBody');
+      if (logs.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding: 24px;">Chưa có Đảng viên nào tải biểu mẫu online.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = logs.map((l, idx) => `
+        <tr>
+          <td>${idx + 1}</td>
+          <td>${escapeHtml(l.thoiGian)}</td>
+          <td><strong>${escapeHtml(l.hoTen)}</strong></td>
+          <td>${escapeHtml(l.mssv)}</td>
+          <td>${escapeHtml(l.nhom)}</td>
+          <td>${escapeHtml(l.loaiHoSo)}</td>
+          <td>${escapeHtml(l.tongDiem || '-')}</td>
+          <td>${escapeHtml(l.xepLoai || '-')}</td>
+        </tr>
+      `).join('');
+    }
+
+    function escapeHtml(str) {
+      return String(str || '').replace(/[&<>"']/g, s => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      }[s]));
+    }
+
+    function openDetail(mssv) {
+      const m = dashboardData.members.find(x => x.mssv === mssv);
+      if (!m || !m.chiTiet) return;
+      document.getElementById('modalTitle').textContent = `${m.hoTen} (${m.mssv})`;
+      const html = Object.keys(m.chiTiet).map(k => `
+        <div class="detail-row">
+          <strong>${escapeHtml(k)}</strong>
+          <pre>${escapeHtml(m.chiTiet[k] || '(Trống)')}</pre>
+        </div>
+      `).join('');
+      document.getElementById('modalBody').innerHTML = html;
+      document.getElementById('detailModal').classList.remove('hidden');
+    }
+
+    function closeModal() {
+      document.getElementById('detailModal').classList.add('hidden');
+    }
+
+    async function saveLinks(e) {
+      e.preventDefault();
+      const btn = document.getElementById('btnSaveLinks');
+      const alertBox = document.getElementById('linksAlert');
+      alertBox.classList.add('hidden');
+      alertBox.classList.remove('alert-success', 'alert-danger');
+
+      const links = {
+        LINK_TAI_TOAN_BO: document.getElementById('cfg_LINK_TAI_TOAN_BO').value.trim(),
+        LINK_HUONG_DAN_CHUNG: document.getElementById('cfg_LINK_HUONG_DAN_CHUNG').value.trim()
+      };
+
+      btn.disabled = true;
+      btn.textContent = 'Đang lưu...';
+      try {
+        const res = await callGasApi({ action: 'adminSaveLinks', password: adminPassword, links });
+        alertBox.textContent = res.message;
+        alertBox.classList.add(res.success ? 'alert-success' : 'alert-danger');
+        alertBox.classList.remove('hidden');
+      } catch (err) {
+        alertBox.textContent = err.message;
+        alertBox.classList.add('alert-danger');
+        alertBox.classList.remove('hidden');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Lưu cấu hình đường link';
+      }
+    }
+
+    /* XUẤT EXCEL */
+    function exportToExcel(rows, filename) {
+      if (!rows || rows.length === 0) {
+        alert('Không có dữ liệu để xuất.');
+        return;
+      }
+      const ws = XLSX.utils.json_to_sheet(rows);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, 'DuLieu');
+      XLSX.writeFile(wb, filename);
+    }
+
+    function exportSubmissions() {
+      exportToExcel(dashboardData.submissions, 'KetQua_KeKhai_2026.xlsx');
+    }
+
+    function exportPending() {
+      const pending = dashboardData.members
+        .filter(m => !m.daKeKhai)
+        .map((m, idx) => ({
+          'STT': idx + 1,
+          'Họ và tên': m.hoTen,
+          'MSSV': m.mssv,
+          'Nhóm': m.nhom,
+          'Khoa': m.khoa,
+          'Loại Đảng viên': m.loaiDangVien
+        }));
+      exportToExcel(pending, 'DanhSach_ChuaKeKhai_2026.xlsx');
+    }
+
+    function exportSourceMembers() {
+      const list = dashboardData.members.map(m => ({
+        'STT': m.stt,
+        'Họ tên': m.hoTen,
+        'MSSV': m.mssv,
+        'Ngày sinh': m.ngaySinh,
+        'Giới tính': m.gioiTinh || '',
+        'CCCD': m.cccd,
+        'Lớp': m.lop,
+        'Khoa': m.khoa,
+        'Nhóm sinh hoạt': m.nhom,
+        'Ngày vào Đảng': m.ngayVaoDang,
+        'Ngày chính thức': m.ngayChinhThuc || '',
+        'Loại Đảng viên': m.loaiDangVien,
+        'Địa chỉ hiện tại đang ở(Nơi đã nộp Giấy 221': m.diaChiHienTai || '',
+        'Chi bộ nơi cư trú (221)': m.chiBoCuTru || '',
+        'Số thẻ Đảng viên': m.soTDV || ''
+      }));
+      exportToExcel(list, 'DanhSach_DangVien_2026.xlsx');
+    }
+
+    function exportDocLogs() {
+      const logs = (dashboardData && dashboardData.docLogs) ? dashboardData.docLogs : [];
+      const rows = logs.map((l, idx) => ({
+        'STT': idx + 1,
+        'Thời gian tải': l.thoiGian,
+        'Họ và tên': l.hoTen,
+        'MSSV': l.mssv,
+        'Nhóm': l.nhom,
+        'Khoa': l.khoa,
+        'Biểu mẫu đã tải': l.loaiHoSo,
+        'Tổng điểm': l.tongDiem,
+        'Mức đề xuất': l.xepLoai
+      }));
+      exportToExcel(rows, 'LichSu_TaoBieuMauOnline_2026.xlsx');
+    }
+
+    function downloadImportTemplate() {
+      const sampleRows = [
+        {
+          'STT': 1,
+          'Họ tên': 'Nguyễn Văn A',
+          'MSSV': '221124000001',
+          'Ngày sinh': '01/01/2004',
+          'Giới tính': 'Nam',
+          'CCCD': '048204000001',
+          'Lớp': '48K22.1',
+          'Khoa': 'Thương mại điện tử',
+          'Nhóm sinh hoạt': 'Nhóm 1',
+          'Ngày vào Đảng': '15/05/2024',
+          'Ngày chính thức': '15/05/2025',
+          'Loại Đảng viên (Dự bị / Chính thức)': 'Chính thức',
+          'Địa chỉ hiện tại đang ở(Nơi đã nộp Giấy 221': '71 Ngũ Hành Sơn, TP. Đà Nẵng',
+          'Chi bộ nơi cư trú (221)': 'Chi bộ Khu dân cư số 5',
+          'Số thẻ Đảng viên': '48.000001'
+        }
+      ];
+      exportToExcel(sampleRows, 'Mau_Nhap_DanhSach_DangVien.xlsx');
+    }
+
+    /* NHẬP EXCEL / CSV */
+    function previewImportFile(e) {
+      const file = e.target.files[0];
+      const preview = document.getElementById('importPreview');
+      const btn = document.getElementById('btnImport');
+      document.getElementById('importAlert').classList.add('hidden');
+      parsedImportRows = [];
+
+      if (!file) {
+        preview.textContent = '';
+        preview.style.display = 'none';
+        btn.classList.add('hidden');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function (evt) {
+        const wb = XLSX.read(new Uint8Array(evt.target.result), { type: 'array' });
+        const sheet = wb.Sheets[wb.SheetNames[0]];
+        const rows = XLSX.utils.sheet_to_json(sheet, { defval: '' });
+        parsedImportRows = rows;
+        preview.textContent = `Đã đọc được ${rows.length} dòng từ file "${file.name}". Nhấn "Xác nhận nhập vào Hệ thống" để lưu lên Firebase.`;
+        preview.style.display = 'block';
+        btn.classList.toggle('hidden', rows.length === 0);
+      };
+      reader.readAsArrayBuffer(file);
+    }
+
+    async function confirmImport() {
+      if (parsedImportRows.length === 0) return;
+      const btn = document.getElementById('btnImport');
+      const alertBox = document.getElementById('importAlert');
+      const preview = document.getElementById('importPreview');
+      alertBox.classList.add('hidden');
+      alertBox.classList.remove('alert-success', 'alert-danger');
+
+      btn.disabled = true;
+      btn.textContent = 'Đang nhập dữ liệu...';
+
+      try {
+        const res = await callGasApi({
+          action: 'adminImportMembers',
+          password: adminPassword,
+          rows: parsedImportRows
+        });
+        alertBox.textContent = res.message;
+        alertBox.classList.add(res.success ? 'alert-success' : 'alert-danger');
+        alertBox.classList.remove('hidden');
+        if (res.success) {
+          parsedImportRows = [];
+          document.getElementById('importFile').value = '';
+          preview.textContent = '';
+          preview.style.display = 'none';
+          btn.classList.add('hidden');
+          loadDashboard();
+        }
+      } catch (err) {
+        alertBox.textContent = err.message;
+        alertBox.classList.add('alert-danger');
+        alertBox.classList.remove('hidden');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Xác nhận nhập vào Hệ thống';
+      }
+    }
+  </script>
+</body>
+</html>

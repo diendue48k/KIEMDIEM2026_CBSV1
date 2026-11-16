@@ -1,0 +1,1152 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tạo Bản Kiểm Điểm Mẫu 02c Năm 2026 - Chi Bộ Sinh Viên 1</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/pizzip@3.1.6/dist/pizzip.js"></script>
+  <script src="https://unpkg.com/docxtemplater@3.47.2/build/docxtemplater.js"></script>
+  <script src="https://unpkg.com/file-saver@2.0.5/dist/FileSaver.min.js"></script>
+  <style>
+    :root {
+      --crimson: #9e1b1e;
+      --crimson-dark: #781215;
+      --crimson-bright: #c62828;
+      --gold: #f59e0b;
+      --gold-bright: #facc15;
+      --gold-soft: #fef9c3;
+      --gold-tint: #fffbeb;
+
+      --bg-page: #fdf9f4;
+      --bg-card: #ffffff;
+      --bg-readonly: #f8f5f2;
+      --border: #e7dfd8;
+
+      --text-main: #1f1a18;
+      --text-secondary: #5c504a;
+      --text-muted: #857770;
+
+      --success-bg: #ecfdf5;
+      --success-border: #10b981;
+      --success-text: #065f46;
+
+      --danger-bg: #fef2f2;
+      --danger-border: #dc2626;
+      --danger-text: #991b1b;
+
+      --radius-lg: 18px;
+      --radius-md: 12px;
+      --radius-sm: 8px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-page);
+      background-image:
+        radial-gradient(at 0% 20%, rgba(158, 27, 30, 0.05) 0px, transparent 45%),
+        radial-gradient(at 100% 20%, rgba(250, 204, 21, 0.12) 0px, transparent 45%);
+      color: var(--text-main);
+      line-height: 1.55;
+      padding: 0 16px 64px;
+      min-height: 100vh;
+    }
+
+    .top-tricolor-bar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 5px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      z-index: 100;
+    }
+    .top-tricolor-bar span:nth-child(1),
+    .top-tricolor-bar span:nth-child(3) { background-color: var(--crimson); }
+    .top-tricolor-bar span:nth-child(2) { background-color: var(--gold-bright); }
+
+    .container {
+      max-width: 880px;
+      margin: 0 auto;
+      padding-top: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--crimson-dark);
+      font-size: 0.88rem;
+      font-weight: 700;
+      text-decoration: none;
+      align-self: flex-start;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: #ffffff;
+      border: 1px solid var(--border);
+    }
+    .back-link:hover { background: var(--crimson); color: #ffffff; border-color: var(--crimson); }
+
+    .hero-header {
+      text-align: center;
+      padding: 6px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .hero-logo {
+      width: 68px; height: 68px;
+      object-fit: contain;
+      border-radius: 50%;
+      margin-bottom: 10px;
+      filter: drop-shadow(0 4px 10px rgba(158, 27, 30, 0.16));
+    }
+    .org-pill {
+      display: inline-block;
+      background: #ffffff;
+      color: var(--crimson);
+      border: 1px solid #f0e6df;
+      padding: 5px 18px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      box-shadow: 0 2px 8px rgba(31, 26, 24, 0.05);
+      margin-bottom: 14px;
+    }
+    .hero-header h1 {
+      font-size: 1.7rem;
+      font-weight: 800;
+      color: var(--crimson);
+      text-transform: uppercase;
+      line-height: 1.25;
+      max-width: 700px;
+    }
+    .hero-underline {
+      width: 260px; max-width: 80%; height: 4px;
+      background-color: var(--gold-bright);
+      border-radius: 999px;
+      margin: 10px 0;
+    }
+    .hero-header p { font-size: 0.92rem; color: var(--text-secondary); max-width: 640px; }
+
+    .section-card {
+      background: var(--bg-card);
+      padding: 28px;
+      border-radius: var(--radius-lg);
+      box-shadow: 0 6px 24px -6px rgba(31, 26, 24, 0.07);
+      border: 1px solid var(--border);
+    }
+
+    @media (max-width: 640px) {
+      .hero-header h1 { font-size: 1.3rem; }
+      .section-card { padding: 20px 18px; }
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 20px;
+      padding-bottom: 14px;
+      border-bottom: 2px solid #f3ece7;
+    }
+
+    .section-header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .roman-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 34px; height: 34px;
+      padding: 0 10px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--crimson) 0%, var(--crimson-dark) 100%);
+      color: var(--gold-bright);
+      font-size: 0.9rem;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .section-title {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--crimson);
+      text-transform: uppercase;
+    }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: end; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; align-items: end; }
+    .grid-2 .form-group, .grid-3 .form-group { margin-bottom: 0; }
+    @media (max-width: 640px) {
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    }
+
+    .form-group { margin-bottom: 18px; }
+    .form-group:last-child { margin-bottom: 0; }
+
+    .label-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 7px;
+      flex-wrap: wrap;
+    }
+
+    label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .required::after { content: ' *'; color: var(--crimson-bright); font-weight: 700; }
+
+    input[type="text"],
+    input[type="number"],
+    textarea {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 0.92rem;
+      font-family: inherit;
+      color: var(--text-main);
+      background: #ffffff;
+    }
+
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: var(--crimson);
+      box-shadow: 0 0 0 4px rgba(158, 27, 30, 0.1);
+    }
+
+    input[readonly] {
+      background-color: var(--bg-readonly);
+      color: var(--text-secondary);
+      font-weight: 600;
+      border-color: #ece4de;
+    }
+
+    textarea { min-height: 110px; resize: vertical; }
+
+    .icon-svg {
+      width: 17px;
+      height: 17px;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+      flex-shrink: 0;
+    }
+    .icon-svg-sm { width: 14px; height: 14px; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 11px 20px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      font-family: inherit;
+      border-radius: var(--radius-sm);
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--crimson) 0%, var(--crimson-dark) 100%);
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(158, 27, 30, 0.24);
+    }
+    .btn-primary:hover:not(:disabled) { transform: translateY(-1px); }
+    .btn-primary:disabled { opacity: 0.65; cursor: not-allowed; }
+
+    .btn-gold {
+      background-color: var(--gold-tint);
+      color: #92400e;
+      border: 1.5px solid #fcd34d;
+      padding: 8px 14px;
+      font-size: 0.84rem;
+    }
+    .btn-gold:hover { background-color: var(--gold-soft); }
+
+    .btn-suggest {
+      background: #f8f5f2;
+      color: var(--crimson-dark);
+      border: 1px solid #dfd3cb;
+      padding: 4px 10px;
+      font-size: 0.76rem;
+      border-radius: 6px;
+    }
+    .btn-suggest:hover { background: var(--gold-soft); border-color: var(--gold); }
+
+    .btn-block { width: 100%; padding: 14px 24px; font-size: 1rem; border-radius: var(--radius-md); }
+
+    .alert {
+      padding: 13px 16px;
+      border-radius: var(--radius-md);
+      font-size: 0.88rem;
+      margin-bottom: 16px;
+      border: 1px solid transparent;
+      border-left-width: 4px;
+    }
+    .alert-gold { background: var(--gold-tint); border-color: #fde68a; border-left-color: var(--gold); color: #78350f; }
+    .alert-danger { background: var(--danger-bg); border-color: #fecaca; border-left-color: var(--danger-border); color: var(--danger-text); }
+    .alert-success { background: var(--success-bg); border-color: #a7f3d0; border-left-color: var(--success-border); color: var(--success-text); }
+
+    .radio-group { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 8px; }
+    @media (max-width: 640px) { .radio-group { grid-template-columns: 1fr; } }
+
+    .radio-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    .radio-item:has(input:checked) {
+      border-color: var(--crimson);
+      background-color: #fef2f2;
+      color: var(--crimson-dark);
+    }
+    .radio-item input[type="radio"] { accent-color: var(--crimson); width: 18px; height: 18px; }
+
+    .form-stack { display: flex; flex-direction: column; gap: 22px; }
+    .field-note { font-size: 0.78rem; color: #92400e; margin-top: 5px; }
+    .more-box {
+      margin-top: 18px; padding: 12px 16px; background: #fcfaf8;
+      border: 1px dashed #dccfc6; border-radius: var(--radius-md); font-size: 0.86rem;
+    }
+    .more-box summary { cursor: pointer; font-weight: 700; color: var(--crimson-dark); }
+    .more-box .form-group { margin-bottom: 0; }
+    .hidden { display: none !important; }
+
+    /* Modal Phụ lục 04 */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.55);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 999;
+    }
+
+    .modal-card {
+      background: #ffffff;
+      max-width: 780px;
+      width: 100%;
+      max-height: 88vh;
+      overflow-y: auto;
+      border-radius: var(--radius-lg);
+      padding: 26px;
+      box-shadow: 0 24px 48px rgba(0, 0, 0, 0.25);
+    }
+
+    .pl-group {
+      margin-top: 16px;
+      padding: 16px;
+      background: #fcfaf8;
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--crimson);
+      border-radius: var(--radius-md);
+    }
+    .pl-group h4 { color: var(--crimson-dark); font-size: 0.96rem; margin-bottom: 10px; }
+    .pl-group p, .pl-group li { font-size: 0.87rem; color: var(--text-secondary); margin-bottom: 6px; }
+    .pl-group ul { margin-left: 18px; }
+
+    .footer-note { text-align: center; font-size: 0.8rem; color: var(--text-muted); }
+  </style>
+</head>
+<body>
+  <div class="top-tricolor-bar"><span></span><span></span><span></span></div>
+  <div class="container">
+    <a href="index.html" class="back-link">
+      <svg class="icon-svg" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+      <span>Quay lại Trang hướng dẫn &amp; Biểu mẫu</span>
+    </a>
+
+    <header class="hero-header">
+      <img src="logo.png" alt="Logo Chi bộ Sinh viên" class="hero-logo">
+      <div class="org-pill">Chi Bộ Sinh Viên 1</div>
+      <h1>Tạo Hồ Sơ Để In<br>Mẫu 02c + Mẫu 6b Năm 2026</h1>
+      <div class="hero-underline"></div>
+      <p>Điền một lần, hệ thống xuất cùng lúc 2 file Word: Bản kiểm điểm (Mẫu 02c) và Phiếu bổ sung hồ sơ Đảng viên (Mẫu 6b).</p>
+    </header>
+
+    <!-- ĐĂNG NHẬP LẤY THÔNG TIN -->
+    <div class="section-card">
+      <div class="section-header">
+        <div class="section-header-left">
+          <span class="roman-badge">I</span>
+          <h2 class="section-title">Đăng Nhập &amp; Tải Thông Tin Đảng Viên</h2>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="form-group">
+          <label for="mssv" class="required">MSSV</label>
+          <input type="text" id="mssv" placeholder="Nhập MSSV của đồng chí">
+        </div>
+        <div class="form-group">
+          <label for="cccd" class="required">CCCD</label>
+          <input type="text" id="cccd" placeholder="Nhập số CCCD của đồng chí">
+        </div>
+      </div>
+
+      <div style="margin-top: 16px;">
+        <button type="button" id="btnLookup" class="btn btn-primary" onclick="handleLookup()">
+          Đăng nhập &amp; Lấy thông tin
+        </button>
+      </div>
+
+      <div id="lookupAlert" class="alert alert-danger hidden" style="margin-top: 16px; margin-bottom: 0;"></div>
+
+      <div id="memberInfoBox" class="hidden" style="margin-top: 22px; padding-top: 20px; border-top: 1.5px dashed var(--border);">
+        <div class="grid-2">
+          <div class="form-group"><label>Họ và tên</label><input type="text" id="hoTen" readonly></div>
+          <div class="form-group"><label>Ngày sinh</label><input type="text" id="ngaySinh" readonly></div>
+          <div class="form-group"><label>Lớp</label><input type="text" id="lop"></div>
+          <div class="form-group"><label>Khoa</label><input type="text" id="khoa"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FORM TẠO FILE WORD -->
+    <form id="docForm" class="form-stack hidden" onsubmit="generateDocx(event)">
+      <!-- PHẦN A -->
+      <div class="section-card">
+        <div class="section-header">
+          <div class="section-header-left">
+            <span class="roman-badge">A</span>
+            <h2 class="section-title">Nội Dung Kiểm Điểm</h2>
+          </div>
+        </div>
+
+        <div class="alert alert-gold">
+          <strong>Lưu ý về gợi ý:</strong> Khi sử dụng nút <strong>"Chèn gợi ý"</strong> ở các mục bên dưới, <strong>đây là nội dung mẫu, đồng chí vui lòng điều chỉnh cho phù hợp với bản thân</strong>.
+        </div>
+
+        <div class="form-group">
+          <div class="label-row">
+            <label for="noiDung1" class="required" style="flex: 1;">
+              I.1. Về phẩm chất chính trị, đạo đức, lối sống; tinh thần đoàn kết; ý thức tổ chức kỷ luật; trách nhiệm nêu gương; liên hệ suy thoái, "tự diễn biến", "tự chuyển hóa"
+            </label>
+            <button type="button" class="btn btn-suggest" onclick="fillSuggest('noiDung1')">
+              <svg class="icon-svg icon-svg-sm" viewBox="0 0 24 24"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+              <span>Chèn gợi ý</span>
+            </button>
+          </div>
+          <textarea id="noiDung1" required placeholder="Nhập nội dung kiểm điểm mục I.1..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <div class="label-row">
+            <label for="noiDung2" class="required" style="flex: 1;">
+              I.2. Việc thực hiện nhiệm vụ, quyền hạn và kết quả thực hiện các chỉ tiêu, nhiệm vụ được giao trong năm
+            </label>
+            <button type="button" class="btn btn-suggest" onclick="fillSuggest('noiDung2')">
+              <svg class="icon-svg icon-svg-sm" viewBox="0 0 24 24"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+              <span>Chèn gợi ý</span>
+            </button>
+          </div>
+          <textarea id="noiDung2" required placeholder="Nhập nội dung kiểm điểm mục I.2..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <div class="label-row">
+            <label for="noiDung3" class="required" style="flex: 1;">
+              I.3. Việc thực hiện cam kết tu dưỡng, rèn luyện, phấn đấu; học tập và làm theo tư tưởng, đạo đức, phong cách Hồ Chí Minh
+            </label>
+            <button type="button" class="btn btn-suggest" onclick="fillSuggest('noiDung3')">
+              <svg class="icon-svg icon-svg-sm" viewBox="0 0 24 24"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+              <span>Chèn gợi ý</span>
+            </button>
+          </div>
+          <textarea id="noiDung3" required placeholder="Nhập nội dung kiểm điểm mục I.3..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <div class="label-row">
+            <label for="hanChe" class="required" style="flex: 1;">II.1. Hạn chế, khuyết điểm</label>
+            <button type="button" class="btn btn-suggest" onclick="fillSuggest('hanChe')">
+              <svg class="icon-svg icon-svg-sm" viewBox="0 0 24 24"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+              <span>Chèn gợi ý</span>
+            </button>
+          </div>
+          <textarea id="hanChe" required placeholder="Nêu rõ những hạn chế, khuyết điểm của bản thân..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <div class="label-row">
+            <label for="nguyenNhan" class="required" style="flex: 1;">II.2. Nguyên nhân của hạn chế, khuyết điểm</label>
+            <button type="button" class="btn btn-suggest" onclick="fillSuggest('nguyenNhan')">
+              <svg class="icon-svg icon-svg-sm" viewBox="0 0 24 24"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+              <span>Chèn gợi ý</span>
+            </button>
+          </div>
+          <textarea id="nguyenNhan" required placeholder="Nêu nguyên nhân chủ quan và khách quan..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <div class="label-row">
+            <label for="ketQuaKhacPhuc" class="required" style="flex: 1;">
+              III. Kết quả khắc phục những hạn chế, khuyết điểm đã được cấp có thẩm quyền kết luận hoặc chỉ ra ở kỳ kiểm điểm trước
+            </label>
+            <button type="button" class="btn btn-suggest" onclick="fillSuggest('ketQuaKhacPhuc')">
+              <svg class="icon-svg icon-svg-sm" viewBox="0 0 24 24"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+              <span>Chèn gợi ý</span>
+            </button>
+          </div>
+          <textarea id="ketQuaKhacPhuc" required placeholder="Nếu không có hạn chế ở kỳ trước, ghi: Không có."></textarea>
+        </div>
+
+        <div class="form-group">
+          <div class="label-row">
+            <label for="giaiTrinh" style="flex: 1;">IV. Giải trình những vấn đề được gợi ý kiểm điểm (nếu có)</label>
+            <button type="button" class="btn btn-suggest" onclick="fillSuggest('giaiTrinh')">
+              <svg class="icon-svg icon-svg-sm" viewBox="0 0 24 24"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+              <span>Chèn gợi ý</span>
+            </button>
+          </div>
+          <textarea id="giaiTrinh" placeholder="Nếu không có, ghi: Không có."></textarea>
+        </div>
+
+        <div class="form-group">
+          <div class="label-row">
+            <label for="trachNhiemTapThe" style="flex: 1;">V. Làm rõ trách nhiệm của cá nhân đối với những hạn chế, khuyết điểm của tập thể (nếu có)</label>
+            <button type="button" class="btn btn-suggest" onclick="fillSuggest('trachNhiemTapThe')">
+              <svg class="icon-svg icon-svg-sm" viewBox="0 0 24 24"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+              <span>Chèn gợi ý</span>
+            </button>
+          </div>
+          <textarea id="trachNhiemTapThe" placeholder="Nếu không có, ghi: Không có."></textarea>
+        </div>
+
+        <div class="form-group">
+          <div class="label-row">
+            <label for="bienPhapKhacPhuc" class="required" style="flex: 1;">VI. Phương hướng, biện pháp khắc phục hạn chế, khuyết điểm</label>
+            <button type="button" class="btn btn-suggest" onclick="fillSuggest('bienPhapKhacPhuc')">
+              <svg class="icon-svg icon-svg-sm" viewBox="0 0 24 24"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+              <span>Chèn gợi ý</span>
+            </button>
+          </div>
+          <textarea id="bienPhapKhacPhuc" required placeholder="Nêu phương hướng, giải pháp khắc phục trong năm tới..."></textarea>
+        </div>
+      </div>
+
+      <!-- PHẦN B -->
+      <div class="section-card">
+        <div class="section-header">
+          <div class="section-header-left">
+            <span class="roman-badge">B</span>
+            <h2 class="section-title">Nội Dung Tự Đánh Giá, Xếp Loại</h2>
+          </div>
+          <button type="button" class="btn btn-gold" onclick="openPhuLuc04()">
+            <svg class="icon-svg" viewBox="0 0 24 24"><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg>
+            <span>Xem Phụ lục 04 chấm điểm</span>
+          </button>
+        </div>
+
+        <div class="alert alert-gold">
+          <strong>Hướng dẫn chấm điểm:</strong> Bấm nút <strong>"Xem Phụ lục 04 chấm điểm"</strong> ở góc phải để đối chiếu khung tiêu chí đánh giá đối với Đảng viên là sinh viên (Biểu số 32 Quy định 345-QĐ/TU).
+        </div>
+
+        <div id="scoreInputsWrap">
+          <div class="grid-3" style="margin-bottom: 20px;">
+            <div class="form-group">
+              <label for="diemChung" class="required">1. Tiêu chí chung (tối đa 30)</label>
+              <input type="number" id="diemChung" min="0" max="30" step="0.5" required placeholder="0 - 30" oninput="calcTotal()">
+            </div>
+            <div class="form-group">
+              <label for="diemNhiemVu" class="required">2. Kết quả thực hiện NV (tối đa 70)</label>
+              <input type="number" id="diemNhiemVu" min="0" max="70" step="0.5" required placeholder="0 - 70" oninput="calcTotal()">
+            </div>
+            <div class="form-group">
+              <label for="tongDiem">Tổng điểm (/100)</label>
+              <input type="text" id="tongDiem" readonly value="0" style="background: var(--gold-tint); border-color: #fcd34d; color: var(--crimson-dark); font-weight: 800; text-align: center;">
+            </div>
+          </div>
+          <div id="scoreError" class="alert alert-danger hidden" style="margin-top: -8px; margin-bottom: 16px;"></div>
+        </div>
+
+        <div class="form-group">
+          <label class="required">II. Đề xuất xếp loại mức chất lượng</label>
+          <div class="alert alert-gold" style="margin-bottom: 12px;">
+            <strong>* Lưu ý:</strong> Đối với Đảng viên kết nạp <strong>chưa đủ 6 tháng</strong> tính đến ngày <strong>21/11/2026</strong> thì <strong>không thực hiện tự đánh giá xếp loại</strong> (chỉ làm bản kiểm điểm hồ sơ). Với Đảng viên đủ 6 tháng: mức <strong>Hoàn thành xuất sắc</strong> yêu cầu tổng điểm ≥ 90 (học tập Giỏi, rèn luyện Tốt năm học 2025 - 2026); mức <strong>Hoàn thành tốt</strong> yêu cầu tổng điểm từ 70 đến dưới 90 (học tập Khá, rèn luyện Tốt năm học 2025 - 2026); mức <strong>Hoàn thành nhiệm vụ</strong> yêu cầu tổng điểm từ 50 đến dưới 70.
+          </div>
+          <div id="sixMonthWarning" class="alert alert-danger hidden">
+            <strong>Thông báo:</strong> Đồng chí mới kết nạp chưa đủ 6 tháng tính đến 21/11/2026, không thực hiện tự chấm điểm và đánh giá xếp loại (chỉ xuất bản kiểm điểm hồ sơ).
+          </div>
+          <div id="xepLoaiOptions" class="radio-group">
+            <label class="radio-item">
+              <input type="radio" name="xepLoai" value="Hoàn thành xuất sắc nhiệm vụ">
+              <span>Hoàn thành xuất sắc nhiệm vụ</span>
+            </label>
+            <label class="radio-item">
+              <input type="radio" name="xepLoai" value="Hoàn thành tốt nhiệm vụ">
+              <span>Hoàn thành tốt nhiệm vụ</span>
+            </label>
+            <label class="radio-item">
+              <input type="radio" name="xepLoai" value="Hoàn thành nhiệm vụ">
+              <span>Hoàn thành nhiệm vụ</span>
+            </label>
+            <label class="radio-item">
+              <input type="radio" name="xepLoai" value="Không hoàn thành nhiệm vụ">
+              <span>Không hoàn thành nhiệm vụ</span>
+            </label>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- PHẦN C: PHIẾU BỔ SUNG 6B -->
+      <div class="section-card">
+        <div class="section-header">
+          <div class="section-header-left">
+            <span class="roman-badge">C</span>
+            <h2 class="section-title">Phiếu Bổ Sung Hồ Sơ Đảng Viên (Mẫu 6b)</h2>
+          </div>
+        </div>
+
+        <div class="alert alert-gold">
+          <strong>Quy tắc ghi:</strong> Chỉ ghi những mục <strong>có thay đổi</strong> so với năm trước. Mục nào không thay đổi thì để nguyên chữ <strong>"K"</strong>.
+        </div>
+
+        <div class="grid-2" style="align-items: start;">
+          <div class="form-group" style="grid-column: 1 / -1;">
+            <label for="choOMoi" class="required">Mới thay đổi nơi ở</label>
+            <input type="text" id="choOMoi" value="K" required>
+            <div class="field-note">* Đảng viên 52K ở trọ: ghi địa chỉ trọ. Đảng viên khác: đổi trọ thì ghi địa chỉ mới, không thì ghi <strong>K</strong>.</div>
+          </div>
+          <div class="form-group" style="grid-column: 1 / -1;">
+            <label for="ngheNghiepMoi" class="required">Mới thay đổi về nghề nghiệp; đơn vị công tác</label>
+            <input type="text" id="ngheNghiepMoi" value="K" required>
+            <div class="field-note">* Đảng viên 52K: ghi <strong>Sinh viên - Khoa [Tên khoa]</strong>. Đảng viên khác: không thay đổi thì ghi <strong>K</strong>.</div>
+          </div>
+        </div>
+
+        <details class="more-box">
+          <summary>Các mục khác: chức vụ, trình độ, khen thưởng, kỷ luật, gia đình, kinh tế (mặc định "K", chỉ mở khi có thay đổi)</summary>
+          <div class="grid-3" style="align-items: start; margin-top: 14px;">
+            <div class="form-group"><label>Chức vụ Đảng</label><input type="text" id="cvDang" value="K"></div>
+            <div class="form-group"><label>Chức vụ Chính quyền</label><input type="text" id="cvChinhQuyen" value="K"></div>
+            <div class="form-group"><label>Giáo dục phổ thông</label><input type="text" id="tdPhoThong" value="K"></div>
+            <div class="form-group"><label>Học hàm</label><input type="text" id="tdHocHam" value="K"></div>
+            <div class="form-group"><label>Học vị</label><input type="text" id="tdHocVi" value="K"></div>
+            <div class="form-group"><label>Lý luận chính trị</label><input type="text" id="tdLyLuan" value="K"></div>
+            <div class="form-group"><label>Ngoại ngữ</label><input type="text" id="tdNgoaiNgu" value="K"></div>
+            <div class="form-group"><label>Khen thưởng mới (từ bằng khen trở lên)</label><input type="text" id="khenThuong" value="K"></div>
+            <div class="form-group"><label>Kỷ luật trong năm</label><input type="text" id="kyLuat" value="K"></div>
+            <div class="form-group"><label>Cha đẻ</label><input type="text" id="gdChaDe" value="K"></div>
+            <div class="form-group"><label>Mẹ đẻ</label><input type="text" id="gdMeDe" value="K"></div>
+            <div class="form-group"><label>Cha (vợ hoặc chồng)</label><input type="text" id="gdChaVC" value="K"></div>
+            <div class="form-group"><label>Mẹ (vợ hoặc chồng)</label><input type="text" id="gdMeVC" value="K"></div>
+            <div class="form-group"><label>Vợ hoặc chồng</label><input type="text" id="gdVoChong" value="K"></div>
+            <div class="form-group"><label>Con</label><input type="text" id="gdCon" value="K"></div>
+            <div class="form-group"><label>Tổng thu nhập hộ gia đình</label><input type="text" id="ktThuNhap" value="K"></div>
+            <div class="form-group"><label>Bình quân người/hộ</label><input type="text" id="ktBinhQuan" value="K"></div>
+            <div class="form-group"><label>Nhà ở</label><input type="text" id="ktNhaO" value="K"></div>
+            <div class="form-group"><label>Đất ở</label><input type="text" id="ktDatO" value="K"></div>
+            <div class="form-group"><label>Hoạt động kinh tế</label><input type="text" id="ktHoatDong" value="K"></div>
+            <div class="form-group"><label>Miễn công tác và SHĐ ngày</label><input type="text" id="mienCongTac" value="K"></div>
+            <div class="form-group"><label>Tài sản mới (≥ 50 triệu)</label><input type="text" id="ktTaiSanTen" value="K"></div>
+            <div class="form-group"><label>Giá trị tài sản mới</label><input type="text" id="ktTaiSanGiaTri" value="K"></div>
+          </div>
+        </details>
+      </div>
+
+      <!-- XUẤT FILE -->
+      <div class="section-card" style="text-align: center;">
+        <div id="docAlert" class="alert hidden" style="text-align: left;"></div>
+        <button type="submit" id="btnGenerate" class="btn btn-primary btn-block">
+          <svg class="icon-svg" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <span>Xuất tệp ZIP hồ sơ để in (Mẫu 02c + Mẫu 6b)</span>
+        </button>
+        <p style="font-size: 0.84rem; color: var(--text-muted); margin-top: 10px;">Tải về xong, đồng chí in ra, ký tên và nộp cho Chi bộ.</p>
+      </div>
+    </form>
+
+    <div class="footer-note">
+      Chi bộ Sinh viên 1 — Công cụ tạo Bản kiểm điểm Mẫu 02c năm 2026
+    </div>
+  </div>
+
+  <!-- POPUP PHỤ LỤC 04 CHẤM ĐIỂM -->
+  <div id="phuLucModal" class="modal-backdrop hidden" onclick="if(event.target===this) closePhuLuc04()">
+    <div class="modal-card">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+        <div>
+          <h3 style="color: var(--crimson); font-size: 1.12rem; text-transform: uppercase;">
+            Phụ Lục 4: Khung Tiêu Chí Đánh Giá Đối Với Đảng Viên Là Sinh Viên
+          </h3>
+          <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: 2px;">
+            (Kèm theo Hướng dẫn số 05-HD/ĐU, ngày 16/11/2026 của Đảng ủy ĐHĐN)
+          </p>
+        </div>
+        <button type="button" class="btn" style="padding: 6px 12px; background: #f3ece7;" onclick="closePhuLuc04()">✕</button>
+      </div>
+
+      <div class="pl-group">
+        <h4>I. NHÓM TIÊU CHÍ CHUNG (Tối đa 30 điểm)</h4>
+        <p><strong>1. Về phẩm chất chính trị, đạo đức, lối sống và ý thức tổ chức kỷ luật:</strong></p>
+        <ul>
+          <li><strong>a)</strong> Có lập trường tư tưởng chính trị vững vàng; chấp hành đường lối, chủ trương của Đảng, chính sách, pháp luật của Nhà nước và các quy định nơi lao động, học tập, sinh sống.</li>
+          <li><strong>b)</strong> Có phẩm chất đạo đức tốt, lối sống trung thực; không vi phạm Quy định về những điều đảng viên không được làm, văn hóa ứng xử nơi cư trú.</li>
+          <li><strong>c)</strong> Chấp hành các nguyên tắc tổ chức, sinh hoạt đảng; nghiêm túc trong tự phê bình và phê bình; có ý thức trách nhiệm trong xây dựng tổ chức đảng, giữ gìn đoàn kết nội bộ trong chi bộ; có quan hệ tốt với quần chúng nhân dân nơi sinh hoạt và nơi cư trú.</li>
+        </ul>
+        <p style="margin-top: 8px;"><strong>2. Nhóm tiêu chí về tự phê bình và phê bình, khắc phục hạn chế, khuyết điểm:</strong></p>
+        <p>Tinh thần tự phê bình, tự soi, tự sửa của cá nhân; mức độ tự giác nhận diện hạn chế, khuyết điểm của bản thân và kết quả khắc phục những hạn chế, khuyết điểm đã được chỉ ra.</p>
+      </div>
+
+      <div class="pl-group">
+        <h4>II. NHÓM TIÊU CHÍ VỀ KẾT QUẢ THỰC HIỆN NHIỆM VỤ (Tối đa 70 điểm)</h4>
+        <ul>
+          <li><strong>1.</strong> Thực hiện đầy đủ quyền và nghĩa vụ của đảng viên. Hoàn thành các nhiệm vụ chính trị được cấp ủy, chi bộ phân công.</li>
+          <li><strong>2.</strong> Tham gia học tập nghị quyết, các văn bản chỉ đạo của cấp trên đầy đủ; phát huy vai trò của đảng viên, tích cực phát biểu ý kiến xây dựng chi bộ.</li>
+          <li><strong>3.</strong> Việc phấn đấu, nỗ lực trong học tập và rèn luyện (thể hiện qua kết quả học tập và rèn luyện của bản thân).</li>
+        </ul>
+      </div>
+
+      <div class="pl-group" style="border-left-color: var(--gold); background: var(--gold-tint);">
+        <h4>III. LƯU Ý ĐIỀU KIỆN VỀ MỨC XẾP LOẠI</h4>
+        <ul>
+          <li><strong>1. Hoàn thành xuất sắc nhiệm vụ:</strong> Tổng điểm đánh giá đạt từ <strong>90 điểm trở lên</strong>; kết quả học tập từ loại <strong>Giỏi</strong> trở lên và kết quả rèn luyện từ loại <strong>Tốt</strong> trở lên trong 2 kỳ năm học 2025 - 2026.</li>
+          <li><strong>2. Hoàn thành tốt nhiệm vụ:</strong> Tổng điểm đánh giá đạt từ <strong>70 đến dưới 90 điểm</strong>; kết quả học tập từ loại <strong>Khá</strong> trở lên và kết quả rèn luyện từ loại <strong>Tốt</strong> trở lên trong 2 kỳ năm học 2025 - 2026.</li>
+          <li><strong>3. Hoàn thành nhiệm vụ:</strong> Tổng điểm đánh giá đạt từ <strong>50 đến dưới 70 điểm</strong>; kết quả học tập từ loại <strong>Trung bình</strong> trở lên và kết quả rèn luyện từ loại <strong>Khá</strong> trở lên trong 2 kỳ năm học 2025 - 2026.</li>
+          <li><strong>4. Không hoàn thành nhiệm vụ:</strong> Tổng điểm đánh giá <strong>dưới 50 điểm</strong>.</li>
+        </ul>
+      </div>
+
+      <div style="margin-top: 18px; text-align: right;">
+        <button type="button" class="btn btn-primary" onclick="closePhuLuc04()">Đã hiểu, đóng lại</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="mock-api.js"></script>
+  <script>
+    let currentMember = null;
+
+    const SUGGESTIONS = {
+      noiDung1:
+        '- Có lập trường tư tưởng chính trị vững vàng, kiên định mục tiêu, lý tưởng của Đảng; có nhận thức đúng đắn về vai trò, trách nhiệm của người đảng viên.\n' +
+        '- Có phẩm chất đạo đức tốt, lối sống lành mạnh, trung thực, giản dị; có ý thức giữ gìn tư cách, phẩm chất của người đảng viên, gương mẫu trong học tập và sinh hoạt.\n' +
+        '- Có tinh thần đoàn kết, hòa đồng, tích cực hỗ trợ bạn bè; giữ gìn mối quan hệ tốt với thầy cô, bạn học và các đồng chí đảng viên.\n' +
+        '- Chấp hành tốt chủ trương, đường lối của Đảng, chính sách, pháp luật của Nhà nước; thực hiện nghiêm nội quy, quy chế của Nhà trường và quy định của Chi bộ.\n' +
+        '- Có ý thức tham gia sinh hoạt chi bộ, đóng đảng phí đầy đủ; thực hiện nghiêm những điều đảng viên không được làm, trách nhiệm nêu gương và kỷ luật phát ngôn.\n' +
+        '- Tham gia học tập, nghiên cứu, quán triệt Nghị quyết Đại hội XIV của Đảng, Nghị quyết Đại hội đại biểu Đảng bộ thành phố Đà Nẵng lần thứ I và nghị quyết đại hội đảng bộ các cấp nhiệm kỳ 2025–2030.\n' +
+        '- Không có biểu hiện suy thoái về tư tưởng chính trị, đạo đức, lối sống; không có biểu hiện "tự diễn biến", "tự chuyển hóa".',
+      noiDung2:
+        '- Có ý thức trách nhiệm trong học tập, chủ động xây dựng kế hoạch học tập và hoàn thành các học phần theo chương trình đào tạo; tích cực trau dồi kiến thức, nâng cao trình độ chuyên môn.\n' +
+        '- Chấp hành nghiêm quy chế đào tạo, quy định thi cử; có tinh thần tự giác, trung thực trong học tập và nghiên cứu khoa học.\n' +
+        '- Tích cực tham gia các hoạt động, phong trào do Nhà trường, Đoàn Thanh niên, Hội Sinh viên và Chi bộ tổ chức.\n' +
+        '- Thực hiện nghiêm túc các nhiệm vụ do Chi bộ phân công; chủ động phối hợp, hỗ trợ các đồng chí trong công tác và các hoạt động chung.\n' +
+        '- Phát huy vai trò tiên phong, gương mẫu của người đảng viên trong học tập, rèn luyện, tham gia hoạt động tập thể và xây dựng môi trường học đường văn minh.',
+      noiDung3:
+        '- Nghiêm túc thực hiện các nội dung đã đăng ký cam kết tu dưỡng, rèn luyện, phấn đấu trong năm; thường xuyên tự giác nhìn nhận, khắc phục những hạn chế của bản thân.\n' +
+        '- Tích cực học tập và thực hành tư tưởng, đạo đức, phương pháp, phong cách Hồ Chí Minh; vận dụng vào học tập, rèn luyện và đời sống hằng ngày.\n' +
+        '- Không ngừng nâng cao ý thức tự học, tinh thần trách nhiệm, tính chủ động và sáng tạo; rèn luyện bản lĩnh chính trị, đạo đức, lối sống và tác phong của người đảng viên trẻ.\n' +
+        '- Có ý thức phấn đấu, giữ gìn danh hiệu đảng viên, phát huy vai trò tiên phong, gương mẫu, góp phần xây dựng Chi bộ ngày càng trong sạch, vững mạnh.',
+      hanChe: 'Không có khuyết điểm gì lớn.',
+      nguyenNhan: 'Không',
+      ketQuaKhacPhuc: 'Không',
+      giaiTrinh: 'Không',
+      trachNhiemTapThe: 'Không',
+      bienPhapKhacPhuc: 'Không'
+    };
+
+    function fillSuggest(id) {
+      const el = document.getElementById(id);
+      if (el.value.trim() && !confirm('Ô này đã có nội dung. Bạn có muốn thay thế bằng gợi ý mẫu không?')) {
+        return;
+      }
+      el.value = SUGGESTIONS[id] || '';
+      const group = el.closest('.form-group');
+      if (group && !group.querySelector('.suggest-note')) {
+        const note = document.createElement('div');
+        note.className = 'suggest-note';
+        note.style.cssText = 'font-size: 0.8rem; color: #92400e; font-weight: 600; margin-top: 6px;';
+        note.textContent = '* Lưu ý: Đây là nội dung mẫu, đồng chí vui lòng điều chỉnh cho phù hợp với bản thân.';
+        group.appendChild(note);
+      }
+    }
+
+    function openPhuLuc04() {
+      document.getElementById('phuLucModal').classList.remove('hidden');
+    }
+
+    function closePhuLuc04() {
+      document.getElementById('phuLucModal').classList.add('hidden');
+    }
+
+    function calcTotal() {
+      const cEl = document.getElementById('diemChung');
+      const nvEl = document.getElementById('diemNhiemVu');
+      const errBox = document.getElementById('scoreError');
+      const errors = [];
+
+      if (cEl.value !== '') {
+        let valC = parseFloat(cEl.value);
+        if (isNaN(valC) || valC < 0) {
+          cEl.value = 0;
+          errors.push('Điểm Nhóm tiêu chí chung không được nhỏ hơn 0.');
+        } else if (valC > 30) {
+          cEl.value = 30;
+          errors.push('Điểm Nhóm tiêu chí chung tối đa là 30 điểm!');
+        }
+      }
+
+      if (nvEl.value !== '') {
+        let valNV = parseFloat(nvEl.value);
+        if (isNaN(valNV) || valNV < 0) {
+          nvEl.value = 0;
+          errors.push('Điểm Nhóm tiêu chí kết quả thực hiện nhiệm vụ không được nhỏ hơn 0.');
+        } else if (valNV > 70) {
+          nvEl.value = 70;
+          errors.push('Điểm Nhóm tiêu chí kết quả thực hiện nhiệm vụ tối đa là 70 điểm!');
+        }
+      }
+
+      if (errors.length > 0) {
+        errBox.textContent = errors.join(' ');
+        errBox.classList.remove('hidden');
+      } else {
+        errBox.classList.add('hidden');
+      }
+
+      const c = parseFloat(cEl.value) || 0;
+      const nv = parseFloat(nvEl.value) || 0;
+      const total = Math.round((c + nv) * 100) / 100;
+      document.getElementById('tongDiem').value = total;
+    }
+
+    async function callGasApi(bodyObj) {
+      if (typeof APP_CONFIG !== 'undefined' && APP_CONFIG.USE_MOCK_DATA && typeof MOCK_API !== 'undefined') {
+        return MOCK_API.handle(bodyObj);
+      }
+      if (typeof APP_CONFIG === 'undefined' || !APP_CONFIG.GAS_API_URL || APP_CONFIG.GAS_API_URL.includes('YOUR_DEPLOYMENT_ID')) {
+        throw new Error('Chưa cấu hình GAS_API_URL trong file config.js.');
+      }
+      const res = await fetch(APP_CONFIG.GAS_API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(bodyObj)
+      });
+      if (!res.ok) throw new Error('Lỗi kết nối (' + res.status + ').');
+      return await res.json();
+    }
+
+    async function handleLookup() {
+      const mssv = document.getElementById('mssv').value.trim();
+      const cccd = document.getElementById('cccd').value.trim();
+      const btn = document.getElementById('btnLookup');
+      const alertBox = document.getElementById('lookupAlert');
+      const memberBox = document.getElementById('memberInfoBox');
+      const docForm = document.getElementById('docForm');
+
+      alertBox.classList.add('hidden');
+      if (!mssv || !cccd) {
+        alertBox.textContent = 'Vui lòng nhập đầy đủ MSSV và CCCD.';
+        alertBox.classList.remove('hidden');
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Đang tải thông tin...';
+
+      try {
+        const res = await callGasApi({ action: 'lookup', mssv, cccd });
+        if (!res || !res.success) {
+          memberBox.classList.add('hidden');
+          docForm.classList.add('hidden');
+          currentMember = null;
+          alertBox.textContent = (res && res.message) ? res.message : 'Không tìm thấy Đảng viên.';
+          alertBox.classList.remove('hidden');
+          return;
+        }
+
+        currentMember = res.member;
+        sessionStorage.setItem('CBSV1_AUTH', JSON.stringify({ mssv, cccd }));
+        document.getElementById('hoTen').value = currentMember.hoTen || '';
+        document.getElementById('ngaySinh').value = currentMember.ngaySinh || '';
+        document.getElementById('lop').value = currentMember.lop || '';
+        document.getElementById('khoa').value = currentMember.khoa || '';
+
+        // Thông tin Mẫu 6b
+        const is52K = String(currentMember.lop || '').toUpperCase().startsWith('52K');
+        document.getElementById('choOMoi').value = is52K
+          ? ((res.existing && res.existing.noiOHienNay) || currentMember.diaChiHienTai || 'K')
+          : 'K';
+        document.getElementById('ngheNghiepMoi').value = is52K
+          ? `Sinh viên - Khoa ${currentMember.khoa || ''}`
+          : 'K';
+
+        const scoreInputsWrap = document.getElementById('scoreInputsWrap');
+        const diemChungEl = document.getElementById('diemChung');
+        const diemNhiemVuEl = document.getElementById('diemNhiemVu');
+        const sixMonthWarning = document.getElementById('sixMonthWarning');
+        const xepLoaiOptions = document.getElementById('xepLoaiOptions');
+        const radios = document.querySelectorAll('input[name="xepLoai"]');
+
+        radios.forEach(r => {
+          r.checked = Boolean(res.existing && res.existing.tuXepLoai === r.value);
+        });
+
+        if (!currentMember.du6Thang) {
+          scoreInputsWrap.classList.add('hidden');
+          diemChungEl.required = false;
+          diemNhiemVuEl.required = false;
+          diemChungEl.value = '';
+          diemNhiemVuEl.value = '';
+          document.getElementById('tongDiem').value = '0';
+          sixMonthWarning.classList.remove('hidden');
+          xepLoaiOptions.classList.add('hidden');
+          radios.forEach(r => { r.required = false; });
+        } else {
+          scoreInputsWrap.classList.remove('hidden');
+          diemChungEl.required = true;
+          diemNhiemVuEl.required = true;
+          sixMonthWarning.classList.add('hidden');
+          xepLoaiOptions.classList.remove('hidden');
+          radios.forEach(r => { r.required = true; });
+        }
+
+        memberBox.classList.remove('hidden');
+        docForm.classList.remove('hidden');
+      } catch (err) {
+        alertBox.textContent = 'Lỗi hệ thống: ' + err.message;
+        alertBox.classList.remove('hidden');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Đăng nhập & Lấy thông tin';
+      }
+    }
+
+    async function generateDocx(e) {
+      e.preventDefault();
+      if (!currentMember) return;
+
+      const btn = document.getElementById('btnGenerate');
+      const alertBox = document.getElementById('docAlert');
+      alertBox.classList.add('hidden');
+      alertBox.classList.remove('alert-success', 'alert-danger');
+
+      let selectedRank = '';
+      let diemChungVal = '…';
+      let diemNhiemVuVal = '…';
+      let tongDiemVal = '…';
+
+      if (currentMember.du6Thang) {
+        const cNum = parseFloat(document.getElementById('diemChung').value);
+        const nvNum = parseFloat(document.getElementById('diemNhiemVu').value);
+        if (isNaN(cNum) || cNum < 0 || cNum > 30) {
+          alertBox.textContent = 'Điểm Nhóm tiêu chí chung phải nằm trong khoảng 0 đến 30.';
+          alertBox.classList.add('alert-danger');
+          alertBox.classList.remove('hidden');
+          return;
+        }
+        if (isNaN(nvNum) || nvNum < 0 || nvNum > 70) {
+          alertBox.textContent = 'Điểm Nhóm tiêu chí kết quả thực hiện nhiệm vụ phải nằm trong khoảng 0 đến 70.';
+          alertBox.classList.add('alert-danger');
+          alertBox.classList.remove('hidden');
+          return;
+        }
+        const totalNum = Math.round((cNum + nvNum) * 100) / 100;
+
+        const sel = document.querySelector('input[name="xepLoai"]:checked');
+        if (!sel) {
+          alertBox.textContent = 'Vui lòng chọn Đề xuất xếp loại mức chất lượng.';
+          alertBox.classList.add('alert-danger');
+          alertBox.classList.remove('hidden');
+          return;
+        }
+        selectedRank = sel.value;
+
+        if (selectedRank === 'Hoàn thành xuất sắc nhiệm vụ' && totalNum < 90) {
+          alertBox.textContent = `Tổng điểm hiện tại là ${totalNum}/100. Để đề xuất "Hoàn thành xuất sắc nhiệm vụ", tổng điểm phải đạt từ 90 điểm trở lên.`;
+          alertBox.classList.add('alert-danger');
+          alertBox.classList.remove('hidden');
+          return;
+        }
+        if (selectedRank === 'Hoàn thành tốt nhiệm vụ' && totalNum < 70) {
+          alertBox.textContent = `Tổng điểm hiện tại là ${totalNum}/100. Để đề xuất "Hoàn thành tốt nhiệm vụ", tổng điểm phải đạt từ 70 điểm trở lên.`;
+          alertBox.classList.add('alert-danger');
+          alertBox.classList.remove('hidden');
+          return;
+        }
+        if (selectedRank === 'Hoàn thành nhiệm vụ' && totalNum < 50) {
+          alertBox.textContent = `Tổng điểm hiện tại là ${totalNum}/100. Để đề xuất "Hoàn thành nhiệm vụ", tổng điểm phải đạt từ 50 điểm trở lên.`;
+          alertBox.classList.add('alert-danger');
+          alertBox.classList.remove('hidden');
+          return;
+        }
+
+        diemChungVal = String(cNum);
+        diemNhiemVuVal = String(nvNum);
+        tongDiemVal = String(totalNum);
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Đang tạo file Word (.docx)...';
+
+      try {
+        const response = await fetch('templates/mau-02c.docx');
+        if (!response.ok) throw new Error('Không tải được file mẫu mau-02c.docx.');
+        const arrayBuffer = await response.arrayBuffer();
+
+        const zip = new PizZip(arrayBuffer);
+        const doc = new window.docxtemplater(zip, {
+          paragraphLoop: true,
+          linebreaks: true
+        });
+
+        doc.render({
+          ngay: '      ',
+          'Họ và tên': document.getElementById('hoTen').value.trim(),
+          'Ngày sinh': document.getElementById('ngaySinh').value.trim(),
+          'Lớp': document.getElementById('lop').value.trim(),
+          'Khoa': document.getElementById('khoa').value.trim(),
+          'Nội dung 1': document.getElementById('noiDung1').value.trim(),
+          'Nội dung 2': document.getElementById('noiDung2').value.trim(),
+          'Nội dung 3': document.getElementById('noiDung3').value.trim(),
+          'Nội dung hạn chế, khuyết điểm': document.getElementById('hanChe').value.trim(),
+          'Nguyên nhân của hạn chế, khuyết điểm': document.getElementById('nguyenNhan').value.trim(),
+          'Nội dung kết quả khắc phục': document.getElementById('ketQuaKhacPhuc').value.trim(),
+          'Nội dung Giải trình ': document.getElementById('giaiTrinh').value.trim() || 'Không có.',
+          'Nội dung làm rõ trách nhiệm': document.getElementById('trachNhiemTapThe').value.trim() || 'Không có.',
+          'Nội dung biện pháp khắc phục': document.getElementById('bienPhapKhacPhuc').value.trim(),
+          diemChung: diemChungVal,
+          diemNhiemVu: diemNhiemVuVal,
+          tongDiem: tongDiemVal,
+          cbXuatSac: selectedRank === 'Hoàn thành xuất sắc nhiệm vụ' ? '☑' : '☐',
+          cbTot: selectedRank === 'Hoàn thành tốt nhiệm vụ' ? '☑' : '☐',
+          cbHoanThanh: selectedRank === 'Hoàn thành nhiệm vụ' ? '☑' : '☐',
+          cbKhongHoanThanh: selectedRank === 'Không hoàn thành nhiệm vụ' ? '☑' : '☐'
+        });
+
+        // Chuyển ngắt dòng mềm (<w:br/>) thành các đoạn <w:p> độc lập để căn đều 2 bên và thụt đầu dòng 1cm chuẩn
+        let xml02c = doc.getZip().file('word/document.xml').asText();
+        xml02c = xml02c.replace(/<w:p\b[^>]*>[\s\S]*?<\/w:p>/g, pXml => {
+          if (!pXml.includes('<w:br/>')) return pXml;
+          const pPrMatch = pXml.match(/<w:pPr>[\s\S]*?<\/w:pPr>/);
+          const pPr = pPrMatch ? pPrMatch[0] : '';
+          return pXml.replace(/<w:r\b[^>]*>[\s\S]*?<\/w:r>/g, rXml => {
+            if (!rXml.includes('<w:br/>')) return rXml;
+            const rPrMatch = rXml.match(/<w:rPr>[\s\S]*?<\/w:rPr>/);
+            const rPr = rPrMatch ? rPrMatch[0] : '';
+            return rXml.replace(/<w:br\/>/g, `</w:r></w:p><w:p>${pPr}<w:r>${rPr}`);
+          });
+        });
+        doc.getZip().file('word/document.xml', xml02c);
+
+        const out02c = doc.getZip().generate({ type: 'uint8array' });
+        const safeName = (currentMember.hoTen || 'DangVien').replace(/\s+/g, '_');
+
+        // ===== Tạo tiếp Mẫu 6b =====
+        const res6b = await fetch('templates/mau-6b.docx');
+        if (!res6b.ok) throw new Error('Không tải được file mẫu mau-6b.docx.');
+        const doc6b = new window.docxtemplater(new PizZip(await res6b.arrayBuffer()), {
+          paragraphLoop: true,
+          linebreaks: true
+        });
+        const dob = String(currentMember.ngaySinh || '').split('/');
+        const v = id => document.getElementById(id).value.trim();
+        const k = id => v(id) || 'K';
+        const hoTen = currentMember.hoTen || '';
+        doc6b.render({
+          soLL: '................',
+          soTDV: currentMember.soTDV || '',
+          hoTenUpper: hoTen.toUpperCase(),
+          hoTen: hoTen,
+          'ngày': dob[0] || '..',
+          'tháng': dob[1] || '..',
+          'năm': dob[2] || '....',
+          choOMoi: k('choOMoi'),
+          ngheNghiepMoi: k('ngheNghiepMoi'),
+          ketQuaPhanLoai: '……………………………………………………………………',
+          cvDang: k('cvDang'), cvChinhQuyen: k('cvChinhQuyen'),
+          tdPhoThong: k('tdPhoThong'), tdHocHam: k('tdHocHam'), tdHocVi: k('tdHocVi'),
+          tdLyLuan: k('tdLyLuan'), tdNgoaiNgu: k('tdNgoaiNgu'),
+          khenThuong: k('khenThuong'), kyLuat: k('kyLuat'),
+          gdChaDe: k('gdChaDe'), gdMeDe: k('gdMeDe'), gdChaVC: k('gdChaVC'), gdMeVC: k('gdMeVC'),
+          gdVoChong: k('gdVoChong'), gdCon: k('gdCon'),
+          ktThuNhap: k('ktThuNhap'), ktBinhQuan: k('ktBinhQuan'), ktNhaO: k('ktNhaO'),
+          ktDatO: k('ktDatO'), ktHoatDong: k('ktHoatDong'),
+          ktTaiSanTen: k('ktTaiSanTen'), ktTaiSanGiaTri: k('ktTaiSanGiaTri'),
+          mienCongTac: k('mienCongTac')
+        });
+        const out6b = doc6b.getZip().generate({ type: 'uint8array' });
+
+        // Đóng gói cả 2 file Word vào 1 tệp ZIP
+        const bundleZip = new PizZip();
+        bundleZip.file(`BanKiemDiem_02C_${currentMember.mssv}_${safeName}.docx`, out02c);
+        bundleZip.file(`PhieuBoSung_6b_${currentMember.mssv}_${safeName}.docx`, out6b);
+        const zipBlob = bundleZip.generate({
+          type: 'blob',
+          mimeType: 'application/zip'
+        });
+        saveAs(zipBlob, `HoSoKiemDiem2026_${currentMember.mssv}_${safeName}.zip`);
+
+        // Ghi nhận lịch sử tạo biểu mẫu online
+        callGasApi({
+          action: 'logDocExport',
+          payload: {
+            mssv: currentMember.mssv,
+            hoTen: currentMember.hoTen,
+            nhom: currentMember.nhom,
+            khoa: currentMember.khoa,
+            loaiHoSo: 'Mẫu 02c + Mẫu 6b (.zip)',
+            tongDiem: currentMember.du6Thang ? tongDiemVal : 'Chưa đủ 6 tháng',
+            xepLoai: currentMember.du6Thang ? selectedRank : 'Chưa đủ 6 tháng'
+          }
+        }).catch(() => {});
+
+        alertBox.textContent = 'Đã xuất tệp ZIP chứa cả 2 file Word (Mẫu 02c và Mẫu 6b)! Vui lòng giải nén, in ra và ký tên.';
+        alertBox.classList.add('alert-success');
+        alertBox.classList.remove('hidden');
+      } catch (err) {
+        alertBox.textContent = 'Lỗi khi tạo file Word: ' + err.message;
+        alertBox.classList.add('alert-danger');
+        alertBox.classList.remove('hidden');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<svg class="icon-svg" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg><span>Xuất tệp ZIP hồ sơ để in (Mẫu 02c + Mẫu 6b)</span>';
+      }
+    }
+  </script>
+  <script>
+    (function autoLogin() {
+      try {
+        const saved = JSON.parse(sessionStorage.getItem('CBSV1_AUTH') || 'null');
+        if (saved && saved.mssv && saved.cccd) {
+          document.getElementById('mssv').value = saved.mssv;
+          document.getElementById('cccd').value = saved.cccd;
+          handleLookup();
+        }
+      } catch (e) {}
+    })();
+  </script>
+</body>
+</html>

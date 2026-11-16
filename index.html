@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hướng Dẫn Đánh Giá, Kiểm Điểm Đảng Viên Năm 2026 - Chi Bộ Sinh Viên 1</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --crimson: #9e1b1e;
+      --crimson-dark: #781215;
+      --crimson-bright: #c62828;
+      --gold: #f59e0b;
+      --gold-bright: #facc15;
+      --gold-soft: #fef9c3;
+      --gold-tint: #fffbeb;
+
+      --bg-page: #faf6f3;
+      --bg-card: #ffffff;
+      --border: #e7dfd8;
+
+      --text-main: #1f1a18;
+      --text-secondary: #5c504a;
+      --text-muted: #857770;
+
+      --radius-lg: 18px;
+      --radius-md: 12px;
+      --radius-sm: 8px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #fdf9f4;
+      background-image:
+        radial-gradient(at 0% 20%, rgba(158, 27, 30, 0.05) 0px, transparent 45%),
+        radial-gradient(at 100% 20%, rgba(250, 204, 21, 0.12) 0px, transparent 45%);
+      color: var(--text-main);
+      line-height: 1.6;
+      padding: 0 16px 64px;
+      min-height: 100vh;
+    }
+
+    .top-tricolor-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      z-index: 100;
+    }
+    .top-tricolor-bar span:nth-child(1),
+    .top-tricolor-bar span:nth-child(3) { background-color: var(--crimson); }
+    .top-tricolor-bar span:nth-child(2) { background-color: var(--gold-bright); }
+
+    .container {
+      max-width: 920px;
+      margin: 0 auto;
+      padding-top: 36px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .hero-header {
+      text-align: center;
+      padding: 10px 16px 6px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .hero-logo {
+      width: 72px;
+      height: 72px;
+      object-fit: contain;
+      border-radius: 50%;
+      margin-bottom: 12px;
+      filter: drop-shadow(0 4px 10px rgba(158, 27, 30, 0.16));
+    }
+
+    .org-pill {
+      display: inline-block;
+      background: #ffffff;
+      color: var(--crimson);
+      border: 1px solid #f0e6df;
+      padding: 6px 20px;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 800;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      box-shadow: 0 2px 8px rgba(31, 26, 24, 0.05);
+      margin-bottom: 16px;
+    }
+
+    .hero-header h1 {
+      font-size: 1.9rem;
+      font-weight: 800;
+      color: var(--crimson);
+      text-transform: uppercase;
+      line-height: 1.25;
+      letter-spacing: -0.01em;
+      max-width: 680px;
+    }
+
+    .hero-underline {
+      width: 280px;
+      max-width: 80%;
+      height: 4px;
+      background-color: var(--gold-bright);
+      border-radius: 999px;
+      margin-top: 10px;
+      margin-bottom: 12px;
+    }
+
+    .hero-header p {
+      font-size: 0.92rem;
+      color: var(--text-secondary);
+      max-width: 620px;
+    }
+
+    .section-card {
+      background: var(--bg-card);
+      padding: 28px;
+      border-radius: var(--radius-lg);
+      box-shadow: 0 6px 24px -6px rgba(31, 26, 24, 0.07);
+      border: 1px solid var(--border);
+    }
+
+    @media (max-width: 640px) {
+      .hero-header h1 { font-size: 1.38rem; }
+      .section-card { padding: 20px 18px; }
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+      padding-bottom: 14px;
+      border-bottom: 2px solid #f3ece7;
+    }
+
+    .step-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 34px;
+      height: 34px;
+      padding: 0 10px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--crimson) 0%, var(--crimson-dark) 100%);
+      color: var(--gold-bright);
+      font-size: 0.9rem;
+      font-weight: 800;
+      flex-shrink: 0;
+      box-shadow: 0 3px 8px rgba(158, 27, 30, 0.22);
+    }
+
+    .section-title {
+      font-size: 1.08rem;
+      font-weight: 800;
+      color: var(--crimson);
+      text-transform: uppercase;
+      line-height: 1.35;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .cta-box {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 20px 22px;
+      background: linear-gradient(135deg, #fffdf9 0%, #fff7ed 100%);
+      border: 1.5px solid #fde68a;
+      border-radius: var(--radius-md);
+    }
+
+    @media (max-width: 640px) {
+      .cta-box { flex-direction: column; align-items: stretch; }
+    }
+
+    .cta-info h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--crimson-dark);
+      margin-bottom: 4px;
+    }
+
+    .cta-info p {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+    }
+
+    .mode-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    @media (max-width: 640px) {
+      .mode-grid { grid-template-columns: 1fr; }
+    }
+
+    .options-wrapper {
+      margin-top: 22px;
+      padding-top: 20px;
+      border-top: 1.5px dashed var(--border);
+    }
+
+    .options-heading {
+      font-size: 0.94rem;
+      font-weight: 800;
+      color: var(--crimson-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .action-options-box {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    @media (max-width: 680px) {
+      .action-options-box { grid-template-columns: 1fr; }
+    }
+
+    .action-option-card {
+      padding: 20px;
+      border-radius: var(--radius-md);
+      border: 1.5px solid var(--border);
+      background: #fcfaf8;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .action-option-card.primary-option {
+      background: #fffafa;
+      border-color: #f3b8b9;
+    }
+
+    .action-option-card.secondary-option {
+      background: var(--gold-tint);
+      border-color: #fde68a;
+    }
+
+    .option-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      align-self: flex-start;
+      padding: 3px 10px;
+      border-radius: 6px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      margin-bottom: 8px;
+    }
+
+    .primary-option .option-pill {
+      background: var(--crimson);
+      color: var(--gold-bright);
+    }
+
+    .secondary-option .option-pill {
+      background: var(--gold-soft);
+      color: #92400e;
+      border: 1px solid #fcd34d;
+    }
+
+    .action-option-text {
+      font-size: 0.96rem;
+      font-weight: 800;
+      color: var(--text-main);
+      line-height: 1.35;
+      margin-bottom: 6px;
+    }
+
+    .action-option-desc {
+      font-size: 0.84rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .action-btn-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .icon-svg {
+      width: 18px;
+      height: 18px;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+      flex-shrink: 0;
+    }
+
+    .deadline-icon-box {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      background: var(--crimson);
+      color: var(--gold-bright);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 22px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      font-family: inherit;
+      border-radius: var(--radius-sm);
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--crimson) 0%, var(--crimson-dark) 100%);
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(158, 27, 30, 0.24);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(158, 27, 30, 0.34);
+    }
+
+    .btn-download {
+      background-color: #fef2f2;
+      color: var(--crimson-dark);
+      border: 1.5px solid #fecaca;
+      padding: 8px 14px;
+      font-size: 0.84rem;
+    }
+
+    .btn-download:hover {
+      background-color: var(--crimson);
+      color: #ffffff;
+      border-color: var(--crimson);
+    }
+
+    .btn-guide {
+      background-color: var(--gold-tint);
+      color: #92400e;
+      border: 1.5px solid #fcd34d;
+      padding: 8px 12px;
+      font-size: 0.82rem;
+    }
+
+    .btn-guide:hover {
+      background-color: var(--gold);
+      color: #ffffff;
+      border-color: var(--gold);
+    }
+
+    .forms-table-wrap {
+      overflow-x: auto;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-md);
+      background: #ffffff;
+    }
+
+    .forms-table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 680px;
+    }
+
+    .forms-table thead th {
+      background: linear-gradient(135deg, var(--crimson) 0%, var(--crimson-dark) 100%);
+      color: #ffffff;
+      font-size: 0.78rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      padding: 13px 14px;
+      text-align: left;
+      border-bottom: 3px solid var(--gold-bright);
+    }
+
+    .forms-table tbody td {
+      padding: 16px 14px;
+      border-bottom: 1px solid #efe7e1;
+      vertical-align: top;
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+    }
+
+    .forms-table tbody tr:last-child td { border-bottom: none; }
+    .forms-table tbody tr:hover { background-color: #fcfaf8; }
+
+    .form-name {
+      font-size: 0.94rem;
+      font-weight: 800;
+      color: var(--crimson-dark);
+      line-height: 1.4;
+    }
+
+    .guide-list { margin-left: 16px; }
+    .guide-list li { margin-bottom: 4px; }
+    .guide-list li:last-child { margin-bottom: 0; }
+
+    .deadline-banner {
+      margin-top: 22px;
+      padding: 18px 20px;
+      background: linear-gradient(135deg, #fef2f2 0%, #fffbeb 100%);
+      border: 1.5px solid #fca5a5;
+      border-left: 5px solid var(--crimson);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .deadline-icon { font-size: 1.6rem; flex-shrink: 0; }
+    .deadline-text { font-size: 0.94rem; color: var(--text-main); }
+    .deadline-text strong { color: var(--crimson-dark); }
+
+    .footer-note {
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="top-tricolor-bar"><span></span><span></span><span></span></div>
+  <div class="container">
+    <header class="hero-header">
+      <img src="logo.png" alt="Logo Chi bộ Sinh viên" class="hero-logo">
+      <div class="org-pill">Chi Bộ Sinh Viên 1</div>
+      <h1>Hệ Thống Đánh Giá, Xếp Loại<br>Đảng Viên Năm 2026</h1>
+      <div class="hero-underline"></div>
+      <p>Đồng chí thực hiện đầy đủ 2 bước bên dưới đúng thời gian quy định để phục vụ công tác kiểm điểm, đánh giá xếp loại cuối năm.</p>
+    </header>
+
+    <!-- PHẦN 1 -->
+    <div class="section-card">
+      <div class="section-header">
+        <span class="step-badge">1</span>
+        <h2 class="section-title">Thực Hiện Kê Khai Thông Tin Phục Vụ Đánh Giá, Kiểm Điểm</h2>
+      </div>
+
+      <div class="cta-box">
+        <div class="cta-info">
+          <h3>Biểu mẫu kê khai trực tuyến năm 2026</h3>
+          <p>Tra cứu thông tin Đảng viên bằng MSSV và CCCD, cập nhật nơi cư trú, kết quả học tập – rèn luyện, thành tích và tự xếp loại.</p>
+        </div>
+        <a href="kekhai.html" class="btn btn-primary">
+          <span>Thực hiện kê khai ngay</span>
+          <svg class="icon-svg" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- PHẦN 2 -->
+    <div class="section-card">
+      <div class="section-header">
+        <span class="step-badge">2</span>
+        <h2 class="section-title">Đảng Viên Tiến Hành Thực Hiện Các Biểu Mẫu Sau</h2>
+      </div>
+
+      <div class="forms-table-wrap">
+        <table class="forms-table">
+          <thead>
+            <tr>
+              <th style="width: 8%; text-align: center;">STT</th>
+              <th style="width: 28%;">Tên biểu mẫu</th>
+              <th style="width: 64%;">Hướng dẫn</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="text-align: center; font-weight: 800; color: var(--crimson);">1</td>
+              <td><div class="form-name">Mẫu 02c - KIỂM ĐIỂM ĐẢNG VIÊN LÀ SINH VIÊN</div></td>
+              <td>
+                <ul class="guide-list">
+                  <li>Đảng viên điền đầy đủ thông tin cá nhân, ngày sinh, Đơn vị công tác.</li>
+                  <li>Tự kiểm điểm rõ ưu điểm, hạn chế, khuyết điểm về tư tưởng chính trị, phẩm chất đạo đức, kết quả học tập – rèn luyện và thực hiện nhiệm vụ Đảng viên trong năm 2026.</li>
+                  <li>Ghi rõ phương hướng, biện pháp khắc phục và tự nhận mức xếp loại (đối với Đảng viên mới kết nạp chưa đủ 6 tháng tính đến 21/11/2026 thì không thực hiện tự đánh giá xếp loại).</li>
+                </ul>
+              </td>
+            </tr>
+
+            <tr>
+              <td style="text-align: center; font-weight: 800; color: var(--crimson);">2</td>
+              <td><div class="form-name">Mẫu 6b - Phiếu bổ sung Hồ sơ Đảng viên hằng năm</div></td>
+              <td>
+                <ul class="guide-list">
+                  <li>Khai báo các thông tin có thay đổi, phát sinh trong năm 2026 (nếu không có thay đổi ghi <em>"Không thay đổi"</em>).</li>
+                </ul>
+              </td>
+            </tr>
+
+            <tr>
+              <td style="text-align: center; font-weight: 800; color: var(--crimson);">3</td>
+              <td><div class="form-name">Mẫu 6d - Mẫu nhận xét nơi cư trú</div></td>
+              <td>
+                <ul class="guide-list">
+                  <li>
+                    <strong>Bản online:</strong> Đảng viên thực hiện tải trực tiếp trên hệ thống <a href="https://dichvucong.dcs.vn" target="_blank" style="color: var(--crimson); font-weight: 700;">dichvucong.dcs.vn</a>
+                    <em>(Đăng nhập → Chọn mục <strong>Thủ tục hành chính của tôi</strong> → Bấm vào dòng <strong>Lấy ý kiến nhận xét của Chi ủy chi bộ đối với đảng viên sinh hoạt nơi cư trú</strong> → <strong>Chi tiết giấy tờ</strong> → Bấm vào biểu tượng tải xuống để tải)</em>.
+                  </li>
+                  <li>
+                    <strong>Đối với các Đảng viên chưa được làm trên hệ thống:</strong> Khẩn trương <strong>LIÊN HỆ CHO BÍ THƯ CHI BỘ NƠI CƯ TRÚ</strong> để hỏi lý do:
+                    <ul style="margin-left: 16px; margin-top: 4px;">
+                      <li><strong>Trường hợp 1:</strong> Chi bộ nơi cư trú báo sẽ làm bản điện tử thì hỏi rõ lúc nào có kết quả vì sẽ cần để nộp trong tuần này.</li>
+                      <li><strong>Trường hợp 2:</strong> Chi bộ nơi cư trú báo làm bản giấy theo mẫu 2-QĐ 221, thì khẩn trương xin và lấy phiếu nhận xét về để lưu trữ và nộp trong tuần này <a href="templates/mau-6d.doc" download="Mau_6d_Nhan_xet_noi_cu_tru_2026.doc" style="color: var(--crimson); font-weight: 700;">(Tải mẫu giấy 6d tại đây)</a>.</li>
+                      <li><strong>Trường hợp 3:</strong> Các Đảng viên chưa nộp Giấy 221, chưa được nhận xét bản điện tử thì phải khẩn trương liên hệ, tìm hiểu thông tin Bí thư Chi bộ nơi cư trú để đến xin Bí thư nơi cư trú cho phép được sinh hoạt 221 trước và nhờ họ cho nhận xét <em>(dùng lời lẽ thuyết phục để được nhận xét, có thể nhờ thêm chủ trọ can thiệp hỗ trợ nói thêm)</em>.</li>
+                    </ul>
+                  </li>
+                </ul>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="options-wrapper">
+        <div class="options-heading">
+          <svg class="icon-svg" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          <span>Hình thức thực hiện biểu mẫu (Chọn 1 trong 2 cách)</span>
+        </div>
+
+        <div class="action-options-box">
+          <div class="action-option-card primary-option">
+            <div>
+              <span class="option-pill">Cách 1 • Khuyên dùng</span>
+              <div class="action-option-text">Đảng viên thực hiện điền trực tuyến và xuất các biểu mẫu để in</div>
+              <div class="action-option-desc">Hệ thống tự đổ thông tin cá nhân, có sẵn gợi ý từng mục và xuất cùng lúc 2 file Word (Mẫu 02c + Mẫu 6b) đúng chuẩn để tải về in ra ký tên.</div>
+            </div>
+            <div class="action-btn-group">
+              <a href="mau-02c.html" class="btn btn-primary" style="width: 100%;">
+                <svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+                <span>Tạo hồ sơ để in</span>
+              </a>
+            </div>
+          </div>
+
+          <div class="action-option-card secondary-option">
+            <div>
+              <span class="option-pill">Cách 2 • Ghi tay / Tự soạn</span>
+              <div class="action-option-text">Hoặc Đảng viên thực hiện in mẫu trống và ghi tay</div>
+              <div class="action-option-desc">Tải bộ biểu mẫu trống về máy để in ra giấy viết tay (hoặc tự đánh máy) theo file hướng dẫn ghi chi tiết của Chi bộ.</div>
+            </div>
+            <div class="action-btn-group">
+              <a id="btnTaiMauTrong" href="https://drive.google.com/drive/folders/1HdAXZk1ICDzdfEHEeUZzgPzKh1KyhA8F?usp=drive_link" target="_blank" class="btn btn-download" style="flex: 1;">
+                <svg class="icon-svg" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                <span>Tải mẫu trống</span>
+              </a>
+              <a id="btnXemHuongDan" href="https://drive.google.com/drive/folders/10Gj3oaZr0f9L4z04fPnS6B1d98ME1hzl?usp=drive_link" target="_blank" class="btn btn-guide" style="flex: 1;">
+                <svg class="icon-svg" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                <span>Xem hướng dẫn ghi</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="deadline-banner">
+        <div class="deadline-icon-box">
+          <svg class="icon-svg" style="width: 22px; height: 22px;" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        </div>
+        <div class="deadline-text">
+          <strong>Lưu ý thời hạn nộp hồ sơ:</strong> Sau khi làm xong đầy đủ các biểu mẫu trên, Đảng viên tiến hành nộp lại cho Chi bộ vào <strong>Sáng Chủ nhật, ngày 22/11/2026</strong>.
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-note">
+      Chi bộ Sinh viên 1 — Hệ thống hướng dẫn và kê khai kiểm điểm năm 2026 •
+      <a href="admin.html" style="color: var(--crimson); font-weight: 700; text-decoration: none;">Cổng quản trị</a>
+    </div>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="mock-api.js"></script>
+  <script>
+    function applyLinks(links) {
+      if (!links) return;
+      const folderUrl = links.LINK_TAI_TOAN_BO;
+      if (folderUrl && !folderUrl.includes('sample-all')) {
+        const elTai = document.getElementById('btnTaiMauTrong');
+        if (elTai) elTai.href = folderUrl;
+      }
+      const guideUrl = links.LINK_HUONG_DAN_CHUNG;
+      if (guideUrl && !guideUrl.includes('sample')) {
+        const elHuongDan = document.getElementById('btnXemHuongDan');
+        if (elHuongDan) elHuongDan.href = guideUrl;
+      }
+    }
+
+    if (typeof APP_CONFIG !== 'undefined') {
+      applyLinks(APP_CONFIG);
+      if (APP_CONFIG.USE_MOCK_DATA && typeof MOCK_API !== 'undefined') {
+        Promise.resolve(MOCK_API.handle({ action: 'getLinks' }))
+          .then(res => {
+            if (res && res.success && res.links) applyLinks(res.links);
+          })
+          .catch(() => {});
+      } else if (APP_CONFIG.GAS_API_URL && !APP_CONFIG.GAS_API_URL.includes('YOUR_DEPLOYMENT_ID')) {
+        fetch(APP_CONFIG.GAS_API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({ action: 'getLinks' })
+        })
+          .then(r => r.json())
+          .then(res => {
+            if (res && res.success && res.links) applyLinks(res.links);
+          })
+          .catch(() => {});
+      }
+    }
+  </script>
+</body>
+</html>

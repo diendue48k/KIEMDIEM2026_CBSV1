@@ -1,0 +1,705 @@
+/**
+ * TẦNG DỮ LIỆU HỆ THỐNG: FIREBASE CLOUD FIRESTORE (DỰ PHÒNG LOCALSTORAGE)
+ * Tự động kết nối Cloud Firestore theo APP_CONFIG.FIREBASE_CONFIG;
+ * nếu chưa bật Firestore / mất kết nối / bị chặn Rules sẽ dự phòng localStorage và báo trạng thái ở Trang Quản trị.
+ */
+const MOCK_API = (function () {
+  const STORAGE_KEY = 'CBSV1_MOCK_DB_2026';
+  const FIREBASE_SDK_VERSION = '10.14.1';
+  const ADMIN_PASSWORD = 'CBSV1@2026';
+
+  const DEFAULT_DB = {
+    links: {
+      LINK_TAI_TOAN_BO: 'https://drive.google.com/drive/folders/1HdAXZk1ICDzdfEHEeUZzgPzKh1KyhA8F?usp=drive_link',
+      LINK_HUONG_DAN_CHUNG: 'https://drive.google.com/drive/folders/10Gj3oaZr0f9L4z04fPnS6B1d98ME1hzl?usp=drive_link',
+      LINK_TAI_MAU_02C: 'https://drive.google.com/file/d/sample-02c',
+      LINK_HUONG_DAN_02C: 'https://drive.google.com/file/d/1tjFE-XVZ_tsDK4ErgR8wPYgcyfXsOJ4H/view?usp=sharing',
+      LINK_TAI_MAU_6B: 'https://drive.google.com/file/d/sample-6b',
+      LINK_HUONG_DAN_6B: 'https://drive.google.com/file/d/1ov4IDfYEyTgpeY2oipquI8aae5OGRg_R/view?usp=drive_link',
+      LINK_TAI_MAU_6D: 'templates/mau-6d.doc',
+      LINK_HUONG_DAN_6D: ''
+    },
+    members: [],
+    submissions: {},
+    docLogs: []
+  };
+
+  const DEMO_MSSVS = new Set(['231121012345', '241125009988', '261121005201']);
+
+  let firestoreInitPromise = null;
+  let cachedFirestore = null;
+
+  function normalizeLinks(rawLinks) {
+    const merged = Object.assign({}, DEFAULT_DB.links, rawLinks || {});
+    if (!merged.LINK_TAI_TOAN_BO || String(merged.LINK_TAI_TOAN_BO).includes('sample')) {
+      merged.LINK_TAI_TOAN_BO = DEFAULT_DB.links.LINK_TAI_TOAN_BO;
+    }
+    if (!merged.LINK_HUONG_DAN_CHUNG || String(merged.LINK_HUONG_DAN_CHUNG).includes('sample')) {
+      merged.LINK_HUONG_DAN_CHUNG = DEFAULT_DB.links.LINK_HUONG_DAN_CHUNG;
+    }
+    return merged;
+  }
+
+  function getLocalDb() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        parsed.links = normalizeLinks(parsed.links);
+        const rawMembers = Array.isArray(parsed.members) ? parsed.members : [];
+        const rawSubs = parsed.submissions && typeof parsed.submissions === 'object' ? parsed.submissions : {};
+        const rawLogs = Array.isArray(parsed.docLogs) ? parsed.docLogs : [];
+
+        let changed = false;
+        parsed.members = rawMembers.filter(m => {
+          const isDemo = m && DEMO_MSSVS.has(String(m.mssv || '').trim());
+          if (isDemo) changed = true;
+          return !isDemo;
+        });
+
+        parsed.submissions = {};
+        Object.keys(rawSubs).forEach(k => {
+          if (DEMO_MSSVS.has(String(k).trim())) {
+            changed = true;
+          } else {
+            parsed.submissions[k] = rawSubs[k];
+          }
+        });
+
+        parsed.docLogs = rawLogs.filter(l => {
+          const isDemo = l && DEMO_MSSVS.has(String(l.mssv || '').trim());
+          if (isDemo) changed = true;
+          return !isDemo;
+        });
+
+        if (changed) {
+          saveLocalDb(parsed);
+        }
+        return parsed;
+      }
+    } catch (e) {}
+    const fresh = JSON.parse(JSON.stringify(DEFAULT_DB));
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(fresh));
+    } catch (e) {}
+    return fresh;
+  }
+
+  function saveLocalDb(db) {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(db));
+    } catch (e) {}
+  }
+
+  function parseDateVN(str) {
+    const m = String(str || '').match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+    if (!m) return null;
+    return new Date(parseInt(m[3], 10), parseInt(m[2], 10) - 1, parseInt(m[1], 10));
+  }
+
+  function isDu6Thang(ngayVaoDang) {
+    const d = parseDateVN(ngayVaoDang);
+    if (!d) return false;
+    return d.getTime() <= new Date(2026, 4, 21, 23, 59, 59).getTime();
+  }
+
+  function nowVN() {
+    const d = new Date();
+    const pad = n => String(n).padStart(2, '0');
+    return `${pad(d.getDate())}/${pad(d.getMonth() + 1)}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+  }
+
+  function docSafeId(val) {
+    return String(val || '').trim().replace(/\//g, '_');
+  }
+
+  function formatFirebaseError(err) {
+    if (!err) return 'Lỗi không xác định khi kết nối Firebase.';
+    const code = err.code ? `[${err.code}] ` : '';
+    return code + (err.message || String(err));
+  }
+
+  function withTimeout(promise, ms, timeoutMessage) {
+    let timerId;
+    const timeoutPromise = new Promise((_, reject) => {
+      timerId = setTimeout(() => reject(new Error(timeoutMessage || 'Quá thời gian kết nối Firebase Firestore.')), ms);
+    });
+    return Promise.race([promise, timeoutPromise]).finally(() => clearTimeout(timerId));
+  }
+
+  function isFirebaseEnabled() {
+    return (
+      typeof APP_CONFIG !== 'undefined' &&
+      APP_CONFIG.USE_FIREBASE === true &&
+      APP_CONFIG.FIREBASE_CONFIG &&
+      Boolean(APP_CONFIG.FIREBASE_CONFIG.projectId)
+    );
+  }
+
+  function loadScript(src) {
+    return new Promise((resolve, reject) => {
+      if (typeof document === 'undefined') {
+        return reject(new Error('Môi trường không hỗ trợ tải Firebase SDK.'));
+      }
+      const existing = document.querySelector(`script[src="${src}"]`);
+      if (existing) {
+        if (existing.getAttribute('data-loaded') === 'true') return resolve();
+        existing.addEventListener('load', () => resolve(), { once: true });
+        existing.addEventListener('error', () => reject(new Error('Không thể tải SDK: ' + src)), { once: true });
+        return;
+      }
+      const s = document.createElement('script');
+      s.src = src;
+      s.async = false;
+      s.onload = () => {
+        s.setAttribute('data-loaded', 'true');
+        resolve();
+      };
+      s.onerror = () => reject(new Error('Không thể tải SDK: ' + src));
+      document.head.appendChild(s);
+    });
+  }
+
+  async function getFirestoreDb() {
+    if (!isFirebaseEnabled()) return null;
+    if (cachedFirestore) return cachedFirestore;
+    if (!firestoreInitPromise) {
+      firestoreInitPromise = (async () => {
+        if (typeof window.firebase === 'undefined' || !window.firebase.firestore) {
+          await loadScript(`https://www.gstatic.com/firebasejs/${FIREBASE_SDK_VERSION}/firebase-app-compat.js`);
+          await loadScript(`https://www.gstatic.com/firebasejs/${FIREBASE_SDK_VERSION}/firebase-firestore-compat.js`);
+        }
+        if (!window.firebase.apps || window.firebase.apps.length === 0) {
+          window.firebase.initializeApp(APP_CONFIG.FIREBASE_CONFIG);
+        }
+        cachedFirestore = window.firebase.firestore();
+        return cachedFirestore;
+      })().catch(err => {
+        firestoreInitPromise = null;
+        throw err;
+      });
+    }
+    return firestoreInitPromise;
+  }
+
+  function pickCol(item, exactKeys, keywordSubstrings) {
+    if (!item || typeof item !== 'object') return '';
+    const rawKeys = Object.keys(item);
+    if (Array.isArray(exactKeys)) {
+      for (let i = 0; i < exactKeys.length; i++) {
+        const target = exactKeys[i].trim().toLowerCase();
+        const foundKey = rawKeys.find(k => k.trim().toLowerCase() === target);
+        if (foundKey !== undefined && String(item[foundKey] ?? '').trim() !== '') {
+          return String(item[foundKey]).trim();
+        }
+      }
+    }
+    if (Array.isArray(keywordSubstrings)) {
+      for (let i = 0; i < keywordSubstrings.length; i++) {
+        const kw = keywordSubstrings[i].toLowerCase();
+        const foundKey = rawKeys.find(k => k.trim().toLowerCase().includes(kw));
+        if (foundKey !== undefined && String(item[foundKey] ?? '').trim() !== '') {
+          return String(item[foundKey]).trim();
+        }
+      }
+    }
+    return '';
+  }
+
+  function sanitizeMemberRow(item, fallbackStt, existingMember) {
+    const mssv = pickCol(item, ['mssv'], ['mssv']);
+    const prevSoTdv = existingMember && existingMember.soTDV ? existingMember.soTDV : '';
+    const rawSoTdv = pickCol(
+      item,
+      ['soTDV', 'Số thẻ Đảng viên', 'Số Thẻ Đảng viên', 'Số thẻ Đảng'],
+      ['số thẻ đảng', 'số thẻ', 'tđv']
+    ) || prevSoTdv;
+    return {
+      stt: pickCol(item, ['stt'], []) || String(fallbackStt || '').trim(),
+      hoTen: pickCol(item, ['hoTen', 'Họ tên', 'Họ và tên'], ['họ tên', 'họ và tên']),
+      mssv,
+      ngaySinh: pickCol(item, ['ngaySinh', 'Ngày sinh'], ['ngày sinh']),
+      gioiTinh: pickCol(item, ['gioiTinh', 'Giới tính'], ['giới tính']),
+      cccd: pickCol(item, ['cccd'], ['cccd']),
+      lop: pickCol(item, ['lop', 'Lớp'], ['lớp']),
+      khoa: pickCol(item, ['khoa', 'Khoa', 'Khoa/Trung tâm'], ['khoa']),
+      nhom: pickCol(item, ['nhom', 'Nhóm sinh hoạt', 'Nhóm'], ['nhóm sinh hoạt', 'nhóm']),
+      ngayVaoDang: pickCol(item, ['ngayVaoDang', 'Ngày vào Đảng'], ['ngày vào đảng']),
+      ngayChinhThuc: pickCol(item, ['ngayChinhThuc', 'Ngày chính thức'], ['ngày chính thức']),
+      loaiDangVien: pickCol(item, ['loaiDangVien', 'Loại Đảng viên (Dự bị / Chính thức)', 'Loại Đảng viên'], ['loại đảng viên']),
+      diaChiHienTai: pickCol(
+        item,
+        ['diaChiHienTai', 'Địa chỉ hiện tại', 'Địa chỉ hiện tại đang ở(Nơi đã nộp Giấy 221', 'Địa chỉ hiện tại đang ở(Nơi đã nộp Giấy 221)', 'Nơi ở hiện nay'],
+        ['địa chỉ hiện tại', 'nơi đã nộp giấy 221', 'nơi ở hiện nay']
+      ),
+      chiBoCuTru: pickCol(
+        item,
+        ['chiBoCuTru', 'Chi bộ nơi cư trú', 'Chi bộ nơi cư trú (221)', 'Chi bộ Sinh hoạt nơi cư trú'],
+        ['chi bộ nơi cư trú', 'sinh hoạt nơi cư trú', 'nơi cư trú (221)']
+      ),
+      soTDV: String(rawSoTdv || '').trim()
+    };
+  }
+
+  function buildSubmissionObj(p, member) {
+    return {
+      mssv: member.mssv,
+      thoiGianGui: nowVN(),
+      chiBoCuTru: String(p.chiBoCuTru || ''),
+      noiOHienNay: String(p.noiOHienNay || ''),
+      kqHocTapHK1: String(p.kqHocTapHK1 || ''),
+      kqRenLuyenHK1: String(p.kqRenLuyenHK1 || ''),
+      kqHocTapHK2: String(p.kqHocTapHK2 || ''),
+      kqRenLuyenHK2: String(p.kqRenLuyenHK2 || ''),
+      thanhTichList: Array.isArray(p.thanhTichList) ? p.thanhTichList : [],
+      dongGopList: Array.isArray(p.dongGopList) ? p.dongGopList : [],
+      tuXepLoai: isDu6Thang(member.ngayVaoDang)
+        ? String(p.tuXepLoai || '')
+        : 'Chưa đủ 6 tháng - Không thực hiện tự đánh giá xếp loại',
+      deXuat: String(p.deXuat || '')
+    };
+  }
+
+  function buildDocLogEntry(p) {
+    return {
+      thoiGian: nowVN(),
+      mssv: String(p.mssv || '').trim(),
+      hoTen: String(p.hoTen || '').trim(),
+      nhom: String(p.nhom || '').trim(),
+      khoa: String(p.khoa || '').trim(),
+      loaiHoSo: String(p.loaiHoSo || 'Mẫu 02c + Mẫu 6b (.zip)').trim(),
+      tongDiem: String(p.tongDiem || '').trim(),
+      xepLoai: String(p.xepLoai || '').trim(),
+      createdAtMs: Date.now()
+    };
+  }
+
+  function buildDashboardResponse(db, extra) {
+    const submissionsList = [];
+    const sortedMembers = (db.members || []).slice().sort((a, b) => {
+      const sa = parseInt(a.stt, 10);
+      const sb = parseInt(b.stt, 10);
+      if (!isNaN(sa) && !isNaN(sb)) return sa - sb;
+      return String(a.hoTen || '').localeCompare(String(b.hoTen || ''), 'vi');
+    });
+
+    const docLogsSorted = (db.docLogs || []).slice().sort((a, b) => (b.createdAtMs || 0) - (a.createdAtMs || 0));
+
+    const members = sortedMembers.map(m => {
+      const sub = (db.submissions && db.submissions[m.mssv]) || null;
+      let chiTiet = null;
+      if (sub) {
+        const thanhTichStr = (sub.thanhTichList || [])
+          .map((a, i) => `${i + 1}. ${a.loai} - ${a.donVi} - ${a.thoiGian} - ${a.ten}`)
+          .join('\n');
+        const dongGopStr = (sub.dongGopList || [])
+          .map((g, i) => `${i + 1}. ${g.hoatDong} | ${g.thoiGian} | ${g.noiDung}`)
+          .join('\n');
+        chiTiet = {
+          'Thời gian gửi': sub.thoiGianGui,
+          'MSSV': m.mssv,
+          'Họ và tên': m.hoTen,
+          'Chi bộ Sinh hoạt nơi cư trú': sub.chiBoCuTru,
+          'Nơi ở hiện nay': sub.noiOHienNay,
+          'KQ Học tập HK1': sub.kqHocTapHK1,
+          'KQ Rèn luyện HK1': sub.kqRenLuyenHK1,
+          'KQ Học tập HK2': sub.kqHocTapHK2,
+          'KQ Rèn luyện HK2': sub.kqRenLuyenHK2,
+          'Thành tích đạt được': thanhTichStr,
+          'Đóng góp cho Chi bộ': dongGopStr,
+          'Tự xếp loại mức HTNV năm 2026': sub.tuXepLoai,
+          'Đề xuất, ý kiến': sub.deXuat
+        };
+        submissionsList.push(chiTiet);
+      }
+      const docMatch = docLogsSorted.find(l => l.mssv === m.mssv);
+      return Object.assign({}, m, {
+        daKeKhai: Boolean(sub),
+        thoiGianGui: sub ? sub.thoiGianGui : '',
+        tuXepLoai: sub ? sub.tuXepLoai : '',
+        daTaoHoSo: Boolean(docMatch),
+        thoiGianTaoHoSo: docMatch ? docMatch.thoiGian : '',
+        chiTiet
+      });
+    });
+
+    const submittedCount = members.filter(x => x.daKeKhai).length;
+    return Object.assign(
+      {
+        success: true,
+        stats: { total: members.length, submitted: submittedCount, pending: members.length - submittedCount },
+        links: normalizeLinks(db.links),
+        members,
+        submissions: submissionsList,
+        docLogs: docLogsSorted
+      },
+      extra || {}
+    );
+  }
+
+  function localHandle(body, firebaseStatus) {
+    const db = getLocalDb();
+    const extra = firebaseStatus || { firebaseConnected: false, firebaseError: '' };
+
+    if (body.action === 'getLinks') {
+      return { success: true, links: db.links, firebaseConnected: Boolean(extra.firebaseConnected) };
+    }
+
+    if (body.action === 'lookup') {
+      const mssv = String(body.mssv || '').trim();
+      const cccd = String(body.cccd || '').trim();
+      const m = db.members.find(x => x.mssv === mssv && x.cccd === cccd);
+      if (!m) {
+        return { success: false, message: 'Không tìm thấy Đảng viên khớp với MSSV và CCCD đã nhập. Vui lòng kiểm tra lại.' };
+      }
+      return {
+        success: true,
+        existing: db.submissions[m.mssv] || null,
+        member: Object.assign({}, m, { validNgayVaoDang: true, du6Thang: isDu6Thang(m.ngayVaoDang) })
+      };
+    }
+
+    if (body.action === 'submit') {
+      const p = body.payload || {};
+      const m = db.members.find(x => x.mssv === p.mssv);
+      if (!m) return { success: false, message: 'Không tìm thấy Đảng viên.' };
+      const updated = Boolean(db.submissions[m.mssv]);
+      db.submissions[m.mssv] = buildSubmissionObj(p, m);
+      saveLocalDb(db);
+      return {
+        success: true,
+        updated,
+        message: updated ? 'Cập nhật thông tin kê khai thành công!' : 'Gửi thông tin kê khai thành công!'
+      };
+    }
+
+    if (body.action === 'logDocExport') {
+      const p = body.payload || {};
+      if (!p.mssv) return { success: false, message: 'Thiếu MSSV.' };
+      db.docLogs = db.docLogs || [];
+      db.docLogs.unshift(buildDocLogEntry(p));
+      saveLocalDb(db);
+      return { success: true };
+    }
+
+    if (body.action === 'adminDashboard') {
+      if (body.password !== ADMIN_PASSWORD) {
+        return { success: false, message: 'Mật khẩu quản trị không đúng.' };
+      }
+      return buildDashboardResponse(db, extra);
+    }
+
+    if (body.action === 'adminSaveLinks') {
+      if (body.password !== ADMIN_PASSWORD) return { success: false, message: 'Mật khẩu quản trị không đúng.' };
+      db.links = normalizeLinks(Object.assign({}, db.links, body.links || {}));
+      saveLocalDb(db);
+      return {
+        success: true,
+        message: 'Đã lưu cấu hình đường link (chế độ dự phòng cục bộ)!',
+        links: db.links,
+        firebaseConnected: false,
+        firebaseError: extra.firebaseError || ''
+      };
+    }
+
+    if (body.action === 'adminImportMembers') {
+      if (body.password !== ADMIN_PASSWORD) return { success: false, message: 'Mật khẩu quản trị không đúng.' };
+      const rows = body.rows || [];
+      let added = 0;
+      let updated = 0;
+      rows.forEach(item => {
+        const mssv = String(item.mssv || item.MSSV || '').trim();
+        if (!mssv) return;
+        const idx = db.members.findIndex(x => x.mssv === mssv);
+        const obj = sanitizeMemberRow(item, db.members.length + 1, idx >= 0 ? db.members[idx] : null);
+        if (idx >= 0) { db.members[idx] = obj; updated++; }
+        else { db.members.push(obj); added++; }
+      });
+      saveLocalDb(db);
+      return {
+        success: true,
+        message: `Nhập dữ liệu cục bộ thành công: thêm ${added} đồng chí, cập nhật ${updated} đồng chí.`,
+        firebaseConnected: false,
+        firebaseError: extra.firebaseError || ''
+      };
+    }
+
+    return { success: false, message: 'Hành động không hợp lệ.' };
+  }
+
+  async function firebaseHandle(body) {
+    const fs = await getFirestoreDb();
+    if (!fs) return null;
+
+    if (body.action === 'getLinks') {
+      const portalSnap = await withTimeout(
+        fs.collection('settings').doc('portal').get(),
+        10000,
+        'Quá thời gian đọc cấu hình đường link từ Firestore.'
+      );
+      const data = portalSnap.exists ? portalSnap.data() : {};
+      const storedLinks = data && data.links && typeof data.links === 'object' ? data.links : data;
+      const links = normalizeLinks(storedLinks);
+      const localDb = getLocalDb();
+      localDb.links = links;
+      saveLocalDb(localDb);
+      return { success: true, links, firebaseConnected: true };
+    }
+
+    if (body.action === 'lookup') {
+      const mssv = String(body.mssv || '').trim();
+      const cccd = String(body.cccd || '').trim();
+      if (!mssv || !cccd) {
+        return { success: false, message: 'Vui lòng nhập đầy đủ MSSV và CCCD.' };
+      }
+      const safeId = docSafeId(mssv);
+      const [memberDoc, subDoc] = await withTimeout(
+        Promise.all([
+          fs.collection('members').doc(safeId).get(),
+          fs.collection('submissions').doc(safeId).get()
+        ]),
+        10000,
+        'Quá thời gian tra cứu dữ liệu Đảng viên từ Firestore.'
+      );
+      if (!memberDoc.exists) {
+        return { success: false, message: 'Không tìm thấy Đảng viên khớp với MSSV và CCCD đã nhập. Vui lòng kiểm tra lại.' };
+      }
+      const m = memberDoc.data();
+      if (String(m.cccd || '').trim() !== cccd) {
+        return { success: false, message: 'Không tìm thấy Đảng viên khớp với MSSV và CCCD đã nhập. Vui lòng kiểm tra lại.' };
+      }
+      const existing = subDoc.exists ? subDoc.data() : null;
+      return {
+        success: true,
+        existing,
+        member: Object.assign({}, m, { validNgayVaoDang: true, du6Thang: isDu6Thang(m.ngayVaoDang) })
+      };
+    }
+
+    if (body.action === 'submit') {
+      const p = body.payload || {};
+      const mssv = String(p.mssv || '').trim();
+      if (!mssv) return { success: false, message: 'Thiếu MSSV.' };
+      const safeId = docSafeId(mssv);
+      const [memberDoc, subDoc] = await withTimeout(
+        Promise.all([
+          fs.collection('members').doc(safeId).get(),
+          fs.collection('submissions').doc(safeId).get()
+        ]),
+        10000,
+        'Quá thời gian kiểm tra thông tin Đảng viên trên Firestore.'
+      );
+      if (!memberDoc.exists) {
+        return { success: false, message: 'Không tìm thấy Đảng viên.' };
+      }
+      const m = memberDoc.data();
+      const updated = subDoc.exists;
+      const subObj = buildSubmissionObj(p, m);
+      await withTimeout(
+        fs.collection('submissions').doc(safeId).set(subObj),
+        10000,
+        'Quá thời gian lưu dữ liệu kê khai lên Firestore.'
+      );
+
+      const localDb = getLocalDb();
+      localDb.submissions[m.mssv] = subObj;
+      saveLocalDb(localDb);
+
+      return {
+        success: true,
+        updated,
+        message: updated ? 'Cập nhật thông tin kê khai lên Firebase thành công!' : 'Gửi thông tin kê khai lên Firebase thành công!'
+      };
+    }
+
+    if (body.action === 'logDocExport') {
+      const p = body.payload || {};
+      if (!p.mssv) return { success: false, message: 'Thiếu MSSV.' };
+      const entry = buildDocLogEntry(p);
+      await withTimeout(
+        fs.collection('docLogs').add(entry),
+        10000,
+        'Quá thời gian ghi lịch sử tạo biểu mẫu lên Firestore.'
+      );
+
+      const localDb = getLocalDb();
+      localDb.docLogs = localDb.docLogs || [];
+      localDb.docLogs.unshift(entry);
+      saveLocalDb(localDb);
+      return { success: true };
+    }
+
+    if (body.action === 'adminDashboard') {
+      if (body.password !== ADMIN_PASSWORD) {
+        return { success: false, message: 'Mật khẩu quản trị không đúng.' };
+      }
+      const [portalSnap, membersSnap, subsSnap, logsSnap] = await withTimeout(
+        Promise.all([
+          fs.collection('settings').doc('portal').get(),
+          fs.collection('members').get(),
+          fs.collection('submissions').get(),
+          fs.collection('docLogs').get()
+        ]),
+        15000,
+        'Quá thời gian tải bảng điều khiển từ Firestore.'
+      );
+
+      const portalData = portalSnap.exists ? portalSnap.data() : {};
+      const storedLinks = portalData && portalData.links && typeof portalData.links === 'object' ? portalData.links : portalData;
+      const links = normalizeLinks(storedLinks);
+
+      const members = [];
+      membersSnap.forEach(doc => {
+        const d = doc.data();
+        if (d && d.mssv) members.push(d);
+      });
+
+      const submissions = {};
+      subsSnap.forEach(doc => {
+        const d = doc.data();
+        const key = (d && d.mssv) || doc.id;
+        submissions[key] = d;
+      });
+
+      const docLogs = [];
+      logsSnap.forEach(doc => {
+        const d = doc.data();
+        if (d) docLogs.push(d);
+      });
+
+      const snapshotDb = { links, members, submissions, docLogs };
+      saveLocalDb(snapshotDb);
+
+      return buildDashboardResponse(snapshotDb, {
+        firebaseConnected: true,
+        firebaseError: ''
+      });
+    }
+
+    if (body.action === 'adminSaveLinks') {
+      if (body.password !== ADMIN_PASSWORD) return { success: false, message: 'Mật khẩu quản trị không đúng.' };
+      const portalRef = fs.collection('settings').doc('portal');
+      const currentSnap = await withTimeout(portalRef.get(), 10000, 'Quá thời gian đọc cấu hình hiện tại trên Firestore.');
+      const curData = currentSnap.exists ? currentSnap.data() : {};
+      const curLinks = curData && curData.links && typeof curData.links === 'object' ? curData.links : curData;
+      const nextLinks = normalizeLinks(Object.assign({}, curLinks, body.links || {}));
+      await withTimeout(
+        portalRef.set({ links: nextLinks, updatedAt: nowVN() }, { merge: true }),
+        10000,
+        'Quá thời gian lưu cấu hình link lên Firestore.'
+      );
+
+      const localDb = getLocalDb();
+      localDb.links = nextLinks;
+      saveLocalDb(localDb);
+
+      return {
+        success: true,
+        message: 'Đã lưu cấu hình đường link lên Firebase thành công!',
+        links: nextLinks,
+        firebaseConnected: true
+      };
+    }
+
+    if (body.action === 'adminImportMembers') {
+      if (body.password !== ADMIN_PASSWORD) return { success: false, message: 'Mật khẩu quản trị không đúng.' };
+      const rows = Array.isArray(body.rows) ? body.rows : [];
+      const existingSnap = await withTimeout(
+        fs.collection('members').get(),
+        15000,
+        'Quá thời gian đọc danh sách Đảng viên hiện có trên Firestore.'
+      );
+      const existingMap = {};
+      existingSnap.forEach(doc => {
+        const d = doc.data();
+        if (d && d.mssv) existingMap[doc.mssv] = d;
+      });
+
+      const deduped = new Map();
+      rows.forEach(item => {
+        const mssv = String(item.mssv || item.MSSV || '').trim();
+        if (!mssv) return;
+        deduped.set(mssv, item);
+      });
+
+      let added = 0;
+      let updated = 0;
+      let nextStt = Object.keys(existingMap).length + 1;
+      const writes = [];
+
+      deduped.forEach((item, mssv) => {
+        const prev = existingMap[mssv] || null;
+        const fallbackStt = prev && prev.stt ? prev.stt : nextStt;
+        const obj = sanitizeMemberRow(item, fallbackStt, prev);
+        if (prev) {
+          updated++;
+        } else {
+          added++;
+          nextStt++;
+        }
+        writes.push({ id: docSafeId(mssv), data: obj });
+      });
+
+      const CHUNK_SIZE = 400;
+      for (let i = 0; i < writes.length; i += CHUNK_SIZE) {
+        const chunk = writes.slice(i, i + CHUNK_SIZE);
+        const batch = fs.batch();
+        chunk.forEach(w => {
+          batch.set(fs.collection('members').doc(w.id), w.data, { merge: true });
+        });
+        await withTimeout(batch.commit(), 20000, 'Quá thời gian ghi dữ liệu Đảng viên lên Firestore.');
+      }
+
+      const localDb = getLocalDb();
+      writes.forEach(w => {
+        const idx = localDb.members.findIndex(x => x.mssv === w.data.mssv);
+        if (idx >= 0) localDb.members[idx] = w.data;
+        else localDb.members.push(w.data);
+      });
+      saveLocalDb(localDb);
+
+      return {
+        success: true,
+        message: `Nhập dữ liệu lên Firebase thành công: thêm ${added} đồng chí, cập nhật ${updated} đồng chí.`,
+        firebaseConnected: true
+      };
+    }
+
+    return { success: false, message: 'Hành động không hợp lệ.' };
+  }
+
+  async function handle(body) {
+    if (!body || typeof body !== 'object') {
+      return { success: false, message: 'Yêu cầu không hợp lệ.' };
+    }
+
+    if (body.action === 'adminDashboard' || body.action === 'adminSaveLinks' || body.action === 'adminImportMembers') {
+      if (body.password !== ADMIN_PASSWORD) {
+        return { success: false, message: 'Mật khẩu quản trị không đúng.' };
+      }
+    }
+
+    if (!isFirebaseEnabled()) {
+      return localHandle(body, {
+        firebaseConnected: false,
+        firebaseError: 'Đang tắt đồng bộ Firebase (USE_FIREBASE: false).'
+      });
+    }
+
+    try {
+      const result = await firebaseHandle(body);
+      if (result) return result;
+    } catch (err) {
+      const errMsg = formatFirebaseError(err);
+      console.warn('[Firebase Fallback]', errMsg);
+      return localHandle(body, {
+        firebaseConnected: false,
+        firebaseError: errMsg
+      });
+    }
+
+    return localHandle(body, { firebaseConnected: false, firebaseError: '' });
+  }
+
+  return { handle };
+})();
