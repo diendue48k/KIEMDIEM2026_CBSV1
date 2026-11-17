@@ -186,7 +186,10 @@ const MOCK_API = (function () {
         if (!window.firebase.apps || window.firebase.apps.length === 0) {
           window.firebase.initializeApp(APP_CONFIG.FIREBASE_CONFIG);
         }
-        cachedFirestore = window.firebase.firestore();
+        const dbId = (APP_CONFIG.FIREBASE_CONFIG && APP_CONFIG.FIREBASE_CONFIG.databaseId)
+          ? APP_CONFIG.FIREBASE_CONFIG.databaseId
+          : undefined;
+        cachedFirestore = dbId ? window.firebase.app().firestore(dbId) : window.firebase.firestore();
         return cachedFirestore;
       })().catch(err => {
         firestoreInitPromise = null;

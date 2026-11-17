@@ -10,6 +10,7 @@ const APP_CONFIG = {
     apiKey: "AIzaSyCeTlE3XaxqIXj9AxPa1HROSdpbdlNmGCw",
     authDomain: "cbsv-f0558.firebaseapp.com",
     projectId: "cbsv-f0558",
+    databaseId: "default",
     storageBucket: "cbsv-f0558.firebasestorage.app",
     messagingSenderId: "872631800120",
     appId: "1:872631800120:web:6cef03c0a7ce66d78631cd",
