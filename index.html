@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hướng Dẫn Đánh Giá, Kiểm Điểm Đảng Viên Năm 2026 - Chi Bộ Sinh Viên 1</title>
+  <title>Hệ Thống Hỗ Trợ Kiểm Điểm, Đánh Giá Và Xếp Loại Đảng Viên Năm 2026 - Chi Bộ Sinh Viên 1</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -80,6 +80,7 @@
       border-radius: 50%;
       margin-bottom: 12px;
       filter: drop-shadow(0 4px 10px rgba(158, 27, 30, 0.16));
+      animation: logoAura 3.4s ease-in-out infinite;
     }
 
     .org-pill {
@@ -98,23 +99,25 @@
     }
 
     .hero-header h1 {
-      font-size: 1.9rem;
+      font-size: 1.85rem;
       font-weight: 800;
       color: var(--crimson);
       text-transform: uppercase;
       line-height: 1.25;
       letter-spacing: -0.01em;
-      max-width: 680px;
+      max-width: 780px;
     }
 
     .hero-underline {
       width: 280px;
       max-width: 80%;
       height: 4px;
-      background-color: var(--gold-bright);
+      background: linear-gradient(90deg, var(--gold) 0%, var(--gold-bright) 35%, #fef08a 50%, var(--gold-bright) 65%, var(--gold) 100%);
+      background-size: 200% 100%;
       border-radius: 999px;
       margin-top: 10px;
       margin-bottom: 12px;
+      animation: goldShimmer 3.2s linear infinite;
     }
 
     .hero-header p {
@@ -129,6 +132,12 @@
       border-radius: var(--radius-lg);
       box-shadow: 0 6px 24px -6px rgba(31, 26, 24, 0.07);
       border: 1px solid var(--border);
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+
+    .section-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 14px 32px -8px rgba(158, 27, 30, 0.12);
     }
 
     @media (max-width: 640px) {
@@ -185,6 +194,13 @@
       background: linear-gradient(135deg, #fffdf9 0%, #fff7ed 100%);
       border: 1.5px solid #fde68a;
       border-radius: var(--radius-md);
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+
+    .cta-box:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 24px -6px rgba(245, 158, 11, 0.24);
+      border-color: var(--gold);
     }
 
     @media (max-width: 640px) {
@@ -251,6 +267,12 @@
       flex-direction: column;
       justify-content: space-between;
       gap: 14px;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+
+    .action-option-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 26px -8px rgba(31, 26, 24, 0.14);
     }
 
     .action-option-card.primary-option {
@@ -329,6 +351,25 @@
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
+      animation: iconPulse 2.4s ease-in-out infinite;
+    }
+
+    .countdown-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      border-radius: 999px;
+      background: var(--crimson);
+      color: var(--gold-bright);
+      font-size: 0.8rem;
+      font-weight: 800;
+      white-space: nowrap;
+      box-shadow: 0 3px 10px rgba(158, 27, 30, 0.2);
+    }
+    .countdown-pill.expired {
+      background: #6b7280;
+      color: #ffffff;
     }
 
     .btn {
@@ -343,9 +384,13 @@
       border-radius: var(--radius-sm);
       text-decoration: none;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.22s ease;
       white-space: nowrap;
+      position: relative;
+      overflow: hidden;
     }
+
+    .btn .icon-svg { transition: transform 0.22s ease; }
 
     .btn-primary {
       background: linear-gradient(135deg, var(--crimson) 0%, var(--crimson-dark) 100%);
@@ -353,10 +398,28 @@
       box-shadow: 0 4px 12px rgba(158, 27, 30, 0.24);
     }
 
-    .btn-primary:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 6px 16px rgba(158, 27, 30, 0.34);
+    .btn-primary::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -120%;
+      width: 60%;
+      height: 100%;
+      background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.28), transparent);
+      transform: skewX(-20deg);
+      transition: left 0.55s ease;
+      pointer-events: none;
     }
+
+    .btn-primary:hover::after { left: 150%; }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(158, 27, 30, 0.34);
+    }
+
+    .cta-box .btn-primary:hover .icon-svg { transform: translateX(4px); }
+    .btn:hover .icon-svg { transform: scale(1.06); }
 
     .btn-download {
       background-color: #fef2f2;
@@ -419,8 +482,9 @@
       color: var(--text-secondary);
     }
 
+    .forms-table tbody tr { transition: background-color 0.2s ease; }
     .forms-table tbody tr:last-child td { border-bottom: none; }
-    .forms-table tbody tr:hover { background-color: #fcfaf8; }
+    .forms-table tbody tr:hover { background-color: #fffaf5; }
 
     .form-name {
       font-size: 0.94rem;
@@ -454,6 +518,54 @@
       font-size: 0.8rem;
       color: var(--text-muted);
     }
+
+    /* Hiệu ứng xuất hiện & chuyển động */
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes logoAura {
+      0%, 100% {
+        transform: scale(1);
+        filter: drop-shadow(0 4px 12px rgba(158, 27, 30, 0.2));
+      }
+      50% {
+        transform: scale(1.04);
+        filter: drop-shadow(0 8px 20px rgba(245, 158, 11, 0.35));
+      }
+    }
+
+    @keyframes goldShimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    @keyframes iconPulse {
+      0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(158, 27, 30, 0.35);
+      }
+      50% {
+        transform: scale(1.06);
+        box-shadow: 0 0 0 8px rgba(158, 27, 30, 0);
+      }
+    }
+
+    .container > * {
+      animation: fadeSlideUp 0.65s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    .container > *:nth-child(2) { animation-delay: 0.08s; }
+    .container > *:nth-child(3) { animation-delay: 0.18s; }
+    .container > *:nth-child(4) { animation-delay: 0.28s; }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
   </style>
 </head>
 <body>
@@ -462,7 +574,7 @@
     <header class="hero-header">
       <img src="logo.png" alt="Logo Chi bộ Sinh viên" class="hero-logo">
       <div class="org-pill">Chi Bộ Sinh Viên 1</div>
-      <h1>Hệ Thống Đánh Giá, Xếp Loại<br>Đảng Viên Năm 2026</h1>
+      <h1>Hệ Thống Hỗ Trợ Kiểm Điểm,<br>Đánh Giá Và Xếp Loại Đảng Viên Năm 2026</h1>
       <div class="hero-underline"></div>
       <p>Đồng chí thực hiện đầy đủ 2 bước bên dưới đúng thời gian quy định để phục vụ công tác kiểm điểm, đánh giá xếp loại cuối năm.</p>
     </header>
@@ -483,6 +595,18 @@
           <span>Thực hiện kê khai ngay</span>
           <svg class="icon-svg" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
         </a>
+      </div>
+
+      <div class="deadline-banner" style="margin-top: 16px;">
+        <div class="deadline-icon-box">
+          <svg class="icon-svg" style="width: 22px; height: 22px;" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <div class="deadline-text" style="flex: 1; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+          <div>
+            <strong>HẠN CUỐI KÊ KHAI:</strong> Đồng chí hoàn thành kê khai thông tin trực tuyến trước <strong>20h00 - Thứ 5, ngày 19/11/2026</strong>.
+          </div>
+          <span id="countdownKeKhai" class="countdown-pill">Đang tính thời gian...</span>
+        </div>
       </div>
     </div>
 
@@ -644,6 +768,31 @@
           .catch(() => {});
       }
     }
+
+    (function initCountdown() {
+      const el = document.getElementById('countdownKeKhai');
+      if (!el) return;
+      const deadlineMs = new Date('2026-11-19T20:00:00+07:00').getTime();
+      const pad = n => String(n).padStart(2, '0');
+      function update() {
+        const diff = deadlineMs - Date.now();
+        if (diff <= 0) {
+          el.textContent = 'Đã hết hạn kê khai trực tuyến';
+          el.classList.add('expired');
+          return;
+        }
+        const totalSec = Math.floor(diff / 1000);
+        const days = Math.floor(totalSec / 86400);
+        const hours = Math.floor((totalSec % 86400) / 3600);
+        const mins = Math.floor((totalSec % 3600) / 60);
+        const secs = totalSec % 60;
+        el.textContent = days > 0
+          ? `Còn ${days} ngày ${pad(hours)}g ${pad(mins)}p ${pad(secs)}s`
+          : `Còn ${pad(hours)}g ${pad(mins)}p ${pad(secs)}s`;
+      }
+      update();
+      setInterval(update, 1000);
+    })();
   </script>
 </body>
 </html>
