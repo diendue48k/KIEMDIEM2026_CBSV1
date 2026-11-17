@@ -8,29 +8,28 @@
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <style>
     :root {
-      --crimson: #9e1b1e;
-      --crimson-dark: #741013;
-      --crimson-deep: #480608;
-      --gold: #d97706;
-      --gold-bright: #fbbf24;
-      --gold-soft: #fef3c7;
-      --gold-gradient: linear-gradient(135deg, #fef08a 0%, #f59e0b 50%, #d97706 100%);
-      --bg-cream: #faf5ed;
-      --card-bg: #ffffff;
-      --text-main: #1c1514;
-      --text-muted: #5e524d;
-      --emerald: #047857;
-      --emerald-bg: #ecfdf5;
-      --blue: #1d4ed8;
-      --blue-bg: #eff6ff;
+      --crimson-900: #2a0305;
+      --crimson-800: #420609;
+      --crimson-700: #620a0f;
+      --crimson-600: #881117;
+      --crimson-500: #a8181f;
+      --gold-300: #fde047;
+      --gold-400: #facc15;
+      --gold-500: #eab308;
+      --gold-600: #ca8a04;
+      --emerald-600: #059669;
+      --emerald-700: #047857;
+      --blue-600: #2563eb;
+      --text-dark: #181111;
+      --text-muted: #574b48;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: #1e1716;
-      color: var(--text-main);
+      background: #140d0d;
+      color: #ffffff;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -38,22 +37,21 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* TOP BAR THAO TÁC */
+    /* TOP ACTION BAR */
     .top-actions {
       position: sticky;
       top: 0;
       z-index: 100;
       width: 100%;
-      background: rgba(28, 20, 19, 0.95);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(251, 191, 36, 0.3);
-      padding: 12px 24px;
+      background: rgba(26, 13, 14, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(250, 204, 21, 0.25);
+      padding: 12px 28px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
       gap: 12px;
-      color: #fff;
     }
 
     .top-brand {
@@ -61,7 +59,6 @@
       align-items: center;
       gap: 12px;
     }
-
     .top-brand img {
       width: 36px;
       height: 36px;
@@ -69,14 +66,12 @@
       background: #fff;
       padding: 2px;
     }
-
     .top-brand h1 {
       font-size: 0.95rem;
       font-weight: 800;
-      color: var(--gold-bright);
+      color: var(--gold-400);
       margin: 0;
     }
-
     .top-brand p {
       font-size: 0.75rem;
       color: #cbd5e1;
@@ -102,19 +97,17 @@
       text-decoration: none;
       transition: all 0.2s;
     }
-
     .btn-act.btn-primary {
-      background: linear-gradient(135deg, #f59e0b, #d97706);
-      color: #3e1200;
+      background: linear-gradient(135deg, #facc15 0%, #eab308 50%, #ca8a04 100%);
+      color: #3b1000;
       border: none;
       font-weight: 800;
-      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+      box-shadow: 0 4px 14px rgba(234, 179, 8, 0.35);
     }
     .btn-act.btn-primary:hover {
       filter: brightness(1.1);
       transform: translateY(-1px);
     }
-
     .btn-act.btn-secondary {
       background: rgba(255, 255, 255, 0.1);
       color: #ffffff;
@@ -129,228 +122,286 @@
       padding: 0;
       margin: 0;
     }
-    body.clean-export .top-actions {
-      display: none !important;
-    }
-    body.clean-export .poster-wrapper {
-      padding: 0;
-      margin: 0;
-    }
-    body.clean-export .poster-scale-box {
-      transform: none !important;
-      margin: 0 !important;
-    }
+    body.clean-export .top-actions { display: none !important; }
+    body.clean-export .poster-wrapper { padding: 0; margin: 0; }
+    body.clean-export .poster-scale-box { transform: none !important; margin: 0 !important; }
 
     .poster-scale-box {
       transform-origin: top center;
     }
 
-    /* CANVAS 1:1 (1200 x 1200 px) */
+    .poster-wrapper {
+      padding: 24px 16px 50px;
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
+
+    /* =========================================================
+       CANVAS 1:1 POSTER HIỆN ĐẠI & SINH ĐỘNG (1200 x 1200 px)
+       ========================================================= */
     .poster-1x1 {
       width: 1200px;
       height: 1200px;
-      background: var(--bg-cream);
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+      background:
+        radial-gradient(circle at 15% 15%, rgba(250, 204, 21, 0.15) 0%, transparent 40%),
+        radial-gradient(circle at 85% 80%, rgba(234, 88, 12, 0.14) 0%, transparent 45%),
+        linear-gradient(145deg, var(--crimson-900) 0%, var(--crimson-800) 30%, var(--crimson-700) 65%, var(--crimson-600) 100%);
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7);
       position: relative;
       overflow: hidden;
       display: flex;
       flex-direction: column;
       flex-shrink: 0;
+      color: var(--text-dark);
     }
 
-    /* DẢI RUY BĂNG CỜ */
-    .ribbon-top {
-      height: 8px;
-      width: 100%;
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      flex-shrink: 0;
+    /* Họa tiết lưới trang trí hình học chìm mờ */
+    .poster-1x1::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: 
+        radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+        radial-gradient(rgba(250, 204, 21, 0.05) 1px, transparent 1px);
+      background-size: 28px 28px;
+      background-position: 0 0, 14px 14px;
+      pointer-events: none;
+      z-index: 1;
     }
-    .ribbon-top span:nth-child(1),
-    .ribbon-top span:nth-child(3) { background: var(--crimson-dark); }
-    .ribbon-top span:nth-child(2) { background: var(--gold-gradient); }
+
+    /* DẢI RUY BĂNG ÁNH VÀNG TRÊN */
+    .ribbon-top {
+      height: 7px;
+      width: 100%;
+      background: linear-gradient(90deg, #9e1b1e 0%, #facc15 35%, #fef08a 50%, #facc15 65%, #9e1b1e 100%);
+      flex-shrink: 0;
+      z-index: 2;
+    }
 
     /* HEADER POSTER */
     .poster-header {
-      background:
-        radial-gradient(circle at 50% -20%, rgba(251, 191, 36, 0.22) 0%, transparent 65%),
-        linear-gradient(135deg, var(--crimson-deep) 0%, var(--crimson-dark) 45%, var(--crimson) 100%);
-      color: #ffffff;
-      padding: 24px 36px 20px;
+      padding: 24px 44px 18px;
       position: relative;
-      border-bottom: 3px solid var(--gold-bright);
+      z-index: 2;
       flex-shrink: 0;
     }
 
-    .header-org {
+    .header-topline {
       display: flex;
       align-items: center;
       justify-content: space-between;
       margin-bottom: 14px;
     }
 
-    .org-left {
+    .org-badge {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 14px;
     }
 
-    .org-logo {
-      width: 64px;
-      height: 64px;
+    .org-logo-wrap {
+      position: relative;
+    }
+    .org-logo-wrap img {
+      width: 60px;
+      height: 60px;
       border-radius: 50%;
       background: #ffffff;
-      padding: 4px;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
-      border: 2px solid var(--gold-bright);
+      padding: 3px;
+      box-shadow: 0 0 20px rgba(250, 204, 21, 0.35);
+      border: 2px solid var(--gold-400);
+      display: block;
     }
 
-    .org-titles h2 {
-      font-size: 0.95rem;
+    .org-meta h2 {
+      font-size: 0.88rem;
       font-weight: 700;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      color: rgba(255, 255, 255, 0.9);
-      margin-bottom: 2px;
-    }
-
-    .org-titles h3 {
-      font-size: 1.18rem;
-      font-weight: 900;
       letter-spacing: 0.06em;
       text-transform: uppercase;
-      color: var(--gold-bright);
+      color: rgba(255, 255, 255, 0.88);
+      margin-bottom: 2px;
     }
-
-    .mandatory-badge {
-      background: rgba(251, 191, 36, 0.15);
-      border: 1.5px solid var(--gold-bright);
-      color: #fef08a;
-      padding: 6px 14px;
-      border-radius: 999px;
-      font-size: 0.8rem;
-      font-weight: 800;
+    .org-meta h3 {
+      font-size: 1.25rem;
+      font-weight: 900;
       letter-spacing: 0.04em;
       text-transform: uppercase;
-      display: flex;
-      align-items: center;
-      gap: 6px;
+      color: var(--gold-300);
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
     }
 
+    .badge-mandatory {
+      background: linear-gradient(135deg, rgba(239, 68, 68, 0.25) 0%, rgba(220, 38, 38, 0.4) 100%);
+      border: 1.5px solid rgba(254, 202, 202, 0.4);
+      color: #fee2e2;
+      padding: 6px 16px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .badge-mandatory .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #ef4444;
+      box-shadow: 0 0 10px #ef4444;
+    }
+
+    /* TIÊU ĐỀ CHÍNH */
     .header-main-title {
       text-align: center;
-      padding: 6px 0 2px;
+      padding: 4px 0 0;
     }
 
     .title-pre {
       font-size: 1.35rem;
       font-weight: 800;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
       color: #ffffff;
-      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
       margin-bottom: 4px;
     }
 
     .title-core {
-      font-size: 2.1rem;
+      font-size: 2.15rem;
       font-weight: 900;
       text-transform: uppercase;
-      letter-spacing: 0.02em;
-      color: #fde047;
+      letter-spacing: 0.015em;
       line-height: 1.25;
-      text-shadow: 0 3px 12px rgba(0, 0, 0, 0.5), 0 1px 2px rgba(0, 0, 0, 0.3);
+      background: linear-gradient(180deg, #ffffff 0%, #fef08a 35%, #facc15 70%, #eab308 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 3px 12px rgba(0, 0, 0, 0.6));
     }
 
-    /* BODY POSTER (CHỨA 3 BƯỚC + LƯU Ý) */
+    /* ================= BODY POSTER ================= */
     .poster-body {
-      padding: 24px 36px 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      flex: 1;
-      justify-content: space-between;
-    }
-
-    /* DANH SÁCH 3 BƯỚC THỰC HIỆN */
-    .steps-container {
+      padding: 10px 44px 16px;
       display: flex;
       flex-direction: column;
       gap: 14px;
+      flex: 1;
+      justify-content: space-between;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* TIMELINE 3 BƯỚC (MODERN CARDS) */
+    .steps-container {
+      display: flex;
+      flex-direction: column;
+      gap: 13px;
     }
 
     .step-card {
-      background: var(--card-bg);
-      border-radius: 14px;
-      border: 1.5px solid #ebdcd0;
-      box-shadow: 0 6px 20px rgba(76, 9, 11, 0.06);
+      background: rgba(255, 255, 255, 0.98);
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      box-shadow:
+        0 12px 30px -5px rgba(0, 0, 0, 0.35),
+        0 4px 10px rgba(0, 0, 0, 0.15);
       display: grid;
-      grid-template-columns: 100px 1fr 310px;
+      grid-template-columns: 110px 1fr 305px;
       align-items: center;
       position: relative;
       overflow: hidden;
       transition: all 0.2s;
     }
 
+    /* Thanh chỉ thị màu bên trái */
     .step-card::before {
       content: '';
       position: absolute;
       left: 0;
       top: 0;
       bottom: 0;
-      width: 6px;
+      width: 7px;
     }
 
-    /* MÀU ĐẶC TRƯNG TỪNG BƯỚC */
-    .step-card.step-1::before { background: var(--crimson); }
-    .step-card.step-2::before { background: var(--gold); }
-    .step-card.step-3::before { background: var(--emerald); }
+    .step-card.step-1::before { background: linear-gradient(180deg, #dc2626, #991b1b); }
+    .step-card.step-2::before { background: linear-gradient(180deg, #f59e0b, #d97706); }
+    .step-card.step-3::before { background: linear-gradient(180deg, #10b981, #047857); }
 
-    /* CỘT 1: SỐ THỨ TỰ BƯỚC */
+    /* CỘT SỐ THỨ TỰ BƯỚC */
     .step-col-num {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 16px 12px;
+      padding: 16px 10px;
       text-align: center;
-      border-right: 1px solid #f0e6dd;
-      background: #faf7f4;
+      border-right: 1.5px solid #f1e7e2;
+      background: #faf6f3;
       height: 100%;
     }
 
-    .step-icon {
-      font-size: 1.5rem;
-      margin-bottom: 4px;
-    }
-
-    .step-badge {
+    .step-num-pill {
       font-size: 0.72rem;
       font-weight: 900;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.08em;
       padding: 3px 8px;
       border-radius: 6px;
+      margin-bottom: 6px;
     }
+    .step-1 .step-num-pill { background: #fee2e2; color: #991b1b; }
+    .step-2 .step-num-pill { background: #fef3c7; color: #92400e; }
+    .step-3 .step-num-pill { background: #d1fae5; color: #065f46; }
 
-    .step-1 .step-badge { background: #fee2e2; color: var(--crimson-dark); }
-    .step-2 .step-badge { background: #fef3c7; color: #92400e; }
-    .step-3 .step-badge { background: #d1fae5; color: #065f46; }
+    .step-circle-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.45rem;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    }
+    .step-1 .step-circle-icon { background: #fff1f2; border: 1.5px solid #fecdd3; }
+    .step-2 .step-circle-icon { background: #fffbeb; border: 1.5px solid #fde68a; }
+    .step-3 .step-circle-icon { background: #ecfdf5; border: 1.5px solid #a7f3d0; }
 
-    /* CỘT 2: NỘI DUNG YÊU CẦU */
+    /* CỘT NỘI DUNG */
     .step-col-content {
-      padding: 14px 20px;
+      padding: 14px 22px;
     }
 
     .step-col-content h4 {
       font-size: 1.15rem;
-      font-weight: 800;
-      color: var(--text-main);
-      margin-bottom: 6px;
+      font-weight: 900;
+      color: #1c1514;
+      margin-bottom: 7px;
+      line-height: 1.35;
       display: flex;
       align-items: center;
       gap: 8px;
     }
+
+    .step-tag-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 6px;
+    }
+    .tag-pill {
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 5px;
+      letter-spacing: 0.02em;
+    }
+    .tag-pill.tag-doc { background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; }
+    .tag-pill.tag-req { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
+    .tag-pill.tag-note { background: #fffbeb; color: #854d0e; border: 1px solid #fef08a; }
 
     .step-col-content ul {
       list-style: none;
@@ -368,213 +419,209 @@
     }
 
     .step-col-content li::before {
-      content: '•';
+      content: '▪';
       position: absolute;
       left: 0;
-      color: var(--crimson);
-      font-weight: bold;
+      color: var(--crimson-600);
+      font-size: 0.85rem;
     }
+    .step-col-content li strong { color: #181111; }
 
-    .step-col-content li strong {
-      color: var(--text-main);
-    }
-
-    /* CỘT 3: HẠN CHÓT (HIGHLIGHT RÕ RÀNG NHẤT) */
+    /* CỘT HẠN CHÓT (HIGHLIGHT THỜI GIAN) */
     .step-col-deadline {
       padding: 14px 18px;
       height: 100%;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      border-left: 1.5px dashed #f0e6dd;
-      background: #fffcf8;
+      border-left: 1.5px dashed #ebdcd0;
+      background: linear-gradient(135deg, #ffffff 0%, #fffbf8 100%);
+      position: relative;
     }
 
-    .dl-label {
-      font-size: 0.7rem;
+    .dl-header-pill {
+      font-size: 0.68rem;
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.06em;
-      color: var(--text-muted);
       margin-bottom: 4px;
       display: flex;
       align-items: center;
       gap: 5px;
+      color: #64748b;
     }
 
-    .dl-time {
-      font-size: 1.05rem;
+    .dl-big-time {
+      font-size: 1.08rem;
       font-weight: 900;
       line-height: 1.3;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
     }
+    .step-1 .dl-big-time { color: #b91c1c; }
+    .step-2 .dl-big-time { color: #b45309; }
+    .step-3 .dl-big-time { color: #047857; }
 
-    .step-1 .dl-time { color: var(--crimson); }
-    .step-2 .dl-time { color: var(--gold); }
-    .step-3 .dl-time { color: var(--emerald); }
-
-    .dl-action-note {
+    .dl-action-badge {
       font-size: 0.76rem;
-      font-weight: 700;
-      display: inline-block;
-      padding: 3px 8px;
-      border-radius: 4px;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      width: fit-content;
     }
+    .step-1 .dl-action-badge { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+    .step-2 .dl-action-badge { background: #fef3c7; color: #854d0e; border: 1px solid #fde68a; }
+    .step-3 .dl-action-badge { background: #d1fae5; color: #047857; border: 1px solid #a7f3d0; }
 
-    .step-1 .dl-action-note { background: #fee2e2; color: #991b1b; }
-    .step-2 .dl-action-note { background: #fef3c7; color: #854d0e; }
-    .step-3 .dl-action-note { background: #d1fae5; color: #047857; }
-
-    /* KHỐI 3 LƯU Ý ĐẶC BIỆT QUAN TRỌNG (DẠNG 3 CỘT) */
+    /* ================= 3 THẺ LƯU Ý PHÍA DƯỚI ================= */
     .notes-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 12px;
     }
 
-    .note-item {
-      background: #ffffff;
-      border-radius: 10px;
-      border: 1px solid #ebdcd0;
+    .note-card {
+      background: rgba(255, 255, 255, 0.94);
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
       padding: 12px 14px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+      position: relative;
     }
 
-    .note-header {
+    .note-head {
       font-size: 0.8rem;
-      font-weight: 800;
+      font-weight: 900;
       text-transform: uppercase;
-      color: var(--crimson-dark);
+      letter-spacing: 0.03em;
+      margin-bottom: 5px;
       display: flex;
       align-items: center;
       gap: 6px;
-      margin-bottom: 6px;
-      letter-spacing: 0.02em;
     }
+    .note-card:nth-child(1) .note-head { color: #b91c1c; }
+    .note-card:nth-child(2) .note-head { color: #b45309; }
+    .note-card:nth-child(3) .note-head { color: #047857; }
 
-    .note-desc {
+    .note-content {
       font-size: 0.82rem;
-      color: var(--text-muted);
+      color: #4b3f3b;
       line-height: 1.45;
     }
-    .note-desc strong { color: var(--text-main); }
+    .note-content strong { color: #181111; }
 
-    /* FOOTER POSTER: KÊNH TRUY CẬP + QR CODE */
+    /* ================= FOOTER POSTER ================= */
     .poster-footer {
-      background:
-        radial-gradient(circle at 80% 50%, rgba(251, 191, 36, 0.15) 0%, transparent 60%),
-        linear-gradient(135deg, var(--crimson-deep) 0%, var(--crimson-dark) 60%, var(--crimson) 100%);
-      color: #ffffff;
-      padding: 18px 36px;
-      border-top: 3px solid var(--gold-bright);
+      background: rgba(20, 5, 6, 0.75);
+      border-top: 1.5px solid rgba(250, 204, 21, 0.4);
+      backdrop-filter: blur(10px);
+      padding: 16px 44px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 24px;
+      gap: 20px;
       flex-shrink: 0;
+      color: #ffffff;
+      z-index: 2;
     }
 
     .footer-left {
       flex: 1;
     }
 
-    .footer-badge {
+    .footer-tagline {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      font-size: 0.76rem;
+      font-size: 0.75rem;
       font-weight: 800;
       letter-spacing: 0.06em;
       text-transform: uppercase;
-      color: #fef08a;
-      background: rgba(0, 0, 0, 0.3);
-      padding: 3px 10px;
-      border-radius: 4px;
+      color: var(--gold-300);
       margin-bottom: 6px;
     }
 
-    .footer-url-box {
-      background: rgba(255, 255, 255, 0.12);
-      border: 1.5px solid rgba(251, 191, 36, 0.5);
+    .footer-url-pill {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(250, 204, 21, 0.5);
       border-radius: 8px;
-      padding: 8px 14px;
+      padding: 7px 14px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 6px;
+      margin-bottom: 5px;
     }
 
-    .footer-url-text {
+    .footer-url-pill code {
       font-family: monospace;
-      font-size: 0.96rem;
+      font-size: 0.95rem;
       font-weight: 700;
       color: #ffffff;
       letter-spacing: 0.02em;
     }
 
-    .footer-url-hint {
+    .footer-url-pill span {
       font-size: 0.72rem;
-      font-weight: 700;
-      color: var(--gold-bright);
+      font-weight: 800;
+      color: var(--gold-400);
       text-transform: uppercase;
     }
 
-    .footer-support {
-      font-size: 0.76rem;
-      color: #f1e5dc;
+    .footer-contact {
+      font-size: 0.75rem;
+      color: #e2d7d2;
       line-height: 1.35;
     }
-    .footer-support strong { color: #ffffff; }
+    .footer-contact strong { color: #ffffff; }
 
-    /* QR CARD BÊN PHẢI */
-    .footer-qr-card {
+    /* THẺ QR CODE HIỆN ĐẠI */
+    .qr-modern-box {
       background: #ffffff;
-      border: 2.5px solid var(--gold-bright);
+      border: 2px solid var(--gold-400);
       border-radius: 12px;
       padding: 8px 10px 6px;
       text-align: center;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
       flex-shrink: 0;
     }
 
-    .footer-qr-card svg {
-      width: 106px;
-      height: 106px;
+    .qr-modern-box svg {
+      width: 102px;
+      height: 102px;
       display: block;
       margin: 0 auto;
     }
 
-    .footer-qr-card span {
+    .qr-modern-box span {
       display: block;
       margin-top: 3px;
-      font-size: 9.5px;
-      font-weight: 800;
-      color: var(--crimson-dark);
+      font-size: 9px;
+      font-weight: 900;
+      color: #881117;
       text-transform: uppercase;
-      letter-spacing: 0.02em;
+      letter-spacing: 0.04em;
     }
 
-    /* DẢI RUY BĂNG DƯỚI */
+    /* RUY BĂNG DƯỚI */
     .ribbon-bottom {
-      height: 6px;
+      height: 5px;
       width: 100%;
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
+      background: linear-gradient(90deg, #9e1b1e 0%, #facc15 50%, #9e1b1e 100%);
       flex-shrink: 0;
+      z-index: 2;
     }
-    .ribbon-bottom span:nth-child(1),
-    .ribbon-bottom span:nth-child(3) { background: var(--crimson-dark); }
-    .ribbon-bottom span:nth-child(2) { background: var(--gold-gradient); }
 
-    /* BẢN QUYỀN MẢNH DƯỚI CÙNG */
     .copyright-strip {
-      background: #2b0304;
-      color: #cfb9b2;
+      background: #140405;
+      color: #bfa9a2;
       font-size: 0.7rem;
       text-align: center;
-      padding: 4px 12px;
+      padding: 4px 14px;
       flex-shrink: 0;
       letter-spacing: 0.02em;
+      z-index: 2;
     }
 
     @media print {
@@ -593,7 +640,7 @@
       <img src="logo.png" alt="Logo">
       <div>
         <h1>POSTER YÊU CẦU THỰC HIỆN KIỂM ĐIỂM ĐẢNG VIÊN 2026</h1>
-        <p>Tỷ lệ vuông 1:1 chuẩn Zalo / Facebook / Tin nhắn nhóm • Chi bộ Sinh viên 1</p>
+        <p>Bản thiết kế hiện đại &amp; sinh động 1:1 chuẩn Zalo / Facebook / Tin nhắn nhóm • Chi bộ Sinh viên 1</p>
       </div>
     </div>
     <div class="action-group">
@@ -616,153 +663,168 @@
   <main class="poster-wrapper">
     <div class="poster-scale-box" id="posterScaleBox">
       <div id="posterCanvas" class="poster-1x1">
-      <!-- CỜ TRÊN -->
-      <div class="ribbon-top">
-        <span></span><span></span><span></span>
-      </div>
+        <!-- RUY BĂNG TRÊN -->
+        <div class="ribbon-top"></div>
 
-      <!-- HEADER POSTER -->
-      <div class="poster-header">
-        <div class="header-org">
-          <div class="org-left">
-            <img src="logo.png" alt="Logo" class="org-logo">
-            <div class="org-titles">
-              <h2>Đảng bộ Trường Đại học Kinh tế – ĐHĐN</h2>
-              <h3>Chi bộ Sinh viên 1</h3>
+        <!-- HEADER POSTER -->
+        <div class="poster-header">
+          <div class="header-topline">
+            <div class="org-badge">
+              <div class="org-logo-wrap">
+                <img src="logo.png" alt="Logo">
+              </div>
+              <div class="org-meta">
+                <h2>Đảng bộ Trường Đại học Kinh tế – ĐHĐN</h2>
+                <h3>Chi bộ Sinh viên 1</h3>
+              </div>
             </div>
-          </div>
-          <div class="mandatory-badge">
-            ⚠️ Bắt buộc với 100% Đảng viên
-          </div>
-        </div>
-
-        <div class="header-main-title">
-          <div class="title-pre">THÔNG BÁO THỰC HIỆN THỦ TỤC</div>
-          <h1 class="title-core">KIỂM ĐIỂM, ĐÁNH GIÁ, XẾP LOẠI ĐẢNG VIÊN NĂM 2026</h1>
-        </div>
-      </div>
-
-      <!-- NỘI DUNG 3 BƯỚC VÀ LƯU Ý -->
-      <div class="poster-body">
-        <div class="steps-container">
-
-          <!-- BƯỚC 1 -->
-          <div class="step-card step-1">
-            <div class="step-col-num">
-              <span class="step-icon">📝</span>
-              <span class="step-badge">BƯỚC 1</span>
-            </div>
-            <div class="step-col-content">
-              <h4>Kê khai thông tin trực tuyến</h4>
-              <ul>
-                <li>Truy cập hệ thống, tra cứu bằng <strong>MSSV + CCCD</strong>.</li>
-                <li>Rà soát chính xác <strong>Chi bộ nơi cư trú (Giấy 221)</strong> &amp; <strong>Nơi ở hiện nay</strong>.</li>
-                <li>Nhập điểm học tập &amp; rèn luyện năm 2025–2026 (Khóa 52K nhập số <strong>0</strong>).</li>
-                <li>Kê khai tối đa <strong>04 thành tích cao nhất</strong> + tối thiểu <strong>01 đóng góp</strong> cho Chi bộ.</li>
-              </ul>
-            </div>
-            <div class="step-col-deadline">
-              <div class="dl-label">⏰ Hạn chót Bước 1:</div>
-              <div class="dl-time">TRƯỚC 20H00<br>Thứ 5, 19/11/2026</div>
-              <span class="dl-action-note">Nộp dữ liệu trên hệ thống</span>
+            <div class="badge-mandatory">
+              <span class="dot"></span>
+              QUY ĐỊNH BẮT BUỘC • 100% ĐẢNG VIÊN
             </div>
           </div>
 
-          <!-- BƯỚC 2 -->
-          <div class="step-card step-2">
-            <div class="step-col-num">
-              <span class="step-icon">📋</span>
-              <span class="step-badge">BƯỚC 2</span>
-            </div>
-            <div class="step-col-content">
-              <h4>Chuẩn bị đầy đủ hồ sơ (02c + 6b + 6d)</h4>
-              <ul>
-                <li>Dữ liệu Bước 1 tự đổ sang <strong>Mẫu 02c</strong> &amp; <strong>Mẫu 6b</strong>; tự chấm điểm Phụ lục 04 (Biểu 32).</li>
-                <li>Bấm xuất tệp <strong>.ZIP</strong> (2 file Word), in ra bản giấy và <strong>ký tên đầy đủ</strong>.</li>
-                <li>Lấy <strong>Mẫu 6d điện tử</strong> trên <strong style="color: var(--blue);">dichvucong.dcs.vn</strong> (hoặc bản giấy xác nhận nơi cư trú 221).</li>
-                <li>Tập hợp trọn bộ <strong>03 loại giấy tờ</strong> sẵn sàng trước ngày nộp. <em>(ĐV &lt; 6 tháng không thực hiện đánh giá, xếp loại)</em>.</li>
-              </ul>
-            </div>
-            <div class="step-col-deadline">
-              <div class="dl-label">🖨️ Hoàn thành trước:</div>
-              <div class="dl-time">BUỔI NỘP HỒ SƠ<br>Thứ 7, 21/11/2026</div>
-              <span class="dl-action-note">Chuẩn bị đủ 3 loại giấy tờ</span>
-            </div>
-          </div>
-
-          <!-- BƯỚC 3 -->
-          <div class="step-card step-3">
-            <div class="step-col-num">
-              <span class="step-icon">🏛️</span>
-              <span class="step-badge">BƯỚC 3</span>
-            </div>
-            <div class="step-col-content">
-              <h4>Tham gia Hội nghị kiểm điểm, đánh giá xếp loại năm 2026 của Chi bộ và Nộp hồ sơ bản cứng</h4>
-              <ul>
-                <li>Có mặt đúng giờ tham dự <strong>Hội nghị kiểm điểm, đánh giá xếp loại</strong> của Chi bộ.</li>
-                <li>Nộp trực tiếp trọn bộ <strong>03 bản giấy</strong>: <strong>Bản kiểm điểm 02c + Biểu điểm 6b + Nhận xét 6d</strong>.</li>
-                <li>Chi bộ kiểm tra, đối soát thông tin kê khai và tiến hành quy trình đánh giá, xếp loại.</li>
-                <li>Hoàn tất nghĩa vụ đánh giá, xếp loại Đảng viên năm 2026 theo đúng quy định.</li>
-              </ul>
-            </div>
-            <div class="step-col-deadline">
-              <div class="dl-label">📌 Thời gian thực hiện:</div>
-              <div class="dl-time">SÁNG CHỦ NHẬT<br>22/11/2026</div>
-              <span class="dl-action-note">Tham dự &amp; nộp trực tiếp</span>
-            </div>
-          </div>
-
-        </div>
-
-        <!-- 3 LƯU Ý QUAN TRỌNG -->
-        <div class="notes-grid">
-          <div class="note-item">
-            <div class="note-header">🎓 Khóa 52K tân sinh viên</div>
-            <div class="note-desc">Nhập số <strong>0</strong> vào cả 4 ô kết quả học tập &amp; rèn luyện; chú ý rà soát đúng Chi bộ nơi cư trú theo Giấy 221.</div>
-          </div>
-          <div class="note-item">
-            <div class="note-header">⏳ Đảng viên &lt; 6 tháng</div>
-            <div class="note-desc">Kết nạp sau ngày <strong>21/05/2026</strong> thực hiện đầy đủ các bước kiểm điểm nhưng <strong>không thực hiện đánh giá, xếp loại</strong>.</div>
-          </div>
-          <div class="note-item">
-            <div class="note-header">📁 Hồ sơ nộp bản cứng</div>
-            <div class="note-desc">Bắt buộc nộp đủ <strong>03 loại giấy tờ</strong>: Bản kiểm điểm (02c) + Biểu điểm (6b) + Nhận xét nơi cư trú (6d).</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- FOOTER POSTER: KÊNH TRUY CẬP + QR CODE -->
-      <div class="poster-footer">
-        <div class="footer-left">
-          <span class="footer-badge">✦ ĐỊA CHỈ TRUY CẬP HỆ THỐNG TRỰC TUYẾN</span>
-          <div class="footer-url-box">
-            <span class="footer-url-text">https://diendue48k.github.io/KIEMDIEM2026_CBSV1/</span>
-            <span class="footer-url-hint">Quét mã hoặc mở link ↗</span>
-          </div>
-          <div class="footer-support">
-            Nội bộ Chi bộ Sinh viên 1 • Mọi vướng mắc về dữ liệu liên hệ ngay <strong>Chi ủy / Nhóm trưởng</strong> để được hỗ trợ kịp thời.
+          <div class="header-main-title">
+            <div class="title-pre">THÔNG BÁO THỰC HIỆN THỦ TỤC</div>
+            <h1 class="title-core">KIỂM ĐIỂM, ĐÁNH GIÁ, XẾP LOẠI ĐẢNG VIÊN NĂM 2026</h1>
           </div>
         </div>
 
-        <div class="footer-qr-card">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 37 37" shape-rendering="crispEdges">
-            <rect width="37" height="37" fill="#ffffff"/>
-            <path fill="#1c1514" d="M2,2h7v1h-7zM11,2h1v1h-1zM14,2h1v1h-1zM18,2h1v1h-1zM20,2h4v1h-4zM25,2h1v1h-1zM28,2h7v1h-7zM2,3h1v1h-1zM8,3h1v1h-1zM12,3h2v1h-2zM17,3h1v1h-1zM20,3h1v1h-1zM22,3h2v1h-2zM26,3h1v1h-1zM28,3h1v1h-1zM34,3h1v1h-1zM2,4h1v1h-1zM4,4h3v1h-3zM8,4h1v1h-1zM10,4h2v1h-2zM13,4h1v1h-1zM16,4h1v1h-1zM21,4h1v1h-1zM23,4h2v1h-2zM28,4h1v1h-1zM30,4h3v1h-3zM34,4h1v1h-1zM2,5h1v1h-1zM4,5h3v1h-3zM8,5h1v1h-1zM10,5h1v1h-1zM12,5h1v1h-1zM17,5h1v1h-1zM20,5h1v1h-1zM23,5h1v1h-1zM26,5h1v1h-1zM28,5h1v1h-1zM30,5h3v1h-3zM34,5h1v1h-1zM2,6h1v1h-1zM4,6h3v1h-3zM8,6h1v1h-1zM10,6h2v1h-2zM14,6h1v1h-1zM16,6h3v1h-3zM22,6h1v1h-1zM24,6h1v1h-1zM28,6h1v1h-1zM30,6h3v1h-3zM34,6h1v1h-1zM2,7h1v1h-1zM8,7h1v1h-1zM10,7h1v1h-1zM12,7h4v1h-4zM19,7h3v1h-3zM23,7h1v1h-1zM25,7h2v1h-2zM28,7h1v1h-1zM34,7h1v1h-1zM2,8h7v1h-7zM10,8h1v1h-1zM12,8h1v1h-1zM14,8h1v1h-1zM16,8h1v1h-1zM18,8h1v1h-1zM20,8h1v1h-1zM22,8h1v1h-1zM24,8h1v1h-1zM26,8h1v1h-1zM28,8h7v1h-7zM10,9h4v1h-4zM16,9h1v1h-1zM18,9h1v1h-1zM20,9h6v1h-6zM2,10h1v1h-1zM4,10h5v1h-5zM12,10h5v1h-5zM18,10h2v1h-2zM21,10h1v1h-1zM24,10h3v1h-3zM28,10h5v1h-5zM3,11h5v1h-5zM9,11h2v1h-2zM14,11h2v1h-2zM18,11h2v1h-2zM21,11h2v1h-2zM25,11h1v1h-1zM28,11h2v1h-2zM31,11h2v1h-2zM34,11h1v1h-1zM2,12h1v1h-1zM4,12h1v1h-1zM6,12h1v1h-1zM8,12h3v1h-3zM12,12h2v1h-2zM15,12h5v1h-5zM24,12h1v1h-1zM30,12h1v1h-1zM32,12h2v1h-2zM5,13h3v1h-3zM9,13h4v1h-4zM14,13h2v1h-2zM17,13h6v1h-6zM27,13h1v1h-1zM30,13h3v1h-3zM34,13h1v1h-1zM3,14h1v1h-1zM6,14h1v1h-1zM8,14h2v1h-2zM11,14h4v1h-4zM16,14h3v1h-3zM22,14h4v1h-4zM29,14h1v1h-1zM31,14h1v1h-1zM33,14h2v1h-2zM2,15h4v1h-4zM9,15h1v1h-1zM11,15h1v1h-1zM13,15h1v1h-1zM15,15h1v1h-1zM17,15h1v1h-1zM20,15h1v1h-1zM23,15h1v1h-1zM26,15h2v1h-2zM30,15h1v1h-1zM32,15h3v1h-3zM2,16h1v1h-1zM8,16h1v1h-1zM10,16h11v1h-11zM22,16h3v1h-3zM27,16h7v1h-7zM3,17h1v1h-1zM5,17h1v1h-1zM9,17h1v1h-1zM11,17h4v1h-4zM17,17h1v1h-1zM23,17h2v1h-2zM26,17h3v1h-3zM30,17h3v1h-3zM2,18h1v1h-1zM7,18h2v1h-2zM10,18h1v1h-1zM12,18h1v1h-1zM15,18h3v1h-3zM19,18h1v1h-1zM22,18h1v1h-1zM24,18h1v1h-1zM26,18h2v1h-2zM29,18h3v1h-3zM34,18h1v1h-1zM2,19h2v1h-2zM5,19h3v1h-3zM9,19h1v1h-1zM12,19h1v1h-1zM16,19h1v1h-1zM18,19h1v1h-1zM21,19h1v1h-1zM23,19h1v1h-1zM25,19h1v1h-1zM28,19h2v1h-2zM31,19h2v1h-2zM34,19h1v1h-1zM5,20h1v1h-1zM7,20h2v1h-2zM11,20h1v1h-1zM13,20h2v1h-2zM17,20h1v1h-1zM20,20h1v1h-1zM23,20h1v1h-1zM27,20h4v1h-4zM32,20h1v1h-1zM2,21h1v1h-1zM6,21h1v1h-1zM11,21h2v1h-2zM15,21h2v1h-2zM18,21h1v1h-1zM21,21h1v1h-1zM23,21h2v1h-2zM28,21h5v1h-5zM2,22h16v1h-16zM20,22h1v1h-1zM23,22h1v1h-1zM26,22h4v1h-4zM31,22h1v1h-1zM33,22h2v1h-2zM2,23h1v1h-1zM4,23h1v1h-1zM7,23h1v1h-1zM9,23h2v1h-2zM12,23h1v1h-1zM14,23h1v1h-1zM16,23h3v1h-3zM22,23h1v1h-1zM24,23h1v1h-1zM29,23h1v1h-1zM32,23h1v1h-1zM34,23h1v1h-1zM2,24h1v1h-1zM4,24h1v1h-1zM6,24h6v1h-6zM13,24h1v1h-1zM19,24h1v1h-1zM21,24h1v1h-1zM23,24h4v1h-4zM28,24h1v1h-1zM30,24h1v1h-1zM32,24h2v1h-2zM2,25h1v1h-1zM5,25h1v1h-1zM10,25h3v1h-3zM16,25h1v1h-1zM18,25h1v1h-1zM20,25h6v1h-6zM27,25h2v1h-2zM30,25h4v1h-4zM2,26h1v1h-1zM8,26h3v1h-3zM12,26h1v1h-1zM15,26h2v1h-2zM18,26h5v1h-5zM25,26h7v1h-7zM33,26h1v1h-1zM10,27h4v1h-4zM18,27h2v1h-2zM21,27h1v1h-1zM24,27h1v1h-1zM26,27h1v1h-1zM30,27h1v1h-1zM32,27h1v1h-1zM34,27h1v1h-1zM2,28h7v1h-7zM12,28h1v1h-1zM14,28h2v1h-2zM17,28h1v1h-1zM19,28h1v1h-1zM24,28h3v1h-3zM28,28h1v1h-1zM30,28h1v1h-1zM32,28h2v1h-2zM2,29h1v1h-1zM8,29h1v1h-1zM10,29h1v1h-1zM12,29h2v1h-2zM16,29h1v1h-1zM18,29h3v1h-3zM25,29h2v1h-2zM30,29h4v1h-4zM2,30h1v1h-1zM4,30h3v1h-3zM8,30h1v1h-1zM10,30h2v1h-2zM14,30h3v1h-3zM18,30h1v1h-1zM22,30h3v1h-3zM26,30h6v1h-6zM33,30h1v1h-1zM2,31h1v1h-1zM4,31h3v1h-3zM8,31h1v1h-1zM10,31h1v1h-1zM13,31h2v1h-2zM16,31h2v1h-2zM20,31h1v1h-1zM23,31h1v1h-1zM25,31h3v1h-3zM30,31h1v1h-1zM32,31h1v1h-1zM34,31h1v1h-1zM2,32h1v1h-1zM4,32h3v1h-3zM8,32h1v1h-1zM10,32h5v1h-5zM17,32h2v1h-2zM20,32h1v1h-1zM22,32h1v1h-1zM28,32h2v1h-2zM32,32h1v1h-1zM2,33h1v1h-1zM8,33h1v1h-1zM11,33h2v1h-2zM14,33h1v1h-1zM17,33h1v1h-1zM23,33h1v1h-1zM25,33h2v1h-2zM30,33h1v1h-1zM32,33h1v1h-1zM2,34h7v1h-7zM10,34h2v1h-2zM13,34h1v1h-1zM15,34h3v1h-3zM19,34h2v1h-2zM22,34h1v1h-1zM26,34h2v1h-2zM29,34h1v1h-1zM33,34h1v1h-1z"/>
-          </svg>
-          <span>QUÉT MÃ MỞ WEB</span>
+        <!-- BODY POSTER -->
+        <div class="poster-body">
+          <div class="steps-container">
+
+            <!-- BƯỚC 1 -->
+            <div class="step-card step-1">
+              <div class="step-col-num">
+                <span class="step-num-pill">BƯỚC 01</span>
+                <div class="step-circle-icon">💻</div>
+              </div>
+              <div class="step-col-content">
+                <h4>Kê khai thông tin trực tuyến</h4>
+                <div class="step-tag-pills">
+                  <span class="tag-pill tag-req">Tra cứu MSSV + CCCD</span>
+                  <span class="tag-pill tag-note">Rà soát Giấy 221</span>
+                  <span class="tag-pill tag-req">Khóa 52K nhập 0</span>
+                  <span class="tag-pill tag-doc">Tối đa 04 thành tích</span>
+                </div>
+                <ul>
+                  <li>Truy cập hệ thống, nhập <strong>MSSV + CCCD</strong> để tải dữ liệu Đảng viên.</li>
+                  <li>Kiểm tra chính xác <strong>Chi bộ sinh hoạt nơi cư trú (Giấy 221)</strong> &amp; <strong>Nơi ở hiện nay</strong>.</li>
+                  <li>Nhập điểm học tập &amp; rèn luyện năm 2025–2026 (Khóa 52K nhập số <strong>0</strong>).</li>
+                  <li>Kê khai tối đa <strong>04 thành tích cao nhất</strong> + tối thiểu <strong>01 đóng góp</strong> cho Chi bộ.</li>
+                </ul>
+              </div>
+              <div class="step-col-deadline">
+                <div class="dl-header-pill">⏰ Hạn chót trực tuyến:</div>
+                <div class="dl-big-time">TRƯỚC 20H00<br>Thứ 5, ngày 19/11/2026</div>
+                <span class="dl-action-badge">Nộp dữ liệu trên hệ thống</span>
+              </div>
+            </div>
+
+            <!-- BƯỚC 2 -->
+            <div class="step-card step-2">
+              <div class="step-col-num">
+                <span class="step-num-pill">BƯỚC 02</span>
+                <div class="step-circle-icon">📑</div>
+              </div>
+              <div class="step-col-content">
+                <h4>Chuẩn bị đầy đủ hồ sơ (02c + 6b + 6d)</h4>
+                <div class="step-tag-pills">
+                  <span class="tag-pill tag-doc">Mẫu 02c (Bản kiểm điểm)</span>
+                  <span class="tag-pill tag-doc">Mẫu 6b (Biểu điểm Phụ lục 04)</span>
+                  <span class="tag-pill tag-doc">Mẫu 6d (Nhận xét nơi cư trú)</span>
+                </div>
+                <ul>
+                  <li>Dữ liệu Bước 1 tự đổ sang <strong>Mẫu 02c</strong> &amp; <strong>Mẫu 6b</strong>; tự chấm điểm Phụ lục 04 (Biểu 32).</li>
+                  <li>Bấm xuất tệp <strong>.ZIP</strong> (2 file Word), in ra bản giấy A4 và <strong>ký tên đầy đủ</strong>.</li>
+                  <li>Lấy <strong>Mẫu 6d điện tử</strong> trên <strong style="color: var(--blue-600);">dichvucong.dcs.vn</strong> (hoặc bản giấy xác nhận nơi cư trú 221).</li>
+                  <li>Tập hợp trọn bộ <strong>03 loại giấy tờ</strong> sẵn sàng trước ngày nộp. <em>(ĐV &lt; 6 tháng không thực hiện đánh giá, xếp loại)</em>.</li>
+                </ul>
+              </div>
+              <div class="step-col-deadline">
+                <div class="dl-header-pill">🖨️ Hoàn thành trước:</div>
+                <div class="dl-big-time">BUỔI NỘP HỒ SƠ<br>Thứ 7, ngày 21/11/2026</div>
+                <span class="dl-action-badge">Chuẩn bị đủ 3 loại giấy tờ</span>
+              </div>
+            </div>
+
+            <!-- BƯỚC 3 -->
+            <div class="step-card step-3">
+              <div class="step-col-num">
+                <span class="step-num-pill">BƯỚC 03</span>
+                <div class="step-circle-icon">🏛️</div>
+              </div>
+              <div class="step-col-content">
+                <h4>Hội nghị kiểm điểm của Chi bộ &amp; Nộp hồ sơ bản cứng</h4>
+                <div class="step-tag-pills">
+                  <span class="tag-pill tag-req">Tham dự đúng giờ</span>
+                  <span class="tag-pill tag-doc">Nộp đủ 03 bản cứng</span>
+                  <span class="tag-pill tag-note">Chi bộ đối soát &amp; xếp loại</span>
+                </div>
+                <ul>
+                  <li>Có mặt đúng giờ tham dự <strong>Hội nghị kiểm điểm, đánh giá xếp loại</strong> năm 2026 của Chi bộ.</li>
+                  <li>Nộp trực tiếp trọn bộ <strong>03 bản giấy</strong>: <strong>Bản kiểm điểm 02c + Biểu điểm 6b + Nhận xét 6d</strong>.</li>
+                  <li>Chi bộ kiểm tra, đối soát thông tin kê khai và tiến hành quy trình đánh giá, xếp loại.</li>
+                  <li>Hoàn tất nghĩa vụ đánh giá, xếp loại Đảng viên năm 2026 theo đúng quy định.</li>
+                </ul>
+              </div>
+              <div class="step-col-deadline">
+                <div class="dl-header-pill">📌 Thời gian thực hiện:</div>
+                <div class="dl-big-time">SÁNG CHỦ NHẬT<br>Ngày 22/11/2026</div>
+                <span class="dl-action-badge">Tham dự &amp; nộp trực tiếp</span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- 3 THẺ LƯU Ý PHÍA DƯỚI -->
+          <div class="notes-grid">
+            <div class="note-card">
+              <div class="note-head">🎓 Khóa 52K tân sinh viên</div>
+              <div class="note-content">Nhập số <strong>0</strong> vào cả 4 ô kết quả học tập &amp; rèn luyện; chú ý rà soát đúng Chi bộ nơi cư trú theo Giấy 221.</div>
+            </div>
+            <div class="note-card">
+              <div class="note-head">⏳ Đảng viên &lt; 6 tháng</div>
+              <div class="note-content">Kết nạp sau ngày <strong>21/05/2026</strong> thực hiện đầy đủ các bước kiểm điểm nhưng <strong>không thực hiện đánh giá, xếp loại</strong>.</div>
+            </div>
+            <div class="note-card">
+              <div class="note-head">📁 Bộ hồ sơ bản cứng</div>
+              <div class="note-content">Bắt buộc nộp đủ <strong>03 loại giấy tờ</strong>: Bản kiểm điểm (02c) + Biểu điểm (6b) + Nhận xét nơi cư trú (6d).</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- FOOTER POSTER -->
+        <div class="poster-footer">
+          <div class="footer-left">
+            <span class="footer-tagline">✦ CỔNG THÔNG TIN KIỂM ĐIỂM TRỰC TUYẾN 2026</span>
+            <div class="footer-url-pill">
+              <code>https://diendue48k.github.io/KIEMDIEM2026_CBSV1/</code>
+              <span>Quét mã hoặc mở link ↗</span>
+            </div>
+            <div class="footer-contact">
+              Hệ thống nội bộ Chi bộ Sinh viên 1 • Mọi khó khăn liên hệ ngay <strong>Chi ủy / Nhóm trưởng</strong> để được hỗ trợ kịp thời.
+            </div>
+          </div>
+
+          <div class="qr-modern-box">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 37 37" shape-rendering="crispEdges">
+              <rect width="37" height="37" fill="#ffffff"/>
+              <path fill="#2a0305" d="M2,2h7v1h-7zM11,2h1v1h-1zM14,2h1v1h-1zM18,2h1v1h-1zM20,2h4v1h-4zM25,2h1v1h-1zM28,2h7v1h-7zM2,3h1v1h-1zM8,3h1v1h-1zM12,3h2v1h-2zM17,3h1v1h-1zM20,3h1v1h-1zM22,3h2v1h-2zM26,3h1v1h-1zM28,3h1v1h-1zM34,3h1v1h-1zM2,4h1v1h-1zM4,4h3v1h-3zM8,4h1v1h-1zM10,4h2v1h-2zM13,4h1v1h-1zM16,4h1v1h-1zM21,4h1v1h-1zM23,4h2v1h-2zM28,4h1v1h-1zM30,4h3v1h-3zM34,4h1v1h-1zM2,5h1v1h-1zM4,5h3v1h-3zM8,5h1v1h-1zM10,5h1v1h-1zM12,5h1v1h-1zM17,5h1v1h-1zM20,5h1v1h-1zM23,5h1v1h-1zM26,5h1v1h-1zM28,5h1v1h-1zM30,5h3v1h-3zM34,5h1v1h-1zM2,6h1v1h-1zM4,6h3v1h-3zM8,6h1v1h-1zM10,6h2v1h-2zM14,6h1v1h-1zM16,6h3v1h-3zM22,6h1v1h-1zM24,6h1v1h-1zM28,6h1v1h-1zM30,6h3v1h-3zM34,6h1v1h-1zM2,7h1v1h-1zM8,7h1v1h-1zM10,7h1v1h-1zM12,7h4v1h-4zM19,7h3v1h-3zM23,7h1v1h-1zM25,7h2v1h-2zM28,7h1v1h-1zM34,7h1v1h-1zM2,8h7v1h-7zM10,8h1v1h-1zM12,8h1v1h-1zM14,8h1v1h-1zM16,8h1v1h-1zM18,8h1v1h-1zM20,8h1v1h-1zM22,8h1v1h-1zM24,8h1v1h-1zM26,8h1v1h-1zM28,8h7v1h-7zM10,9h4v1h-4zM16,9h1v1h-1zM18,9h1v1h-1zM20,9h6v1h-6zM2,10h1v1h-1zM4,10h5v1h-5zM12,10h5v1h-5zM18,10h2v1h-2zM21,10h1v1h-1zM24,10h3v1h-3zM28,10h5v1h-5zM3,11h5v1h-5zM9,11h2v1h-2zM14,11h2v1h-2zM18,11h2v1h-2zM21,11h2v1h-2zM25,11h1v1h-1zM28,11h2v1h-2zM31,11h2v1h-2zM34,11h1v1h-1zM2,12h1v1h-1zM4,12h1v1h-1zM6,12h1v1h-1zM8,12h3v1h-3zM12,12h2v1h-2zM15,12h5v1h-5zM24,12h1v1h-1zM30,12h1v1h-1zM32,12h2v1h-2zM5,13h3v1h-3zM9,13h4v1h-4zM14,13h2v1h-2zM17,13h6v1h-6zM27,13h1v1h-1zM30,13h3v1h-3zM34,13h1v1h-1zM3,14h1v1h-1zM6,14h1v1h-1zM8,14h2v1h-2zM11,14h4v1h-4zM16,14h3v1h-3zM22,14h4v1h-4zM29,14h1v1h-1zM31,14h1v1h-1zM33,14h2v1h-2zM2,15h4v1h-4zM9,15h1v1h-1zM11,15h1v1h-1zM13,15h1v1h-1zM15,15h1v1h-1zM17,15h1v1h-1zM20,15h1v1h-1zM23,15h1v1h-1zM26,15h2v1h-2zM30,15h1v1h-1zM32,15h3v1h-3zM2,16h1v1h-1zM8,16h1v1h-1zM10,16h11v1h-11zM22,16h3v1h-3zM27,16h7v1h-7zM3,17h1v1h-1zM5,17h1v1h-1zM9,17h1v1h-1zM11,17h4v1h-4zM17,17h1v1h-1zM23,17h2v1h-2zM26,17h3v1h-3zM30,17h3v1h-3zM2,18h1v1h-1zM7,18h2v1h-2zM10,18h1v1h-1zM12,18h1v1h-1zM15,18h3v1h-3zM19,18h1v1h-1zM22,18h1v1h-1zM24,18h1v1h-1zM26,18h2v1h-2zM29,18h3v1h-3zM34,18h1v1h-1zM2,19h2v1h-2zM5,19h3v1h-3zM9,19h1v1h-1zM12,19h1v1h-1zM16,19h1v1h-1zM18,19h1v1h-1zM21,19h1v1h-1zM23,19h1v1h-1zM25,19h1v1h-1zM28,19h2v1h-2zM31,19h2v1h-2zM34,19h1v1h-1zM5,20h1v1h-1zM7,20h2v1h-2zM11,20h1v1h-1zM13,20h2v1h-2zM17,20h1v1h-1zM20,20h1v1h-1zM23,20h1v1h-1zM27,20h4v1h-4zM32,20h1v1h-1zM2,21h1v1h-1zM6,21h1v1h-1zM11,21h2v1h-2zM15,21h2v1h-2zM18,21h1v1h-1zM21,21h1v1h-1zM23,21h2v1h-2zM28,21h5v1h-5zM2,22h16v1h-16zM20,22h1v1h-1zM23,22h1v1h-1zM26,22h4v1h-4zM31,22h1v1h-1zM33,22h2v1h-2zM2,23h1v1h-1zM4,23h1v1h-1zM7,23h1v1h-1zM9,23h2v1h-2zM12,23h1v1h-1zM14,23h1v1h-1zM16,23h3v1h-3zM22,23h1v1h-1zM24,23h1v1h-1zM29,23h1v1h-1zM32,23h1v1h-1zM34,23h1v1h-1zM2,24h1v1h-1zM4,24h1v1h-1zM6,24h6v1h-6zM13,24h1v1h-1zM19,24h1v1h-1zM21,24h1v1h-1zM23,24h4v1h-4zM28,24h1v1h-1zM30,24h1v1h-1zM32,24h2v1h-2zM2,25h1v1h-1zM5,25h1v1h-1zM10,25h3v1h-3zM16,25h1v1h-1zM18,25h1v1h-1zM20,25h6v1h-6zM27,25h2v1h-2zM30,25h4v1h-4zM2,26h1v1h-1zM8,26h3v1h-3zM12,26h1v1h-1zM15,26h2v1h-2zM18,26h5v1h-5zM25,26h7v1h-7zM33,26h1v1h-1zM10,27h4v1h-4zM18,27h2v1h-2zM21,27h1v1h-1zM24,27h1v1h-1zM26,27h1v1h-1zM30,27h1v1h-1zM32,27h1v1h-1zM34,27h1v1h-1zM2,28h7v1h-7zM12,28h1v1h-1zM14,28h2v1h-2zM17,28h1v1h-1zM19,28h1v1h-1zM24,28h3v1h-3zM28,28h1v1h-1zM30,28h1v1h-1zM32,28h2v1h-2zM2,29h1v1h-1zM8,29h1v1h-1zM10,29h1v1h-1zM12,29h2v1h-2zM16,29h1v1h-1zM18,29h3v1h-3zM25,29h2v1h-2zM30,29h4v1h-4zM2,30h1v1h-1zM4,30h3v1h-3zM8,30h1v1h-1zM10,30h2v1h-2zM14,30h3v1h-3zM18,30h1v1h-1zM22,30h3v1h-3zM26,30h6v1h-6zM33,30h1v1h-1zM2,31h1v1h-1zM4,31h3v1h-3zM8,31h1v1h-1zM10,31h1v1h-1zM13,31h2v1h-2zM16,31h2v1h-2zM20,31h1v1h-1zM23,31h1v1h-1zM25,31h3v1h-3zM30,31h1v1h-1zM32,31h1v1h-1zM34,31h1v1h-1zM2,32h1v1h-1zM4,32h3v1h-3zM8,32h1v1h-1zM10,32h5v1h-5zM17,32h2v1h-2zM20,32h1v1h-1zM22,32h1v1h-1zM28,32h2v1h-2zM32,32h1v1h-1zM2,33h1v1h-1zM8,33h1v1h-1zM11,33h2v1h-2zM14,33h1v1h-1zM17,33h1v1h-1zM23,33h1v1h-1zM25,33h2v1h-2zM30,33h1v1h-1zM32,33h1v1h-1zM2,34h7v1h-7zM10,34h2v1h-2zM13,34h1v1h-1zM15,34h3v1h-3zM19,34h2v1h-2zM22,34h1v1h-1zM26,34h2v1h-2zM29,34h1v1h-1zM33,34h1v1h-1z"/>
+            </svg>
+            <span>QUÉT MÃ MỞ WEB</span>
+          </div>
+        </div>
+
+        <!-- RUY BĂNG DƯỚI -->
+        <div class="ribbon-bottom"></div>
+
+        <!-- BẢN QUYỀN MẢNH DƯỚI -->
+        <div class="copyright-strip">
+          HỆ THỐNG HỖ TRỢ KIỂM ĐIỂM, ĐÁNH GIÁ VÀ XẾP LOẠI ĐẢNG VIÊN NĂM 2026 &bull; CHI BỘ SINH VIÊN 1 &bull; BẢN QUYỀN &copy; 2026 - LÊ VĨNH DIỆN
         </div>
       </div>
-
-      <!-- CỜ DƯỚI -->
-      <div class="ribbon-bottom">
-        <span></span><span></span><span></span>
-      </div>
-
-      <!-- BẢN QUYỀN MẢNH DƯỚI -->
-      <div class="copyright-strip">
-        HỆ THỐNG HỖ TRỢ KIỂM ĐIỂM, ĐÁNH GIÁ VÀ XẾP LOẠI ĐẢNG VIÊN NĂM 2026 &bull; BẢN QUYỀN &copy; 2026 - LÊ VĨNH DIỆN
-      </div>
-    </div>
     </div>
   </main>
 
@@ -833,7 +895,7 @@
         const canvas = await html2canvas(target, {
           scale: 2,
           useCORS: true,
-          backgroundColor: '#faf5ed',
+          backgroundColor: '#2a0305',
           logging: false
         });
         const link = document.createElement('a');
