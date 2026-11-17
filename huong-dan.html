@@ -524,6 +524,54 @@
       font-weight: 700;
     }
 
+    .bpmn-wrap {
+      overflow-x: auto;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-md);
+      background: #fdf9f4;
+      padding: 10px;
+    }
+    .bpmn-img {
+      display: block;
+      width: 100%;
+      min-width: 980px;
+      height: auto;
+      transition: min-width 0.25s ease;
+    }
+    .bpmn-wrap.is-zoomed .bpmn-img {
+      min-width: 1850px;
+    }
+    .bpmn-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .btn-mini {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      border: 1.5px solid var(--border);
+      background: #ffffff;
+      color: var(--crimson-dark);
+      transition: all 0.18s ease;
+    }
+    .btn-mini:hover {
+      border-color: var(--crimson);
+      background: #fffafa;
+    }
+    .btn-mini.gold {
+      background: var(--gold-tint);
+      border-color: #fcd34d;
+      color: #92400e;
+    }
+
     .footer-note {
       text-align: center;
       font-size: 0.82rem;
@@ -593,12 +641,34 @@
       <div class="hero-underline"></div>
       <p>Tài liệu hướng dẫn từng bước thực hiện kê khai thông tin trực tuyến, tạo hồ sơ kiểm điểm (Mẫu 02c, Mẫu 6b), lấy nhận xét nơi cư trú (Mẫu 6d) và nộp hồ sơ đúng thời hạn quy định.</p>
       <div class="quick-nav">
+        <a href="#so-do-bpmn" class="nav-pill">Sơ đồ BPMN 2.0</a>
         <a href="#buoc-1" class="nav-pill">Bước 1: Kê khai trực tuyến</a>
         <a href="#buoc-2" class="nav-pill">Bước 2: Tạo &amp; in Mẫu 02c + 6b</a>
         <a href="#buoc-3" class="nav-pill">Bước 3: Mẫu 6d &amp; Nộp hồ sơ</a>
         <a href="#faq" class="nav-pill">Giải đáp thắc mắc (FAQ)</a>
       </div>
     </header>
+
+    <!-- SƠ ĐỒ BPMN 2.0 -->
+    <section id="so-do-bpmn" class="section-card">
+      <div class="section-header">
+        <div class="section-header-left">
+          <span class="step-badge">BPMN</span>
+          <h2 class="section-title">Sơ đồ quy trình thực hiện (Chuẩn BPMN 2.0)</h2>
+        </div>
+        <div class="bpmn-actions">
+          <button type="button" class="btn-mini gold" onclick="toggleBpmnZoom(this)">Phóng to 100%</button>
+          <a href="so-do-bpmn-2026.svg" download="SoDo_QuyTrinh_KiemDiem_2026_BPMN.svg" class="btn-mini">Tải ảnh (.svg)</a>
+          <a href="quy-trinh-kiem-diem-2026.bpmn" download="QuyTrinh_KiemDiem_2026.bpmn" class="btn-mini">Tải mô hình (.bpmn)</a>
+        </div>
+      </div>
+      <div id="bpmnWrap" class="bpmn-wrap">
+        <img src="so-do-bpmn-2026.svg" alt="Sơ đồ quy trình kiểm điểm Đảng viên năm 2026 chuẩn BPMN 2.0" class="bpmn-img">
+      </div>
+      <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: 10px;">
+        Sơ đồ vẽ theo tiêu chuẩn <strong>BPMN 2.0</strong> gồm 3 làn vai trò (Đảng viên — Hệ thống Web &amp; Firebase — Nơi cư trú/DVC &amp; Chi ủy), cổng rẽ nhánh Exclusive Gateway (<code>×</code>), mốc thời hạn Timer Event và liên kết dữ liệu Data Store/Data Object. Kéo ngang hoặc nhấn <strong>Phóng to 100%</strong> để xem chi tiết.
+      </p>
+    </section>
 
     <div class="part-heading">Phần I: Hướng dẫn chi tiết từng bước cho Đảng viên</div>
 
@@ -811,6 +881,13 @@
   </div>
 
   <script>
+    function toggleBpmnZoom(btn) {
+      const wrap = document.getElementById('bpmnWrap');
+      if (!wrap) return;
+      const zoomed = wrap.classList.toggle('is-zoomed');
+      if (btn) btn.textContent = zoomed ? 'Thu gọn vừa khung' : 'Phóng to 100%';
+    }
+
     function toggleChecklist(cb) {
       const label = cb.closest('.checklist-item');
       if (label) label.classList.toggle('checked', cb.checked);

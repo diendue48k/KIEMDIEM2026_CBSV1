@@ -44,20 +44,12 @@ Trân trọng!
 
 ---
 
-## PHẦN 2: SƠ ĐỒ QUY TRÌNH THỰC HIỆN
+## PHẦN 2: SƠ ĐỒ QUY TRÌNH THỰC HIỆN (CHUẨN BPMN 2.0)
 
-```mermaid
-flowchart TD
-    A["1. Truy cập Trang chủ hệ thống"] --> B["2. Bước 1: Kê khai trực tuyến - Trước 20h00 ngày 19/11/2026"]
-    B --> B1["Tra cứu MSSV và CCCD -> Kiểm tra, bổ sung thông tin & bấm Gửi"]
-    B1 --> C{"3. Chọn cách làm Mẫu 02c và Mẫu 6b"}
-    C -->|"Cách 1: Khuyên dùng"| D["Bấm Tạo hồ sơ để in -> Điền gợi ý, chấm điểm, điền 6b -> Xuất ZIP 2 file Word"]
-    C -->|"Cách 2: Tự soạn / Viết tay"| E["Bấm Tải mẫu trống và Xem hướng dẫn ghi"]
-    D --> F["4. In Mẫu 02c và Mẫu 6b ra giấy, ký rõ họ tên"]
-    E --> F
-    F --> G["5. Chuẩn bị Mẫu 6d từ dichvucong.dcs.vn hoặc bản giấy có dấu"]
-    G --> H["6. Nộp đủ 3 loại hồ sơ cho Chi bộ vào Sáng Chủ nhật, 22/11/2026"]
-```
+- **Ảnh vector sơ đồ BPMN 2.0:** `./so-do-bpmn-2026.svg`
+- **Tệp mô hình chuẩn OMG BPMN 2.0 XML (mở được bằng bpmn.io / Camunda Modeler / draw.io):** `./quy-trinh-kiem-diem-2026.bpmn`
+
+![Sơ đồ quy trình kiểm điểm Đảng viên năm 2026 chuẩn BPMN 2.0](./so-do-bpmn-2026.svg)
 
 ---
 

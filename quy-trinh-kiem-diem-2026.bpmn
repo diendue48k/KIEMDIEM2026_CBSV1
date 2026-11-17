@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+  id="Definitions_KiemDiem2026"
+  targetNamespace="http://cbsv1.kiemdiem2026/bpmn">
+
+  <bpmn:collaboration id="Collaboration_KiemDiem2026">
+    <bpmn:participant id="Participant_CBSV1" name="QUY TRÌNH KIỂM ĐIỂM, ĐÁNH GIÁ VÀ XẾP LOẠI ĐẢNG VIÊN NĂM 2026 — CHI BỘ SINH VIÊN 1" processRef="Process_KiemDiem2026" />
+  </bpmn:collaboration>
+
+  <bpmn:process id="Process_KiemDiem2026" isExecutable="false">
+    <bpmn:laneSet id="LaneSet_Main">
+      <bpmn:lane id="Lane_DangVien" name="Đảng viên">
+        <bpmn:flowNodeRef>StartEvent_1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_TraCuu</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_KeKhaiDayDu</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_KeKhaiMien</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_Merge1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Timer_KeKhai</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_ChonCach</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_MauTrong</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_Dien02c6b</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_Merge2</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_InKy</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Timer_NopHoSo</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_NopHoSo</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_HeThong" name="Hệ thống Web &amp; Firebase (csdlkiemdiem)">
+        <bpmn:flowNodeRef>Task_XacThuc</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_6Thang</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_LuuKeKhai</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_XuatZip</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_NoiCuTruChiUy" name="Chi bộ nơi cư trú / DVC Đảng &amp; Chi ủy CBSV1">
+        <bpmn:flowNodeRef>Gateway_Mau6d</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_Tai6d</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_Xin6d</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_Merge3</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_ChiUyTiepNhan</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>EndEvent_1</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+
+    <bpmn:dataStoreReference id="DataStore_Firebase" name="Firebase Firestore: csdlkiemdiem" />
+    <bpmn:dataObjectReference id="DataObj_Zip" name="Tệp ZIP (Mẫu 02c + Mẫu 6b)" dataObjectRef="DataObject_Zip" />
+    <bpmn:dataObject id="DataObject_Zip" />
+    <bpmn:dataObjectReference id="DataObj_HoSoGiay" name="Bộ hồ sơ bản giấy (02c + 6b + 6d)" dataObjectRef="DataObject_HoSoGiay" />
+    <bpmn:dataObject id="DataObject_HoSoGiay" />
+
+    <bpmn:startEvent id="StartEvent_1" name="Bắt đầu đợt kiểm điểm 2026">
+      <bpmn:outgoing>Flow_1</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:userTask id="Task_TraCuu" name="Truy cập trang chủ &amp; nhập MSSV + CCCD (kekhai.html)">
+      <bpmn:incoming>Flow_1</bpmn:incoming>
+      <bpmn:outgoing>Flow_2</bpmn:outgoing>
+    </bpmn:userTask>
+
+    <bpmn:serviceTask id="Task_XacThuc" name="Xác thực thông tin &amp; kiểm tra điều kiện 6 tháng tuổi Đảng">
+      <bpmn:incoming>Flow_2</bpmn:incoming>
+      <bpmn:outgoing>Flow_3</bpmn:outgoing>
+    </bpmn:serviceTask>
+
+    <bpmn:exclusiveGateway id="Gateway_6Thang" name="Đủ 6 tháng tuổi Đảng (≤ 21/05/2026)?">
+      <bpmn:incoming>Flow_3</bpmn:incoming>
+      <bpmn:outgoing>Flow_Co6Thang</bpmn:outgoing>
+      <bpmn:outgoing>Flow_Khong6Thang</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:userTask id="Task_KeKhaiDayDu" name="Kê khai Bước 1 đầy đủ (cư trú, điểm 2025-2026, ≤4 thành tích, đóng góp) &amp; tự xếp loại">
+      <bpmn:incoming>Flow_Co6Thang</bpmn:incoming>
+      <bpmn:outgoing>Flow_4a</bpmn:outgoing>
+    </bpmn:userTask>
+
+    <bpmn:userTask id="Task_KeKhaiMien" name="Kê khai thông tin Bước 1 (Miễn tự xếp loại, chỉ làm hồ sơ)">
+      <bpmn:incoming>Flow_Khong6Thang</bpmn:incoming>
+      <bpmn:outgoing>Flow_4b</bpmn:outgoing>
+    </bpmn:userTask>
+
+    <bpmn:exclusiveGateway id="Gateway_Merge1">
+      <bpmn:incoming>Flow_4a</bpmn:incoming>
+      <bpmn:incoming>Flow_4b</bpmn:incoming>
+      <bpmn:outgoing>Flow_5</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:intermediateCatchEvent id="Timer_KeKhai" name="Hạn cuối Bước 1: 20h00 - Thứ 5, 19/11/2026">
+      <bpmn:incoming>Flow_5</bpmn:incoming>
+      <bpmn:outgoing>Flow_6</bpmn:outgoing>
+      <bpmn:timerEventDefinition id="TimerDef_KeKhai" />
+    </bpmn:intermediateCatchEvent>
+
+    <bpmn:serviceTask id="Task_LuuKeKhai" name="Lưu dữ liệu kê khai &amp; tự động đổ sang Bước 2">
+      <bpmn:incoming>Flow_6</bpmn:incoming>
+      <bpmn:outgoing>Flow_7</bpmn:outgoing>
+    </bpmn:serviceTask>
+
+    <bpmn:exclusiveGateway id="Gateway_ChonCach" name="Chọn cách thực hiện Mẫu 02c &amp; 6b?">
+      <bpmn:incoming>Flow_7</bpmn:incoming>
+      <bpmn:outgoing>Flow_Cach1</bpmn:outgoing>
+      <bpmn:outgoing>Flow_Cach2</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:manualTask id="Task_MauTrong" name="Cách 2: Tải mẫu trống &amp; tự soạn / viết tay">
+      <bpmn:incoming>Flow_Cach2</bpmn:incoming>
+      <bpmn:outgoing>Flow_8b</bpmn:outgoing>
+    </bpmn:manualTask>
+
+    <bpmn:userTask id="Task_Dien02c6b" name="Cách 1: Hoàn thiện Mẫu 02c (Gợi ý, Phụ lục 04) &amp; Mẫu 6b (K / 52K)">
+      <bpmn:incoming>Flow_Cach1</bpmn:incoming>
+      <bpmn:outgoing>Flow_8a</bpmn:outgoing>
+    </bpmn:userTask>
+
+    <bpmn:serviceTask id="Task_XuatZip" name="Xuất tệp ZIP (Mẫu 02c + Mẫu 6b) &amp; ghi lịch sử docLogs">
+      <bpmn:incoming>Flow_8a</bpmn:incoming>
+      <bpmn:outgoing>Flow_9a</bpmn:outgoing>
+    </bpmn:serviceTask>
+
+    <bpmn:exclusiveGateway id="Gateway_Merge2">
+      <bpmn:incoming>Flow_9a</bpmn:incoming>
+      <bpmn:incoming>Flow_8b</bpmn:incoming>
+      <bpmn:outgoing>Flow_10</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:manualTask id="Task_InKy" name="Giải nén, in giấy A4 &amp; ký rõ họ tên (02c + 6b)">
+      <bpmn:incoming>Flow_10</bpmn:incoming>
+      <bpmn:outgoing>Flow_11</bpmn:outgoing>
+    </bpmn:manualTask>
+
+    <bpmn:exclusiveGateway id="Gateway_Mau6d" name="Có Mẫu 6d trên dichvucong.dcs.vn?">
+      <bpmn:incoming>Flow_11</bpmn:incoming>
+      <bpmn:outgoing>Flow_6dCo</bpmn:outgoing>
+      <bpmn:outgoing>Flow_6dChua</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:serviceTask id="Task_Tai6d" name="Tải &amp; in Mẫu 6d điện tử từ dichvucong.dcs.vn">
+      <bpmn:incoming>Flow_6dCo</bpmn:incoming>
+      <bpmn:outgoing>Flow_12a</bpmn:outgoing>
+    </bpmn:serviceTask>
+
+    <bpmn:userTask id="Task_Xin6d" name="Liên hệ Bí thư Chi bộ nơi cư trú lấy nhận xét (mẫu giấy 6d)">
+      <bpmn:incoming>Flow_6dChua</bpmn:incoming>
+      <bpmn:outgoing>Flow_12b</bpmn:outgoing>
+    </bpmn:userTask>
+
+    <bpmn:exclusiveGateway id="Gateway_Merge3">
+      <bpmn:incoming>Flow_12a</bpmn:incoming>
+      <bpmn:incoming>Flow_12b</bpmn:incoming>
+      <bpmn:outgoing>Flow_13</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:intermediateCatchEvent id="Timer_NopHoSo" name="Hạn nộp hồ sơ: Sáng Chủ nhật, 22/11/2026">
+      <bpmn:incoming>Flow_13</bpmn:incoming>
+      <bpmn:outgoing>Flow_14</bpmn:outgoing>
+      <bpmn:timerEventDefinition id="TimerDef_NopHoSo" />
+    </bpmn:intermediateCatchEvent>
+
+    <bpmn:manualTask id="Task_NopHoSo" name="Nộp đủ 3 loại hồ sơ (02c + 6b + 6d) cho Chi bộ SV 1">
+      <bpmn:incoming>Flow_14</bpmn:incoming>
+      <bpmn:outgoing>Flow_15</bpmn:outgoing>
+    </bpmn:manualTask>
+
+    <bpmn:userTask id="Task_ChiUyTiepNhan" name="Chi ủy tiếp nhận, đối chiếu &amp; xuất tổng hợp Excel (admin.html)">
+      <bpmn:incoming>Flow_15</bpmn:incoming>
+      <bpmn:outgoing>Flow_16</bpmn:outgoing>
+    </bpmn:userTask>
+
+    <bpmn:endEvent id="EndEvent_1" name="Hoàn thành kiểm điểm 2026">
+      <bpmn:incoming>Flow_16</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_1" sourceRef="StartEvent_1" targetRef="Task_TraCuu" />
+    <bpmn:sequenceFlow id="Flow_2" sourceRef="Task_TraCuu" targetRef="Task_XacThuc" />
+    <bpmn:sequenceFlow id="Flow_3" sourceRef="Task_XacThuc" targetRef="Gateway_6Thang" />
+    <bpmn:sequenceFlow id="Flow_Co6Thang" name="Đủ ≥ 6 tháng" sourceRef="Gateway_6Thang" targetRef="Task_KeKhaiDayDu" />
+    <bpmn:sequenceFlow id="Flow_Khong6Thang" name="Chưa đủ 6 tháng" sourceRef="Gateway_6Thang" targetRef="Task_KeKhaiMien" />
+    <bpmn:sequenceFlow id="Flow_4a" sourceRef="Task_KeKhaiDayDu" targetRef="Gateway_Merge1" />
+    <bpmn:sequenceFlow id="Flow_4b" sourceRef="Task_KeKhaiMien" targetRef="Gateway_Merge1" />
+    <bpmn:sequenceFlow id="Flow_5" sourceRef="Gateway_Merge1" targetRef="Timer_KeKhai" />
+    <bpmn:sequenceFlow id="Flow_6" sourceRef="Timer_KeKhai" targetRef="Task_LuuKeKhai" />
+    <bpmn:sequenceFlow id="Flow_7" sourceRef="Task_LuuKeKhai" targetRef="Gateway_ChonCach" />
+    <bpmn:sequenceFlow id="Flow_Cach2" name="Cách 2" sourceRef="Gateway_ChonCach" targetRef="Task_MauTrong" />
+    <bpmn:sequenceFlow id="Flow_Cach1" name="Cách 1" sourceRef="Gateway_ChonCach" targetRef="Task_Dien02c6b" />
+    <bpmn:sequenceFlow id="Flow_8a" sourceRef="Task_Dien02c6b" targetRef="Task_XuatZip" />
+    <bpmn:sequenceFlow id="Flow_9a" sourceRef="Task_XuatZip" targetRef="Gateway_Merge2" />
+    <bpmn:sequenceFlow id="Flow_8b" sourceRef="Task_MauTrong" targetRef="Gateway_Merge2" />
+    <bpmn:sequenceFlow id="Flow_10" sourceRef="Gateway_Merge2" targetRef="Task_InKy" />
+    <bpmn:sequenceFlow id="Flow_11" sourceRef="Task_InKy" targetRef="Gateway_Mau6d" />
+    <bpmn:sequenceFlow id="Flow_6dCo" name="Đã có" sourceRef="Gateway_Mau6d" targetRef="Task_Tai6d" />
+    <bpmn:sequenceFlow id="Flow_6dChua" name="Chưa có" sourceRef="Gateway_Mau6d" targetRef="Task_Xin6d" />
+    <bpmn:sequenceFlow id="Flow_12a" sourceRef="Task_Tai6d" targetRef="Gateway_Merge3" />
+    <bpmn:sequenceFlow id="Flow_12b" sourceRef="Task_Xin6d" targetRef="Gateway_Merge3" />
+    <bpmn:sequenceFlow id="Flow_13" sourceRef="Gateway_Merge3" targetRef="Timer_NopHoSo" />
+    <bpmn:sequenceFlow id="Flow_14" sourceRef="Timer_NopHoSo" targetRef="Task_NopHoSo" />
+    <bpmn:sequenceFlow id="Flow_15" sourceRef="Task_NopHoSo" targetRef="Task_ChiUyTiepNhan" />
+    <bpmn:sequenceFlow id="Flow_16" sourceRef="Task_ChiUyTiepNhan" targetRef="EndEvent_1" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_KiemDiem2026">
+      <bpmndi:BPMNShape id="Participant_CBSV1_di" bpmnElement="Participant_CBSV1" isHorizontal="true">
+        <dc:Bounds x="24" y="24" width="1842" height="820" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_DangVien_di" bpmnElement="Lane_DangVien" isHorizontal="true">
+        <dc:Bounds x="54" y="24" width="1812" height="286" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_HeThong_di" bpmnElement="Lane_HeThong" isHorizontal="true">
+        <dc:Bounds x="54" y="310" width="1812" height="268" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_NoiCuTruChiUy_di" bpmnElement="Lane_NoiCuTruChiUy" isHorizontal="true">
+        <dc:Bounds x="54" y="578" width="1812" height="266" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_1_di" bpmnElement="StartEvent_1">
+        <dc:Bounds x="147" y="152" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_TraCuu_di" bpmnElement="Task_TraCuu">
+        <dc:Bounds x="235" y="130" width="140" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_XacThuc_di" bpmnElement="Task_XacThuc">
+        <dc:Bounds x="235" y="385" width="140" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_6Thang_di" bpmnElement="Gateway_6Thang" isMarkerVisible="true">
+        <dc:Bounds x="420" y="400" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_KeKhaiDayDu_di" bpmnElement="Task_KeKhaiDayDu">
+        <dc:Bounds x="515" y="66" width="165" height="84" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_KeKhaiMien_di" bpmnElement="Task_KeKhaiMien">
+        <dc:Bounds x="515" y="185" width="165" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Merge1_di" bpmnElement="Gateway_Merge1" isMarkerVisible="true">
+        <dc:Bounds x="695" y="145" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Timer_KeKhai_di" bpmnElement="Timer_KeKhai">
+        <dc:Bounds x="777" y="152" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_LuuKeKhai_di" bpmnElement="Task_LuuKeKhai">
+        <dc:Bounds x="730" y="385" width="130" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ChonCach_di" bpmnElement="Gateway_ChonCach" isMarkerVisible="true">
+        <dc:Bounds x="895" y="145" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_MauTrong_di" bpmnElement="Task_MauTrong">
+        <dc:Bounds x="975" y="64" width="170" height="76" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Dien02c6b_di" bpmnElement="Task_Dien02c6b">
+        <dc:Bounds x="975" y="193" width="170" height="82" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_XuatZip_di" bpmnElement="Task_XuatZip">
+        <dc:Bounds x="985" y="385" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Merge2_di" bpmnElement="Gateway_Merge2" isMarkerVisible="true">
+        <dc:Bounds x="1180" y="145" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_InKy_di" bpmnElement="Task_InKy">
+        <dc:Bounds x="1255" y="130" width="130" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Mau6d_di" bpmnElement="Gateway_Mau6d" isMarkerVisible="true">
+        <dc:Bounds x="1358" y="685" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Tai6d_di" bpmnElement="Task_Tai6d">
+        <dc:Bounds x="1445" y="597" width="150" height="76" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Xin6d_di" bpmnElement="Task_Xin6d">
+        <dc:Bounds x="1445" y="742" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Merge3_di" bpmnElement="Gateway_Merge3" isMarkerVisible="true">
+        <dc:Bounds x="1600" y="685" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Timer_NopHoSo_di" bpmnElement="Timer_NopHoSo">
+        <dc:Bounds x="1607" y="152" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_NopHoSo_di" bpmnElement="Task_NopHoSo">
+        <dc:Bounds x="1675" y="130" width="125" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ChiUyTiepNhan_di" bpmnElement="Task_ChiUyTiepNhan">
+        <dc:Bounds x="1675" y="670" width="125" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_1_di" bpmnElement="EndEvent_1">
+        <dc:Bounds x="1820" y="692" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="DataStore_Firebase_di" bpmnElement="DataStore_Firebase">
+        <dc:Bounds x="575" y="485" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataObj_Zip_di" bpmnElement="DataObj_Zip">
+        <dc:Bounds x="1162" y="485" width="36" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataObj_HoSoGiay_di" bpmnElement="DataObj_HoSoGiay">
+        <dc:Bounds x="1802" y="255" width="36" height="50" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_1_di" bpmnElement="Flow_1">
+        <di:waypoint x="183" y="170" />
+        <di:waypoint x="235" y="170" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_2_di" bpmnElement="Flow_2">
+        <di:waypoint x="305" y="210" />
+        <di:waypoint x="305" y="385" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_3_di" bpmnElement="Flow_3">
+        <di:waypoint x="375" y="425" />
+        <di:waypoint x="420" y="425" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Co6Thang_di" bpmnElement="Flow_Co6Thang">
+        <di:waypoint x="445" y="400" />
+        <di:waypoint x="445" y="108" />
+        <di:waypoint x="515" y="108" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Khong6Thang_di" bpmnElement="Flow_Khong6Thang">
+        <di:waypoint x="470" y="425" />
+        <di:waypoint x="496" y="425" />
+        <di:waypoint x="496" y="225" />
+        <di:waypoint x="515" y="225" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_4a_di" bpmnElement="Flow_4a">
+        <di:waypoint x="680" y="108" />
+        <di:waypoint x="720" y="108" />
+        <di:waypoint x="720" y="145" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_4b_di" bpmnElement="Flow_4b">
+        <di:waypoint x="680" y="225" />
+        <di:waypoint x="720" y="225" />
+        <di:waypoint x="720" y="195" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_5_di" bpmnElement="Flow_5">
+        <di:waypoint x="745" y="170" />
+        <di:waypoint x="777" y="170" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_6_di" bpmnElement="Flow_6">
+        <di:waypoint x="795" y="188" />
+        <di:waypoint x="795" y="385" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_7_di" bpmnElement="Flow_7">
+        <di:waypoint x="860" y="425" />
+        <di:waypoint x="882" y="425" />
+        <di:waypoint x="882" y="170" />
+        <di:waypoint x="895" y="170" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Cach2_di" bpmnElement="Flow_Cach2">
+        <di:waypoint x="920" y="145" />
+        <di:waypoint x="920" y="102" />
+        <di:waypoint x="975" y="102" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Cach1_di" bpmnElement="Flow_Cach1">
+        <di:waypoint x="920" y="195" />
+        <di:waypoint x="920" y="235" />
+        <di:waypoint x="975" y="235" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_8a_di" bpmnElement="Flow_8a">
+        <di:waypoint x="1060" y="275" />
+        <di:waypoint x="1060" y="385" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_9a_di" bpmnElement="Flow_9a">
+        <di:waypoint x="1135" y="425" />
+        <di:waypoint x="1205" y="425" />
+        <di:waypoint x="1205" y="195" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_8b_di" bpmnElement="Flow_8b">
+        <di:waypoint x="1145" y="102" />
+        <di:waypoint x="1205" y="102" />
+        <di:waypoint x="1205" y="145" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_10_di" bpmnElement="Flow_10">
+        <di:waypoint x="1230" y="170" />
+        <di:waypoint x="1255" y="170" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_11_di" bpmnElement="Flow_11">
+        <di:waypoint x="1320" y="210" />
+        <di:waypoint x="1320" y="710" />
+        <di:waypoint x="1358" y="710" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_6dCo_di" bpmnElement="Flow_6dCo">
+        <di:waypoint x="1383" y="685" />
+        <di:waypoint x="1383" y="635" />
+        <di:waypoint x="1445" y="635" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_6dChua_di" bpmnElement="Flow_6dChua">
+        <di:waypoint x="1383" y="735" />
+        <di:waypoint x="1383" y="782" />
+        <di:waypoint x="1445" y="782" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_12a_di" bpmnElement="Flow_12a">
+        <di:waypoint x="1595" y="635" />
+        <di:waypoint x="1625" y="635" />
+        <di:waypoint x="1625" y="685" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_12b_di" bpmnElement="Flow_12b">
+        <di:waypoint x="1595" y="782" />
+        <di:waypoint x="1625" y="782" />
+        <di:waypoint x="1625" y="735" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_13_di" bpmnElement="Flow_13">
+        <di:waypoint x="1650" y="710" />
+        <di:waypoint x="1665" y="710" />
+        <di:waypoint x="1665" y="445" />
+        <di:waypoint x="1625" y="445" />
+        <di:waypoint x="1625" y="188" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_14_di" bpmnElement="Flow_14">
+        <di:waypoint x="1643" y="170" />
+        <di:waypoint x="1675" y="170" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_15_di" bpmnElement="Flow_15">
+        <di:waypoint x="1737" y="210" />
+        <di:waypoint x="1737" y="670" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_16_di" bpmnElement="Flow_16">
+        <di:waypoint x="1800" y="710" />
+        <di:waypoint x="1820" y="710" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
