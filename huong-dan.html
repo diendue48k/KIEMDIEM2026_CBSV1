@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hướng Dẫn Sử Dụng Hệ Thống Cho Đảng Viên Năm 2026 - Chi Bộ Sinh Viên 1</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --crimson: #9e1b1e;
+      --crimson-dark: #781215;
+      --crimson-bright: #c62828;
+      --gold: #f59e0b;
+      --gold-bright: #facc15;
+      --gold-soft: #fef9c3;
+      --gold-tint: #fffbeb;
+
+      --bg-page: #faf6f3;
+      --bg-card: #ffffff;
+      --border: #e7dfd8;
+
+      --text-main: #1f1a18;
+      --text-secondary: #5c504a;
+      --text-muted: #857770;
+
+      --success-bg: #ecfdf5;
+      --success-text: #065f46;
+
+      --radius-lg: 18px;
+      --radius-md: 12px;
+      --radius-sm: 8px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #fdf9f4;
+      background-image:
+        radial-gradient(at 0% 15%, rgba(158, 27, 30, 0.05) 0px, transparent 45%),
+        radial-gradient(at 100% 20%, rgba(250, 204, 21, 0.12) 0px, transparent 45%);
+      color: var(--text-main);
+      line-height: 1.65;
+      padding: 0 16px 64px;
+      min-height: 100vh;
+    }
+
+    .top-tricolor-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      z-index: 100;
+    }
+    .top-tricolor-bar span:nth-child(1),
+    .top-tricolor-bar span:nth-child(3) { background-color: var(--crimson); }
+    .top-tricolor-bar span:nth-child(2) { background-color: var(--gold-bright); }
+
+    .container {
+      max-width: 940px;
+      margin: 0 auto;
+      padding-top: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--crimson-dark);
+      font-size: 0.88rem;
+      font-weight: 700;
+      text-decoration: none;
+      padding: 8px 15px;
+      border-radius: 999px;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      transition: all 0.2s ease;
+    }
+    .back-link:hover {
+      background: var(--crimson);
+      color: #ffffff;
+      border-color: var(--crimson);
+    }
+
+    .btn-print {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      border-radius: 999px;
+      background: var(--gold-tint);
+      color: #92400e;
+      border: 1.5px solid #fcd34d;
+      font-family: inherit;
+      font-size: 0.86rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .btn-print:hover {
+      background: var(--gold);
+      color: #ffffff;
+      border-color: var(--gold);
+    }
+
+    .hero-header {
+      text-align: center;
+      padding: 6px 16px 4px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .hero-logo {
+      width: 68px;
+      height: 68px;
+      object-fit: contain;
+      border-radius: 50%;
+      margin-bottom: 10px;
+      animation: logoAura 3.4s ease-in-out infinite;
+    }
+
+    .org-pill {
+      display: inline-block;
+      background: #ffffff;
+      color: var(--crimson);
+      border: 1px solid #f0e6df;
+      padding: 5px 18px;
+      border-radius: 8px;
+      font-size: 0.94rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      box-shadow: 0 2px 8px rgba(31, 26, 24, 0.05);
+      margin-bottom: 12px;
+    }
+
+    .hero-header h1 {
+      font-size: 1.68rem;
+      font-weight: 800;
+      color: var(--crimson);
+      text-transform: uppercase;
+      line-height: 1.28;
+      max-width: 780px;
+    }
+
+    .hero-underline {
+      width: 260px;
+      max-width: 80%;
+      height: 4px;
+      background: linear-gradient(90deg, var(--gold) 0%, var(--gold-bright) 35%, #fef08a 50%, var(--gold-bright) 65%, var(--gold) 100%);
+      background-size: 200% 100%;
+      border-radius: 999px;
+      margin-top: 10px;
+      margin-bottom: 12px;
+      animation: goldShimmer 3.2s linear infinite;
+    }
+
+    .hero-header p {
+      font-size: 0.92rem;
+      color: var(--text-secondary);
+      max-width: 680px;
+      margin-bottom: 16px;
+    }
+
+    .quick-nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .nav-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      border-radius: 999px;
+      background: #ffffff;
+      border: 1.5px solid var(--border);
+      color: var(--crimson-dark);
+      font-size: 0.84rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    .nav-pill:hover {
+      background: var(--crimson);
+      color: #ffffff;
+      border-color: var(--crimson);
+      transform: translateY(-2px);
+    }
+
+    .part-heading {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.12rem;
+      font-weight: 800;
+      color: var(--crimson-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      padding: 6px 4px 0;
+    }
+    .part-heading::after {
+      content: '';
+      flex: 1;
+      height: 2px;
+      background: linear-gradient(90deg, rgba(158, 27, 30, 0.25), transparent);
+      border-radius: 999px;
+    }
+
+    .section-card {
+      background: var(--bg-card);
+      padding: 26px 28px;
+      border-radius: var(--radius-lg);
+      box-shadow: 0 6px 24px -6px rgba(31, 26, 24, 0.07);
+      border: 1px solid var(--border);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .section-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 28px -8px rgba(158, 27, 30, 0.11);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 18px;
+      padding-bottom: 14px;
+      border-bottom: 2px solid #f3ece7;
+    }
+
+    .section-header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .step-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 36px;
+      height: 36px;
+      padding: 0 12px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--crimson) 0%, var(--crimson-dark) 100%);
+      color: var(--gold-bright);
+      font-size: 0.88rem;
+      font-weight: 800;
+      flex-shrink: 0;
+      box-shadow: 0 3px 8px rgba(158, 27, 30, 0.22);
+    }
+
+    .section-title {
+      font-size: 1.06rem;
+      font-weight: 800;
+      color: var(--crimson);
+      text-transform: uppercase;
+      line-height: 1.35;
+    }
+
+    .alert-important {
+      padding: 15px 18px;
+      background: linear-gradient(135deg, #fef2f2 0%, #fffbeb 100%);
+      border: 1.5px solid #fca5a5;
+      border-left: 5px solid var(--crimson);
+      border-radius: var(--radius-md);
+      margin-bottom: 18px;
+      font-size: 0.92rem;
+    }
+    .alert-important-tag {
+      display: inline-block;
+      background: var(--crimson);
+      color: var(--gold-bright);
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 2px 8px;
+      border-radius: 5px;
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+
+    .alert-gold {
+      padding: 13px 16px;
+      background: var(--gold-tint);
+      border: 1px solid #fde68a;
+      border-left: 4px solid var(--gold);
+      border-radius: var(--radius-sm);
+      font-size: 0.9rem;
+      color: #78350f;
+      margin: 12px 0;
+    }
+
+    .guide-block {
+      background: #fcfaf8;
+      border: 1px solid #efe7e1;
+      border-radius: var(--radius-md);
+      padding: 16px 18px;
+      margin-bottom: 14px;
+    }
+    .guide-block:last-of-type { margin-bottom: 0; }
+
+    .guide-block h3 {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.96rem;
+      font-weight: 800;
+      color: var(--crimson-dark);
+      margin-bottom: 8px;
+    }
+
+    .num-circle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--gold-soft);
+      border: 1px solid #fcd34d;
+      color: var(--crimson-dark);
+      font-size: 0.78rem;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .guide-ul {
+      margin-left: 20px;
+      font-size: 0.91rem;
+      color: var(--text-main);
+    }
+    .guide-ul li { margin-bottom: 6px; }
+    .guide-ul li:last-child { margin-bottom: 0; }
+    .guide-sub-ul {
+      margin-left: 20px;
+      margin-top: 6px;
+      color: var(--text-secondary);
+    }
+
+    .method-card {
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 18px 20px;
+      margin-bottom: 14px;
+      background: #ffffff;
+    }
+    .method-card.recommended {
+      border-color: #f3b8b9;
+      background: #fffdfd;
+    }
+    .method-card.manual {
+      border-color: #fde68a;
+      background: var(--gold-tint);
+    }
+
+    .method-badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 6px;
+      font-size: 0.74rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .method-card.recommended .method-badge {
+      background: var(--crimson);
+      color: var(--gold-bright);
+    }
+    .method-card.manual .method-badge {
+      background: var(--gold-soft);
+      color: #92400e;
+      border: 1px solid #fcd34d;
+    }
+
+    .method-title {
+      font-size: 0.98rem;
+      font-weight: 800;
+      color: var(--crimson-dark);
+      margin-bottom: 10px;
+    }
+
+    .checklist-box {
+      background: linear-gradient(135deg, #fffdf9 0%, #fff7ed 100%);
+      border: 1.5px solid #fcd34d;
+      border-radius: var(--radius-md);
+      padding: 18px 20px;
+      margin-top: 16px;
+    }
+    .checklist-box h3 {
+      font-size: 0.96rem;
+      font-weight: 800;
+      color: var(--crimson-dark);
+      margin-bottom: 12px;
+    }
+    .checklist-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: var(--radius-sm);
+      background: #ffffff;
+      border: 1px solid var(--border);
+      margin-bottom: 8px;
+      cursor: pointer;
+      font-size: 0.91rem;
+      transition: all 0.18s ease;
+    }
+    .checklist-item:last-child { margin-bottom: 0; }
+    .checklist-item:hover { border-color: var(--crimson); }
+    .checklist-item input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--crimson);
+      margin-top: 3px;
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+    .checklist-item.checked {
+      background: var(--success-bg);
+      border-color: #6ee7b7;
+      color: var(--success-text);
+    }
+
+    .cta-inline {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      background: linear-gradient(135deg, var(--crimson) 0%, var(--crimson-dark) 100%);
+      color: #ffffff;
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-decoration: none;
+      box-shadow: 0 4px 12px rgba(158, 27, 30, 0.22);
+      transition: all 0.2s ease;
+    }
+    .cta-inline:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(158, 27, 30, 0.32);
+    }
+
+    .faq-item {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      background: #fcfaf8;
+      margin-bottom: 12px;
+      overflow: hidden;
+      transition: border-color 0.2s ease;
+    }
+    .faq-item:last-child { margin-bottom: 0; }
+    .faq-item[open] {
+      background: #ffffff;
+      border-color: #f3b8b9;
+    }
+    .faq-item summary {
+      padding: 14px 18px;
+      font-weight: 800;
+      font-size: 0.94rem;
+      color: var(--crimson-dark);
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-item summary::after {
+      content: '+';
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--crimson);
+      flex-shrink: 0;
+    }
+    .faq-item[open] summary::after { content: '−'; }
+    .faq-answer {
+      padding: 0 18px 16px;
+      font-size: 0.91rem;
+      color: var(--text-secondary);
+      border-top: 1px dashed #efe7e1;
+      padding-top: 12px;
+    }
+
+    .icon-svg {
+      width: 17px;
+      height: 17px;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+      flex-shrink: 0;
+    }
+
+    code {
+      background: #f4ebe4;
+      color: var(--crimson-dark);
+      padding: 1px 6px;
+      border-radius: 5px;
+      font-size: 0.86em;
+      font-weight: 700;
+    }
+
+    .footer-note {
+      text-align: center;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-top: 6px;
+    }
+
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes logoAura {
+      0%, 100% { filter: drop-shadow(0 4px 10px rgba(158, 27, 30, 0.18)); transform: scale(1); }
+      50% { filter: drop-shadow(0 8px 18px rgba(245, 158, 11, 0.34)); transform: scale(1.04); }
+    }
+    @keyframes goldShimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    .container > * {
+      animation: fadeSlideUp 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    .container > *:nth-child(2) { animation-delay: 0.05s; }
+    .container > *:nth-child(3) { animation-delay: 0.1s; }
+    .container > *:nth-child(4) { animation-delay: 0.15s; }
+    .container > *:nth-child(5) { animation-delay: 0.2s; }
+
+    @media (max-width: 640px) {
+      .hero-header h1 { font-size: 1.32rem; }
+      .section-card { padding: 18px 16px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    @media print {
+      .top-tricolor-bar, .topbar, .quick-nav, .cta-inline, .btn-print { display: none !important; }
+      body { background: #ffffff; padding: 0; }
+      .section-card { box-shadow: none; break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <div class="top-tricolor-bar"><span></span><span></span><span></span></div>
+
+  <div class="container">
+    <div class="topbar">
+      <a href="index.html?v=20261117" class="back-link">
+        <svg class="icon-svg" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+        <span>Về Trang chính</span>
+      </a>
+      <button type="button" class="btn-print" onclick="window.print()">
+        <svg class="icon-svg" viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        <span>In / Lưu PDF hướng dẫn</span>
+      </button>
+    </div>
+
+    <header class="hero-header">
+      <img src="logo.png" alt="Logo Chi bộ Sinh viên" class="hero-logo">
+      <div class="org-pill">Chi Bộ Sinh Viên 1</div>
+      <h1>Hướng Dẫn Sử Dụng Chi Tiết<br>Dành Cho Đảng Viên Năm 2026</h1>
+      <div class="hero-underline"></div>
+      <p>Tài liệu hướng dẫn từng bước thực hiện kê khai thông tin trực tuyến, tạo hồ sơ kiểm điểm (Mẫu 02c, Mẫu 6b), lấy nhận xét nơi cư trú (Mẫu 6d) và nộp hồ sơ đúng thời hạn quy định.</p>
+      <div class="quick-nav">
+        <a href="#buoc-1" class="nav-pill">Bước 1: Kê khai trực tuyến</a>
+        <a href="#buoc-2" class="nav-pill">Bước 2: Tạo &amp; in Mẫu 02c + 6b</a>
+        <a href="#buoc-3" class="nav-pill">Bước 3: Mẫu 6d &amp; Nộp hồ sơ</a>
+        <a href="#faq" class="nav-pill">Giải đáp thắc mắc (FAQ)</a>
+      </div>
+    </header>
+
+    <div class="part-heading">Phần I: Hướng dẫn chi tiết từng bước cho Đảng viên</div>
+
+    <!-- BƯỚC 1 -->
+    <section id="buoc-1" class="section-card">
+      <div class="section-header">
+        <div class="section-header-left">
+          <span class="step-badge">Bước 1</span>
+          <h2 class="section-title">Kê khai thông tin trực tuyến (<code>kekhai.html</code>)</h2>
+        </div>
+        <a href="kekhai.html?v=20261117" class="cta-inline">
+          <span>Mở trang Kê khai</span>
+          <svg class="icon-svg" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+      </div>
+
+      <div class="alert-important">
+        <span class="alert-important-tag">Important</span>
+        <strong>Hạn cuối hoàn thành Bước 1: Trước 20h00 - Thứ 5, ngày 19/11/2026.</strong>
+        Hãy thực hiện Bước 1 trước để dữ liệu của đồng chí được ghi nhận lên hệ thống Chi bộ và <strong>tự động đổ sang Bước 2</strong>.
+      </div>
+
+      <div class="guide-block">
+        <h3><span class="num-circle">1</span> Truy cập và tra cứu thông tin</h3>
+        <ul class="guide-ul">
+          <li>Tại trang chủ, bấm nút <strong>"Thực hiện kê khai ngay"</strong>.</li>
+          <li>Nhập chính xác <strong>Mã số sinh viên (MSSV)</strong> và <strong>Số CCCD</strong>, sau đó bấm <strong>"Kiểm tra &amp; Tải thông tin"</strong>.</li>
+          <li>Kiểm tra phần <strong>Thông tin Đảng viên</strong> (<em>Họ tên, Ngày sinh, Ngày vào Đảng, Nhóm, Khoa/Trung tâm, Loại Đảng viên</em>). Nếu thấy sai lệch, báo ngay cho Chi ủy để hiệu chỉnh trong danh sách gốc.</li>
+        </ul>
+      </div>
+
+      <div class="guide-block">
+        <h3><span class="num-circle">2</span> Mục 1 — Thông tin sinh hoạt chi bộ nơi cư trú</h3>
+        <ul class="guide-ul">
+          <li>Hệ thống sẽ tự động điền sẵn <strong>Chi bộ Sinh hoạt nơi cư trú</strong> và <strong>Nơi ở hiện nay</strong> từ dữ liệu hiện có (nếu trước đó đã khai báo).</li>
+          <li>Đồng chí cần <strong>kiểm tra kỹ lại từng chữ</strong> cho đúng với nơi đã đăng ký sinh hoạt theo Giấy 221 / Giấy 213 hiện tại; nếu còn trống hoặc chưa đúng thì gõ sửa lại theo gợi ý ví dụ trên ô nhập liệu.</li>
+        </ul>
+      </div>
+
+      <div class="guide-block">
+        <h3><span class="num-circle">3</span> Mục 2 — Kết quả học tập - rèn luyện (Năm học 2025 – 2026)</h3>
+        <ul class="guide-ul">
+          <li>Nhập <strong>Kết quả học tập</strong> (thang điểm 4, ví dụ <code>3.50</code>) và <strong>Kết quả rèn luyện</strong> (ví dụ <code>85</code>) cho cả Học kì 1 và Học kì 2 của <strong>năm học 2025 – 2026</strong>.</li>
+          <li><strong>Lưu ý riêng đối với Đảng viên Khóa 52K:</strong> Nhập số <code>0</code> vào cả 4 ô kết quả học tập và rèn luyện.</li>
+        </ul>
+      </div>
+
+      <div class="guide-block">
+        <h3><span class="num-circle">4</span> Mục 3 — Thành tích và đóng góp</h3>
+        <ul class="guide-ul">
+          <li>
+            <strong>Mục 3.1 (Thành tích đã đạt được):</strong>
+            <ul class="guide-sub-ul">
+              <li>Chỉ kê khai <strong>tối đa 04 loại thành tích cao nhất, nổi bật nhất</strong> trong năm học 2025 – 2026 đến thời điểm hiện tại.</li>
+              <li>Điền đủ 4 cột (<em>Loại, Đơn vị cấp, Thời gian cấp, Tên thành tích</em>). Nhấn <strong><code>+ Thêm thành tích</code></strong> để thêm dòng; khi đạt tối đa <strong>4/4 dòng</strong>, nút thêm sẽ tự ẩn. Nếu không có thành tích, có thể để trống hoàn toàn dòng đầu tiên.</li>
+            </ul>
+          </li>
+          <li>
+            <strong>Mục 3.2 (Đóng góp cho Chi bộ):</strong> Bắt buộc liệt kê tối thiểu 01 hoạt động đã tham gia/đóng góp cho Chi bộ Sinh viên và Chi bộ Sinh viên 1 trong năm học 2025 – 2026 (điền đủ 3 cột: <em>Hoạt động, Thời gian, Các nội dung đã đóng góp</em>). Nhấn <strong><code>+ Thêm hoạt động đóng góp</code></strong> nếu muốn khai thêm.
+          </li>
+        </ul>
+      </div>
+
+      <div class="guide-block">
+        <h3><span class="num-circle">5</span> Mục 4 &amp; Phần III — Đề xuất ý kiến và Tự đánh giá xếp loại năm 2026</h3>
+        <ul class="guide-ul">
+          <li>Nhập đề xuất, ý kiến đóng góp xây dựng Chi bộ và Nhà trường (nếu có).</li>
+          <li>
+            Chọn <strong>Tự xếp loại mức hoàn thành nhiệm vụ năm 2026</strong> dựa trên kết quả <strong>năm học 2025 - 2026</strong>:
+            <ul class="guide-sub-ul">
+              <li><strong>Hoàn thành xuất sắc nhiệm vụ:</strong> Điểm trung bình học tập năm học 2025 - 2026 đạt từ loại <strong>Giỏi</strong> trở lên, rèn luyện từ loại <strong>Tốt</strong> trở lên.</li>
+              <li><strong>Hoàn thành tốt nhiệm vụ:</strong> Điểm trung bình học tập năm học 2025 - 2026 đạt từ loại <strong>Khá</strong> trở lên, rèn luyện từ loại <strong>Tốt</strong> trở lên.</li>
+            </ul>
+          </li>
+          <li><strong>Trường hợp mới kết nạp:</strong> Nếu Đảng viên kết nạp <strong>chưa đủ 6 tháng tính đến ngày 21/11/2026</strong> (ngày vào Đảng sau <code>21/05/2026</code>), hệ thống sẽ tự động hiện cảnh báo và <strong>ẩn phần chọn xếp loại</strong> (đồng chí chỉ gửi thông tin kê khai và làm bản kiểm điểm hồ sơ).</li>
+          <li>Tích chọn cam đoan và nhấn <strong>"Gửi Thông Tin Kê Khai"</strong>.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- BƯỚC 2 -->
+    <section id="buoc-2" class="section-card">
+      <div class="section-header">
+        <div class="section-header-left">
+          <span class="step-badge">Bước 2</span>
+          <h2 class="section-title">Tạo và tải bộ biểu mẫu để in (<code>mau-02c.html</code>)</h2>
+        </div>
+        <a href="mau-02c.html?v=20261117" class="cta-inline">
+          <span>Mở trang Tạo hồ sơ để in</span>
+          <svg class="icon-svg" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+      </div>
+
+      <p style="font-size: 0.92rem; color: var(--text-secondary); margin-bottom: 14px;">
+        Tại trang chủ, trong <strong>Phần 2</strong>, đồng chí chọn <strong>1 trong 2 cách</strong>:
+      </p>
+
+      <div class="method-card recommended">
+        <span class="method-badge">Cách 1 • Khuyên dùng</span>
+        <div class="method-title">Điền trực tuyến và xuất 2 file Word cùng lúc</div>
+        <ul class="guide-ul">
+          <li>Bấm nút <strong>"Tạo hồ sơ để in"</strong> trên trang chủ (hoặc bấm liên kết chuyển tiếp ngay sau khi gửi thành công Bước 1).</li>
+          <li>Hệ thống tự nhận diện phiên đăng nhập từ Bước 1 (hoặc đồng chí nhập lại MSSV + CCCD rồi bấm tra cứu). Các thông tin cá nhân, địa chỉ cư trú, điểm số, thành tích, đóng góp và tự xếp loại đã kê khai ở Bước 1 sẽ <strong>tự động đổ sang biểu mẫu</strong>.</li>
+          <li><strong>Phần A — Nội dung tự kiểm điểm (Mẫu 02c):</strong> Kiểm tra/bổ sung các mục từ <code>I.1</code> đến <code>VI</code>. Có thể bấm nút <strong>"Chèn gợi ý"</strong> ở đầu mỗi ô để lấy đoạn văn mẫu chuẩn của Chi bộ, sau đó chỉnh sửa lại cho đúng với bản thân.</li>
+          <li><strong>Phần B — Nội dung tự đánh giá, chấm điểm &amp; xếp loại:</strong>
+            <ul class="guide-sub-ul">
+              <li>Bấm <strong>"Xem Phụ lục 04 chấm điểm"</strong> ở góc phải thẻ để đối chiếu khung tiêu chí chấm điểm đối với Đảng viên là sinh viên (Biểu số 32 Quy định 345-QĐ/TU).</li>
+              <li>Nhập <code>1. Tiêu chí chung</code> (tối đa <code>30</code> điểm) và <code>2. Kết quả thực hiện NV</code> (tối đa <code>70</code> điểm); hệ thống tự cộng tổng điểm <code>/100</code>.</li>
+              <li>Chọn mức đề xuất xếp loại phù hợp với tổng điểm và điều kiện năm học 2025 - 2026. <em>(Đảng viên kết nạp chưa đủ 6 tháng tính đến 21/11/2026 sẽ được tự động ẩn phần chấm điểm và xếp loại)</em>.</li>
+            </ul>
+          </li>
+          <li><strong>Phần C — Phiếu bổ sung hồ sơ Đảng viên (Mẫu 6b):</strong>
+            <ul class="guide-sub-ul">
+              <li><strong>Quy tắc chung:</strong> Chỉ điền những mục <strong>có thay đổi so với năm trước</strong>; các mục không thay đổi giữ nguyên chữ <code>K</code>.</li>
+              <li><strong>Lưu ý riêng Khóa 52K:</strong> Mục <em>Mới thay đổi nơi ở</em>: nếu đang ở trọ thì ghi rõ địa chỉ trọ hiện nay. Mục <em>Mới thay đổi về nghề nghiệp; đơn vị công tác</em>: ghi <code>Sinh viên - Khoa [Tên khoa]</code>.</li>
+              <li>Nhấn vào mục mở rộng <strong>"Các mục khác..."</strong> nếu có thay đổi về chức vụ, trình độ, khen thưởng từ bằng khen trở lên, kỷ luật, gia đình hoặc kinh tế.</li>
+            </ul>
+          </li>
+          <li><strong>Xuất file &amp; In ký tên:</strong> Bấm nút <strong>"Xuất tệp ZIP hồ sơ để in (Mẫu 02c + Mẫu 6b)"</strong>. Giải nén file <code>.zip</code> vừa tải về, mở kiểm tra lại 2 file Word (Mẫu 02c và Mẫu 6b), in ra giấy A4 và ký ghi rõ họ tên.</li>
+        </ul>
+      </div>
+
+      <div class="method-card manual">
+        <span class="method-badge">Cách 2 • Ghi tay / Tự soạn</span>
+        <div class="method-title">Tải mẫu trống về viết tay hoặc tự soạn</div>
+        <ul class="guide-ul">
+          <li>Trên trang chủ, bấm <strong>"Tải mẫu trống"</strong> để tải bộ biểu mẫu gốc và bấm <strong>"Xem hướng dẫn ghi"</strong> để đọc quy cách viết tay/đánh máy đúng chuẩn Chi bộ.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- BƯỚC 3 -->
+    <section id="buoc-3" class="section-card">
+      <div class="section-header">
+        <div class="section-header-left">
+          <span class="step-badge">Bước 3</span>
+          <h2 class="section-title">Chuẩn bị Mẫu 6d (Nhận xét nơi cư trú) &amp; Nộp hồ sơ</h2>
+        </div>
+      </div>
+
+      <div class="guide-block">
+        <h3><span class="num-circle">1</span> Lấy Mẫu 6d (Nhận xét nơi cư trú)</h3>
+        <ul class="guide-ul">
+          <li>
+            <strong>Bản online (ưu tiên):</strong> Truy cập Cổng Dịch vụ công Đảng tại <a href="https://dichvucong.dcs.vn" target="_blank" style="color: var(--crimson); font-weight: 700;">dichvucong.dcs.vn</a> &rarr; Đăng nhập &rarr; Chọn <strong>Thủ tục hành chính của tôi</strong> &rarr; Bấm vào dòng <strong>Lấy ý kiến nhận xét của Chi ủy chi bộ đối với đảng viên sinh hoạt nơi cư trú</strong> &rarr; <strong>Chi tiết giấy tờ</strong> &rarr; Bấm biểu tượng tải xuống và in ra.
+          </li>
+          <li>
+            <strong>Nếu chưa có bản điện tử:</strong> Phải <strong>liên hệ ngay Bí thư Chi bộ nơi cư trú</strong> để xử lý kịp thời theo 3 trường hợp:
+            <ul class="guide-sub-ul">
+              <li><strong>Trường hợp 1:</strong> Chi bộ nơi cư trú báo sẽ làm bản điện tử &rarr; hỏi rõ thời điểm trả kết quả để kịp tải và nộp trong tuần.</li>
+              <li><strong>Trường hợp 2:</strong> Chi bộ nơi cư trú báo làm bản giấy theo mẫu 2-QĐ 221 &rarr; <a href="templates/mau-6d.doc" download="Mau_6d_Nhan_xet_noi_cu_tru_2026.doc" style="color: var(--crimson); font-weight: 700;">tải ngay mẫu giấy 6d (Mau_6d_Nhan_xet_noi_cu_tru_2026.doc)</a>, điền thông tin và xin ký xác nhận/đóng dấu.</li>
+              <li><strong>Trường hợp 3:</strong> Chưa nộp Giấy 221 và chưa có bản điện tử &rarr; khẩn trương liên hệ Bí thư Chi bộ nơi cư trú để xin sinh hoạt 221 trước và nhờ cấp nhận xét kịp tiến độ.</li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+
+      <div class="checklist-box">
+        <h3>Kiểm tra đủ 3 loại hồ sơ bản giấy trước khi nộp vào <u>Sáng Chủ nhật, ngày 22/11/2026</u>:</h3>
+        <label class="checklist-item">
+          <input type="checkbox" onchange="toggleChecklist(this)" data-key="chk_02c">
+          <span><strong>01 Bản kiểm điểm cá nhân năm 2026 (Mẫu 02c)</strong> — đã in và ký ghi rõ họ tên.</span>
+        </label>
+        <label class="checklist-item">
+          <input type="checkbox" onchange="toggleChecklist(this)" data-key="chk_6b">
+          <span><strong>01 Phiếu bổ sung hồ sơ Đảng viên năm 2026 (Mẫu 6b)</strong> — đã in và ký ghi rõ họ tên.</span>
+        </label>
+        <label class="checklist-item">
+          <input type="checkbox" onchange="toggleChecklist(this)" data-key="chk_6d">
+          <span><strong>01 Phiếu nhận xét của Chi ủy nơi cư trú (Mẫu 6d)</strong> — bản điện tử in từ <code>dichvucong.dcs.vn</code> hoặc bản giấy theo mẫu 2-QĐ 221 có xác nhận của Chi ủy nơi cư trú.</span>
+        </label>
+      </div>
+    </section>
+
+    <div id="faq" class="part-heading">Phần II: Giải đáp thắc mắc thường gặp (FAQ)</div>
+
+    <section class="section-card">
+      <details class="faq-item" open>
+        <summary>1. Nhập MSSV và CCCD nhưng hệ thống báo không tìm thấy?</summary>
+        <div class="faq-answer">
+          Kiểm tra lại có gõ dư khoảng trắng hoặc nhầm số CCCD/mã giảng viên (VD: <code>GVSV1</code>) hay không. Nếu vẫn không tra cứu được, liên hệ Chi ủy để kiểm tra và cập nhật vào danh sách trên Cổng Quản trị.
+        </div>
+      </details>
+
+      <details class="faq-item" open>
+        <summary>2. Đã gửi Bước 1 nhưng muốn sửa lại thông tin thì làm sao?</summary>
+        <div class="faq-answer">
+          Truy cập lại mục <strong>Thực hiện kê khai ngay</strong>, nhập lại đúng MSSV và CCCD. Hệ thống sẽ tự động tải lại toàn bộ nội dung đã gửi trước đó để đồng chí chỉnh sửa và bấm <strong>"Cập Nhật Thông Tin Bổ Sung"</strong> (lưu ý: hoàn tất trước <strong>20h00 - Thứ 5, ngày 19/11/2026</strong>).
+        </div>
+      </details>
+
+      <details class="faq-item" open>
+        <summary>3. Tại sao nút <code>+ Thêm thành tích</code> biến mất sau khi thêm 4 dòng?</summary>
+        <div class="faq-answer">
+          Theo quy định của Chi bộ, mục <code>3.1</code> chỉ kê khai <strong>tối đa 04 thành tích cao nhất, nổi bật nhất</strong>. Khi đã đủ 4 dòng, hệ thống ẩn nút thêm; nếu muốn thay thành tích khác, đồng chí sửa trực tiếp trên 4 dòng hiện có hoặc bấm <code>×</code> xóa bớt dòng không cần thiết.
+        </div>
+      </details>
+
+      <details class="faq-item" open>
+        <summary>4. Nên mở file <code>.zip</code> xuất ra từ Bước 2 trên thiết bị nào?</summary>
+        <div class="faq-answer">
+          Khuyên dùng <strong>máy tính (Windows/macOS)</strong> để bấm <strong>"Xuất tệp ZIP hồ sơ để in (Mẫu 02c + Mẫu 6b)"</strong>, sau đó giải nén file <code>.zip</code> bằng File Explorer / WinRAR / 7-Zip để mở bằng Microsoft Word kiểm tra bố cục trước khi in.
+        </div>
+      </details>
+    </section>
+
+    <div class="footer-note">
+      Chi bộ Sinh viên 1 — Hướng dẫn sử dụng Hệ thống Hỗ trợ Kiểm điểm, Đánh giá và Xếp loại Đảng viên năm 2026
+    </div>
+  </div>
+
+  <script>
+    function toggleChecklist(cb) {
+      const label = cb.closest('.checklist-item');
+      if (label) label.classList.toggle('checked', cb.checked);
+      try {
+        const saved = JSON.parse(localStorage.getItem('CBSV1_DOC_CHECKLIST_2026') || '{}');
+        saved[cb.getAttribute('data-key')] = cb.checked;
+        localStorage.setItem('CBSV1_DOC_CHECKLIST_2026', JSON.stringify(saved));
+      } catch (e) {}
+    }
+
+    (function restoreChecklist() {
+      try {
+        const saved = JSON.parse(localStorage.getItem('CBSV1_DOC_CHECKLIST_2026') || '{}');
+        document.querySelectorAll('.checklist-item input[type="checkbox"]').forEach(cb => {
+          const key = cb.getAttribute('data-key');
+          if (saved[key]) {
+            cb.checked = true;
+            const label = cb.closest('.checklist-item');
+            if (label) label.classList.add('checked');
+          }
+        });
+      } catch (e) {}
+    })();
+  </script>
+</body>
+</html>
