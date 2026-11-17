@@ -34,9 +34,9 @@ Các đồng chí thực hiện đầy đủ theo 3 bước:
    • Xuất và in Mẫu 02c & 6b từ mục "Tạo hồ sơ để in" (tự chấm điểm theo Phụ lục 04), in ra giấy và ký tên.
    • Lấy Mẫu 6d (Nhận xét nơi cư trú): Tải bản điện tử trên https://dichvucong.dcs.vn (hoặc xin bản giấy xác nhận 2-QĐ 221).
    • Tập hợp trọn bộ 03 loại giấy tờ sẵn sàng trước ngày nộp.
-   (Đảng viên kết nạp chưa đủ 6 tháng tính đến 21/11/2026 được miễn tự chấm điểm/xếp loại, chỉ in nộp Mẫu 02c + 6d).
+   (Đảng viên kết nạp chưa đủ 6 tháng tính đến 21/11/2026 thực hiện đầy đủ các bước kiểm điểm nhưng không thực hiện đánh giá, xếp loại).
 
-3️⃣ BƯỚC 3 - Nộp hồ sơ bản cứng & đối soát:
+3️⃣ BƯỚC 3 - Tham gia Hội nghị kiểm điểm, đánh giá xếp loại của Chi bộ & Nộp hồ sơ bản cứng:
    • Có mặt đúng giờ tại buổi họp của Chi bộ, nộp trực tiếp đủ 03 bản giấy: Mẫu 02c + Mẫu 6b + Mẫu 6d.
    • HẠN NỘP BẢN CỨNG CHO CHI BỘ: Sáng Chủ nhật, ngày 22/11/2026.
 
