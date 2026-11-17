@@ -276,7 +276,9 @@ const MOCK_API = (function () {
       tuXepLoai: isDu6Thang(member.ngayVaoDang)
         ? String(p.tuXepLoai || '')
         : 'Chưa đủ 6 tháng - Không thực hiện tự đánh giá xếp loại',
-      deXuat: String(p.deXuat || '')
+      deXuat: String(p.deXuat || ''),
+      xacNhanThamGiaHoiNghi: String(p.xacNhanThamGiaHoiNghi || ''),
+      lyDoVangMat: String(p.lyDoVangMat || '')
     };
   }
 
@@ -366,6 +368,10 @@ const MOCK_API = (function () {
           'Đóng góp cho Chi bộ': dongGopStr,
           'Tự xếp loại mức HTNV năm 2026': sub.tuXepLoai || '',
           'Đề xuất, ý kiến': sub.deXuat || '',
+          'Tham gia Hội nghị (22/11/2026)': sub.xacNhanThamGiaHoiNghi === 'tham_gia'
+            ? 'Có tham gia'
+            : (sub.xacNhanThamGiaHoiNghi === 'khong_tham_gia' ? 'Vắng mặt' : 'Chưa xác nhận'),
+          'Lý do vắng mặt Hội nghị': sub.lyDoVangMat || '',
           'Trạng thái tạo hồ sơ in (Mẫu 02c + 6b)': docMatch ? `Đã tải (${docMatch.thoiGian})` : 'Chưa tạo',
           'Tổng điểm tự chấm (Mẫu 02c)': (docMatch && docMatch.tongDiem) ? docMatch.tongDiem : ''
         };
@@ -377,6 +383,8 @@ const MOCK_API = (function () {
         daKeKhai: Boolean(sub),
         thoiGianGui: sub ? sub.thoiGianGui : '',
         tuXepLoai: sub ? sub.tuXepLoai : '',
+        xacNhanThamGiaHoiNghi: sub ? (sub.xacNhanThamGiaHoiNghi || '') : '',
+        lyDoVangMat: sub ? (sub.lyDoVangMat || '') : '',
         daTaoHoSo: Boolean(docMatch),
         thoiGianTaoHoSo: docMatch ? docMatch.thoiGian : '',
         tongDiemHoSo: (docMatch && docMatch.tongDiem) ? docMatch.tongDiem : '',
@@ -559,7 +567,9 @@ const MOCK_API = (function () {
           kqHocTapHK2: String(sp.kqHocTapHK2 || ''),
           kqRenLuyenHK2: String(sp.kqRenLuyenHK2 || ''),
           tuXepLoai: String(sp.tuXepLoai || ''),
-          deXuat: String(sp.deXuat || '')
+          deXuat: String(sp.deXuat || ''),
+          xacNhanThamGiaHoiNghi: String(sp.xacNhanThamGiaHoiNghi || ''),
+          lyDoVangMat: String(sp.lyDoVangMat || '')
         });
       }
       if (body.docDraftPatch) {
@@ -984,7 +994,9 @@ const MOCK_API = (function () {
             kqHocTapHK2: String(sp.kqHocTapHK2 || ''),
             kqRenLuyenHK2: String(sp.kqRenLuyenHK2 || ''),
             tuXepLoai: String(sp.tuXepLoai || ''),
-            deXuat: String(sp.deXuat || '')
+            deXuat: String(sp.deXuat || ''),
+            xacNhanThamGiaHoiNghi: String(sp.xacNhanThamGiaHoiNghi || ''),
+            lyDoVangMat: String(sp.lyDoVangMat || '')
           });
         } else {
           updatedSub = baseSub;
