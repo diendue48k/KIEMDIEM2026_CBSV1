@@ -758,7 +758,7 @@
 
       <div class="alert-important">
         <span class="alert-important-tag">Important</span>
-        <strong>Hạn cuối hoàn thành Bước 1: Trước 20h00 - Thứ 5, ngày 19/11/2026.</strong>
+        <strong>Hạn cuối hoàn thành Bước 1: Trước <span class="dyn-deadline-kekhai">20h00 - Thứ 5, ngày 19/11/2026</span>.</strong>
         Hãy thực hiện Bước 1 trước để dữ liệu của đồng chí được ghi nhận lên hệ thống Chi bộ và <strong>tự động đổ sang Bước 2</strong>.
       </div>
 
@@ -898,7 +898,7 @@
       </div>
 
       <div class="checklist-box">
-        <h3>Kiểm tra đủ 3 loại hồ sơ bản giấy trước khi nộp vào <u>Sáng Chủ nhật, ngày 22/11/2026</u>:</h3>
+        <h3>Kiểm tra đủ 3 loại hồ sơ bản giấy trước khi nộp vào <u class="dyn-deadline-nophoso">Sáng Chủ nhật, ngày 22/11/2026</u>:</h3>
         <label class="checklist-item">
           <input type="checkbox" onchange="toggleChecklist(this)" data-key="chk_02c">
           <span><strong>01 Bản kiểm điểm cá nhân năm 2026 (Mẫu 02c)</strong> — đã in và ký ghi rõ họ tên.</span>
@@ -927,7 +927,7 @@
       <details class="faq-item" open>
         <summary>2. Đã gửi Bước 1 nhưng muốn sửa lại thông tin thì làm sao?</summary>
         <div class="faq-answer">
-          Truy cập lại mục <strong>Thực hiện kê khai ngay</strong>, nhập lại đúng MSSV và CCCD. Hệ thống sẽ tự động tải lại toàn bộ nội dung đã gửi trước đó để đồng chí chỉnh sửa và bấm <strong>"Cập Nhật Thông Tin Bổ Sung"</strong> (lưu ý: hoàn tất trước <strong>20h00 - Thứ 5, ngày 19/11/2026</strong>).
+          Truy cập lại mục <strong>Thực hiện kê khai ngay</strong>, nhập lại đúng MSSV và CCCD. Hệ thống sẽ tự động tải lại toàn bộ nội dung đã gửi trước đó để đồng chí chỉnh sửa và bấm <strong>"Cập Nhật Thông Tin Bổ Sung"</strong> (lưu ý: hoàn tất trước <strong class="dyn-deadline-kekhai">20h00 - Thứ 5, ngày 19/11/2026</strong>).
         </div>
       </details>
 
@@ -1144,6 +1144,33 @@
         });
       } catch (e) {}
     })();
+  </script>
+  <script src="config.js"></script>
+  <script src="mock-api.js"></script>
+  <script>
+    function applyDeadlinesToGuide(links) {
+      if (!links) return;
+      if (links.DEADLINE_KE_KHAI_TEXT) {
+        document.querySelectorAll('.dyn-deadline-kekhai').forEach(el => {
+          el.textContent = links.DEADLINE_KE_KHAI_TEXT;
+        });
+      }
+      if (links.DEADLINE_NOP_HO_SO_TEXT) {
+        document.querySelectorAll('.dyn-deadline-nophoso').forEach(el => {
+          el.textContent = links.DEADLINE_NOP_HO_SO_TEXT;
+        });
+      }
+    }
+    if (typeof APP_CONFIG !== 'undefined') {
+      applyDeadlinesToGuide(APP_CONFIG);
+      if (APP_CONFIG.USE_MOCK_DATA && typeof MOCK_API !== 'undefined') {
+        Promise.resolve(MOCK_API.handle({ action: 'getLinks' }))
+          .then(res => {
+            if (res && res.success && res.links) applyDeadlinesToGuide(res.links);
+          })
+          .catch(() => {});
+      }
+    }
   </script>
 </body>
 </html>

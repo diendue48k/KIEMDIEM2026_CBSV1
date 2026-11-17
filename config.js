@@ -15,6 +15,11 @@ const APP_CONFIG = {
     appId: "1:827668696597:web:c3cf89890061df5a22881c"
   },
 
+  // Thời hạn mặc định
+  DEADLINE_KE_KHAI_ISO: '2026-11-19T20:00',
+  DEADLINE_KE_KHAI_TEXT: '20h00 - Thứ 5, ngày 19/11/2026',
+  DEADLINE_NOP_HO_SO_TEXT: 'Sáng Chủ nhật, ngày 22/11/2026',
+
   // Link tải biểu mẫu mặc định
   LINK_TAI_TOAN_BO: 'https://drive.google.com/drive/folders/1HdAXZk1ICDzdfEHEeUZzgPzKh1KyhA8F?usp=drive_link',
   LINK_HUONG_DAN_CHUNG: 'https://drive.google.com/drive/folders/10Gj3oaZr0f9L4z04fPnS6B1d98ME1hzl?usp=drive_link',

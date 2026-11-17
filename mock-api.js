@@ -41,6 +41,15 @@ const MOCK_API = (function () {
     if (!merged.LINK_HUONG_DAN_CHUNG || String(merged.LINK_HUONG_DAN_CHUNG).includes('sample')) {
       merged.LINK_HUONG_DAN_CHUNG = DEFAULT_DB.links.LINK_HUONG_DAN_CHUNG;
     }
+    if (!merged.DEADLINE_KE_KHAI_ISO) {
+      merged.DEADLINE_KE_KHAI_ISO = DEFAULT_DB.links.DEADLINE_KE_KHAI_ISO;
+    }
+    if (!merged.DEADLINE_KE_KHAI_TEXT) {
+      merged.DEADLINE_KE_KHAI_TEXT = DEFAULT_DB.links.DEADLINE_KE_KHAI_TEXT;
+    }
+    if (!merged.DEADLINE_NOP_HO_SO_TEXT) {
+      merged.DEADLINE_NOP_HO_SO_TEXT = DEFAULT_DB.links.DEADLINE_NOP_HO_SO_TEXT;
+    }
     return merged;
   }
 

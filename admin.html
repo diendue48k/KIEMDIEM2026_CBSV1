@@ -155,6 +155,7 @@
 
     input[type="text"],
     input[type="number"],
+    input[type="datetime-local"],
     input[type="password"],
     input[type="url"],
     select {
@@ -570,7 +571,7 @@
         <div class="tabs">
           <button class="tab-btn active" onclick="switchTab('progress', this)">1. Kiểm tra kê khai</button>
           <button class="tab-btn" onclick="switchTab('logs', this)">2. Lịch sử tạo biểu mẫu online</button>
-          <button class="tab-btn" onclick="switchTab('links', this)">3. Cấu hình đường link</button>
+          <button class="tab-btn" onclick="switchTab('links', this)">3. Cấu hình thời hạn &amp; đường link</button>
         </div>
 
         <!-- TAB 1: TIẾN ĐỘ & XUẤT / NHẬP -->
@@ -696,19 +697,48 @@
           </div>
         </div>
 
-        <!-- TAB 3: CẤU HÌNH LINK -->
+        <!-- TAB 3: CẤU HÌNH THỜI HẠN & LINK -->
         <div id="tab-links" class="hidden" style="margin-top: 20px;">
           <div id="linksAlert" class="alert hidden"></div>
           <form onsubmit="saveLinks(event)">
-            <div class="form-group">
-              <label for="cfg_LINK_TAI_TOAN_BO">Link nút "Tải mẫu trống" (Thư mục Google Drive chứa các biểu mẫu trống)</label>
-              <input type="url" id="cfg_LINK_TAI_TOAN_BO" placeholder="https://drive.google.com/drive/folders/...">
+            <div style="background: #fcfaf7; border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px; margin-bottom: 18px;">
+              <h3 style="color: var(--crimson-dark); font-size: 0.96rem; font-weight: 800; text-transform: uppercase; margin-bottom: 14px;">
+                Cấu hình Thời hạn Kê khai &amp; Nộp hồ sơ
+              </h3>
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label for="cfg_DEADLINE_KE_KHAI_ISO">Thời điểm đếm ngược Hạn cuối kê khai trực tuyến (Bước 1)</label>
+                  <input type="datetime-local" id="cfg_DEADLINE_KE_KHAI_ISO" oninput="syncDeadlineTextFromIso(this.value)">
+                  <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 5px;">
+                    Khi chọn ngày giờ, nhãn hiển thị bên cạnh sẽ tự động cập nhật theo định dạng tiếng Việt.
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="cfg_DEADLINE_KE_KHAI_TEXT">Nhãn hiển thị Hạn cuối kê khai trực tuyến</label>
+                  <input type="text" id="cfg_DEADLINE_KE_KHAI_TEXT" placeholder="VD: 20h00 - Thứ 5, ngày 19/11/2026">
+                </div>
+              </div>
+              <div class="form-group" style="margin-bottom: 0;">
+                <label for="cfg_DEADLINE_NOP_HO_SO_TEXT">Thời hạn nộp hồ sơ bản giấy cho Chi bộ (Bước 2)</label>
+                <input type="text" id="cfg_DEADLINE_NOP_HO_SO_TEXT" placeholder="VD: Sáng Chủ nhật, ngày 22/11/2026">
+              </div>
             </div>
-            <div class="form-group">
-              <label for="cfg_LINK_HUONG_DAN_CHUNG">Link nút "Xem hướng dẫn ghi" (Thư mục Google Drive chứa file hướng dẫn ghi)</label>
-              <input type="url" id="cfg_LINK_HUONG_DAN_CHUNG" placeholder="https://drive.google.com/drive/folders/...">
+
+            <div style="background: #fcfaf7; border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px; margin-bottom: 18px;">
+              <h3 style="color: var(--crimson-dark); font-size: 0.96rem; font-weight: 800; text-transform: uppercase; margin-bottom: 14px;">
+                Cấu hình Đường link Biểu mẫu &amp; Hướng dẫn
+              </h3>
+              <div class="form-group">
+                <label for="cfg_LINK_TAI_TOAN_BO">Link nút "Tải mẫu trống" (Thư mục Google Drive chứa các biểu mẫu trống)</label>
+                <input type="url" id="cfg_LINK_TAI_TOAN_BO" placeholder="https://drive.google.com/drive/folders/...">
+              </div>
+              <div class="form-group" style="margin-bottom: 0;">
+                <label for="cfg_LINK_HUONG_DAN_CHUNG">Link nút "Xem hướng dẫn ghi" (Thư mục Google Drive chứa file hướng dẫn ghi)</label>
+                <input type="url" id="cfg_LINK_HUONG_DAN_CHUNG" placeholder="https://drive.google.com/drive/folders/...">
+              </div>
             </div>
-            <button type="submit" id="btnSaveLinks" class="btn btn-primary">Lưu cấu hình đường link</button>
+
+            <button type="submit" id="btnSaveLinks" class="btn btn-primary">Lưu cấu hình thời hạn &amp; đường link</button>
           </form>
         </div>
       </div>
@@ -1486,6 +1516,17 @@
       }
     }
 
+    function syncDeadlineTextFromIso(isoVal) {
+      const m = String(isoVal || '').trim().match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/);
+      if (!m) return;
+      const d = new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
+      const days = ['Chủ nhật', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'];
+      const thuLabel = days[d.getDay()];
+      const formatted = `${m[4]}h${m[5]} - ${thuLabel}, ngày ${m[3]}/${m[2]}/${m[1]}`;
+      const textEl = document.getElementById('cfg_DEADLINE_KE_KHAI_TEXT');
+      if (textEl) textEl.value = formatted;
+    }
+
     async function saveLinks(e) {
       e.preventDefault();
       const btn = document.getElementById('btnSaveLinks');
@@ -1494,6 +1535,9 @@
       alertBox.classList.remove('alert-success', 'alert-danger');
 
       const links = {
+        DEADLINE_KE_KHAI_ISO: document.getElementById('cfg_DEADLINE_KE_KHAI_ISO').value.trim(),
+        DEADLINE_KE_KHAI_TEXT: document.getElementById('cfg_DEADLINE_KE_KHAI_TEXT').value.trim(),
+        DEADLINE_NOP_HO_SO_TEXT: document.getElementById('cfg_DEADLINE_NOP_HO_SO_TEXT').value.trim(),
         LINK_TAI_TOAN_BO: document.getElementById('cfg_LINK_TAI_TOAN_BO').value.trim(),
         LINK_HUONG_DAN_CHUNG: document.getElementById('cfg_LINK_HUONG_DAN_CHUNG').value.trim()
       };
@@ -1502,6 +1546,9 @@
       btn.textContent = 'Đang lưu...';
       try {
         const res = await callGasApi({ action: 'adminSaveLinks', password: adminPassword, links });
+        if (res && res.success && res.links && dashboardData) {
+          dashboardData.links = res.links;
+        }
         alertBox.textContent = res.message;
         alertBox.classList.add(res.success ? 'alert-success' : 'alert-danger');
         alertBox.classList.remove('hidden');
@@ -1511,7 +1558,7 @@
         alertBox.classList.remove('hidden');
       } finally {
         btn.disabled = false;
-        btn.textContent = 'Lưu cấu hình đường link';
+        btn.textContent = 'Lưu cấu hình thời hạn & đường link';
       }
     }
 
