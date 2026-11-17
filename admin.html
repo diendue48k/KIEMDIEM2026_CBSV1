@@ -154,6 +154,7 @@
     label { display: block; font-size: 0.86rem; font-weight: 600; margin-bottom: 6px; }
 
     input[type="text"],
+    input[type="number"],
     input[type="password"],
     input[type="url"],
     select {
@@ -446,6 +447,62 @@
       white-space: pre-wrap;
       color: var(--text-main);
     }
+
+    .admin-act-bar {
+      background: linear-gradient(135deg, #fffdf9 0%, #fff7ed 100%);
+      border: 1.5px solid #fde68a;
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 16px;
+    }
+    .admin-act-title {
+      font-size: 0.84rem;
+      font-weight: 800;
+      color: var(--crimson-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      margin-bottom: 10px;
+    }
+    .admin-act-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    details.edit-draft-box {
+      margin-top: 12px;
+      padding: 12px 14px;
+      background: #fcfaf8;
+      border: 1.5px dashed #dfd2c8;
+      border-radius: 10px;
+    }
+    details.edit-draft-box summary {
+      cursor: pointer;
+      font-weight: 700;
+      color: var(--crimson-dark);
+      font-size: 0.9rem;
+    }
+    details.edit-draft-box textarea {
+      width: 100%;
+      padding: 8px 10px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      font-size: 0.88rem;
+      min-height: 68px;
+      resize: vertical;
+    }
+    details.edit-draft-box textarea:focus {
+      outline: none;
+      border-color: var(--crimson);
+      box-shadow: 0 0 0 3px rgba(158, 27, 30, 0.1);
+    }
+
+    .btn-xs {
+      padding: 4px 9px;
+      font-size: 0.76rem;
+      white-space: nowrap;
+    }
   </style>
 </head>
 <body>
@@ -631,6 +688,7 @@
                   <th>Biểu mẫu đã tải</th>
                   <th>Tổng điểm</th>
                   <th>Mức đề xuất</th>
+                  <th>Thao tác</th>
                 </tr>
               </thead>
               <tbody id="docLogsTableBody"></tbody>
@@ -655,6 +713,12 @@
         </div>
       </div>
     </div>
+
+    <div class="footer-note" style="text-align: center; font-size: 0.8rem; color: var(--text-muted); line-height: 1.6; margin-top: 22px;">
+      <div>Chi bộ Sinh viên 1 — Cổng quản trị Hệ thống kiểm điểm năm 2026</div>
+      <div>Đây là hệ thống nội bộ, chỉ dùng cho Đảng viên Chi bộ Sinh viên 1. Vui lòng không phát hành ra bên ngoài.</div>
+      <div>Bản quyền thuộc về &copy; 2026 - Lê Vĩnh Diện</div>
+    </div>
   </div>
 
   <!-- MODAL XEM CHI TIẾT -->
@@ -678,6 +742,20 @@
       <div id="editMemberAlert" class="alert hidden"></div>
       <form id="editMemberForm" onsubmit="saveMemberForm(event)">
         <input type="hidden" id="editOriginalMssv">
+        <div id="adminActAsBar" class="admin-act-bar hidden">
+          <div class="admin-act-title">Công cụ làm hồ sơ / sửa biểu mẫu hộ Đảng viên</div>
+          <div class="admin-act-buttons">
+            <button type="button" class="btn btn-outline btn-sm" onclick="openMemberTool(document.getElementById('editOriginalMssv').value, 'kekhai.html')">
+              Mở trang Kê khai hộ
+            </button>
+            <button type="button" class="btn btn-primary btn-sm" onclick="openMemberTool(document.getElementById('editOriginalMssv').value, 'mau-02c.html')">
+              Mở, Sửa &amp; Xuất Hồ sơ (02c + 6b)
+            </button>
+            <button type="button" class="btn btn-gold btn-sm" onclick="openMemberTool(document.getElementById('editOriginalMssv').value, 'mau-6b.html')">
+              Mở, Sửa &amp; Xuất Mẫu 6b
+            </button>
+          </div>
+        </div>
         <div class="form-grid-3">
           <div class="form-group">
             <label for="editStt">STT</label>
@@ -796,6 +874,87 @@
             <textarea id="editSubDeXuat" rows="2" style="width:100%; padding:8px 10px; border:1.5px solid var(--border); border-radius:var(--radius-sm); font-family:inherit;"></textarea>
           </div>
         </div>
+
+        <details id="editDocDraftSection" class="edit-draft-box hidden">
+          <summary>Chỉnh sửa &amp; Lưu trực tiếp thông tin Hồ sơ Mẫu 02c / Mẫu 6b của Đảng viên</summary>
+          <div style="margin-top: 12px;">
+            <h4 style="color: var(--crimson-dark); margin-bottom: 10px; font-size: 0.88rem;">Bản kiểm điểm Mẫu 02c</h4>
+            <div class="form-grid-3">
+              <div class="form-group">
+                <label for="editDraftDiemChung">Điểm tiêu chí chung (0 - 30)</label>
+                <input type="number" id="editDraftDiemChung" min="0" max="30" step="0.5" placeholder="0 - 30">
+              </div>
+              <div class="form-group">
+                <label for="editDraftDiemNhiemVu">Điểm thực hiện NV (0 - 70)</label>
+                <input type="number" id="editDraftDiemNhiemVu" min="0" max="70" step="0.5" placeholder="0 - 70">
+              </div>
+              <div class="form-group">
+                <label for="editDraftXepLoai">Đề xuất xếp loại (02c)</label>
+                <select id="editDraftXepLoai">
+                  <option value="">-- Chưa chọn --</option>
+                  <option value="Hoàn thành xuất sắc nhiệm vụ">Hoàn thành xuất sắc nhiệm vụ</option>
+                  <option value="Hoàn thành tốt nhiệm vụ">Hoàn thành tốt nhiệm vụ</option>
+                  <option value="Hoàn thành nhiệm vụ">Hoàn thành nhiệm vụ</option>
+                  <option value="Không hoàn thành nhiệm vụ">Không hoàn thành nhiệm vụ</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label for="editDraftNoiDung1">I.1. Phẩm chất chính trị, đạo đức, lối sống</label>
+                <textarea id="editDraftNoiDung1" placeholder="Nội dung I.1..."></textarea>
+              </div>
+              <div class="form-group">
+                <label for="editDraftNoiDung2">I.2. Thực hiện nhiệm vụ, quyền hạn</label>
+                <textarea id="editDraftNoiDung2" placeholder="Nội dung I.2..."></textarea>
+              </div>
+            </div>
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label for="editDraftNoiDung3">I.3. Tu dưỡng, rèn luyện, học theo Bác</label>
+                <textarea id="editDraftNoiDung3" placeholder="Nội dung I.3..."></textarea>
+              </div>
+              <div class="form-group">
+                <label for="editDraftHanChe">II.1. Hạn chế, khuyết điểm</label>
+                <textarea id="editDraftHanChe" placeholder="Hạn chế, khuyết điểm..."></textarea>
+              </div>
+            </div>
+            <div class="form-grid-3">
+              <div class="form-group">
+                <label for="editDraftNguyenNhan">II.2. Nguyên nhân</label>
+                <textarea id="editDraftNguyenNhan" placeholder="Nguyên nhân..."></textarea>
+              </div>
+              <div class="form-group">
+                <label for="editDraftKetQuaKhacPhuc">III. Kết quả khắc phục</label>
+                <textarea id="editDraftKetQuaKhacPhuc" placeholder="Kết quả khắc phục..."></textarea>
+              </div>
+              <div class="form-group">
+                <label for="editDraftBienPhapKhacPhuc">VI. Biện pháp khắc phục</label>
+                <textarea id="editDraftBienPhapKhacPhuc" placeholder="Biện pháp khắc phục..."></textarea>
+              </div>
+            </div>
+
+            <h4 style="color: var(--crimson-dark); margin: 10px 0; font-size: 0.88rem;">Phiếu bổ sung hồ sơ Mẫu 6b (không đổi giữ "K")</h4>
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label for="editDraftChoOMoi">Mới thay đổi nơi ở</label>
+                <input type="text" id="editDraftChoOMoi" placeholder="K">
+              </div>
+              <div class="form-group">
+                <label for="editDraftNgheNghiepMoi">Nghề nghiệp; đơn vị công tác</label>
+                <input type="text" id="editDraftNgheNghiepMoi" placeholder="K">
+              </div>
+              <div class="form-group">
+                <label for="editDraftKhenThuong">Khen thưởng mới</label>
+                <input type="text" id="editDraftKhenThuong" placeholder="K">
+              </div>
+              <div class="form-group">
+                <label for="editDraftKyLuat">Kỷ luật trong năm</label>
+                <input type="text" id="editDraftKyLuat" placeholder="K">
+              </div>
+            </div>
+          </div>
+        </details>
 
         <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border);">
           <button type="button" id="btnDeleteMember" class="btn btn-outline" style="color: #991b1b; border-color: #fecaca;" onclick="deleteMemberFromModal()">Xóa Đảng viên</button>
@@ -990,15 +1149,19 @@
           <td>
             ${m.daTaoHoSo
               ? '<span class="badge badge-success">Đã tải</span>'
-              : '<span class="badge badge-danger">Chưa tạo</span>'}
+              : (m.hasDocDraft
+                ? '<span class="badge" style="background:var(--gold-tint);color:#92400e;border:1px solid #fcd34d;">Đã lưu nháp</span>'
+                : '<span class="badge badge-danger">Chưa tạo</span>')}
           </td>
           <td>${escapeHtml(m.thoiGianGui || '-')}</td>
           <td>${escapeHtml(m.tuXepLoai || '-')}</td>
           <td>
-            <div style="display: flex; gap: 6px; flex-wrap: nowrap;">
-              <button class="btn btn-gold" style="padding:4px 10px; font-size:0.78rem;" onclick="openEditMember('${escapeHtml(m.mssv)}')">Sửa</button>
+            <div style="display: flex; gap: 5px; flex-wrap: wrap;">
+              <button class="btn btn-gold btn-xs" onclick="openEditMember('${escapeHtml(m.mssv)}')">Sửa</button>
+              <button class="btn btn-outline btn-xs" style="border-color:#f3b8b9; color:var(--crimson-dark);" onclick="openMemberTool('${escapeHtml(m.mssv)}', 'mau-02c.html')">Hồ sơ 02c/6b</button>
+              <button class="btn btn-outline btn-xs" onclick="openMemberTool('${escapeHtml(m.mssv)}', 'mau-6b.html')">Mẫu 6b</button>
               ${m.daKeKhai
-                ? `<button class="btn btn-outline" style="padding:4px 10px; font-size:0.78rem;" onclick="openDetail('${escapeHtml(m.mssv)}')">Xem</button>`
+                ? `<button class="btn btn-outline btn-xs" onclick="openDetail('${escapeHtml(m.mssv)}')">Xem</button>`
                 : ''}
             </div>
           </td>
@@ -1011,7 +1174,7 @@
       const logs = dashboardData.docLogs || [];
       const tbody = document.getElementById('docLogsTableBody');
       if (logs.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding: 24px;">Chưa có Đảng viên nào tải biểu mẫu online.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="9" style="text-align:center; padding: 24px;">Chưa có Đảng viên nào tải biểu mẫu online.</td></tr>';
         return;
       }
       tbody.innerHTML = logs.map((l, idx) => `
@@ -1024,8 +1187,37 @@
           <td>${escapeHtml(l.loaiHoSo)}</td>
           <td>${escapeHtml(l.tongDiem || '-')}</td>
           <td>${escapeHtml(l.xepLoai || '-')}</td>
+          <td>
+            <div style="display: flex; gap: 5px; flex-wrap: nowrap;">
+              <button class="btn btn-gold btn-xs" onclick="openMemberTool('${escapeHtml(l.mssv)}', 'mau-02c.html')">Sửa &amp; Tải 02c+6b</button>
+              <button class="btn btn-outline btn-xs" onclick="openMemberTool('${escapeHtml(l.mssv)}', 'mau-6b.html')">Sửa &amp; Tải 6b</button>
+            </div>
+          </td>
         </tr>
       `).join('');
+    }
+
+    function openMemberTool(mssv, targetPage) {
+      if (!dashboardData || !Array.isArray(dashboardData.members)) return;
+      const m = dashboardData.members.find(x => String(x.mssv || '').trim() === String(mssv || '').trim());
+      if (!m) {
+        alert('Không tìm thấy thông tin Đảng viên (MSSV: ' + mssv + ') trong danh sách.');
+        return;
+      }
+      try {
+        sessionStorage.setItem('CBSV1_AUTH', JSON.stringify({ mssv: m.mssv, cccd: m.cccd }));
+        localStorage.setItem('CBSV1_ADMIN_ACT_AS', JSON.stringify({
+          mssv: m.mssv,
+          cccd: m.cccd,
+          hoTen: m.hoTen,
+          fromAdmin: true,
+          ts: Date.now()
+        }));
+        if (m.docDraft) {
+          localStorage.setItem('CBSV1_DOC_DRAFT_2026_' + m.mssv, JSON.stringify(m.docDraft));
+        }
+      } catch (e) {}
+      window.location.href = `${targetPage}?mssv=${encodeURIComponent(m.mssv)}&fromAdmin=1`;
     }
 
     function escapeHtml(str) {
@@ -1050,6 +1242,25 @@
 
     function closeModal() {
       document.getElementById('detailModal').classList.add('hidden');
+    }
+
+    const ADMIN_DRAFT_FIELDS = [
+      'editDraftDiemChung', 'editDraftDiemNhiemVu', 'editDraftXepLoai',
+      'editDraftNoiDung1', 'editDraftNoiDung2', 'editDraftNoiDung3',
+      'editDraftHanChe', 'editDraftNguyenNhan', 'editDraftKetQuaKhacPhuc',
+      'editDraftBienPhapKhacPhuc', 'editDraftChoOMoi', 'editDraftNgheNghiepMoi',
+      'editDraftKhenThuong', 'editDraftKyLuat'
+    ];
+    let initialAdminDraftSnapshot = {};
+    let editingMemberHasDocDraft = false;
+
+    function readAdminDraftInputs() {
+      const out = {};
+      ADMIN_DRAFT_FIELDS.forEach(id => {
+        const el = document.getElementById(id);
+        out[id] = el ? el.value : '';
+      });
+      return out;
     }
 
     function openEditMember(mssv) {
@@ -1090,6 +1301,44 @@
         document.getElementById('editSubDeXuat').value = sub.deXuat || '';
       } else {
         subSec.classList.add('hidden');
+      }
+
+      const actBar = document.getElementById('adminActAsBar');
+      const draftSec = document.getElementById('editDocDraftSection');
+      if (isEdit) {
+        actBar.classList.remove('hidden');
+        draftSec.classList.remove('hidden');
+        draftSec.open = false;
+
+        const dd = m.docDraft || {};
+        const f02c = dd.form02c || {};
+        const f6b = dd.form6b || {};
+        editingMemberHasDocDraft = Boolean(m.hasDocDraft);
+
+        const is52K = String(m.lop || '').toUpperCase().startsWith('52K');
+        const defaultChoO = is52K ? ((sub && sub.noiOHienNay) || m.diaChiHienTai || 'K') : 'K';
+        const defaultNghe = is52K ? `Sinh viên - Khoa ${m.khoa || ''}` : 'K';
+
+        document.getElementById('editDraftDiemChung').value = f02c.diemChung || '';
+        document.getElementById('editDraftDiemNhiemVu').value = f02c.diemNhiemVu || '';
+        document.getElementById('editDraftXepLoai').value = f02c.xepLoai || (sub && sub.tuXepLoai) || '';
+        document.getElementById('editDraftNoiDung1').value = f02c.noiDung1 || '';
+        document.getElementById('editDraftNoiDung2').value = f02c.noiDung2 || '';
+        document.getElementById('editDraftNoiDung3').value = f02c.noiDung3 || '';
+        document.getElementById('editDraftHanChe').value = f02c.hanChe || '';
+        document.getElementById('editDraftNguyenNhan').value = f02c.nguyenNhan || '';
+        document.getElementById('editDraftKetQuaKhacPhuc').value = f02c.ketQuaKhacPhuc || '';
+        document.getElementById('editDraftBienPhapKhacPhuc').value = f02c.bienPhapKhacPhuc || '';
+        document.getElementById('editDraftChoOMoi').value = f6b.choOMoi || defaultChoO;
+        document.getElementById('editDraftNgheNghiepMoi').value = f6b.ngheNghiepMoi || defaultNghe;
+        document.getElementById('editDraftKhenThuong').value = f6b.khenThuong || 'K';
+        document.getElementById('editDraftKyLuat').value = f6b.kyLuat || 'K';
+        initialAdminDraftSnapshot = readAdminDraftInputs();
+      } else {
+        actBar.classList.add('hidden');
+        draftSec.classList.add('hidden');
+        editingMemberHasDocDraft = false;
+        initialAdminDraftSnapshot = {};
       }
 
       document.getElementById('btnDeleteMember').classList.toggle('hidden', !isEdit);
@@ -1140,6 +1389,36 @@
         };
       }
 
+      let docDraftPatch = null;
+      if (!document.getElementById('editDocDraftSection').classList.contains('hidden')) {
+        const curDraftInputs = readAdminDraftInputs();
+        const hasDraftChange = ADMIN_DRAFT_FIELDS.some(id => curDraftInputs[id] !== initialAdminDraftSnapshot[id]);
+        if (hasDraftChange || editingMemberHasDocDraft) {
+          docDraftPatch = {
+            form02c: {
+              lop: member.lop,
+              khoa: member.khoa,
+              diemChung: curDraftInputs.editDraftDiemChung.trim(),
+              diemNhiemVu: curDraftInputs.editDraftDiemNhiemVu.trim(),
+              xepLoai: curDraftInputs.editDraftXepLoai,
+              noiDung1: curDraftInputs.editDraftNoiDung1,
+              noiDung2: curDraftInputs.editDraftNoiDung2,
+              noiDung3: curDraftInputs.editDraftNoiDung3,
+              hanChe: curDraftInputs.editDraftHanChe,
+              nguyenNhan: curDraftInputs.editDraftNguyenNhan,
+              ketQuaKhacPhuc: curDraftInputs.editDraftKetQuaKhacPhuc,
+              bienPhapKhacPhuc: curDraftInputs.editDraftBienPhapKhacPhuc
+            },
+            form6b: {
+              choOMoi: curDraftInputs.editDraftChoOMoi.trim() || 'K',
+              ngheNghiepMoi: curDraftInputs.editDraftNgheNghiepMoi.trim() || 'K',
+              khenThuong: curDraftInputs.editDraftKhenThuong.trim() || 'K',
+              kyLuat: curDraftInputs.editDraftKyLuat.trim() || 'K'
+            }
+          };
+        }
+      }
+
       btn.disabled = true;
       btn.textContent = 'Đang lưu...';
       try {
@@ -1148,7 +1427,8 @@
           password: adminPassword,
           originalMssv,
           member,
-          submissionPatch
+          submissionPatch,
+          docDraftPatch
         });
         if (!res || !res.success) {
           alertBox.textContent = (res && res.message) ? res.message : 'Lưu thất bại.';
@@ -1157,6 +1437,14 @@
           return;
         }
         await loadDashboard();
+        if (docDraftPatch) {
+          const savedM = (dashboardData.members || []).find(x => x.mssv === member.mssv);
+          if (savedM && savedM.docDraft) {
+            try {
+              localStorage.setItem('CBSV1_DOC_DRAFT_2026_' + member.mssv, JSON.stringify(savedM.docDraft));
+            } catch (err) {}
+          }
+        }
         closeEditModal();
       } catch (err) {
         alertBox.textContent = err.message;

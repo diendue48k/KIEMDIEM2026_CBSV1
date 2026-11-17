@@ -126,7 +126,7 @@
     <path d="M 7,22 C 7,17 21,17 21,22" fill="none" stroke="#9e1b1e" stroke-width="1.5"/>
     <text x="70" y="34" text-anchor="middle" fill="#1f1a18" font-size="11.5" font-weight="800">Truy cập trang chủ</text>
     <text x="70" y="50" text-anchor="middle" fill="#5c504a" font-size="10.5">Nhập MSSV &amp; CCCD</text>
-    <text x="70" y="65" text-anchor="middle" fill="#9e1b1e" font-size="10" font-weight="700">(kekhai.html)</text>
+    <text x="70" y="65" text-anchor="middle" fill="#9e1b1e" font-size="10" font-weight="700">Kiểm tra &amp; tải thông tin</text>
   </g>
 
   <g transform="translate(235,400)" filter="url(#cardShadow)">
@@ -204,7 +204,7 @@
     <rect x="0" y="0" width="170" height="82" rx="10" fill="#ffffff" stroke="#9e1b1e" stroke-width="2"/>
     <circle cx="14" cy="12" r="4" fill="none" stroke="#9e1b1e" stroke-width="1.5"/>
     <path d="M 7,22 C 7,17 21,17 21,22" fill="none" stroke="#9e1b1e" stroke-width="1.5"/>
-    <text x="85" y="29" text-anchor="middle" fill="#1f1a18" font-size="11" font-weight="800">Hoàn thiện online (mau-02c)</text>
+    <text x="85" y="29" text-anchor="middle" fill="#1f1a18" font-size="11" font-weight="800">Hoàn thiện hồ sơ trực tuyến</text>
     <text x="85" y="45" text-anchor="middle" fill="#5c504a" font-size="10">Phần A: Chèn gợi ý</text>
     <text x="85" y="59" text-anchor="middle" fill="#5c504a" font-size="10">Phần B: Chấm điểm PL 04</text>
     <text x="85" y="73" text-anchor="middle" fill="#9e1b1e" font-size="10" font-weight="700">Phần C: Mẫu 6b (Chữ K / 52K)</text>
@@ -286,7 +286,7 @@
     <path d="M 7,22 C 7,17 21,17 21,22" fill="none" stroke="#9e1b1e" stroke-width="1.5"/>
     <text x="70" y="34" text-anchor="middle" fill="#1f1a18" font-size="11.5" font-weight="800">Chi ủy tiếp nhận</text>
     <text x="70" y="50" text-anchor="middle" fill="#5c504a" font-size="10">Đối chiếu &amp; xuất Excel</text>
-    <text x="70" y="65" text-anchor="middle" fill="#9e1b1e" font-size="10" font-weight="700">(admin.html)</text>
+    <text x="70" y="65" text-anchor="middle" fill="#9e1b1e" font-size="10" font-weight="700">Tổng hợp kết quả</text>
   </g>
 
   <g transform="translate(2035,695)" filter="url(#cardShadow)">
@@ -298,7 +298,7 @@
   <!-- ================= LEGEND FOOTER ================= -->
   <g transform="translate(24,818)">
     <rect x="0" y="0" width="2072" height="46" rx="8" fill="#ffffff" stroke="#e7dfd8" stroke-width="1.2"/>
-    <text x="20" y="27" fill="#781215" font-size="11.5" font-weight="800">CHÚ GIẢI KÝ HIỆU BPMN 2.0:</text>
+    <text x="20" y="27" fill="#781215" font-size="11.5" font-weight="800">CHÚ GIẢI KÝ HIỆU:</text>
 
     <circle cx="242" cy="23" r="10" fill="#ecfdf5" stroke="#059669" stroke-width="2"/>
     <text x="260" y="27" fill="#1f1a18" font-size="11">Start Event</text>

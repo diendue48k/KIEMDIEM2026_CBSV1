@@ -54,7 +54,7 @@
       <bpmn:outgoing>Flow_1</bpmn:outgoing>
     </bpmn:startEvent>
 
-    <bpmn:userTask id="Task_TraCuu" name="Truy cập trang chủ &amp; nhập MSSV + CCCD (kekhai.html)">
+    <bpmn:userTask id="Task_TraCuu" name="Truy cập trang chủ, nhập MSSV + CCCD &amp; kiểm tra thông tin">
       <bpmn:incoming>Flow_1</bpmn:incoming>
       <bpmn:outgoing>Flow_2</bpmn:outgoing>
     </bpmn:userTask>
@@ -162,7 +162,7 @@
       <bpmn:outgoing>Flow_15</bpmn:outgoing>
     </bpmn:manualTask>
 
-    <bpmn:userTask id="Task_ChiUyTiepNhan" name="Chi ủy tiếp nhận, đối chiếu &amp; xuất tổng hợp Excel (admin.html)">
+    <bpmn:userTask id="Task_ChiUyTiepNhan" name="Chi ủy tiếp nhận, đối chiếu &amp; xuất tổng hợp kết quả">
       <bpmn:incoming>Flow_15</bpmn:incoming>
       <bpmn:outgoing>Flow_16</bpmn:outgoing>
     </bpmn:userTask>

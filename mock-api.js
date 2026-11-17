@@ -17,7 +17,10 @@ const MOCK_API = (function () {
       LINK_TAI_MAU_6B: 'https://drive.google.com/file/d/sample-6b',
       LINK_HUONG_DAN_6B: 'https://drive.google.com/file/d/1ov4IDfYEyTgpeY2oipquI8aae5OGRg_R/view?usp=drive_link',
       LINK_TAI_MAU_6D: 'templates/mau-6d.doc',
-      LINK_HUONG_DAN_6D: ''
+      LINK_HUONG_DAN_6D: '',
+      DEADLINE_KE_KHAI_ISO: '2026-11-19T20:00',
+      DEADLINE_KE_KHAI_TEXT: '20h00 - Thứ 5, ngày 19/11/2026',
+      DEADLINE_NOP_HO_SO_TEXT: 'Sáng Chủ nhật, ngày 22/11/2026'
     },
     members: [],
     submissions: {},
@@ -262,6 +265,23 @@ const MOCK_API = (function () {
     };
   }
 
+  function mergeDocDraft(prevDraft, patch, updatedAt) {
+    const base = prevDraft && typeof prevDraft === 'object' ? prevDraft : {};
+    const next02c = patch && patch.form02c
+      ? Object.assign({}, base.form02c || {}, patch.form02c)
+      : (base.form02c || null);
+    const next6b = patch && patch.form6b
+      ? Object.assign({}, base.form6b || {}, patch.form6b)
+      : (base.form6b || null);
+    const res = Object.assign({}, base, {
+      updatedAt: updatedAt || nowVN(),
+      updatedAtMs: Date.now()
+    });
+    if (next02c) res.form02c = next02c;
+    if (next6b) res.form6b = next6b;
+    return res;
+  }
+
   function buildDocLogEntry(p) {
     return {
       thoiGian: nowVN(),
@@ -335,6 +355,8 @@ const MOCK_API = (function () {
         };
         submissionsList.push(chiTiet);
       }
+      const docDraft = (rawSub && rawSub.docDraft) || (db.docDrafts && db.docDrafts[m.mssv]) || null;
+      const docDraftUpdatedAt = (rawSub && rawSub.docDraftUpdatedAt) || (docDraft && docDraft.updatedAt) || '';
       return Object.assign({}, m, {
         daKeKhai: Boolean(sub),
         thoiGianGui: sub ? sub.thoiGianGui : '',
@@ -342,6 +364,9 @@ const MOCK_API = (function () {
         daTaoHoSo: Boolean(docMatch),
         thoiGianTaoHoSo: docMatch ? docMatch.thoiGian : '',
         tongDiemHoSo: (docMatch && docMatch.tongDiem) ? docMatch.tongDiem : '',
+        hasDocDraft: Boolean(docDraft && (docDraft.form02c || docDraft.form6b)),
+        docDraftUpdatedAt,
+        docDraft,
         submission: sub,
         chiTiet
       });
@@ -503,6 +528,10 @@ const MOCK_API = (function () {
         db.submissions[newMssv] = Object.assign({}, db.submissions[origMssv], { mssv: newMssv });
         delete db.submissions[origMssv];
       }
+      if (origMssv && origMssv !== newMssv && db.docDrafts && db.docDrafts[origMssv]) {
+        db.docDrafts[newMssv] = db.docDrafts[origMssv];
+        delete db.docDrafts[origMssv];
+      }
       if (body.submissionPatch && db.submissions[newMssv]) {
         const sp = body.submissionPatch;
         db.submissions[newMssv] = Object.assign({}, db.submissions[newMssv], {
@@ -515,6 +544,16 @@ const MOCK_API = (function () {
           tuXepLoai: String(sp.tuXepLoai || ''),
           deXuat: String(sp.deXuat || '')
         });
+      }
+      if (body.docDraftPatch) {
+        const prevDraft = (db.submissions[newMssv] && db.submissions[newMssv].docDraft) || (db.docDrafts && db.docDrafts[newMssv]) || null;
+        const mergedDraft = mergeDocDraft(prevDraft, body.docDraftPatch, nowVN());
+        db.docDrafts = db.docDrafts || {};
+        db.docDrafts[newMssv] = mergedDraft;
+        if (db.submissions[newMssv]) {
+          db.submissions[newMssv].docDraft = mergedDraft;
+          db.submissions[newMssv].docDraftUpdatedAt = mergedDraft.updatedAt;
+        }
       }
 
       saveLocalDb(db);
@@ -866,9 +905,11 @@ const MOCK_API = (function () {
         10000,
         'Quá thời gian đọc dữ liệu kê khai trên Firestore.'
       );
-      if (subSnap.exists) {
-        const baseSub = Object.assign({}, subSnap.data(), { mssv: newMssv });
-        if (body.submissionPatch) {
+      if (subSnap.exists || body.docDraftPatch) {
+        const baseSub = subSnap.exists
+          ? Object.assign({}, subSnap.data(), { mssv: newMssv })
+          : { mssv: newMssv };
+        if (body.submissionPatch && subSnap.exists) {
           const sp = body.submissionPatch;
           updatedSub = Object.assign(baseSub, {
             chiBoCuTru: String(sp.chiBoCuTru || ''),
@@ -882,6 +923,11 @@ const MOCK_API = (function () {
           });
         } else {
           updatedSub = baseSub;
+        }
+        if (body.docDraftPatch) {
+          const mergedDraft = mergeDocDraft(updatedSub.docDraft || null, body.docDraftPatch, nowVN());
+          updatedSub.docDraft = mergedDraft;
+          updatedSub.docDraftUpdatedAt = mergedDraft.updatedAt;
         }
         batch.set(fs.collection('submissions').doc(newId), updatedSub, { merge: true });
       }
@@ -902,7 +948,17 @@ const MOCK_API = (function () {
       if (origMssv && origMssv !== newMssv && localDb.submissions[origMssv]) {
         delete localDb.submissions[origMssv];
       }
-      if (updatedSub) localDb.submissions[newMssv] = updatedSub;
+      if (origMssv && origMssv !== newMssv && localDb.docDrafts && localDb.docDrafts[origMssv]) {
+        localDb.docDrafts[newMssv] = localDb.docDrafts[origMssv];
+        delete localDb.docDrafts[origMssv];
+      }
+      if (updatedSub) {
+        localDb.submissions[newMssv] = updatedSub;
+        if (updatedSub.docDraft) {
+          localDb.docDrafts = localDb.docDrafts || {};
+          localDb.docDrafts[newMssv] = updatedSub.docDraft;
+        }
+      }
       saveLocalDb(localDb);
 
       return {

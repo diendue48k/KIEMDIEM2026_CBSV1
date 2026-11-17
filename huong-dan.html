@@ -525,57 +525,129 @@
     }
 
     .bpmn-wrap {
-      overflow-x: auto;
+      overflow: hidden;
+      position: relative;
       border: 1.5px solid var(--border);
       border-radius: var(--radius-md);
       background: #fdf9f4;
-      padding: 10px;
+      user-select: none;
+      touch-action: none;
+      cursor: zoom-in;
     }
     .bpmn-img {
       display: block;
       width: 100%;
-      min-width: 980px;
+      min-width: 0 !important;
       height: auto;
-      transition: min-width 0.25s ease;
+      transform-origin: 0 0;
+      will-change: transform;
+      -webkit-user-drag: none;
+      pointer-events: none;
     }
-    .bpmn-wrap.is-zoomed .bpmn-img {
-      min-width: 1850px;
-    }
-    .bpmn-actions {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-    .btn-mini {
+    .zoom-pill {
       display: inline-flex;
       align-items: center;
-      gap: 5px;
-      padding: 6px 12px;
-      border-radius: var(--radius-sm);
-      font-family: inherit;
-      font-size: 0.8rem;
-      font-weight: 700;
-      text-decoration: none;
-      cursor: pointer;
       border: 1.5px solid var(--border);
+      border-radius: 8px;
       background: #ffffff;
+      overflow: hidden;
+      box-shadow: 0 1px 2px rgba(31, 26, 24, 0.04);
+    }
+    .zoom-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 28px;
+      border: none;
+      background: transparent;
       color: var(--crimson-dark);
-      transition: all 0.18s ease;
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: background 0.15s ease, color 0.15s ease;
     }
-    .btn-mini:hover {
-      border-color: var(--crimson);
-      background: #fffafa;
+    .zoom-btn:hover {
+      background: #fdf4f4;
+      color: var(--crimson);
     }
-    .btn-mini.gold {
+    .zoom-readout {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 48px;
+      height: 28px;
+      padding: 0 6px;
+      border: none;
+      border-left: 1px solid var(--border);
+      border-right: 1px solid var(--border);
+      background: #fdf9f4;
+      color: var(--text-main);
+      font-family: inherit;
+      font-size: 0.76rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+    .zoom-readout:hover {
       background: var(--gold-tint);
-      border-color: #fcd34d;
       color: #92400e;
+    }
+    .zoom-expand {
+      border-left: 1px solid var(--border);
+      width: 32px;
+    }
+    .bpmn-lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+      background: rgba(20, 14, 12, 0.92);
+      display: flex;
+      flex-direction: column;
+      padding: 14px 18px;
+      gap: 12px;
+    }
+    .bpmn-lightbox.hidden { display: none !important; }
+    .bpmn-lb-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      background: #ffffff;
+      padding: 10px 16px;
+      border-radius: var(--radius-md);
+    }
+    .bpmn-lb-viewport {
+      flex: 1;
+      overflow: hidden;
+      position: relative;
+      border-radius: var(--radius-md);
+      background: #fdf9f4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      user-select: none;
+      touch-action: none;
+      cursor: zoom-in;
+    }
+    .bpmn-lb-img {
+      max-width: 96%;
+      max-height: 96%;
+      width: auto;
+      height: auto;
+      display: block;
+      transform-origin: 0 0;
+      will-change: transform;
+      -webkit-user-drag: none;
+      pointer-events: none;
     }
 
     .footer-note {
       text-align: center;
       font-size: 0.82rem;
       color: var(--text-muted);
+      line-height: 1.6;
       margin-top: 6px;
     }
 
@@ -613,7 +685,7 @@
     }
 
     @media print {
-      .top-tricolor-bar, .topbar, .quick-nav, .cta-inline, .btn-print { display: none !important; }
+      .top-tricolor-bar, .topbar, .quick-nav, .cta-inline, .btn-print, .bpmn-actions, .bpmn-lightbox { display: none !important; }
       body { background: #ffffff; padding: 0; }
       .section-card { box-shadow: none; break-inside: avoid; }
     }
@@ -641,7 +713,7 @@
       <div class="hero-underline"></div>
       <p>Tài liệu hướng dẫn từng bước thực hiện kê khai thông tin trực tuyến, tạo hồ sơ kiểm điểm (Mẫu 02c, Mẫu 6b), lấy nhận xét nơi cư trú (Mẫu 6d) và nộp hồ sơ đúng thời hạn quy định.</p>
       <div class="quick-nav">
-        <a href="#so-do-bpmn" class="nav-pill">Sơ đồ BPMN 2.0</a>
+        <a href="#so-do-bpmn" class="nav-pill">Sơ đồ quy trình thực hiện</a>
         <a href="#buoc-1" class="nav-pill">Bước 1: Kê khai trực tuyến</a>
         <a href="#buoc-2" class="nav-pill">Bước 2: Tạo &amp; in Mẫu 02c + 6b</a>
         <a href="#buoc-3" class="nav-pill">Bước 3: Mẫu 6d &amp; Nộp hồ sơ</a>
@@ -649,25 +721,24 @@
       </div>
     </header>
 
-    <!-- SƠ ĐỒ BPMN 2.0 -->
+    <!-- SƠ ĐỒ QUY TRÌNH THỰC HIỆN -->
     <section id="so-do-bpmn" class="section-card">
       <div class="section-header">
         <div class="section-header-left">
-          <span class="step-badge">BPMN</span>
-          <h2 class="section-title">Sơ đồ quy trình thực hiện (Chuẩn BPMN 2.0)</h2>
+          <h2 class="section-title">Sơ đồ quy trình thực hiện</h2>
         </div>
-        <div class="bpmn-actions">
-          <button type="button" class="btn-mini gold" onclick="toggleBpmnZoom(this)">Phóng to 100%</button>
-          <a href="so-do-bpmn-2026.svg" download="SoDo_QuyTrinh_KiemDiem_2026_BPMN.svg" class="btn-mini">Tải ảnh (.svg)</a>
-          <a href="quy-trinh-kiem-diem-2026.bpmn" download="QuyTrinh_KiemDiem_2026.bpmn" class="btn-mini">Tải mô hình (.bpmn)</a>
+        <div class="zoom-pill">
+          <button type="button" class="zoom-btn" onclick="bpmnCtrl.stepZoom(-0.5)" title="Thu nhỏ">−</button>
+          <button type="button" id="bpmnZoomBadge" class="zoom-readout" onclick="bpmnCtrl.reset()" title="Nhấn để đặt lại 100%">100%</button>
+          <button type="button" class="zoom-btn" onclick="bpmnCtrl.stepZoom(0.5)" title="Phóng to">+</button>
+          <button type="button" class="zoom-btn zoom-expand" onclick="openBpmnLightbox()" title="Xem toàn màn hình">
+            <svg class="icon-svg" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+          </button>
         </div>
       </div>
       <div id="bpmnWrap" class="bpmn-wrap">
-        <img src="so-do-bpmn-2026.svg" alt="Sơ đồ quy trình kiểm điểm Đảng viên năm 2026 chuẩn BPMN 2.0" class="bpmn-img">
+        <img id="bpmnImg" src="so-do-bpmn-2026.svg" alt="Sơ đồ quy trình thực hiện" class="bpmn-img">
       </div>
-      <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: 10px;">
-        Sơ đồ vẽ theo tiêu chuẩn <strong>BPMN 2.0</strong> gồm 3 làn vai trò (Đảng viên — Hệ thống — Chi ủy Chi bộ), cổng rẽ nhánh Exclusive Gateway (<code>×</code>), mốc thời hạn Timer Event và liên kết dữ liệu Data Store/Data Object. Kéo ngang hoặc nhấn <strong>Phóng to 100%</strong> để xem chi tiết.
-      </p>
     </section>
 
     <div class="part-heading">Phần I: Hướng dẫn chi tiết từng bước cho Đảng viên</div>
@@ -677,7 +748,7 @@
       <div class="section-header">
         <div class="section-header-left">
           <span class="step-badge">Bước 1</span>
-          <h2 class="section-title">Kê khai thông tin trực tuyến (<code>kekhai.html</code>)</h2>
+          <h2 class="section-title">Kê khai thông tin trực tuyến</h2>
         </div>
         <a href="kekhai.html?v=20261117" class="cta-inline">
           <span>Mở trang Kê khai</span>
@@ -754,7 +825,7 @@
       <div class="section-header">
         <div class="section-header-left">
           <span class="step-badge">Bước 2</span>
-          <h2 class="section-title">Tạo và tải bộ biểu mẫu để in (<code>mau-02c.html</code>)</h2>
+          <h2 class="section-title">Tạo và tải bộ biểu mẫu để in</h2>
         </div>
         <a href="mau-02c.html?v=20261117" class="cta-inline">
           <span>Mở trang Tạo hồ sơ để in</span>
@@ -819,7 +890,7 @@
             <strong>Nếu chưa có bản điện tử:</strong> Phải <strong>liên hệ ngay Bí thư Chi bộ nơi cư trú</strong> để xử lý kịp thời theo 3 trường hợp:
             <ul class="guide-sub-ul">
               <li><strong>Trường hợp 1:</strong> Chi bộ nơi cư trú báo sẽ làm bản điện tử &rarr; hỏi rõ thời điểm trả kết quả để kịp tải và nộp trong tuần.</li>
-              <li><strong>Trường hợp 2:</strong> Chi bộ nơi cư trú báo làm bản giấy theo mẫu 2-QĐ 221 &rarr; <a href="templates/mau-6d.doc" download="Mau_6d_Nhan_xet_noi_cu_tru_2026.doc" style="color: var(--crimson); font-weight: 700;">tải ngay mẫu giấy 6d (Mau_6d_Nhan_xet_noi_cu_tru_2026.doc)</a>, điền thông tin và xin ký xác nhận/đóng dấu.</li>
+              <li><strong>Trường hợp 2:</strong> Chi bộ nơi cư trú báo làm bản giấy theo mẫu 2-QĐ 221 &rarr; <a href="templates/mau-6d.doc" download="Mau_6d_Nhan_xet_noi_cu_tru_2026.doc" style="color: var(--crimson); font-weight: 700;">tải ngay mẫu giấy 6d tại đây</a>, điền thông tin và xin ký xác nhận/đóng dấu.</li>
               <li><strong>Trường hợp 3:</strong> Chưa nộp Giấy 221 và chưa có bản điện tử &rarr; khẩn trương liên hệ Bí thư Chi bộ nơi cư trú để xin sinh hoạt 221 trước và nhờ cấp nhận xét kịp tiến độ.</li>
             </ul>
           </li>
@@ -876,17 +947,179 @@
     </section>
 
     <div class="footer-note">
-      Chi bộ Sinh viên 1 — Hướng dẫn sử dụng Hệ thống Hỗ trợ Kiểm điểm, Đánh giá và Xếp loại Đảng viên năm 2026
+      <div>Chi bộ Sinh viên 1 — Hướng dẫn sử dụng Hệ thống Hỗ trợ Kiểm điểm, Đánh giá và Xếp loại Đảng viên năm 2026</div>
+      <div>Đây là hệ thống nội bộ, chỉ dùng cho Đảng viên Chi bộ Sinh viên 1. Vui lòng không phát hành ra bên ngoài.</div>
+      <div>Bản quyền thuộc về &copy; 2026 - Lê Vĩnh Diện</div>
+    </div>
+  </div>
+
+  <!-- LIGHTBOX TOÀN MÀN HÌNH -->
+  <div id="bpmnLightbox" class="bpmn-lightbox hidden" onclick="if(event.target===this) closeBpmnLightbox()">
+    <div class="bpmn-lb-bar">
+      <strong style="color: var(--crimson); text-transform: uppercase; font-size: 0.95rem;">Sơ đồ quy trình thực hiện</strong>
+      <div class="zoom-pill">
+        <button type="button" class="zoom-btn" onclick="bpmnLbCtrl.stepZoom(-0.5)" title="Thu nhỏ">−</button>
+        <button type="button" id="bpmnLbZoomBadge" class="zoom-readout" onclick="bpmnLbCtrl.reset()" title="Nhấn để đặt lại 100%">100%</button>
+        <button type="button" class="zoom-btn" onclick="bpmnLbCtrl.stepZoom(0.5)" title="Phóng to">+</button>
+        <button type="button" class="zoom-btn zoom-expand" onclick="closeBpmnLightbox()" title="Đóng (ESC)">✕</button>
+      </div>
+    </div>
+    <div id="bpmnLbViewport" class="bpmn-lb-viewport">
+      <img id="bpmnLbImg" src="so-do-bpmn-2026.svg" alt="Sơ đồ quy trình thực hiện" class="bpmn-lb-img">
     </div>
   </div>
 
   <script>
-    function toggleBpmnZoom(btn) {
-      const wrap = document.getElementById('bpmnWrap');
-      if (!wrap) return;
-      const zoomed = wrap.classList.toggle('is-zoomed');
-      if (btn) btn.textContent = zoomed ? 'Thu gọn vừa khung' : 'Phóng to 100%';
+    function createZoomPanController(wrapEl, imgEl, badgeEl) {
+      let zoom = 1;
+      let tx = 0;
+      let ty = 0;
+      let dragging = false;
+      let startX = 0;
+      let startY = 0;
+      let originTx = 0;
+      let originTy = 0;
+      const MIN_Z = 1;
+      const MAX_Z = 4;
+
+      function clampTransform(nextZoom, nextTx, nextTy) {
+        const wrapW = wrapEl.clientWidth;
+        const wrapH = wrapEl.clientHeight;
+        const baseW = imgEl.offsetWidth;
+        const baseH = imgEl.offsetHeight;
+        const ox = imgEl.offsetLeft;
+        const oy = imgEl.offsetTop;
+        const scaledW = baseW * nextZoom;
+        const scaledH = baseH * nextZoom;
+
+        let clampedTx = nextTx;
+        let clampedTy = nextTy;
+
+        if (scaledW <= wrapW) {
+          clampedTx = (wrapW - scaledW) / 2 - ox;
+        } else {
+          const minTx = wrapW - scaledW - ox;
+          const maxTx = -ox;
+          clampedTx = Math.max(minTx, Math.min(maxTx, nextTx));
+        }
+
+        if (scaledH <= wrapH) {
+          clampedTy = (wrapH - scaledH) / 2 - oy;
+        } else {
+          const minTy = wrapH - scaledH - oy;
+          const maxTy = -oy;
+          clampedTy = Math.max(minTy, Math.min(maxTy, nextTy));
+        }
+
+        return { tx: clampedTx, ty: clampedTy };
+      }
+
+      function render() {
+        const c = clampTransform(zoom, tx, ty);
+        tx = c.tx;
+        ty = c.ty;
+        imgEl.style.transform = `translate(${tx}px, ${ty}px) scale(${zoom})`;
+        if (badgeEl) badgeEl.textContent = `${Math.round(zoom * 100)}%`;
+        wrapEl.style.cursor = zoom > 1 ? (dragging ? 'grabbing' : 'grab') : 'zoom-in';
+      }
+
+      function setZoomAt(targetZoom, focalX, focalY) {
+        const nextZoom = Math.max(MIN_Z, Math.min(MAX_Z, Math.round(targetZoom * 100) / 100));
+        if (nextZoom === 1) {
+          zoom = 1;
+          tx = 0;
+          ty = 0;
+          render();
+          return;
+        }
+        const ox = imgEl.offsetLeft;
+        const oy = imgEl.offsetTop;
+        const cx = (focalX !== undefined ? focalX : wrapEl.clientWidth / 2) - ox;
+        const cy = (focalY !== undefined ? focalY : wrapEl.clientHeight / 2) - oy;
+        const ratio = nextZoom / zoom;
+        tx = cx - (cx - tx) * ratio;
+        ty = cy - (cy - ty) * ratio;
+        zoom = nextZoom;
+        render();
+      }
+
+      wrapEl.addEventListener('wheel', e => {
+        e.preventDefault();
+        const rect = wrapEl.getBoundingClientRect();
+        const fx = e.clientX - rect.left;
+        const fy = e.clientY - rect.top;
+        const delta = e.deltaY < 0 ? 0.25 : -0.25;
+        setZoomAt(zoom + delta, fx, fy);
+      }, { passive: false });
+
+      wrapEl.addEventListener('pointerdown', e => {
+        if (zoom <= 1) return;
+        dragging = true;
+        startX = e.clientX;
+        startY = e.clientY;
+        originTx = tx;
+        originTy = ty;
+        wrapEl.setPointerCapture(e.pointerId);
+        render();
+      });
+
+      wrapEl.addEventListener('pointermove', e => {
+        if (!dragging) return;
+        tx = originTx + (e.clientX - startX);
+        ty = originTy + (e.clientY - startY);
+        render();
+      });
+
+      function endDrag() {
+        if (!dragging) return;
+        dragging = false;
+        render();
+      }
+      wrapEl.addEventListener('pointerup', endDrag);
+      wrapEl.addEventListener('pointercancel', endDrag);
+
+      wrapEl.addEventListener('dblclick', e => {
+        const rect = wrapEl.getBoundingClientRect();
+        const fx = e.clientX - rect.left;
+        const fy = e.clientY - rect.top;
+        if (zoom > 1) setZoomAt(1);
+        else setZoomAt(2.5, fx, fy);
+      });
+
+      window.addEventListener('resize', render);
+
+      return {
+        setZoom: z => setZoomAt(z),
+        stepZoom: d => setZoomAt(zoom + d),
+        reset: () => setZoomAt(1),
+        refresh: render
+      };
     }
+
+    const bpmnCtrl = createZoomPanController(
+      document.getElementById('bpmnWrap'),
+      document.getElementById('bpmnImg'),
+      document.getElementById('bpmnZoomBadge')
+    );
+
+    const bpmnLbCtrl = createZoomPanController(
+      document.getElementById('bpmnLbViewport'),
+      document.getElementById('bpmnLbImg'),
+      document.getElementById('bpmnLbZoomBadge')
+    );
+
+    function openBpmnLightbox() {
+      document.getElementById('bpmnLightbox').classList.remove('hidden');
+      bpmnLbCtrl.reset();
+    }
+
+    function closeBpmnLightbox() {
+      document.getElementById('bpmnLightbox').classList.add('hidden');
+    }
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeBpmnLightbox();
+    });
 
     function toggleChecklist(cb) {
       const label = cb.closest('.checklist-item');
