@@ -192,6 +192,257 @@
       margin-bottom: 14px;
     }
 
+    /* Lookup Panel & Input Icons */
+    .lookup-panel {
+      background: linear-gradient(180deg, #fdfbf9 0%, #f8f2ec 100%);
+      border: 1.5px solid #eadfd6;
+      border-radius: 14px;
+      padding: 18px 20px;
+    }
+
+    .lookup-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr auto;
+      gap: 14px;
+      align-items: end;
+    }
+
+    .lookup-grid .form-group { margin-bottom: 0; }
+
+    .input-with-icon { position: relative; }
+
+    .input-with-icon .input-icon {
+      position: absolute;
+      left: 13px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #9a8a80;
+      width: 18px;
+      height: 18px;
+      pointer-events: none;
+      transition: color 0.2s ease;
+    }
+
+    .input-with-icon input[type="text"] { padding-left: 40px; }
+    .input-with-icon:focus-within .input-icon { color: var(--crimson); }
+
+    .btn-lookup {
+      height: 44px;
+      padding: 0 20px;
+      white-space: nowrap;
+    }
+
+    @media (max-width: 680px) {
+      .lookup-panel { padding: 16px; }
+      .lookup-grid { grid-template-columns: 1fr; }
+      .btn-lookup { width: 100%; }
+    }
+
+    /* Member Profile Card */
+    .member-profile-card {
+      margin-top: 22px;
+      border-radius: 16px;
+      border: 1.5px solid #ecdcd2;
+      background: #ffffff;
+      overflow: hidden;
+      box-shadow: 0 10px 28px -8px rgba(158, 27, 30, 0.12);
+    }
+
+    .member-profile-header {
+      background: linear-gradient(135deg, var(--crimson) 0%, var(--crimson-dark) 100%);
+      color: #ffffff;
+      padding: 18px 22px;
+      border-bottom: 3px solid var(--gold-bright);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      position: relative;
+    }
+
+    .member-profile-header::after {
+      content: '';
+      position: absolute;
+      top: -30px;
+      right: -20px;
+      width: 140px;
+      height: 140px;
+      background: radial-gradient(circle, rgba(250, 204, 21, 0.18) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .member-identity {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .member-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 14px;
+      background: rgba(250, 204, 21, 0.16);
+      border: 1.5px solid rgba(250, 204, 21, 0.55);
+      color: var(--gold-bright);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.14);
+    }
+
+    .member-avatar svg {
+      width: 25px;
+      height: 25px;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+    }
+
+    .member-verified-tag {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--gold-soft);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 3px;
+    }
+
+    .member-verified-tag svg {
+      width: 14px;
+      height: 14px;
+      color: #4ade80;
+      flex-shrink: 0;
+    }
+
+    .member-name-title {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: #ffffff;
+      line-height: 1.25;
+      letter-spacing: -0.01em;
+    }
+
+    .member-badges {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 1;
+    }
+
+    .badge-gold {
+      background: var(--gold-bright);
+      color: var(--crimson-dark);
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    }
+
+    .badge-glass {
+      background: rgba(255, 255, 255, 0.15);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    .member-meta-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      padding: 18px 20px;
+      background: linear-gradient(180deg, #fffdfa 0%, #faf5f0 100%);
+    }
+
+    @media (max-width: 640px) {
+      .member-profile-header { padding: 16px; }
+      .member-name-title { font-size: 1.15rem; }
+      .member-meta-grid { grid-template-columns: 1fr; padding: 14px; }
+    }
+
+    .meta-tile {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      padding: 13px 15px;
+      background: #ffffff;
+      border: 1px solid #ede3dc;
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(31, 26, 24, 0.03);
+    }
+
+    .meta-tile.full-span { grid-column: 1 / -1; }
+
+    .meta-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: #fef2f2;
+      color: var(--crimson);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      border: 1px solid #fde2e2;
+    }
+
+    .meta-icon.gold {
+      background: var(--gold-tint);
+      color: #b45309;
+      border-color: #fde68a;
+    }
+
+    .meta-icon svg {
+      width: 18px;
+      height: 18px;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+    }
+
+    .meta-content { min-width: 0; flex: 1; }
+
+    .meta-label {
+      font-size: 0.73rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-muted);
+      margin-bottom: 2px;
+    }
+
+    .meta-value {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-main);
+      line-height: 1.35;
+      word-break: break-word;
+    }
+
+    .fade-in { animation: fadeIn 0.35s ease-out; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: end; }
     .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; align-items: end; }
     .grid-2 .form-group, .grid-3 .form-group { margin-bottom: 0; }
@@ -310,29 +561,84 @@
         <h2 class="section-title">Đăng Nhập &amp; Tải Thông Tin Đảng Viên</h2>
       </div>
 
-      <div class="grid-2">
-        <div class="form-group">
-          <label for="mssv" class="required">MSSV</label>
-          <input type="text" id="mssv" placeholder="Nhập MSSV của đồng chí">
+      <div class="lookup-panel">
+        <div class="lookup-grid">
+          <div class="form-group">
+            <label for="mssv" class="required">MSSV</label>
+            <div class="input-with-icon">
+              <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <input type="text" id="mssv" placeholder="Nhập MSSV của đồng chí">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="cccd" class="required">CCCD</label>
+            <div class="input-with-icon">
+              <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+              <input type="text" id="cccd" placeholder="Nhập số CCCD của đồng chí">
+            </div>
+          </div>
+          <button type="button" id="btnLookup" class="btn btn-primary btn-lookup" onclick="handleLookup()">
+            <svg class="icon-svg" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            <span>Đăng nhập &amp; Lấy thông tin</span>
+          </button>
         </div>
-        <div class="form-group">
-          <label for="cccd" class="required">CCCD</label>
-          <input type="text" id="cccd" placeholder="Nhập số CCCD của đồng chí">
-        </div>
-      </div>
-
-      <div style="margin-top: 16px;">
-        <button type="button" id="btnLookup" class="btn btn-primary" onclick="handleLookup()">
-          Đăng nhập &amp; Lấy thông tin
-        </button>
       </div>
 
       <div id="lookupAlert" class="alert alert-danger hidden" style="margin-top: 16px; margin-bottom: 0;"></div>
 
-      <div id="memberInfoBox" class="hidden" style="margin-top: 22px; padding-top: 20px; border-top: 1.5px dashed var(--border);">
-        <div class="grid-2">
-          <div class="form-group"><label>Họ và tên (tự động viết IN HOA trên phiếu)</label><input type="text" id="hoTen" readonly></div>
-          <div class="form-group"><label>Ngày sinh</label><input type="text" id="ngaySinh" readonly></div>
+      <div id="memberInfoBox" class="member-profile-card hidden fade-in">
+        <input type="hidden" id="hoTen">
+        <input type="hidden" id="ngaySinh">
+
+        <div class="member-profile-header">
+          <div class="member-identity">
+            <div class="member-avatar">
+              <svg viewBox="0 0 24 24"><path d="M12 2l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 16.8l-5.8 3.1 1.1-6.5L2.6 8.8l6.5-.9L12 2z"/></svg>
+            </div>
+            <div>
+              <div class="member-verified-tag">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                <span>Thông tin Đảng viên (IN HOA trên phiếu 6b)</span>
+              </div>
+              <div class="member-name-title" id="hoTenDisplay">—</div>
+            </div>
+          </div>
+          <div class="member-badges">
+            <span class="badge-gold" id="loaiDangVienBadge">—</span>
+            <span class="badge-glass" id="nhomBadge">—</span>
+          </div>
+        </div>
+
+        <div class="member-meta-grid">
+          <div class="meta-tile">
+            <div class="meta-icon">
+              <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            </div>
+            <div class="meta-content">
+              <div class="meta-label">Ngày sinh</div>
+              <div class="meta-value" id="ngaySinhDisplay">—</div>
+            </div>
+          </div>
+
+          <div class="meta-tile">
+            <div class="meta-icon gold">
+              <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+            <div class="meta-content">
+              <div class="meta-label">Lớp</div>
+              <div class="meta-value" id="lopDisplay">—</div>
+            </div>
+          </div>
+
+          <div class="meta-tile full-span">
+            <div class="meta-icon">
+              <svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+            </div>
+            <div class="meta-content">
+              <div class="meta-label">Khoa / Trung tâm</div>
+              <div class="meta-value" id="khoaDisplay">—</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -478,6 +784,7 @@
         return;
       }
 
+      const defaultLookupHtml = '<svg class="icon-svg" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><span>Đăng nhập &amp; Lấy thông tin</span>';
       btn.disabled = true;
       btn.textContent = 'Đang tải thông tin...';
 
@@ -497,6 +804,21 @@
         document.getElementById('hoTen').value = currentMember.hoTen || '';
         document.getElementById('ngaySinh').value = currentMember.ngaySinh || '';
 
+        document.getElementById('hoTenDisplay').textContent = currentMember.hoTen || '—';
+        document.getElementById('ngaySinhDisplay').textContent = currentMember.ngaySinh || '—';
+        document.getElementById('lopDisplay').textContent = currentMember.lop || '—';
+        document.getElementById('khoaDisplay').textContent = currentMember.khoa || '—';
+        const loaiBadge = document.getElementById('loaiDangVienBadge');
+        const nhomBadge = document.getElementById('nhomBadge');
+        if (loaiBadge) {
+          loaiBadge.textContent = currentMember.loaiDangVien || 'Đảng viên';
+          loaiBadge.classList.toggle('hidden', !currentMember.loaiDangVien);
+        }
+        if (nhomBadge) {
+          nhomBadge.textContent = currentMember.nhom || '';
+          nhomBadge.classList.toggle('hidden', !currentMember.nhom);
+        }
+
         // Tự động điền nơi ở hiện nay nếu có từ hệ thống / lần kê khai trước
         const diaChi = (res.existing && res.existing.noiOHienNay) || currentMember.diaChiHienTai || 'K';
         document.getElementById('choOMoi').value = diaChi;
@@ -515,7 +837,7 @@
         alertBox.classList.remove('hidden');
       } finally {
         btn.disabled = false;
-        btn.textContent = 'Đăng nhập & Lấy thông tin';
+        btn.innerHTML = defaultLookupHtml;
       }
     }
 

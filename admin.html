@@ -416,6 +416,25 @@
       box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
     }
 
+    .modal-card.modal-wide {
+      max-width: 840px;
+      max-height: 90vh;
+    }
+
+    .form-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .form-grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    @media (max-width: 640px) {
+      .form-grid-2, .form-grid-3 { grid-template-columns: 1fr; }
+    }
+
     .detail-row {
       padding: 8px 0;
       border-bottom: 1px dashed #eee;
@@ -532,9 +551,16 @@
                   <svg class="icon-svg" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                   <span>Xuất DS Đảng viên (.xlsx)</span>
                 </button>
+                <button type="button" class="btn btn-outline btn-sm" onclick="exportAllSummary()" style="border-color: var(--crimson); color: var(--crimson);">
+                  <svg class="icon-svg" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  <span>Xuất TẤT CẢ tổng hợp (.xlsx)</span>
+                </button>
               </div>
               <div class="io-btn-group">
-                <span class="io-group-label">Nhập DS Đảng viên:</span>
+                <span class="io-group-label">Quản lý ĐV:</span>
+                <button type="button" class="btn btn-primary btn-sm" onclick="openEditMember('')">
+                  <span>+ Thêm Đảng viên</span>
+                </button>
                 <button type="button" class="btn btn-gold btn-sm" onclick="downloadImportTemplate()">
                   <svg class="icon-svg" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                   <span>Tải mẫu nhập (.xlsx)</span>
@@ -567,7 +593,7 @@
                   <th>Tạo hồ sơ in</th>
                   <th>Thời gian gửi</th>
                   <th>Tự xếp loại</th>
-                  <th>Chi tiết</th>
+                  <th>Thao tác</th>
                 </tr>
               </thead>
               <tbody id="membersTableBody"></tbody>
@@ -639,6 +665,146 @@
         <button class="btn btn-outline" style="padding: 4px 10px;" onclick="closeModal()">✕</button>
       </div>
       <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <!-- MODAL SỬA / THÊM ĐẢNG VIÊN -->
+  <div id="editMemberModal" class="modal-backdrop hidden" onclick="if(event.target===this) closeEditModal()">
+    <div class="modal-card modal-wide">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+        <h3 style="color: var(--crimson);" id="editModalTitle">Sửa thông tin Đảng viên</h3>
+        <button type="button" class="btn btn-outline" style="padding: 4px 10px;" onclick="closeEditModal()">✕</button>
+      </div>
+      <div id="editMemberAlert" class="alert hidden"></div>
+      <form id="editMemberForm" onsubmit="saveMemberForm(event)">
+        <input type="hidden" id="editOriginalMssv">
+        <div class="form-grid-3">
+          <div class="form-group">
+            <label for="editStt">STT</label>
+            <input type="text" id="editStt" placeholder="VD: 1">
+          </div>
+          <div class="form-group" style="grid-column: span 2;">
+            <label for="editHoTen">Họ và tên *</label>
+            <input type="text" id="editHoTen" required placeholder="Nhập họ và tên">
+          </div>
+        </div>
+        <div class="form-grid-3">
+          <div class="form-group">
+            <label for="editMssv">MSSV *</label>
+            <input type="text" id="editMssv" required placeholder="VD: 221124022304">
+          </div>
+          <div class="form-group">
+            <label for="editCccd">CCCD</label>
+            <input type="text" id="editCccd" placeholder="Số CCCD">
+          </div>
+          <div class="form-group">
+            <label for="editNgaySinh">Ngày sinh</label>
+            <input type="text" id="editNgaySinh" placeholder="dd/mm/yyyy">
+          </div>
+        </div>
+        <div class="form-grid-3">
+          <div class="form-group">
+            <label for="editGioiTinh">Giới tính</label>
+            <select id="editGioiTinh">
+              <option value="">-- Chọn --</option>
+              <option value="Nam">Nam</option>
+              <option value="Nữ">Nữ</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="editLop">Lớp</label>
+            <input type="text" id="editLop" placeholder="VD: 48K22.1">
+          </div>
+          <div class="form-group">
+            <label for="editKhoa">Khoa</label>
+            <input type="text" id="editKhoa" placeholder="Tên Khoa/Trung tâm">
+          </div>
+        </div>
+        <div class="form-grid-3">
+          <div class="form-group">
+            <label for="editNhom">Nhóm sinh hoạt</label>
+            <input type="text" id="editNhom" list="groupDatalist" placeholder="VD: Nhóm 1">
+            <datalist id="groupDatalist"></datalist>
+          </div>
+          <div class="form-group">
+            <label for="editLoaiDangVien">Loại Đảng viên</label>
+            <select id="editLoaiDangVien">
+              <option value="">-- Chọn --</option>
+              <option value="Chính thức">Chính thức</option>
+              <option value="Dự bị">Dự bị</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="editSoTDV">Số thẻ Đảng viên</label>
+            <input type="text" id="editSoTDV" placeholder="Nếu có">
+          </div>
+        </div>
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label for="editNgayVaoDang">Ngày vào Đảng</label>
+            <input type="text" id="editNgayVaoDang" placeholder="dd/mm/yyyy">
+          </div>
+          <div class="form-group">
+            <label for="editNgayChinhThuc">Ngày chính thức</label>
+            <input type="text" id="editNgayChinhThuc" placeholder="dd/mm/yyyy hoặc Chưa">
+          </div>
+        </div>
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label for="editChiBoCuTru">Chi bộ nơi cư trú (221)</label>
+            <input type="text" id="editChiBoCuTru" placeholder="Tên Chi bộ nơi cư trú">
+          </div>
+          <div class="form-group">
+            <label for="editDiaChiHienTai">Địa chỉ hiện tại</label>
+            <input type="text" id="editDiaChiHienTai" placeholder="Số nhà, đường, phường/xã, TP...">
+          </div>
+        </div>
+
+        <div id="editSubmissionSection" class="hidden" style="border-top: 1.5px dashed var(--border); margin-top: 8px; padding-top: 14px;">
+          <h4 style="color: var(--crimson-dark); margin-bottom: 10px; font-size: 0.92rem;">Thông tin đã kê khai (Sửa trực tiếp nếu cần)</h4>
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label for="editSubHt1">KQ Học tập HK1 (2025-2026)</label>
+              <input type="text" id="editSubHt1">
+            </div>
+            <div class="form-group">
+              <label for="editSubRl1">KQ Rèn luyện HK1 (2025-2026)</label>
+              <input type="text" id="editSubRl1">
+            </div>
+            <div class="form-group">
+              <label for="editSubHt2">KQ Học tập HK2 (2025-2026)</label>
+              <input type="text" id="editSubHt2">
+            </div>
+            <div class="form-group">
+              <label for="editSubRl2">KQ Rèn luyện HK2 (2025-2026)</label>
+              <input type="text" id="editSubRl2">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="editSubTuXepLoai">Tự xếp loại năm 2026</label>
+            <select id="editSubTuXepLoai">
+              <option value="">-- Chọn mức --</option>
+              <option value="Hoàn thành xuất sắc nhiệm vụ">Hoàn thành xuất sắc nhiệm vụ</option>
+              <option value="Hoàn thành tốt nhiệm vụ">Hoàn thành tốt nhiệm vụ</option>
+              <option value="Hoàn thành nhiệm vụ">Hoàn thành nhiệm vụ</option>
+              <option value="Không hoàn thành nhiệm vụ">Không hoàn thành nhiệm vụ</option>
+              <option value="Chưa đủ 6 tháng - Không thực hiện tự đánh giá xếp loại">Chưa đủ 6 tháng - Không thực hiện tự đánh giá xếp loại</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="editSubDeXuat">Đề xuất, ý kiến</label>
+            <textarea id="editSubDeXuat" rows="2" style="width:100%; padding:8px 10px; border:1.5px solid var(--border); border-radius:var(--radius-sm); font-family:inherit;"></textarea>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border);">
+          <button type="button" id="btnDeleteMember" class="btn btn-outline" style="color: #991b1b; border-color: #fecaca;" onclick="deleteMemberFromModal()">Xóa Đảng viên</button>
+          <div style="display: flex; gap: 10px;">
+            <button type="button" class="btn btn-outline" onclick="closeEditModal()">Hủy</button>
+            <button type="submit" id="btnSaveMember" class="btn btn-primary">Lưu thay đổi</button>
+          </div>
+        </div>
+      </form>
     </div>
   </div>
 
@@ -742,13 +908,17 @@
         document.getElementById('statPending').textContent = pending;
         document.getElementById('statPercent').textContent = total > 0 ? Math.round((submitted / total) * 100) + '%' : '0%';
 
-        // Populate group filter
+        // Populate group filter & datalist
         const groupSelect = document.getElementById('groupFilter');
         const currentGroup = groupSelect.value;
         const groups = Array.from(new Set(res.members.map(m => m.nhom).filter(Boolean)));
         groupSelect.innerHTML = '<option value="all">Tất cả các nhóm</option>' +
           groups.map(g => `<option value="${escapeHtml(g)}">${escapeHtml(g)}</option>`).join('');
         if (groups.includes(currentGroup)) groupSelect.value = currentGroup;
+        const dl = document.getElementById('groupDatalist');
+        if (dl) {
+          dl.innerHTML = groups.map(g => `<option value="${escapeHtml(g)}">`).join('');
+        }
 
         // Fill links
         if (res.links) {
@@ -825,9 +995,12 @@
           <td>${escapeHtml(m.thoiGianGui || '-')}</td>
           <td>${escapeHtml(m.tuXepLoai || '-')}</td>
           <td>
-            ${m.daKeKhai
-              ? `<button class="btn btn-outline" style="padding:4px 10px; font-size:0.78rem;" onclick="openDetail('${escapeHtml(m.mssv)}')">Xem</button>`
-              : '-'}
+            <div style="display: flex; gap: 6px; flex-wrap: nowrap;">
+              <button class="btn btn-gold" style="padding:4px 10px; font-size:0.78rem;" onclick="openEditMember('${escapeHtml(m.mssv)}')">Sửa</button>
+              ${m.daKeKhai
+                ? `<button class="btn btn-outline" style="padding:4px 10px; font-size:0.78rem;" onclick="openDetail('${escapeHtml(m.mssv)}')">Xem</button>`
+                : ''}
+            </div>
           </td>
         </tr>
       `).join('');
@@ -879,6 +1052,152 @@
       document.getElementById('detailModal').classList.add('hidden');
     }
 
+    function openEditMember(mssv) {
+      const m = mssv ? (dashboardData.members || []).find(x => x.mssv === mssv) : null;
+      const isEdit = Boolean(m);
+      document.getElementById('editModalTitle').textContent = isEdit
+        ? `Sửa thông tin: ${m.hoTen} (${m.mssv})`
+        : 'Thêm Đảng viên mới';
+      document.getElementById('editMemberAlert').classList.add('hidden');
+      document.getElementById('editOriginalMssv').value = isEdit ? m.mssv : '';
+
+      document.getElementById('editStt').value = isEdit ? (m.stt || '') : String((dashboardData.members || []).length + 1);
+      document.getElementById('editHoTen').value = isEdit ? (m.hoTen || '') : '';
+      document.getElementById('editMssv').value = isEdit ? (m.mssv || '') : '';
+      document.getElementById('editCccd').value = isEdit ? (m.cccd || '') : '';
+      document.getElementById('editNgaySinh').value = isEdit ? (m.ngaySinh || '') : '';
+      document.getElementById('editGioiTinh').value = isEdit ? (m.gioiTinh || '') : '';
+      document.getElementById('editLop').value = isEdit ? (m.lop || '') : '';
+      document.getElementById('editKhoa').value = isEdit ? (m.khoa || '') : '';
+      document.getElementById('editNhom').value = isEdit ? (m.nhom || '') : '';
+      document.getElementById('editLoaiDangVien').value = isEdit ? (m.loaiDangVien || '') : '';
+      document.getElementById('editNgayVaoDang').value = isEdit ? (m.ngayVaoDang || '') : '';
+      document.getElementById('editNgayChinhThuc').value = isEdit ? (m.ngayChinhThuc || '') : '';
+      document.getElementById('editSoTDV').value = isEdit ? (m.soTDV || '') : '';
+
+      const sub = (isEdit && m.daKeKhai && m.submission) ? m.submission : null;
+      document.getElementById('editChiBoCuTru').value = isEdit ? ((sub && sub.chiBoCuTru) || m.chiBoCuTru || '') : '';
+      document.getElementById('editDiaChiHienTai').value = isEdit ? ((sub && sub.noiOHienNay) || m.diaChiHienTai || '') : '';
+
+      const subSec = document.getElementById('editSubmissionSection');
+      if (sub) {
+        subSec.classList.remove('hidden');
+        document.getElementById('editSubHt1').value = sub.kqHocTapHK1 || '';
+        document.getElementById('editSubRl1').value = sub.kqRenLuyenHK1 || '';
+        document.getElementById('editSubHt2').value = sub.kqHocTapHK2 || '';
+        document.getElementById('editSubRl2').value = sub.kqRenLuyenHK2 || '';
+        document.getElementById('editSubTuXepLoai').value = sub.tuXepLoai || '';
+        document.getElementById('editSubDeXuat').value = sub.deXuat || '';
+      } else {
+        subSec.classList.add('hidden');
+      }
+
+      document.getElementById('btnDeleteMember').classList.toggle('hidden', !isEdit);
+      document.getElementById('editMemberModal').classList.remove('hidden');
+    }
+
+    function closeEditModal() {
+      document.getElementById('editMemberModal').classList.add('hidden');
+    }
+
+    async function saveMemberForm(e) {
+      e.preventDefault();
+      const alertBox = document.getElementById('editMemberAlert');
+      const btn = document.getElementById('btnSaveMember');
+      alertBox.classList.add('hidden');
+      alertBox.classList.remove('alert-success', 'alert-danger');
+
+      const originalMssv = document.getElementById('editOriginalMssv').value.trim();
+      const member = {
+        stt: document.getElementById('editStt').value.trim(),
+        hoTen: document.getElementById('editHoTen').value.trim(),
+        mssv: document.getElementById('editMssv').value.trim(),
+        cccd: document.getElementById('editCccd').value.trim(),
+        ngaySinh: document.getElementById('editNgaySinh').value.trim(),
+        gioiTinh: document.getElementById('editGioiTinh').value,
+        lop: document.getElementById('editLop').value.trim(),
+        khoa: document.getElementById('editKhoa').value.trim(),
+        nhom: document.getElementById('editNhom').value.trim(),
+        loaiDangVien: document.getElementById('editLoaiDangVien').value,
+        ngayVaoDang: document.getElementById('editNgayVaoDang').value.trim(),
+        ngayChinhThuc: document.getElementById('editNgayChinhThuc').value.trim(),
+        soTDV: document.getElementById('editSoTDV').value.trim(),
+        chiBoCuTru: document.getElementById('editChiBoCuTru').value.trim(),
+        diaChiHienTai: document.getElementById('editDiaChiHienTai').value.trim()
+      };
+
+      let submissionPatch = null;
+      if (!document.getElementById('editSubmissionSection').classList.contains('hidden')) {
+        submissionPatch = {
+          chiBoCuTru: member.chiBoCuTru,
+          noiOHienNay: member.diaChiHienTai,
+          kqHocTapHK1: document.getElementById('editSubHt1').value.trim(),
+          kqRenLuyenHK1: document.getElementById('editSubRl1').value.trim(),
+          kqHocTapHK2: document.getElementById('editSubHt2').value.trim(),
+          kqRenLuyenHK2: document.getElementById('editSubRl2').value.trim(),
+          tuXepLoai: document.getElementById('editSubTuXepLoai').value,
+          deXuat: document.getElementById('editSubDeXuat').value.trim()
+        };
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Đang lưu...';
+      try {
+        const res = await callGasApi({
+          action: 'adminSaveMember',
+          password: adminPassword,
+          originalMssv,
+          member,
+          submissionPatch
+        });
+        if (!res || !res.success) {
+          alertBox.textContent = (res && res.message) ? res.message : 'Lưu thất bại.';
+          alertBox.classList.add('alert-danger');
+          alertBox.classList.remove('hidden');
+          return;
+        }
+        await loadDashboard();
+        closeEditModal();
+      } catch (err) {
+        alertBox.textContent = err.message;
+        alertBox.classList.add('alert-danger');
+        alertBox.classList.remove('hidden');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Lưu thay đổi';
+      }
+    }
+
+    async function deleteMemberFromModal() {
+      const mssv = document.getElementById('editOriginalMssv').value.trim();
+      const hoTen = document.getElementById('editHoTen').value.trim();
+      if (!mssv) return;
+      if (!confirm(`Xác nhận xóa Đảng viên "${hoTen}" (${mssv}) khỏi hệ thống?`)) return;
+
+      const alertBox = document.getElementById('editMemberAlert');
+      const btn = document.getElementById('btnDeleteMember');
+      alertBox.classList.add('hidden');
+      alertBox.classList.remove('alert-success', 'alert-danger');
+      btn.disabled = true;
+      try {
+        const res = await callGasApi({ action: 'adminDeleteMember', password: adminPassword, mssv });
+        if (!res || !res.success) {
+          alertBox.textContent = (res && res.message) ? res.message : 'Xóa thất bại.';
+          alertBox.classList.add('alert-danger');
+          alertBox.classList.remove('hidden');
+          return;
+        }
+        await loadDashboard();
+        closeEditModal();
+      } catch (err) {
+        alertBox.textContent = err.message;
+        alertBox.classList.add('alert-danger');
+        alertBox.classList.remove('hidden');
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
     async function saveLinks(e) {
       e.preventDefault();
       const btn = document.getElementById('btnSaveLinks');
@@ -924,16 +1243,67 @@
       exportToExcel(dashboardData.submissions, 'KetQua_KeKhai_2026.xlsx');
     }
 
+    function buildSummaryExportRow(m, idx) {
+      if (m.chiTiet) return m.chiTiet;
+      return {
+        'STT': m.stt || String(idx + 1),
+        'Thời gian gửi': '',
+        'Họ và tên': m.hoTen || '',
+        'MSSV': m.mssv || '',
+        'Ngày sinh': m.ngaySinh || '',
+        'Giới tính': m.gioiTinh || '',
+        'CCCD': m.cccd || '',
+        'Lớp': m.lop || '',
+        'Khoa': m.khoa || '',
+        'Nhóm sinh hoạt': m.nhom || '',
+        'Ngày vào Đảng': m.ngayVaoDang || '',
+        'Ngày chính thức': m.ngayChinhThuc || '',
+        'Loại Đảng viên': m.loaiDangVien || '',
+        'Số thẻ Đảng viên': m.soTDV || '',
+        'Chi bộ Sinh hoạt nơi cư trú': m.chiBoCuTru || '',
+        'Nơi ở hiện nay': m.diaChiHienTai || '',
+        'KQ Học tập HK1 (2025-2026)': '',
+        'KQ Rèn luyện HK1 (2025-2026)': '',
+        'KQ Học tập HK2 (2025-2026)': '',
+        'KQ Rèn luyện HK2 (2025-2026)': '',
+        'Thành tích 1': '',
+        'Thành tích 2': '',
+        'Thành tích 3': '',
+        'Thành tích 4': '',
+        'Tổng hợp Thành tích đạt được': '',
+        'Đóng góp cho Chi bộ': '',
+        'Tự xếp loại mức HTNV năm 2026': 'Chưa kê khai',
+        'Đề xuất, ý kiến': '',
+        'Trạng thái tạo hồ sơ in (Mẫu 02c + 6b)': m.daTaoHoSo ? `Đã tải (${m.thoiGianTaoHoSo})` : 'Chưa tạo',
+        'Tổng điểm tự chấm (Mẫu 02c)': m.tongDiemHoSo || ''
+      };
+    }
+
+    function exportAllSummary() {
+      const rows = (dashboardData.members || []).map((m, idx) => buildSummaryExportRow(m, idx));
+      exportToExcel(rows, 'TongHop_KeKhai_DangVien_2026.xlsx');
+    }
+
     function exportPending() {
       const pending = dashboardData.members
         .filter(m => !m.daKeKhai)
         .map((m, idx) => ({
           'STT': idx + 1,
-          'Họ và tên': m.hoTen,
-          'MSSV': m.mssv,
-          'Nhóm': m.nhom,
-          'Khoa': m.khoa,
-          'Loại Đảng viên': m.loaiDangVien
+          'Họ và tên': m.hoTen || '',
+          'MSSV': m.mssv || '',
+          'Ngày sinh': m.ngaySinh || '',
+          'Giới tính': m.gioiTinh || '',
+          'CCCD': m.cccd || '',
+          'Lớp': m.lop || '',
+          'Khoa': m.khoa || '',
+          'Nhóm sinh hoạt': m.nhom || '',
+          'Ngày vào Đảng': m.ngayVaoDang || '',
+          'Ngày chính thức': m.ngayChinhThuc || '',
+          'Loại Đảng viên': m.loaiDangVien || '',
+          'Số thẻ Đảng viên': m.soTDV || '',
+          'Địa chỉ hiện tại đang ở(Nơi đã nộp Giấy 221': m.diaChiHienTai || '',
+          'Chi bộ nơi cư trú (221)': m.chiBoCuTru || '',
+          'Trạng thái kê khai': 'Chưa kê khai'
         }));
       exportToExcel(pending, 'DanhSach_ChuaKeKhai_2026.xlsx');
     }

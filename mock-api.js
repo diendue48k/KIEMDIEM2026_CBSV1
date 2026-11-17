@@ -284,41 +284,62 @@ const MOCK_API = (function () {
     });
 
     const docLogsSorted = (db.docLogs || []).slice().sort((a, b) => (b.createdAtMs || 0) - (a.createdAtMs || 0));
+    const fmtAch = a => (a ? [a.loai, a.donVi, a.thoiGian, a.ten].map(v => String(v || '').trim()).filter(Boolean).join(' - ') : '');
 
     const members = sortedMembers.map(m => {
       const sub = (db.submissions && db.submissions[m.mssv]) || null;
+      const docMatch = docLogsSorted.find(l => l.mssv === m.mssv);
       let chiTiet = null;
       if (sub) {
-        const thanhTichStr = (sub.thanhTichList || [])
-          .map((a, i) => `${i + 1}. ${a.loai} - ${a.donVi} - ${a.thoiGian} - ${a.ten}`)
+        const achs = Array.isArray(sub.thanhTichList) ? sub.thanhTichList : [];
+        const thanhTichStr = achs
+          .map((a, i) => `${i + 1}. ${fmtAch(a)}`)
           .join('\n');
         const dongGopStr = (sub.dongGopList || [])
           .map((g, i) => `${i + 1}. ${g.hoatDong} | ${g.thoiGian} | ${g.noiDung}`)
           .join('\n');
         chiTiet = {
-          'Thời gian gửi': sub.thoiGianGui,
-          'MSSV': m.mssv,
-          'Họ và tên': m.hoTen,
-          'Chi bộ Sinh hoạt nơi cư trú': sub.chiBoCuTru,
-          'Nơi ở hiện nay': sub.noiOHienNay,
-          'KQ Học tập HK1': sub.kqHocTapHK1,
-          'KQ Rèn luyện HK1': sub.kqRenLuyenHK1,
-          'KQ Học tập HK2': sub.kqHocTapHK2,
-          'KQ Rèn luyện HK2': sub.kqRenLuyenHK2,
-          'Thành tích đạt được': thanhTichStr,
+          'STT': m.stt || '',
+          'Thời gian gửi': sub.thoiGianGui || '',
+          'Họ và tên': m.hoTen || '',
+          'MSSV': m.mssv || '',
+          'Ngày sinh': m.ngaySinh || '',
+          'Giới tính': m.gioiTinh || '',
+          'CCCD': m.cccd || '',
+          'Lớp': m.lop || '',
+          'Khoa': m.khoa || '',
+          'Nhóm sinh hoạt': m.nhom || '',
+          'Ngày vào Đảng': m.ngayVaoDang || '',
+          'Ngày chính thức': m.ngayChinhThuc || '',
+          'Loại Đảng viên': m.loaiDangVien || '',
+          'Số thẻ Đảng viên': m.soTDV || '',
+          'Chi bộ Sinh hoạt nơi cư trú': sub.chiBoCuTru || m.chiBoCuTru || '',
+          'Nơi ở hiện nay': sub.noiOHienNay || m.diaChiHienTai || '',
+          'KQ Học tập HK1 (2025-2026)': sub.kqHocTapHK1 || '',
+          'KQ Rèn luyện HK1 (2025-2026)': sub.kqRenLuyenHK1 || '',
+          'KQ Học tập HK2 (2025-2026)': sub.kqHocTapHK2 || '',
+          'KQ Rèn luyện HK2 (2025-2026)': sub.kqRenLuyenHK2 || '',
+          'Thành tích 1': fmtAch(achs[0]),
+          'Thành tích 2': fmtAch(achs[1]),
+          'Thành tích 3': fmtAch(achs[2]),
+          'Thành tích 4': fmtAch(achs[3]),
+          'Tổng hợp Thành tích đạt được': thanhTichStr,
           'Đóng góp cho Chi bộ': dongGopStr,
-          'Tự xếp loại mức HTNV năm 2026': sub.tuXepLoai,
-          'Đề xuất, ý kiến': sub.deXuat
+          'Tự xếp loại mức HTNV năm 2026': sub.tuXepLoai || '',
+          'Đề xuất, ý kiến': sub.deXuat || '',
+          'Trạng thái tạo hồ sơ in (Mẫu 02c + 6b)': docMatch ? `Đã tải (${docMatch.thoiGian})` : 'Chưa tạo',
+          'Tổng điểm tự chấm (Mẫu 02c)': (docMatch && docMatch.tongDiem) ? docMatch.tongDiem : ''
         };
         submissionsList.push(chiTiet);
       }
-      const docMatch = docLogsSorted.find(l => l.mssv === m.mssv);
       return Object.assign({}, m, {
         daKeKhai: Boolean(sub),
         thoiGianGui: sub ? sub.thoiGianGui : '',
         tuXepLoai: sub ? sub.tuXepLoai : '',
         daTaoHoSo: Boolean(docMatch),
         thoiGianTaoHoSo: docMatch ? docMatch.thoiGian : '',
+        tongDiemHoSo: (docMatch && docMatch.tongDiem) ? docMatch.tongDiem : '',
+        submission: sub,
         chiTiet
       });
     });
@@ -419,6 +440,72 @@ const MOCK_API = (function () {
       return {
         success: true,
         message: `Nhập dữ liệu cục bộ thành công: thêm ${added} đồng chí, cập nhật ${updated} đồng chí.`,
+        firebaseConnected: false,
+        firebaseError: extra.firebaseError || ''
+      };
+    }
+
+    if (body.action === 'adminSaveMember') {
+      if (body.password !== ADMIN_PASSWORD) return { success: false, message: 'Mật khẩu quản trị không đúng.' };
+      const origMssv = String(body.originalMssv || '').trim();
+      const input = body.member || {};
+      const newMssv = String(input.mssv || '').trim();
+      const hoTen = String(input.hoTen || '').trim();
+      if (!newMssv || !hoTen) {
+        return { success: false, message: 'Vui lòng nhập đầy đủ Họ tên và MSSV.' };
+      }
+      const conflictIdx = db.members.findIndex(x => x.mssv === newMssv && x.mssv !== origMssv);
+      if (conflictIdx >= 0) {
+        return { success: false, message: `MSSV "${newMssv}" đã tồn tại trong danh sách.` };
+      }
+      const origIdx = origMssv ? db.members.findIndex(x => x.mssv === origMssv) : -1;
+      const existing = origIdx >= 0 ? db.members[origIdx] : null;
+      const savedObj = sanitizeMemberRow(input, existing ? existing.stt : db.members.length + 1, existing);
+
+      if (origIdx >= 0) {
+        db.members[origIdx] = savedObj;
+      } else {
+        db.members.push(savedObj);
+      }
+
+      if (origMssv && origMssv !== newMssv && db.submissions[origMssv]) {
+        db.submissions[newMssv] = Object.assign({}, db.submissions[origMssv], { mssv: newMssv });
+        delete db.submissions[origMssv];
+      }
+      if (body.submissionPatch && db.submissions[newMssv]) {
+        const sp = body.submissionPatch;
+        db.submissions[newMssv] = Object.assign({}, db.submissions[newMssv], {
+          chiBoCuTru: String(sp.chiBoCuTru || ''),
+          noiOHienNay: String(sp.noiOHienNay || ''),
+          kqHocTapHK1: String(sp.kqHocTapHK1 || ''),
+          kqRenLuyenHK1: String(sp.kqRenLuyenHK1 || ''),
+          kqHocTapHK2: String(sp.kqHocTapHK2 || ''),
+          kqRenLuyenHK2: String(sp.kqRenLuyenHK2 || ''),
+          tuXepLoai: String(sp.tuXepLoai || ''),
+          deXuat: String(sp.deXuat || '')
+        });
+      }
+
+      saveLocalDb(db);
+      return {
+        success: true,
+        message: origMssv ? `Đã cập nhật thông tin đồng chí ${hoTen} (cục bộ).` : `Đã thêm Đảng viên ${hoTen} (cục bộ).`,
+        member: savedObj,
+        firebaseConnected: false,
+        firebaseError: extra.firebaseError || ''
+      };
+    }
+
+    if (body.action === 'adminDeleteMember') {
+      if (body.password !== ADMIN_PASSWORD) return { success: false, message: 'Mật khẩu quản trị không đúng.' };
+      const mssv = String(body.mssv || '').trim();
+      if (!mssv) return { success: false, message: 'Thiếu MSSV cần xóa.' };
+      db.members = db.members.filter(x => x.mssv !== mssv);
+      if (db.submissions && db.submissions[mssv]) delete db.submissions[mssv];
+      saveLocalDb(db);
+      return {
+        success: true,
+        message: `Đã xóa Đảng viên (${mssv}) khỏi danh sách cục bộ.`,
         firebaseConnected: false,
         firebaseError: extra.firebaseError || ''
       };
@@ -665,6 +752,122 @@ const MOCK_API = (function () {
       };
     }
 
+    if (body.action === 'adminSaveMember') {
+      if (body.password !== ADMIN_PASSWORD) return { success: false, message: 'Mật khẩu quản trị không đúng.' };
+      const origMssv = String(body.originalMssv || '').trim();
+      const input = body.member || {};
+      const newMssv = String(input.mssv || '').trim();
+      const hoTen = String(input.hoTen || '').trim();
+      if (!newMssv || !hoTen) {
+        return { success: false, message: 'Vui lòng nhập đầy đủ Họ tên và MSSV.' };
+      }
+
+      const newId = docSafeId(newMssv);
+      const origId = origMssv ? docSafeId(origMssv) : '';
+
+      let prevDocData = null;
+      if (origId) {
+        const origSnap = await withTimeout(
+          fs.collection('members').doc(origId).get(),
+          10000,
+          'Quá thời gian đọc thông tin Đảng viên trên Firestore.'
+        );
+        if (origSnap.exists) prevDocData = origSnap.data();
+      }
+
+      if (!origId || origId !== newId) {
+        const targetSnap = await withTimeout(
+          fs.collection('members').doc(newId).get(),
+          10000,
+          'Quá thời gian kiểm tra trùng MSSV trên Firestore.'
+        );
+        if (targetSnap.exists) {
+          return { success: false, message: `MSSV "${newMssv}" đã tồn tại trên Firebase.` };
+        }
+      }
+
+      const savedObj = sanitizeMemberRow(input, (prevDocData && prevDocData.stt) || '', prevDocData);
+      const batch = fs.batch();
+      batch.set(fs.collection('members').doc(newId), savedObj, { merge: true });
+
+      let updatedSub = null;
+      const subLookupId = origId || newId;
+      const subSnap = await withTimeout(
+        fs.collection('submissions').doc(subLookupId).get(),
+        10000,
+        'Quá thời gian đọc dữ liệu kê khai trên Firestore.'
+      );
+      if (subSnap.exists) {
+        const baseSub = Object.assign({}, subSnap.data(), { mssv: newMssv });
+        if (body.submissionPatch) {
+          const sp = body.submissionPatch;
+          updatedSub = Object.assign(baseSub, {
+            chiBoCuTru: String(sp.chiBoCuTru || ''),
+            noiOHienNay: String(sp.noiOHienNay || ''),
+            kqHocTapHK1: String(sp.kqHocTapHK1 || ''),
+            kqRenLuyenHK1: String(sp.kqRenLuyenHK1 || ''),
+            kqHocTapHK2: String(sp.kqHocTapHK2 || ''),
+            kqRenLuyenHK2: String(sp.kqRenLuyenHK2 || ''),
+            tuXepLoai: String(sp.tuXepLoai || ''),
+            deXuat: String(sp.deXuat || '')
+          });
+        } else {
+          updatedSub = baseSub;
+        }
+        batch.set(fs.collection('submissions').doc(newId), updatedSub, { merge: true });
+      }
+
+      if (origId && origId !== newId) {
+        batch.delete(fs.collection('members').doc(origId));
+        if (subSnap.exists) {
+          batch.delete(fs.collection('submissions').doc(origId));
+        }
+      }
+
+      await withTimeout(batch.commit(), 15000, 'Quá thời gian lưu thay đổi lên Firestore.');
+
+      const localDb = getLocalDb();
+      const idx = origMssv ? localDb.members.findIndex(x => x.mssv === origMssv) : -1;
+      if (idx >= 0) localDb.members[idx] = savedObj;
+      else localDb.members.push(savedObj);
+      if (origMssv && origMssv !== newMssv && localDb.submissions[origMssv]) {
+        delete localDb.submissions[origMssv];
+      }
+      if (updatedSub) localDb.submissions[newMssv] = updatedSub;
+      saveLocalDb(localDb);
+
+      return {
+        success: true,
+        message: origMssv
+          ? `Đã cập nhật thông tin đồng chí ${hoTen} lên Firebase thành công!`
+          : `Đã thêm Đảng viên ${hoTen} lên Firebase thành công!`,
+        member: savedObj,
+        firebaseConnected: true
+      };
+    }
+
+    if (body.action === 'adminDeleteMember') {
+      if (body.password !== ADMIN_PASSWORD) return { success: false, message: 'Mật khẩu quản trị không đúng.' };
+      const mssv = String(body.mssv || '').trim();
+      if (!mssv) return { success: false, message: 'Thiếu MSSV cần xóa.' };
+      const safeId = docSafeId(mssv);
+      const batch = fs.batch();
+      batch.delete(fs.collection('members').doc(safeId));
+      batch.delete(fs.collection('submissions').doc(safeId));
+      await withTimeout(batch.commit(), 12000, 'Quá thời gian xóa Đảng viên trên Firestore.');
+
+      const localDb = getLocalDb();
+      localDb.members = localDb.members.filter(x => x.mssv !== mssv);
+      if (localDb.submissions && localDb.submissions[mssv]) delete localDb.submissions[mssv];
+      saveLocalDb(localDb);
+
+      return {
+        success: true,
+        message: `Đã xóa Đảng viên (${mssv}) khỏi Firebase thành công!`,
+        firebaseConnected: true
+      };
+    }
+
     return { success: false, message: 'Hành động không hợp lệ.' };
   }
 
@@ -673,7 +876,14 @@ const MOCK_API = (function () {
       return { success: false, message: 'Yêu cầu không hợp lệ.' };
     }
 
-    if (body.action === 'adminDashboard' || body.action === 'adminSaveLinks' || body.action === 'adminImportMembers') {
+    const ADMIN_ACTIONS = new Set([
+      'adminDashboard',
+      'adminSaveLinks',
+      'adminImportMembers',
+      'adminSaveMember',
+      'adminDeleteMember'
+    ]);
+    if (ADMIN_ACTIONS.has(body.action)) {
       if (body.password !== ADMIN_PASSWORD) {
         return { success: false, message: 'Mật khẩu quản trị không đúng.' };
       }

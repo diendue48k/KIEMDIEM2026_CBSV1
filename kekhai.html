@@ -235,19 +235,334 @@
       flex-shrink: 0;
     }
 
-    .member-info-box {
-      margin-top: 24px;
-      padding-top: 22px;
-      border-top: 1.5px dashed var(--border);
+    /* Lookup Panel & Input Icons */
+    .lookup-panel {
+      background: linear-gradient(180deg, #fdfbf9 0%, #f8f2ec 100%);
+      border: 1.5px solid #eadfd6;
+      border-radius: 14px;
+      padding: 18px 20px;
     }
 
-    .member-info-label {
-      font-size: 0.9rem;
+    .lookup-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr auto;
+      gap: 14px;
+      align-items: end;
+    }
+
+    .lookup-grid .form-group {
+      margin-bottom: 0;
+    }
+
+    .input-with-icon {
+      position: relative;
+    }
+
+    .input-with-icon .input-icon {
+      position: absolute;
+      left: 13px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #9a8a80;
+      width: 18px;
+      height: 18px;
+      pointer-events: none;
+      transition: color 0.2s ease;
+    }
+
+    .input-with-icon input[type="text"] {
+      padding-left: 40px;
+    }
+
+    .input-with-icon:focus-within .input-icon {
+      color: var(--crimson);
+    }
+
+    .btn-lookup {
+      height: 44px;
+      padding: 0 20px;
+      white-space: nowrap;
+    }
+
+    @media (max-width: 680px) {
+      .lookup-panel { padding: 16px; }
+      .lookup-grid { grid-template-columns: 1fr; }
+      .btn-lookup { width: 100%; }
+    }
+
+    /* Member Profile Card */
+    .member-profile-card {
+      margin-top: 22px;
+      border-radius: 16px;
+      border: 1.5px solid #ecdcd2;
+      background: #ffffff;
+      overflow: hidden;
+      box-shadow: 0 10px 28px -8px rgba(158, 27, 30, 0.12);
+    }
+
+    .member-profile-header {
+      background: linear-gradient(135deg, var(--crimson) 0%, var(--crimson-dark) 100%);
+      color: #ffffff;
+      padding: 18px 22px;
+      border-bottom: 3px solid var(--gold-bright);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      position: relative;
+    }
+
+    .member-profile-header::after {
+      content: '';
+      position: absolute;
+      top: -30px;
+      right: -20px;
+      width: 140px;
+      height: 140px;
+      background: radial-gradient(circle, rgba(250, 204, 21, 0.18) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .member-identity {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .member-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 14px;
+      background: rgba(250, 204, 21, 0.16);
+      border: 1.5px solid rgba(250, 204, 21, 0.55);
+      color: var(--gold-bright);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.14);
+    }
+
+    .member-avatar svg {
+      width: 25px;
+      height: 25px;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+    }
+
+    .member-verified-tag {
+      font-size: 0.72rem;
       font-weight: 700;
-      color: var(--crimson-dark);
       text-transform: uppercase;
-      letter-spacing: 0.03em;
+      letter-spacing: 0.05em;
+      color: var(--gold-soft);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 3px;
+    }
+
+    .member-verified-tag svg {
+      width: 14px;
+      height: 14px;
+      color: #4ade80;
+      flex-shrink: 0;
+    }
+
+    .member-name-title {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: #ffffff;
+      line-height: 1.25;
+      letter-spacing: -0.01em;
+    }
+
+    .member-badges {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 1;
+    }
+
+    .badge-gold {
+      background: var(--gold-bright);
+      color: var(--crimson-dark);
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.01em;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    }
+
+    .badge-glass {
+      background: rgba(255, 255, 255, 0.15);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    .member-meta-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      padding: 18px 20px;
+      background: linear-gradient(180deg, #fffdfa 0%, #faf5f0 100%);
+    }
+
+    @media (max-width: 640px) {
+      .member-profile-header { padding: 16px; }
+      .member-name-title { font-size: 1.15rem; }
+      .member-meta-grid { grid-template-columns: 1fr; padding: 14px; }
+    }
+
+    .meta-tile {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      padding: 13px 15px;
+      background: #ffffff;
+      border: 1px solid #ede3dc;
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(31, 26, 24, 0.03);
+    }
+
+    .meta-tile.full-span {
+      grid-column: 1 / -1;
+    }
+
+    .meta-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: #fef2f2;
+      color: var(--crimson);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      border: 1px solid #fde2e2;
+    }
+
+    .meta-icon.gold {
+      background: var(--gold-tint);
+      color: #b45309;
+      border-color: #fde68a;
+    }
+
+    .meta-icon svg {
+      width: 18px;
+      height: 18px;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+    }
+
+    .meta-content {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .meta-label {
+      font-size: 0.73rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-muted);
+      margin-bottom: 2px;
+    }
+
+    .meta-value {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-main);
+      line-height: 1.35;
+      word-break: break-word;
+    }
+
+    /* Semester Cards */
+    .semester-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    @media (max-width: 680px) {
+      .semester-grid { grid-template-columns: 1fr; }
+    }
+
+    .semester-card {
+      background: #ffffff;
+      border: 1.5px solid #e6dcd4;
+      border-radius: 14px;
+      padding: 16px 18px;
+      box-shadow: 0 3px 10px rgba(31, 26, 24, 0.04);
+    }
+
+    .semester-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
       margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px dashed #eee4dc;
+      flex-wrap: wrap;
+    }
+
+    .semester-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--crimson) 0%, var(--crimson-dark) 100%);
+      color: var(--gold-bright);
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+    }
+
+    .semester-year {
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+
+    .semester-fields {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    @media (max-width: 480px) {
+      .semester-fields { grid-template-columns: 1fr; }
+    }
+
+    .semester-fields .form-group {
+      margin-bottom: 0;
+    }
+
+    .semester-fields label {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
     }
 
     .grid-2 {
@@ -435,63 +750,129 @@
       flex-shrink: 0;
     }
 
-    .contrib-table-wrap {
-      overflow-x: auto;
-      border: 1.5px solid var(--border);
-      border-radius: var(--radius-md);
+    /* Repeater Entry Cards (Thành tích & Đóng góp) */
+    .entry-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .entry-card {
       background: #ffffff;
+      border: 1.5px solid #e6dcd4;
+      border-radius: 14px;
+      padding: 16px 18px;
+      box-shadow: 0 3px 10px rgba(31, 26, 24, 0.04);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
 
-    .contrib-table {
-      width: 100%;
-      border-collapse: collapse;
-      min-width: 580px;
+    .entry-card:hover {
+      border-color: #d8c7bc;
+      box-shadow: 0 5px 14px rgba(31, 26, 24, 0.07);
     }
 
-    .contrib-table thead th {
-      background: linear-gradient(135deg, var(--crimson) 0%, var(--crimson-dark) 100%);
-      color: #ffffff;
-      font-size: 0.78rem;
-      font-weight: 700;
+    .entry-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 12px;
+      padding-bottom: 10px;
+      border-bottom: 1px dashed #eee4dc;
+    }
+
+    .entry-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 11px;
+      border-radius: 999px;
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      color: var(--crimson-dark);
+      font-size: 0.76rem;
+      font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.03em;
-      padding: 11px 12px;
-      text-align: left;
-      border-bottom: 2px solid var(--gold-bright);
     }
 
-    .contrib-table tbody td {
-      padding: 10px 10px;
-      border-bottom: 1px solid #f0e8e2;
-      vertical-align: top;
+    .entry-badge.gold {
+      background: var(--gold-tint);
+      border-color: #fde68a;
+      color: #92400e;
     }
 
-    .contrib-table tbody tr:last-child td { border-bottom: none; }
+    .entry-grid-3 {
+      display: grid;
+      grid-template-columns: 1.1fr 1.4fr 1fr;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
 
-    .contrib-table input[type="text"],
-    .contrib-table select,
-    .contrib-table textarea {
+    .entry-grid-2 {
+      display: grid;
+      grid-template-columns: 1.8fr 1fr;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    @media (max-width: 680px) {
+      .entry-card { padding: 14px; }
+      .entry-grid-3, .entry-grid-2 { grid-template-columns: 1fr; }
+    }
+
+    .entry-field label {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+      margin-bottom: 5px;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+
+    .entry-field input[type="text"],
+    .entry-field select,
+    .entry-field textarea {
       width: 100%;
-      padding: 8px 10px;
-      font-size: 0.875rem;
-      min-height: 40px;
+      padding: 9px 12px;
+      font-size: 0.9rem;
       border: 1.5px solid var(--border);
       border-radius: var(--radius-sm);
       font-family: inherit;
       color: var(--text-main);
       background-color: #ffffff;
+      transition: all 0.2s ease;
     }
 
-    .contrib-table textarea { min-height: 60px; }
+    .entry-field input[type="text"]:hover,
+    .entry-field select:hover,
+    .entry-field textarea:hover {
+      border-color: #cbbdb5;
+    }
+
+    .entry-field input[type="text"]:focus,
+    .entry-field select:focus,
+    .entry-field textarea:focus {
+      outline: none;
+      border-color: var(--crimson);
+      box-shadow: 0 0 0 3px rgba(158, 27, 30, 0.1);
+    }
+
+    .entry-field textarea {
+      min-height: 76px;
+      resize: vertical;
+    }
 
     .btn-add-row {
-      margin-top: 10px;
+      margin-top: 12px;
       background-color: var(--gold-tint);
       color: var(--crimson-dark);
       border: 1.5px dashed var(--gold);
-      padding: 8px 16px;
+      padding: 9px 16px;
       font-size: 0.86rem;
       font-weight: 700;
+      font-family: inherit;
       border-radius: var(--radius-sm);
       cursor: pointer;
       display: inline-flex;
@@ -514,27 +895,39 @@
     }
 
     .btn-remove-row {
-      background-color: #fef2f2;
-      color: var(--crimson-bright);
-      border: 1px solid #fecaca;
-      width: 32px;
-      height: 36px;
-      border-radius: var(--radius-sm);
-      font-size: 1.1rem;
-      font-weight: 700;
-      cursor: pointer;
       display: inline-flex;
       align-items: center;
-      justify-content: center;
+      gap: 5px;
+      padding: 5px 11px;
+      border-radius: 8px;
+      background-color: #fff5f5;
+      color: var(--crimson-bright);
+      border: 1px solid #fecaca;
+      font-size: 0.78rem;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
       transition: all 0.15s ease;
+    }
+
+    .btn-remove-row svg {
+      width: 14px;
+      height: 14px;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+      flex-shrink: 0;
     }
 
     .btn-remove-row:hover:not(:disabled) {
       background-color: var(--crimson-bright);
+      border-color: var(--crimson-bright);
       color: #ffffff;
     }
 
-    .btn-remove-row:disabled { opacity: 0.35; cursor: not-allowed; }
+    .btn-remove-row:disabled { opacity: 0.38; cursor: not-allowed; }
 
     .pledge-box {
       display: flex;
@@ -609,35 +1002,109 @@
         <h2 class="section-title">Tra Cứu Thông Tin Đảng Viên</h2>
       </div>
 
-      <div class="grid-2">
-        <div class="form-group">
-          <label for="mssv" class="required">MSSV</label>
-          <input type="text" id="mssv" placeholder="Nhập MSSV của đồng chí">
+      <div class="lookup-panel">
+        <div class="lookup-grid">
+          <div class="form-group">
+            <label for="mssv" class="required">MSSV</label>
+            <div class="input-with-icon">
+              <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <input type="text" id="mssv" placeholder="Nhập MSSV của đồng chí">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="cccd" class="required">CCCD</label>
+            <div class="input-with-icon">
+              <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+              <input type="text" id="cccd" placeholder="Nhập số CCCD của đồng chí">
+            </div>
+          </div>
+          <button type="button" id="btnLookup" class="btn btn-primary btn-lookup" onclick="handleLookup()">
+            <svg class="icon-svg" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            <span>Kiểm tra &amp; Tải thông tin</span>
+          </button>
         </div>
-        <div class="form-group">
-          <label for="cccd" class="required">CCCD</label>
-          <input type="text" id="cccd" placeholder="Nhập số CCCD của đồng chí">
-        </div>
-      </div>
-
-      <div style="margin-top: 16px;">
-        <button type="button" id="btnLookup" class="btn btn-primary" onclick="handleLookup()">
-          Kiểm tra &amp; Tải thông tin
-        </button>
       </div>
 
       <div id="lookupAlert" class="alert alert-danger hidden" style="margin-top: 16px; margin-bottom: 0;"></div>
       <div id="existingNotice" class="alert alert-gold hidden" style="margin-top: 16px; margin-bottom: 0;"></div>
 
-      <div id="memberInfoBox" class="member-info-box hidden fade-in">
-        <div class="member-info-label">Thông tin Đảng viên từ hệ thống</div>
-        <div class="grid-2">
-          <div class="form-group"><label>Họ và tên</label><input type="text" id="hoTen" readonly></div>
-          <div class="form-group"><label>Ngày sinh</label><input type="text" id="ngaySinh" readonly></div>
-          <div class="form-group"><label>Ngày vào Đảng</label><input type="text" id="ngayVaoDang" readonly></div>
-          <div class="form-group"><label>Nhóm</label><input type="text" id="nhom" readonly></div>
-          <div class="form-group"><label>Khoa/Trung tâm</label><input type="text" id="khoa" readonly></div>
-          <div class="form-group"><label>Loại Đảng viên</label><input type="text" id="loaiDangVien" readonly></div>
+      <div id="memberInfoBox" class="member-profile-card hidden fade-in">
+        <input type="hidden" id="hoTen">
+        <input type="hidden" id="ngaySinh">
+        <input type="hidden" id="ngayVaoDang">
+        <input type="hidden" id="nhom">
+        <input type="hidden" id="khoa">
+        <input type="hidden" id="loaiDangVien">
+
+        <div class="member-profile-header">
+          <div class="member-identity">
+            <div class="member-avatar">
+              <svg viewBox="0 0 24 24"><path d="M12 2l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 16.8l-5.8 3.1 1.1-6.5L2.6 8.8l6.5-.9L12 2z"/></svg>
+            </div>
+            <div>
+              <div class="member-verified-tag">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                <span>Thông tin Đảng viên từ hệ thống</span>
+              </div>
+              <div class="member-name-title" id="hoTenDisplay">—</div>
+            </div>
+          </div>
+          <div class="member-badges">
+            <span class="badge-gold" id="loaiDangVienBadge">—</span>
+            <span class="badge-glass" id="nhomBadge">—</span>
+          </div>
+        </div>
+
+        <div class="member-meta-grid">
+          <div class="meta-tile">
+            <div class="meta-icon">
+              <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            </div>
+            <div class="meta-content">
+              <div class="meta-label">Ngày sinh</div>
+              <div class="meta-value" id="ngaySinhDisplay">—</div>
+            </div>
+          </div>
+
+          <div class="meta-tile">
+            <div class="meta-icon gold">
+              <svg viewBox="0 0 24 24"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+            </div>
+            <div class="meta-content">
+              <div class="meta-label">Ngày vào Đảng</div>
+              <div class="meta-value" id="ngayVaoDangDisplay">—</div>
+            </div>
+          </div>
+
+          <div class="meta-tile">
+            <div class="meta-icon">
+              <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+            <div class="meta-content">
+              <div class="meta-label">Nhóm</div>
+              <div class="meta-value" id="nhomDisplay">—</div>
+            </div>
+          </div>
+
+          <div class="meta-tile">
+            <div class="meta-icon gold">
+              <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+            </div>
+            <div class="meta-content">
+              <div class="meta-label">Loại Đảng viên</div>
+              <div class="meta-value" id="loaiDangVienDisplay">—</div>
+            </div>
+          </div>
+
+          <div class="meta-tile full-span">
+            <div class="meta-icon">
+              <svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+            </div>
+            <div class="meta-content">
+              <div class="meta-label">Khoa / Trung tâm</div>
+              <div class="meta-value" id="khoaDisplay">—</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -680,22 +1147,39 @@
           <div class="alert alert-gold">
             <strong>* Lưu ý:</strong> Đối với Đảng viên <strong>Khóa 52K</strong>, cần nhập các mục kết quả bên dưới là <strong>"0"</strong>.
           </div>
-          <div class="grid-2">
-            <div class="form-group">
-              <label for="kqHocTapHK1" class="required">Kết quả học tập học kì 1 (Năm học 2025 – 2026)</label>
-              <input type="text" id="kqHocTapHK1" required placeholder="VD: 3.50 hoặc 0 (với 52K)">
+          <div class="semester-grid">
+            <div class="semester-card">
+              <div class="semester-header">
+                <span class="semester-pill">Học kỳ 1</span>
+                <span class="semester-year">Năm học 2025 – 2026</span>
+              </div>
+              <div class="semester-fields">
+                <div class="form-group">
+                  <label for="kqHocTapHK1" class="required">Điểm TB học tập</label>
+                  <input type="text" id="kqHocTapHK1" required placeholder="VD: 3.50 hoặc 0">
+                </div>
+                <div class="form-group">
+                  <label for="kqRenLuyenHK1" class="required">Điểm rèn luyện</label>
+                  <input type="text" id="kqRenLuyenHK1" required placeholder="VD: 85 hoặc 0">
+                </div>
+              </div>
             </div>
-            <div class="form-group">
-              <label for="kqRenLuyenHK1" class="required">Kết quả rèn luyện học kì 1 (Năm học 2025 – 2026)</label>
-              <input type="text" id="kqRenLuyenHK1" required placeholder="VD: 85 hoặc 0 (với 52K)">
-            </div>
-            <div class="form-group">
-              <label for="kqHocTapHK2" class="required">Kết quả học tập học kì 2 (Năm học 2025 – 2026)</label>
-              <input type="text" id="kqHocTapHK2" required placeholder="VD: 3.60 hoặc 0 (với 52K)">
-            </div>
-            <div class="form-group">
-              <label for="kqRenLuyenHK2" class="required">Kết quả rèn luyện học kì 2 (Năm học 2025 – 2026)</label>
-              <input type="text" id="kqRenLuyenHK2" required placeholder="VD: 90 hoặc 0 (với 52K)">
+
+            <div class="semester-card">
+              <div class="semester-header">
+                <span class="semester-pill">Học kỳ 2</span>
+                <span class="semester-year">Năm học 2025 – 2026</span>
+              </div>
+              <div class="semester-fields">
+                <div class="form-group">
+                  <label for="kqHocTapHK2" class="required">Điểm TB học tập</label>
+                  <input type="text" id="kqHocTapHK2" required placeholder="VD: 3.60 hoặc 0">
+                </div>
+                <div class="form-group">
+                  <label for="kqRenLuyenHK2" class="required">Điểm rèn luyện</label>
+                  <input type="text" id="kqRenLuyenHK2" required placeholder="VD: 90 hoặc 0">
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -711,36 +1195,41 @@
             <div class="alert alert-gold" style="margin-bottom: 12px; padding: 10px 14px; font-size: 0.86rem;">
               <strong>* Lưu ý:</strong> Chỉ kê khai <strong>tối đa 04 loại thành tích cao nhất, nổi bật nhất</strong>. Nếu không có thành tích có thể để trống.
             </div>
-            <div class="contrib-table-wrap">
-              <table class="contrib-table">
-                <thead>
-                  <tr>
-                    <th style="width: 22%;">Loại</th>
-                    <th style="width: 22%;">Đơn vị cấp</th>
-                    <th style="width: 16%;">Thời gian cấp</th>
-                    <th style="width: 33%;">Tên thành tích</th>
-                    <th style="width: 7%; text-align: center;">Xóa</th>
-                  </tr>
-                </thead>
-                <tbody id="achTableBody">
-                  <tr>
-                    <td>
-                      <select class="ach-loai">
-                        <option value="">-- Chọn loại --</option>
-                        <option value="Giấy khen">Giấy khen</option>
-                        <option value="Giấy chứng nhận">Giấy chứng nhận</option>
-                        <option value="Giải thưởng">Giải thưởng</option>
-                      </select>
-                    </td>
-                    <td><input type="text" class="ach-donvi" placeholder="VD: BCH Đoàn Trường"></td>
-                    <td><input type="text" class="ach-thoigian" placeholder="VD: 05/2026"></td>
-                    <td><input type="text" class="ach-ten" placeholder="VD: Sinh viên 5 tốt"></td>
-                    <td style="text-align: center;">
-                      <button type="button" class="btn-remove-row" onclick="removeAchRow(this)" title="Xóa dòng">×</button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+            <div id="achTableBody" class="entry-list">
+              <div class="entry-card ach-row">
+                <div class="entry-card-header">
+                  <span class="entry-badge gold">
+                    <span class="ach-index">Thành tích #1</span>
+                  </span>
+                  <button type="button" class="btn-remove-row" onclick="removeAchRow(this)" title="Xóa thành tích này">
+                    <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                    <span>Xóa</span>
+                  </button>
+                </div>
+                <div class="entry-grid-3">
+                  <div class="entry-field">
+                    <label>Loại hình</label>
+                    <select class="ach-loai">
+                      <option value="">-- Chọn loại thành tích --</option>
+                      <option value="Giấy khen">Giấy khen</option>
+                      <option value="Giấy chứng nhận">Giấy chứng nhận</option>
+                      <option value="Giải thưởng">Giải thưởng</option>
+                    </select>
+                  </div>
+                  <div class="entry-field">
+                    <label>Đơn vị cấp</label>
+                    <input type="text" class="ach-donvi" placeholder="VD: BCH Đoàn Trường ĐH Kinh tế">
+                  </div>
+                  <div class="entry-field">
+                    <label>Thời gian cấp</label>
+                    <input type="text" class="ach-thoigian" placeholder="VD: 05/2026">
+                  </div>
+                </div>
+                <div class="entry-field">
+                  <label>Tên thành tích / Danh hiệu đạt được</label>
+                  <input type="text" class="ach-ten" placeholder="VD: Danh hiệu Sinh viên 5 tốt cấp Trường năm học 2025 – 2026">
+                </div>
+              </div>
             </div>
             <button type="button" id="btnAddAch" class="btn-add-row" onclick="addAchRow()">+ Thêm thành tích (1/4)</button>
             <div id="achLimitNote" class="helper-text">Chỉ kê khai tối đa 04 thành tích cao nhất, nổi bật nhất (đang có 1/4 dòng).</div>
@@ -750,27 +1239,32 @@
             <label class="required">
               3.2. Liệt kê những đóng góp cho Chi bộ trong năm học 2025-2026 (Bao gồm các hoạt động của Chi bộ Sinh viên và Chi bộ Sinh viên 1)
             </label>
-            <div class="contrib-table-wrap">
-              <table class="contrib-table">
-                <thead>
-                  <tr>
-                    <th style="width: 28%;">Hoạt động</th>
-                    <th style="width: 20%;">Thời gian</th>
-                    <th style="width: 45%;">Các nội dung đã đóng góp</th>
-                    <th style="width: 7%; text-align: center;">Xóa</th>
-                  </tr>
-                </thead>
-                <tbody id="contribTableBody">
-                  <tr>
-                    <td><input type="text" class="contrib-hoatdong" required placeholder="Tên hoạt động"></td>
-                    <td><input type="text" class="contrib-thoigian" required placeholder="VD: 10/2025"></td>
-                    <td><textarea class="contrib-noidung" required placeholder="Ghi rõ nội dung đã đóng góp..."></textarea></td>
-                    <td style="text-align: center;">
-                      <button type="button" class="btn-remove-row" onclick="removeContribRow(this)" title="Xóa dòng" disabled>×</button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+            <div id="contribTableBody" class="entry-list">
+              <div class="entry-card contrib-row">
+                <div class="entry-card-header">
+                  <span class="entry-badge">
+                    <span class="contrib-index">Hoạt động đóng góp #1</span>
+                  </span>
+                  <button type="button" class="btn-remove-row" onclick="removeContribRow(this)" title="Xóa hoạt động này" disabled>
+                    <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                    <span>Xóa</span>
+                  </button>
+                </div>
+                <div class="entry-grid-2">
+                  <div class="entry-field">
+                    <label class="required">Tên hoạt động</label>
+                    <input type="text" class="contrib-hoatdong" required placeholder="VD: Đại hội Chi bộ Sinh viên 1, Sinh hoạt chuyên đề...">
+                  </div>
+                  <div class="entry-field">
+                    <label class="required">Thời gian</label>
+                    <input type="text" class="contrib-thoigian" required placeholder="VD: 10/2025">
+                  </div>
+                </div>
+                <div class="entry-field">
+                  <label class="required">Các nội dung đã đóng góp</label>
+                  <textarea class="contrib-noidung" required placeholder="Mô tả rõ công việc, vai trò và kết quả đóng góp của đồng chí cho hoạt động..."></textarea>
+                </div>
+              </div>
             </div>
             <button type="button" class="btn-add-row" onclick="addContribRow()">+ Thêm hoạt động đóng góp</button>
           </div>
@@ -896,8 +1390,9 @@
         return;
       }
 
+      const defaultLookupHtml = '<svg class="icon-svg" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><span>Kiểm tra &amp; Tải thông tin</span>';
       btn.disabled = true;
-      btn.textContent = 'Đang tra cứu dữ liệu...';
+      btn.textContent = 'Đang tra cứu...';
 
       try {
         const res = await callGasApi({ action: 'lookup', mssv: mssv, cccd: cccd });
@@ -921,7 +1416,7 @@
         alertBox.classList.remove('hidden');
       } finally {
         btn.disabled = false;
-        btn.textContent = 'Kiểm tra & Tải thông tin';
+        btn.innerHTML = defaultLookupHtml;
       }
     }
 
@@ -932,6 +1427,24 @@
       document.getElementById('nhom').value = m.nhom || '';
       document.getElementById('khoa').value = m.khoa || '';
       document.getElementById('loaiDangVien').value = m.loaiDangVien || '';
+
+      document.getElementById('hoTenDisplay').textContent = m.hoTen || '—';
+      document.getElementById('ngaySinhDisplay').textContent = m.ngaySinh || '—';
+      document.getElementById('ngayVaoDangDisplay').textContent = m.ngayVaoDang || '—';
+      document.getElementById('nhomDisplay').textContent = m.nhom || '—';
+      document.getElementById('khoaDisplay').textContent = m.khoa || '—';
+      document.getElementById('loaiDangVienDisplay').textContent = m.loaiDangVien || '—';
+
+      const loaiBadge = document.getElementById('loaiDangVienBadge');
+      const nhomBadge = document.getElementById('nhomBadge');
+      if (loaiBadge) {
+        loaiBadge.textContent = m.loaiDangVien || 'Đảng viên';
+        loaiBadge.classList.toggle('hidden', !m.loaiDangVien);
+      }
+      if (nhomBadge) {
+        nhomBadge.textContent = m.nhom || '';
+        nhomBadge.classList.toggle('hidden', !m.nhom);
+      }
 
       const existingNotice = document.getElementById('existingNotice');
       const btnSubmit = document.getElementById('btnSubmit');
@@ -988,26 +1501,47 @@
       }
     }
 
+    const TRASH_ICON_SVG = '<svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>';
+
     function createAchRowElement(item) {
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td>
-          <select class="ach-loai">
-            <option value="">-- Chọn loại --</option>
-            <option value="Giấy khen">Giấy khen</option>
-            <option value="Giấy chứng nhận">Giấy chứng nhận</option>
-            <option value="Giải thưởng">Giải thưởng</option>
-          </select>
-        </td>
-        <td><input type="text" class="ach-donvi" placeholder="VD: BCH Đoàn Trường"></td>
-        <td><input type="text" class="ach-thoigian" placeholder="VD: 05/2026"></td>
-        <td><input type="text" class="ach-ten" placeholder="VD: Sinh viên 5 tốt"></td>
-        <td style="text-align: center;">
-          <button type="button" class="btn-remove-row" onclick="removeAchRow(this)" title="Xóa dòng">×</button>
-        </td>
+      const card = document.createElement('div');
+      card.className = 'entry-card ach-row';
+      card.innerHTML = `
+        <div class="entry-card-header">
+          <span class="entry-badge gold">
+            <span class="ach-index">Thành tích #1</span>
+          </span>
+          <button type="button" class="btn-remove-row" onclick="removeAchRow(this)" title="Xóa thành tích này">
+            ${TRASH_ICON_SVG}
+            <span>Xóa</span>
+          </button>
+        </div>
+        <div class="entry-grid-3">
+          <div class="entry-field">
+            <label>Loại hình</label>
+            <select class="ach-loai">
+              <option value="">-- Chọn loại thành tích --</option>
+              <option value="Giấy khen">Giấy khen</option>
+              <option value="Giấy chứng nhận">Giấy chứng nhận</option>
+              <option value="Giải thưởng">Giải thưởng</option>
+            </select>
+          </div>
+          <div class="entry-field">
+            <label>Đơn vị cấp</label>
+            <input type="text" class="ach-donvi" placeholder="VD: BCH Đoàn Trường ĐH Kinh tế">
+          </div>
+          <div class="entry-field">
+            <label>Thời gian cấp</label>
+            <input type="text" class="ach-thoigian" placeholder="VD: 05/2026">
+          </div>
+        </div>
+        <div class="entry-field">
+          <label>Tên thành tích / Danh hiệu đạt được</label>
+          <input type="text" class="ach-ten" placeholder="VD: Danh hiệu Sinh viên 5 tốt cấp Trường năm học 2025 – 2026">
+        </div>
       `;
       if (item) {
-        const sel = tr.querySelector('.ach-loai');
+        const sel = card.querySelector('.ach-loai');
         if (item.loai && !Array.from(sel.options).some(o => o.value.toLowerCase() === item.loai.toLowerCase())) {
           const opt = document.createElement('option');
           opt.value = item.loai;
@@ -1018,21 +1552,26 @@
           const matchOpt = Array.from(sel.options).find(o => o.value.toLowerCase() === item.loai.toLowerCase());
           if (matchOpt) sel.value = matchOpt.value;
         }
-        tr.querySelector('.ach-donvi').value = item.donVi || '';
-        tr.querySelector('.ach-thoigian').value = item.thoiGian || '';
-        tr.querySelector('.ach-ten').value = item.ten || '';
+        card.querySelector('.ach-donvi').value = item.donVi || '';
+        card.querySelector('.ach-thoigian').value = item.thoiGian || '';
+        card.querySelector('.ach-ten').value = item.ten || '';
       }
-      return tr;
+      return card;
     }
 
     const MAX_ACH_ROWS = 4;
 
     function updateAchControls() {
-      const tbody = document.getElementById('achTableBody');
+      const container = document.getElementById('achTableBody');
       const btn = document.getElementById('btnAddAch');
       const note = document.getElementById('achLimitNote');
-      if (!tbody || !btn) return;
-      const count = tbody.rows.length;
+      if (!container || !btn) return;
+      const rows = container.querySelectorAll('.ach-row');
+      rows.forEach((row, idx) => {
+        const idxEl = row.querySelector('.ach-index');
+        if (idxEl) idxEl.textContent = `Thành tích #${idx + 1}`;
+      });
+      const count = rows.length;
       const reachedMax = count >= MAX_ACH_ROWS;
       btn.classList.toggle('hidden', reachedMax);
       btn.disabled = reachedMax;
@@ -1047,54 +1586,55 @@
     }
 
     function addAchRow() {
-      const tbody = document.getElementById('achTableBody');
-      if (!tbody || tbody.rows.length >= MAX_ACH_ROWS) return;
-      tbody.appendChild(createAchRowElement(null));
+      const container = document.getElementById('achTableBody');
+      if (!container || container.querySelectorAll('.ach-row').length >= MAX_ACH_ROWS) return;
+      container.appendChild(createAchRowElement(null));
       updateAchControls();
     }
 
     function removeAchRow(btn) {
-      const tbody = document.getElementById('achTableBody');
-      if (tbody.rows.length <= 1) {
-        const tr = btn.closest('tr');
-        tr.querySelector('.ach-loai').value = '';
-        tr.querySelector('.ach-donvi').value = '';
-        tr.querySelector('.ach-thoigian').value = '';
-        tr.querySelector('.ach-ten').value = '';
+      const container = document.getElementById('achTableBody');
+      const rows = container.querySelectorAll('.ach-row');
+      if (rows.length <= 1) {
+        const card = btn.closest('.ach-row');
+        card.querySelector('.ach-loai').value = '';
+        card.querySelector('.ach-donvi').value = '';
+        card.querySelector('.ach-thoigian').value = '';
+        card.querySelector('.ach-ten').value = '';
         updateAchControls();
         return;
       }
-      btn.closest('tr').remove();
+      btn.closest('.ach-row').remove();
       updateAchControls();
     }
 
     function loadAchRows(list) {
-      const tbody = document.getElementById('achTableBody');
-      tbody.innerHTML = '';
+      const container = document.getElementById('achTableBody');
+      container.innerHTML = '';
       const capped = Array.isArray(list) ? list.slice(0, MAX_ACH_ROWS) : [];
       if (capped.length === 0) {
-        tbody.appendChild(createAchRowElement(null));
+        container.appendChild(createAchRowElement(null));
       } else {
-        capped.forEach(item => tbody.appendChild(createAchRowElement(item)));
+        capped.forEach(item => container.appendChild(createAchRowElement(item)));
       }
       updateAchControls();
     }
 
     function resetAchTable() {
-      const tbody = document.getElementById('achTableBody');
-      tbody.innerHTML = '';
-      tbody.appendChild(createAchRowElement(null));
+      const container = document.getElementById('achTableBody');
+      container.innerHTML = '';
+      container.appendChild(createAchRowElement(null));
       updateAchControls();
     }
 
     function collectAchRows() {
-      const rows = document.querySelectorAll('#achTableBody tr');
+      const rows = document.querySelectorAll('#achTableBody .ach-row');
       const list = [];
-      rows.forEach(tr => {
-        const loai = tr.querySelector('.ach-loai').value.trim();
-        const donVi = tr.querySelector('.ach-donvi').value.trim();
-        const thoiGian = tr.querySelector('.ach-thoigian').value.trim();
-        const ten = tr.querySelector('.ach-ten').value.trim();
+      rows.forEach(card => {
+        const loai = card.querySelector('.ach-loai').value.trim();
+        const donVi = card.querySelector('.ach-donvi').value.trim();
+        const thoiGian = card.querySelector('.ach-thoigian').value.trim();
+        const ten = card.querySelector('.ach-ten').value.trim();
         if (loai || donVi || thoiGian || ten) {
           list.push({ loai, donVi, thoiGian, ten });
         }
@@ -1102,76 +1642,92 @@
       return list;
     }
 
+    function createContribRowElement(item) {
+      const card = document.createElement('div');
+      card.className = 'entry-card contrib-row';
+      card.innerHTML = `
+        <div class="entry-card-header">
+          <span class="entry-badge">
+            <span class="contrib-index">Hoạt động đóng góp #1</span>
+          </span>
+          <button type="button" class="btn-remove-row" onclick="removeContribRow(this)" title="Xóa hoạt động này">
+            ${TRASH_ICON_SVG}
+            <span>Xóa</span>
+          </button>
+        </div>
+        <div class="entry-grid-2">
+          <div class="entry-field">
+            <label class="required">Tên hoạt động</label>
+            <input type="text" class="contrib-hoatdong" required placeholder="VD: Đại hội Chi bộ Sinh viên 1, Sinh hoạt chuyên đề...">
+          </div>
+          <div class="entry-field">
+            <label class="required">Thời gian</label>
+            <input type="text" class="contrib-thoigian" required placeholder="VD: 10/2025">
+          </div>
+        </div>
+        <div class="entry-field">
+          <label class="required">Các nội dung đã đóng góp</label>
+          <textarea class="contrib-noidung" required placeholder="Mô tả rõ công việc, vai trò và kết quả đóng góp của đồng chí cho hoạt động..."></textarea>
+        </div>
+      `;
+      if (item) {
+        card.querySelector('.contrib-hoatdong').value = item.hoatDong || '';
+        card.querySelector('.contrib-thoigian').value = item.thoiGian || '';
+        card.querySelector('.contrib-noidung').value = item.noiDung || '';
+      }
+      return card;
+    }
+
     function updateRemoveButtons() {
-      const tbody = document.getElementById('contribTableBody');
-      const btns = tbody.querySelectorAll('.btn-remove-row');
-      btns.forEach(b => { b.disabled = btns.length <= 1; });
+      const container = document.getElementById('contribTableBody');
+      if (!container) return;
+      const rows = container.querySelectorAll('.contrib-row');
+      rows.forEach((row, idx) => {
+        const idxEl = row.querySelector('.contrib-index');
+        if (idxEl) idxEl.textContent = `Hoạt động đóng góp #${idx + 1}`;
+        const btn = row.querySelector('.btn-remove-row');
+        if (btn) btn.disabled = rows.length <= 1;
+      });
     }
 
     function addContribRow() {
-      const tbody = document.getElementById('contribTableBody');
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td><input type="text" class="contrib-hoatdong" required placeholder="Tên hoạt động"></td>
-        <td><input type="text" class="contrib-thoigian" required placeholder="VD: 10/2025"></td>
-        <td><textarea class="contrib-noidung" required placeholder="Ghi rõ nội dung đã đóng góp..."></textarea></td>
-        <td style="text-align: center;">
-          <button type="button" class="btn-remove-row" onclick="removeContribRow(this)" title="Xóa dòng">×</button>
-        </td>
-      `;
-      tbody.appendChild(tr);
+      const container = document.getElementById('contribTableBody');
+      container.appendChild(createContribRowElement(null));
       updateRemoveButtons();
     }
 
     function removeContribRow(btn) {
-      const tbody = document.getElementById('contribTableBody');
-      if (tbody.rows.length <= 1) return;
-      btn.closest('tr').remove();
+      const container = document.getElementById('contribTableBody');
+      if (container.querySelectorAll('.contrib-row').length <= 1) return;
+      btn.closest('.contrib-row').remove();
       updateRemoveButtons();
     }
 
     function loadContribRows(list) {
-      const tbody = document.getElementById('contribTableBody');
-      tbody.innerHTML = '';
-      list.forEach(item => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td><input type="text" class="contrib-hoatdong" required placeholder="Tên hoạt động"></td>
-          <td><input type="text" class="contrib-thoigian" required placeholder="VD: 10/2025"></td>
-          <td><textarea class="contrib-noidung" required placeholder="Ghi rõ nội dung đã đóng góp..."></textarea></td>
-          <td style="text-align: center;">
-            <button type="button" class="btn-remove-row" onclick="removeContribRow(this)" title="Xóa dòng">×</button>
-          </td>
-        `;
-        tr.querySelector('.contrib-hoatdong').value = item.hoatDong || '';
-        tr.querySelector('.contrib-thoigian').value = item.thoiGian || '';
-        tr.querySelector('.contrib-noidung').value = item.noiDung || '';
-        tbody.appendChild(tr);
-      });
+      const container = document.getElementById('contribTableBody');
+      container.innerHTML = '';
+      if (!Array.isArray(list) || list.length === 0) {
+        container.appendChild(createContribRowElement(null));
+      } else {
+        list.forEach(item => container.appendChild(createContribRowElement(item)));
+      }
       updateRemoveButtons();
     }
 
     function resetContribTable() {
-      const tbody = document.getElementById('contribTableBody');
-      tbody.innerHTML = `
-        <tr>
-          <td><input type="text" class="contrib-hoatdong" required placeholder="Tên hoạt động"></td>
-          <td><input type="text" class="contrib-thoigian" required placeholder="VD: 10/2025"></td>
-          <td><textarea class="contrib-noidung" required placeholder="Ghi rõ nội dung đã đóng góp..."></textarea></td>
-          <td style="text-align: center;">
-            <button type="button" class="btn-remove-row" onclick="removeContribRow(this)" title="Xóa dòng" disabled>×</button>
-          </td>
-        </tr>
-      `;
+      const container = document.getElementById('contribTableBody');
+      container.innerHTML = '';
+      container.appendChild(createContribRowElement(null));
+      updateRemoveButtons();
     }
 
     function collectContribRows() {
-      const rows = document.querySelectorAll('#contribTableBody tr');
+      const rows = document.querySelectorAll('#contribTableBody .contrib-row');
       const list = [];
-      rows.forEach(tr => {
-        const hoatDong = tr.querySelector('.contrib-hoatdong').value.trim();
-        const thoiGian = tr.querySelector('.contrib-thoigian').value.trim();
-        const noiDung = tr.querySelector('.contrib-noidung').value.trim();
+      rows.forEach(card => {
+        const hoatDong = card.querySelector('.contrib-hoatdong').value.trim();
+        const thoiGian = card.querySelector('.contrib-thoigian').value.trim();
+        const noiDung = card.querySelector('.contrib-noidung').value.trim();
         list.push({ hoatDong, thoiGian, noiDung });
       });
       return list;
@@ -1284,6 +1840,7 @@
   <script>
     (function autoLogin() {
       updateAchControls();
+      updateRemoveButtons();
       try {
         const saved = JSON.parse(sessionStorage.getItem('CBSV1_AUTH') || 'null');
         if (saved && saved.mssv && saved.cccd) {
