@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1890 920" width="1890" height="920" font-family="Plus Jakarta Sans, Segoe UI, Arial, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2120 880" width="2120" height="880" font-family="Plus Jakarta Sans, Segoe UI, Arial, sans-serif">
   <defs>
     <marker id="arrowSeq" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
       <path d="M 0 1 L 10 5 L 0 9 z" fill="#2c2420"/>
@@ -13,50 +13,50 @@
   </defs>
 
   <!-- Canvas background -->
-  <rect x="0" y="0" width="1890" height="920" fill="#fdf9f4"/>
+  <rect x="0" y="0" width="2120" height="880" fill="#fdf9f4"/>
 
   <!-- BPMN Pool -->
-  <rect x="24" y="24" width="1842" height="820" rx="4" fill="#ffffff" stroke="#9e1b1e" stroke-width="2.2"/>
-  <rect x="24" y="24" width="44" height="820" fill="#9e1b1e"/>
-  <text x="46" y="434" text-anchor="middle" fill="#facc15" font-size="14" font-weight="800" letter-spacing="0.8" transform="rotate(-90 46 434)">
+  <rect x="24" y="24" width="2072" height="776" rx="4" fill="#ffffff" stroke="#9e1b1e" stroke-width="2.2"/>
+  <rect x="24" y="24" width="44" height="776" fill="#9e1b1e"/>
+  <text x="46" y="412" text-anchor="middle" fill="#facc15" font-size="14" font-weight="800" letter-spacing="0.8" transform="rotate(-90 46 412)">
     QUY TRÌNH KIỂM ĐIỂM, ĐÁNH GIÁ VÀ XẾP LOẠI ĐẢNG VIÊN NĂM 2026 — CHI BỘ SINH VIÊN 1
   </text>
 
   <!-- Lane 1: Đảng viên -->
-  <rect x="68" y="24" width="1798" height="286" fill="#fffdfc" stroke="#d8cfc7" stroke-width="1.2"/>
-  <rect x="68" y="24" width="42" height="286" fill="#fef2f2" stroke="#d8cfc7" stroke-width="1.2"/>
-  <text x="89" y="167" text-anchor="middle" fill="#781215" font-size="13" font-weight="800" transform="rotate(-90 89 167)">ĐẢNG VIÊN</text>
+  <rect x="68" y="24" width="2028" height="316" fill="#fffdfc" stroke="#d8cfc7" stroke-width="1.2"/>
+  <rect x="68" y="24" width="42" height="316" fill="#fef2f2" stroke="#d8cfc7" stroke-width="1.2"/>
+  <text x="89" y="182" text-anchor="middle" fill="#781215" font-size="13" font-weight="800" transform="rotate(-90 89 182)">ĐẢNG VIÊN</text>
 
-  <!-- Lane 2: Hệ thống Web & Firebase -->
-  <rect x="68" y="310" width="1798" height="268" fill="#fffdf7" stroke="#d8cfc7" stroke-width="1.2"/>
-  <rect x="68" y="310" width="42" height="268" fill="#fffbeb" stroke="#d8cfc7" stroke-width="1.2"/>
-  <text x="89" y="444" text-anchor="middle" fill="#92400e" font-size="12.5" font-weight="800" transform="rotate(-90 89 444)">HỆ THỐNG WEB &amp; FIREBASE</text>
+  <!-- Lane 2: Hệ thống -->
+  <rect x="68" y="340" width="2028" height="255" fill="#fffdf7" stroke="#d8cfc7" stroke-width="1.2"/>
+  <rect x="68" y="340" width="42" height="255" fill="#fffbeb" stroke="#d8cfc7" stroke-width="1.2"/>
+  <text x="89" y="467" text-anchor="middle" fill="#92400e" font-size="13" font-weight="800" transform="rotate(-90 89 467)">HỆ THỐNG</text>
 
-  <!-- Lane 3: Chi bộ nơi cư trú / DVC Đảng & Chi ủy -->
-  <rect x="68" y="578" width="1798" height="266" fill="#fcfaf8" stroke="#d8cfc7" stroke-width="1.2"/>
-  <rect x="68" y="578" width="42" height="266" fill="#f5ede6" stroke="#d8cfc7" stroke-width="1.2"/>
-  <text x="89" y="711" text-anchor="middle" fill="#5c504a" font-size="12" font-weight="800" transform="rotate(-90 89 711)">NƠI CƯ TRÚ / DVC &amp; CHI ỦY</text>
+  <!-- Lane 3: Chi ủy Chi bộ -->
+  <rect x="68" y="595" width="2028" height="205" fill="#fcfaf8" stroke="#d8cfc7" stroke-width="1.2"/>
+  <rect x="68" y="595" width="42" height="205" fill="#f5ede6" stroke="#d8cfc7" stroke-width="1.2"/>
+  <text x="89" y="697" text-anchor="middle" fill="#5c504a" font-size="12.5" font-weight="800" transform="rotate(-90 89 697)">CHI ỦY CHI BỘ</text>
 
   <!-- ================= DATA STORE & DATA OBJECTS ================= -->
-  <!-- Data Store: Firebase Firestore -->
-  <g transform="translate(555,482)" filter="url(#cardShadow)">
+  <!-- Data Store: Cơ sở dữ liệu Hệ thống -->
+  <g transform="translate(555,500)" filter="url(#cardShadow)">
     <path d="M 0,10 A 45,10 0 0,1 90,10 L 90,54 A 45,10 0 0,1 0,54 Z" fill="#fffbeb" stroke="#d97706" stroke-width="2"/>
     <ellipse cx="45" cy="10" rx="45" ry="10" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
     <path d="M 0,17 A 45,10 0 0,0 90,17" fill="none" stroke="#d97706" stroke-width="1.3"/>
-    <text x="45" y="38" text-anchor="middle" fill="#78350f" font-size="11" font-weight="800">Firebase</text>
-    <text x="45" y="52" text-anchor="middle" fill="#92400e" font-size="10.5" font-weight="700">csdlkiemdiem</text>
+    <text x="45" y="38" text-anchor="middle" fill="#78350f" font-size="10.5" font-weight="800">Cơ sở dữ liệu</text>
+    <text x="45" y="52" text-anchor="middle" fill="#92400e" font-size="10.5" font-weight="700">Hệ thống</text>
   </g>
 
   <!-- Data Object: File ZIP -->
-  <g transform="translate(1152,482)" filter="url(#cardShadow)">
+  <g transform="translate(1152,500)" filter="url(#cardShadow)">
     <path d="M 0,0 L 42,0 L 56,14 L 56,64 L 0,64 Z" fill="#ffffff" stroke="#9e1b1e" stroke-width="1.8"/>
     <path d="M 42,0 L 42,14 L 56,14" fill="#fef2f2" stroke="#9e1b1e" stroke-width="1.5"/>
     <text x="28" y="33" text-anchor="middle" fill="#781215" font-size="10" font-weight="800">ZIP</text>
     <text x="28" y="47" text-anchor="middle" fill="#5c504a" font-size="9.5" font-weight="700">02c + 6b</text>
   </g>
 
-  <!-- Data Object: Bộ hồ sơ bản cứng -->
-  <g transform="translate(1795,250)" filter="url(#cardShadow)">
+  <!-- Data Object: Bộ hồ sơ bản giấy -->
+  <g transform="translate(2005,150)" filter="url(#cardShadow)">
     <path d="M 0,0 L 42,0 L 56,14 L 56,64 L 0,64 Z" fill="#ffffff" stroke="#9e1b1e" stroke-width="1.8"/>
     <path d="M 42,0 L 42,14 L 56,14" fill="#fef2f2" stroke="#9e1b1e" stroke-width="1.5"/>
     <text x="28" y="32" text-anchor="middle" fill="#781215" font-size="9.5" font-weight="800">Hồ sơ</text>
@@ -64,59 +64,63 @@
   </g>
 
   <!-- ================= DATA ASSOCIATIONS (dotted) ================= -->
-  <path d="M 320,465 L 320,515 L 555,515" fill="none" stroke="#9e1b1e" stroke-width="1.4" stroke-dasharray="4 4" marker-end="url(#arrowData)"/>
-  <path d="M 795,465 L 795,515 L 645,515" fill="none" stroke="#9e1b1e" stroke-width="1.4" stroke-dasharray="4 4" marker-end="url(#arrowData)"/>
-  <path d="M 1060,465 L 1060,552 L 600,552 L 600,545" fill="none" stroke="#9e1b1e" stroke-width="1.4" stroke-dasharray="4 4" marker-end="url(#arrowData)"/>
-  <path d="M 1110,465 L 1110,515 L 1152,515" fill="none" stroke="#9e1b1e" stroke-width="1.4" stroke-dasharray="4 4" marker-end="url(#arrowData)"/>
-  <path d="M 1775,210 L 1775,282 L 1795,282" fill="none" stroke="#9e1b1e" stroke-width="1.4" stroke-dasharray="4 4" marker-end="url(#arrowData)"/>
+  <path d="M 320,480 L 320,532 L 555,532" fill="none" stroke="#9e1b1e" stroke-width="1.4" stroke-dasharray="4 4" marker-end="url(#arrowData)"/>
+  <path d="M 795,480 L 795,532 L 645,532" fill="none" stroke="#9e1b1e" stroke-width="1.4" stroke-dasharray="4 4" marker-end="url(#arrowData)"/>
+  <path d="M 1060,480 L 1060,570 L 600,570 L 600,564" fill="none" stroke="#9e1b1e" stroke-width="1.4" stroke-dasharray="4 4" marker-end="url(#arrowData)"/>
+  <path d="M 1110,480 L 1110,532 L 1152,532" fill="none" stroke="#9e1b1e" stroke-width="1.4" stroke-dasharray="4 4" marker-end="url(#arrowData)"/>
+  <path d="M 1970,182 L 2003,182" fill="none" stroke="#9e1b1e" stroke-width="1.4" stroke-dasharray="4 4" marker-end="url(#arrowData)"/>
 
   <!-- ================= SEQUENCE FLOWS ================= -->
-  <path d="M 185,170 L 233,170" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
-  <path d="M 305,210 L 305,383" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
-  <path d="M 375,425 L 415,425" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
-  <path d="M 445,397 L 445,108 L 513,108" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
-  <rect x="449" y="236" width="52" height="20" rx="4" fill="#ecfdf5" stroke="#a7f3d0"/>
-  <text x="475" y="250" text-anchor="middle" fill="#065f46" font-size="11" font-weight="800">Đủ ≥ 6t</text>
-  <path d="M 473,425 L 496,425 L 496,225 L 513,225" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
-  <rect x="454" y="346" width="84" height="20" rx="4" fill="#fef2f2" stroke="#fecaca"/>
-  <text x="496" y="360" text-anchor="middle" fill="#991b1b" font-size="11" font-weight="800">Chưa đủ 6t</text>
-  <path d="M 680,108 L 720,108 L 720,142" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
-  <path d="M 680,225 L 720,225 L 720,198" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
-  <path d="M 748,170 L 771,170" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
-  <path d="M 795,192 L 795,383" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
-  <path d="M 860,425 L 882,425 L 882,170 L 892,170" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
-  <path d="M 920,142 L 920,102 L 973,102" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
-  <rect x="923" y="76" width="48" height="18" rx="4" fill="#fffbeb" stroke="#fde68a"/>
-  <text x="947" y="89" text-anchor="middle" fill="#92400e" font-size="10.5" font-weight="800">Cách 2</text>
-  <path d="M 920,198 L 920,235 L 973,235" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
-  <rect x="923" y="242" width="48" height="18" rx="4" fill="#fef2f2" stroke="#fecaca"/>
-  <text x="947" y="255" text-anchor="middle" fill="#991b1b" font-size="10.5" font-weight="800">Cách 1</text>
-  <path d="M 1060,275 L 1060,383" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
-  <path d="M 1145,102 L 1205,102 L 1205,142" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
-  <path d="M 1135,425 L 1205,425 L 1205,198" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
-  <path d="M 1233,170 L 1253,170" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
-  <path d="M 1320,210 L 1320,710 L 1353,710" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
-  <path d="M 1383,682 L 1383,635 L 1443,635" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
-  <rect x="1387" y="611" width="50" height="18" rx="4" fill="#ecfdf5" stroke="#a7f3d0"/>
-  <text x="1412" y="624" text-anchor="middle" fill="#065f46" font-size="10.5" font-weight="800">Đã có</text>
-  <path d="M 1383,738 L 1383,782 L 1443,782" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
-  <rect x="1387" y="788" width="52" height="18" rx="4" fill="#fef2f2" stroke="#fecaca"/>
-  <text x="1413" y="801" text-anchor="middle" fill="#991b1b" font-size="10.5" font-weight="800">Chưa có</text>
-  <path d="M 1595,635 L 1625,635 L 1625,682" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
-  <path d="M 1595,782 L 1625,782 L 1625,738" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
-  <path d="M 1653,710 L 1665,710 L 1665,445 L 1625,445 L 1625,194" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
-  <path d="M 1647,170 L 1673,170" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
-  <path d="M 1737,210 L 1737,668" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
-  <path d="M 1800,710 L 1816,710" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
+  <path d="M 185,182 L 233,182" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
+  <path d="M 305,222 L 305,398" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
+  <path d="M 375,440 L 415,440" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
+  <path d="M 445,412 L 445,114 L 513,114" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
+  <rect x="449" y="248" width="54" height="20" rx="4" fill="#ecfdf5" stroke="#a7f3d0"/>
+  <text x="476" y="262" text-anchor="middle" fill="#065f46" font-size="11" font-weight="800">Đủ ≥ 6t</text>
+  <path d="M 473,440 L 496,440 L 496,238 L 513,238" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
+  <rect x="454" y="362" width="84" height="20" rx="4" fill="#fef2f2" stroke="#fecaca"/>
+  <text x="496" y="376" text-anchor="middle" fill="#991b1b" font-size="11" font-weight="800">Chưa đủ 6t</text>
+  <path d="M 680,114 L 720,114 L 720,154" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
+  <path d="M 680,238 L 720,238 L 720,210" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
+  <path d="M 748,182 L 771,182" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
+  <path d="M 795,204 L 795,398" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
+  <path d="M 860,440 L 882,440 L 882,182 L 892,182" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
+  <path d="M 920,154 L 920,108 L 973,108" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
+  <rect x="923" y="82" width="48" height="18" rx="4" fill="#fffbeb" stroke="#fde68a"/>
+  <text x="947" y="95" text-anchor="middle" fill="#92400e" font-size="10.5" font-weight="800">Cách 2</text>
+  <path d="M 920,210 L 920,248 L 973,248" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
+  <rect x="923" y="254" width="48" height="18" rx="4" fill="#fef2f2" stroke="#fecaca"/>
+  <text x="947" y="267" text-anchor="middle" fill="#991b1b" font-size="10.5" font-weight="800">Cách 1</text>
+  <path d="M 1060,290 L 1060,398" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
+  <path d="M 1145,108 L 1205,108 L 1205,154" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
+  <path d="M 1135,440 L 1205,440 L 1205,210" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
+  <path d="M 1233,182 L 1253,182" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
+  <!-- InKy -> GW_Mau6d (cùng trên Lane 1) -->
+  <path d="M 1385,182 L 1413,182" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
+  <!-- GW_Mau6d (Đã có) -> Task_Tai6d -->
+  <path d="M 1443,154 L 1443,108 L 1503,108" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
+  <rect x="1447" y="83" width="50" height="18" rx="4" fill="#ecfdf5" stroke="#a7f3d0"/>
+  <text x="1472" y="96" text-anchor="middle" fill="#065f46" font-size="10.5" font-weight="800">Đã có</text>
+  <!-- GW_Mau6d (Chưa có) -> Task_Xin6d -->
+  <path d="M 1443,210 L 1443,254 L 1503,254" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
+  <rect x="1447" y="261" width="52" height="18" rx="4" fill="#fef2f2" stroke="#fecaca"/>
+  <text x="1473" y="274" text-anchor="middle" fill="#991b1b" font-size="10.5" font-weight="800">Chưa có</text>
+  <!-- Both 6d -> GW_Merge3 -> Timer2 -> NopHoSo -> Lane 3 ChiUy -> End -->
+  <path d="M 1665,108 L 1710,108 L 1710,154" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
+  <path d="M 1665,254 L 1710,254 L 1710,210" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
+  <path d="M 1738,182 L 1763,182" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
+  <path d="M 1809,182 L 1838,182" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
+  <path d="M 1905,222 L 1905,653" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
+  <path d="M 1975,695 L 2013,695" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
 
   <!-- ================= BPMN NODES ================= -->
-  <g transform="translate(165,170)" filter="url(#cardShadow)">
+  <g transform="translate(165,182)" filter="url(#cardShadow)">
     <circle cx="0" cy="0" r="20" fill="#ecfdf5" stroke="#059669" stroke-width="2.5"/>
     <text x="0" y="36" text-anchor="middle" fill="#065f46" font-size="11" font-weight="800">Bắt đầu</text>
     <text x="0" y="50" text-anchor="middle" fill="#5c504a" font-size="10">Đợt kiểm điểm</text>
   </g>
 
-  <g transform="translate(235,130)" filter="url(#cardShadow)">
+  <g transform="translate(235,142)" filter="url(#cardShadow)">
     <rect x="0" y="0" width="140" height="80" rx="10" fill="#ffffff" stroke="#9e1b1e" stroke-width="2"/>
     <circle cx="14" cy="12" r="4" fill="none" stroke="#9e1b1e" stroke-width="1.5"/>
     <path d="M 7,22 C 7,17 21,17 21,22" fill="none" stroke="#9e1b1e" stroke-width="1.5"/>
@@ -125,7 +129,7 @@
     <text x="70" y="65" text-anchor="middle" fill="#9e1b1e" font-size="10" font-weight="700">(kekhai.html)</text>
   </g>
 
-  <g transform="translate(235,385)" filter="url(#cardShadow)">
+  <g transform="translate(235,400)" filter="url(#cardShadow)">
     <rect x="0" y="0" width="140" height="80" rx="10" fill="#fffbeb" stroke="#d97706" stroke-width="2"/>
     <circle cx="15" cy="15" r="5" fill="none" stroke="#b45309" stroke-width="1.5" stroke-dasharray="2.5 1.5"/>
     <text x="70" y="34" text-anchor="middle" fill="#1f1a18" font-size="11.5" font-weight="800">Xác thực thông tin</text>
@@ -133,14 +137,14 @@
     <text x="70" y="65" text-anchor="middle" fill="#92400e" font-size="10" font-weight="700">Đảng (đủ 6 tháng)</text>
   </g>
 
-  <g transform="translate(445,425)" filter="url(#cardShadow)">
+  <g transform="translate(445,440)" filter="url(#cardShadow)">
     <polygon points="0,-28 28,0 0,28 -28,0" fill="#fffbeb" stroke="#d97706" stroke-width="2.2"/>
     <path d="M -8,-8 L 8,8 M 8,-8 L -8,8" stroke="#92400e" stroke-width="2.5" stroke-linecap="round"/>
     <text x="0" y="46" text-anchor="middle" fill="#78350f" font-size="10.5" font-weight="800">Đủ 6 tháng</text>
     <text x="0" y="60" text-anchor="middle" fill="#5c504a" font-size="10">(≤ 21/05/2026)?</text>
   </g>
 
-  <g transform="translate(515,66)" filter="url(#cardShadow)">
+  <g transform="translate(515,72)" filter="url(#cardShadow)">
     <rect x="0" y="0" width="165" height="84" rx="10" fill="#ffffff" stroke="#9e1b1e" stroke-width="2"/>
     <circle cx="14" cy="12" r="4" fill="none" stroke="#9e1b1e" stroke-width="1.5"/>
     <path d="M 7,22 C 7,17 21,17 21,22" fill="none" stroke="#9e1b1e" stroke-width="1.5"/>
@@ -150,7 +154,7 @@
     <text x="82" y="73" text-anchor="middle" fill="#9e1b1e" font-size="10" font-weight="700">+ Tự xếp loại 2026</text>
   </g>
 
-  <g transform="translate(515,185)" filter="url(#cardShadow)">
+  <g transform="translate(515,198)" filter="url(#cardShadow)">
     <rect x="0" y="0" width="165" height="80" rx="10" fill="#ffffff" stroke="#9e1b1e" stroke-width="2"/>
     <circle cx="14" cy="12" r="4" fill="none" stroke="#9e1b1e" stroke-width="1.5"/>
     <path d="M 7,22 C 7,17 21,17 21,22" fill="none" stroke="#9e1b1e" stroke-width="1.5"/>
@@ -159,12 +163,12 @@
     <text x="82" y="64" text-anchor="middle" fill="#5c504a" font-size="10">Chỉ làm hồ sơ kiểm điểm</text>
   </g>
 
-  <g transform="translate(720,170)" filter="url(#cardShadow)">
+  <g transform="translate(720,182)" filter="url(#cardShadow)">
     <polygon points="0,-26 26,0 0,26 -26,0" fill="#fffbeb" stroke="#d97706" stroke-width="2"/>
     <path d="M -7,-7 L 7,7 M 7,-7 L -7,7" stroke="#92400e" stroke-width="2.2" stroke-linecap="round"/>
   </g>
 
-  <g transform="translate(795,170)" filter="url(#cardShadow)">
+  <g transform="translate(795,182)" filter="url(#cardShadow)">
     <circle cx="0" cy="0" r="22" fill="#fef2f2" stroke="#9e1b1e" stroke-width="2"/>
     <circle cx="0" cy="0" r="17" fill="#ffffff" stroke="#9e1b1e" stroke-width="1.4"/>
     <circle cx="0" cy="0" r="11" fill="none" stroke="#9e1b1e" stroke-width="1.4"/>
@@ -173,7 +177,7 @@
     <text x="0" y="-45" text-anchor="middle" fill="#781215" font-size="10.5" font-weight="800">20h00 - 19/11/2026</text>
   </g>
 
-  <g transform="translate(730,385)" filter="url(#cardShadow)">
+  <g transform="translate(730,400)" filter="url(#cardShadow)">
     <rect x="0" y="0" width="130" height="80" rx="10" fill="#fffbeb" stroke="#d97706" stroke-width="2"/>
     <circle cx="15" cy="15" r="5" fill="none" stroke="#b45309" stroke-width="1.5" stroke-dasharray="2.5 1.5"/>
     <text x="65" y="34" text-anchor="middle" fill="#1f1a18" font-size="11.5" font-weight="800">Lưu kết quả</text>
@@ -181,14 +185,14 @@
     <text x="65" y="65" text-anchor="middle" fill="#92400e" font-size="10" font-weight="700">sang Bước 2</text>
   </g>
 
-  <g transform="translate(920,170)" filter="url(#cardShadow)">
+  <g transform="translate(920,182)" filter="url(#cardShadow)">
     <polygon points="0,-28 28,0 0,28 -28,0" fill="#fffbeb" stroke="#d97706" stroke-width="2.2"/>
     <path d="M -8,-8 L 8,8 M 8,-8 L -8,8" stroke="#92400e" stroke-width="2.5" stroke-linecap="round"/>
-    <text x="-6" y="45" text-anchor="middle" fill="#78350f" font-size="10.5" font-weight="800">Cách làm</text>
-    <text x="-6" y="58" text-anchor="middle" fill="#5c504a" font-size="10">02c &amp; 6b?</text>
+    <text x="-8" y="45" text-anchor="middle" fill="#78350f" font-size="10.5" font-weight="800">Cách làm</text>
+    <text x="-8" y="58" text-anchor="middle" fill="#5c504a" font-size="10">02c &amp; 6b?</text>
   </g>
 
-  <g transform="translate(975,64)" filter="url(#cardShadow)">
+  <g transform="translate(975,70)" filter="url(#cardShadow)">
     <rect x="0" y="0" width="170" height="76" rx="10" fill="#fffbeb" stroke="#d97706" stroke-width="2"/>
     <rect x="9" y="10" width="14" height="9" rx="2" fill="none" stroke="#92400e" stroke-width="1.4"/>
     <text x="85" y="32" text-anchor="middle" fill="#1f1a18" font-size="11" font-weight="800">Tải mẫu trống &amp; hướng dẫn</text>
@@ -196,7 +200,7 @@
     <text x="85" y="62" text-anchor="middle" fill="#92400e" font-size="10" font-weight="700">Mẫu 02c &amp; Mẫu 6b</text>
   </g>
 
-  <g transform="translate(975,193)" filter="url(#cardShadow)">
+  <g transform="translate(975,206)" filter="url(#cardShadow)">
     <rect x="0" y="0" width="170" height="82" rx="10" fill="#ffffff" stroke="#9e1b1e" stroke-width="2"/>
     <circle cx="14" cy="12" r="4" fill="none" stroke="#9e1b1e" stroke-width="1.5"/>
     <path d="M 7,22 C 7,17 21,17 21,22" fill="none" stroke="#9e1b1e" stroke-width="1.5"/>
@@ -206,20 +210,20 @@
     <text x="85" y="73" text-anchor="middle" fill="#9e1b1e" font-size="10" font-weight="700">Phần C: Mẫu 6b (Chữ K / 52K)</text>
   </g>
 
-  <g transform="translate(985,385)" filter="url(#cardShadow)">
+  <g transform="translate(985,400)" filter="url(#cardShadow)">
     <rect x="0" y="0" width="150" height="80" rx="10" fill="#fffbeb" stroke="#d97706" stroke-width="2"/>
     <circle cx="15" cy="15" r="5" fill="none" stroke="#b45309" stroke-width="1.5" stroke-dasharray="2.5 1.5"/>
     <text x="75" y="34" text-anchor="middle" fill="#1f1a18" font-size="11.5" font-weight="800">Sinh 2 file Word (.zip)</text>
     <text x="75" y="50" text-anchor="middle" fill="#5c504a" font-size="10">Mẫu 02c + Mẫu 6b</text>
-    <text x="75" y="65" text-anchor="middle" fill="#92400e" font-size="10" font-weight="700">&amp; Ghi Lịch sử (docLogs)</text>
+    <text x="75" y="65" text-anchor="middle" fill="#92400e" font-size="10" font-weight="700">&amp; Ghi lịch sử hồ sơ</text>
   </g>
 
-  <g transform="translate(1205,170)" filter="url(#cardShadow)">
+  <g transform="translate(1205,182)" filter="url(#cardShadow)">
     <polygon points="0,-26 26,0 0,26 -26,0" fill="#fffbeb" stroke="#d97706" stroke-width="2"/>
     <path d="M -7,-7 L 7,7 M 7,-7 L -7,7" stroke="#92400e" stroke-width="2.2" stroke-linecap="round"/>
   </g>
 
-  <g transform="translate(1255,130)" filter="url(#cardShadow)">
+  <g transform="translate(1255,142)" filter="url(#cardShadow)">
     <rect x="0" y="0" width="130" height="80" rx="10" fill="#ffffff" stroke="#9e1b1e" stroke-width="2"/>
     <rect x="9" y="10" width="14" height="9" rx="2" fill="none" stroke="#9e1b1e" stroke-width="1.4"/>
     <text x="65" y="34" text-anchor="middle" fill="#1f1a18" font-size="11.5" font-weight="800">In &amp; Ký tên</text>
@@ -227,36 +231,38 @@
     <text x="65" y="65" text-anchor="middle" fill="#9e1b1e" font-size="10" font-weight="700">Ký Mẫu 02c &amp; 6b</text>
   </g>
 
-  <g transform="translate(1383,710)" filter="url(#cardShadow)">
+  <!-- Mẫu 6d: Đã chuyển lên Lane 1 (ĐẢNG VIÊN) -->
+  <g transform="translate(1443,182)" filter="url(#cardShadow)">
     <polygon points="0,-28 28,0 0,28 -28,0" fill="#fffbeb" stroke="#d97706" stroke-width="2.2"/>
     <path d="M -8,-8 L 8,8 M 8,-8 L -8,8" stroke="#92400e" stroke-width="2.5" stroke-linecap="round"/>
-    <text x="-52" y="45" text-anchor="middle" fill="#78350f" font-size="10.5" font-weight="800">Có Mẫu 6d</text>
-    <text x="-52" y="59" text-anchor="middle" fill="#5c504a" font-size="10">trên DVC Đảng?</text>
+    <text x="-38" y="45" text-anchor="middle" fill="#78350f" font-size="10.5" font-weight="800">Có Mẫu 6d</text>
+    <text x="-38" y="59" text-anchor="middle" fill="#5c504a" font-size="10">DVC Đảng?</text>
   </g>
 
-  <g transform="translate(1445,597)" filter="url(#cardShadow)">
-    <rect x="0" y="0" width="150" height="76" rx="10" fill="#ffffff" stroke="#5c504a" stroke-width="2"/>
-    <circle cx="15" cy="14" r="5" fill="none" stroke="#5c504a" stroke-width="1.5" stroke-dasharray="2.5 1.5"/>
-    <text x="75" y="31" text-anchor="middle" fill="#1f1a18" font-size="11" font-weight="800">Tải Mẫu 6d điện tử</text>
-    <text x="75" y="47" text-anchor="middle" fill="#5c504a" font-size="10">dichvucong.dcs.vn</text>
-    <text x="75" y="62" text-anchor="middle" fill="#065f46" font-size="10" font-weight="700">In kèm bộ hồ sơ</text>
+  <g transform="translate(1505,68)" filter="url(#cardShadow)">
+    <rect x="0" y="0" width="160" height="78" rx="10" fill="#ffffff" stroke="#9e1b1e" stroke-width="2"/>
+    <circle cx="14" cy="12" r="4" fill="none" stroke="#9e1b1e" stroke-width="1.5"/>
+    <path d="M 7,22 C 7,17 21,17 21,22" fill="none" stroke="#9e1b1e" stroke-width="1.5"/>
+    <text x="80" y="31" text-anchor="middle" fill="#1f1a18" font-size="11" font-weight="800">Tải Mẫu 6d điện tử</text>
+    <text x="80" y="47" text-anchor="middle" fill="#5c504a" font-size="10">dichvucong.dcs.vn</text>
+    <text x="80" y="62" text-anchor="middle" fill="#065f46" font-size="10" font-weight="700">In kèm bộ hồ sơ</text>
   </g>
 
-  <g transform="translate(1445,742)" filter="url(#cardShadow)">
-    <rect x="0" y="0" width="150" height="80" rx="10" fill="#ffffff" stroke="#5c504a" stroke-width="2"/>
-    <circle cx="14" cy="12" r="4" fill="none" stroke="#5c504a" stroke-width="1.5"/>
-    <path d="M 7,22 C 7,17 21,17 21,22" fill="none" stroke="#5c504a" stroke-width="1.5"/>
-    <text x="75" y="31" text-anchor="middle" fill="#1f1a18" font-size="11" font-weight="800">Liên hệ Bí thư nơi cư trú</text>
-    <text x="75" y="47" text-anchor="middle" fill="#5c504a" font-size="10">Hỏi lịch bản điện tử hoặc</text>
-    <text x="75" y="62" text-anchor="middle" fill="#991b1b" font-size="10" font-weight="700">Xin xác nhận giấy (Mẫu 6d)</text>
+  <g transform="translate(1505,214)" filter="url(#cardShadow)">
+    <rect x="0" y="0" width="160" height="80" rx="10" fill="#ffffff" stroke="#9e1b1e" stroke-width="2"/>
+    <circle cx="14" cy="12" r="4" fill="none" stroke="#9e1b1e" stroke-width="1.5"/>
+    <path d="M 7,22 C 7,17 21,17 21,22" fill="none" stroke="#9e1b1e" stroke-width="1.5"/>
+    <text x="80" y="31" text-anchor="middle" fill="#1f1a18" font-size="11" font-weight="800">Liên hệ Bí thư nơi cư trú</text>
+    <text x="80" y="47" text-anchor="middle" fill="#5c504a" font-size="10">Hỏi lịch bản điện tử hoặc</text>
+    <text x="80" y="62" text-anchor="middle" fill="#991b1b" font-size="10" font-weight="700">Xin xác nhận giấy (Mẫu 6d)</text>
   </g>
 
-  <g transform="translate(1625,710)" filter="url(#cardShadow)">
+  <g transform="translate(1710,182)" filter="url(#cardShadow)">
     <polygon points="0,-26 26,0 0,26 -26,0" fill="#fffbeb" stroke="#d97706" stroke-width="2"/>
     <path d="M -7,-7 L 7,7 M 7,-7 L -7,7" stroke="#92400e" stroke-width="2.2" stroke-linecap="round"/>
   </g>
 
-  <g transform="translate(1625,170)" filter="url(#cardShadow)">
+  <g transform="translate(1787,182)" filter="url(#cardShadow)">
     <circle cx="0" cy="0" r="22" fill="#fef2f2" stroke="#9e1b1e" stroke-width="2"/>
     <circle cx="0" cy="0" r="17" fill="#ffffff" stroke="#9e1b1e" stroke-width="1.4"/>
     <circle cx="0" cy="0" r="11" fill="none" stroke="#9e1b1e" stroke-width="1.4"/>
@@ -265,32 +271,33 @@
     <text x="0" y="-45" text-anchor="middle" fill="#781215" font-size="10.5" font-weight="800">Sáng CN 22/11/2026</text>
   </g>
 
-  <g transform="translate(1675,130)" filter="url(#cardShadow)">
-    <rect x="0" y="0" width="125" height="80" rx="10" fill="#ffffff" stroke="#9e1b1e" stroke-width="2"/>
+  <g transform="translate(1840,142)" filter="url(#cardShadow)">
+    <rect x="0" y="0" width="130" height="80" rx="10" fill="#ffffff" stroke="#9e1b1e" stroke-width="2"/>
     <rect x="9" y="10" width="14" height="9" rx="2" fill="none" stroke="#9e1b1e" stroke-width="1.4"/>
-    <text x="62" y="34" text-anchor="middle" fill="#1f1a18" font-size="11.5" font-weight="800">Nộp đủ hồ sơ</text>
-    <text x="62" y="50" text-anchor="middle" fill="#5c504a" font-size="10">02c + 6b + 6d</text>
-    <text x="62" y="65" text-anchor="middle" fill="#9e1b1e" font-size="10" font-weight="700">cho Chi bộ SV 1</text>
+    <text x="65" y="34" text-anchor="middle" fill="#1f1a18" font-size="11.5" font-weight="800">Nộp đủ hồ sơ</text>
+    <text x="65" y="50" text-anchor="middle" fill="#5c504a" font-size="10">02c + 6b + 6d</text>
+    <text x="65" y="65" text-anchor="middle" fill="#9e1b1e" font-size="10" font-weight="700">cho Chi bộ SV 1</text>
   </g>
 
-  <g transform="translate(1675,670)" filter="url(#cardShadow)">
-    <rect x="0" y="0" width="125" height="80" rx="10" fill="#ffffff" stroke="#9e1b1e" stroke-width="2"/>
+  <!-- Lane 3: Chi ủy Chi bộ -->
+  <g transform="translate(1835,655)" filter="url(#cardShadow)">
+    <rect x="0" y="0" width="140" height="80" rx="10" fill="#ffffff" stroke="#9e1b1e" stroke-width="2"/>
     <circle cx="14" cy="12" r="4" fill="none" stroke="#9e1b1e" stroke-width="1.5"/>
     <path d="M 7,22 C 7,17 21,17 21,22" fill="none" stroke="#9e1b1e" stroke-width="1.5"/>
-    <text x="62" y="34" text-anchor="middle" fill="#1f1a18" font-size="11" font-weight="800">Chi ủy tiếp nhận</text>
-    <text x="62" y="50" text-anchor="middle" fill="#5c504a" font-size="10">Đối chiếu &amp; xuất Excel</text>
-    <text x="62" y="65" text-anchor="middle" fill="#9e1b1e" font-size="10" font-weight="700">(admin.html)</text>
+    <text x="70" y="34" text-anchor="middle" fill="#1f1a18" font-size="11.5" font-weight="800">Chi ủy tiếp nhận</text>
+    <text x="70" y="50" text-anchor="middle" fill="#5c504a" font-size="10">Đối chiếu &amp; xuất Excel</text>
+    <text x="70" y="65" text-anchor="middle" fill="#9e1b1e" font-size="10" font-weight="700">(admin.html)</text>
   </g>
 
-  <g transform="translate(1838,710)" filter="url(#cardShadow)">
+  <g transform="translate(2035,695)" filter="url(#cardShadow)">
     <circle cx="0" cy="0" r="20" fill="#fef2f2" stroke="#9e1b1e" stroke-width="4.5"/>
     <text x="-4" y="36" text-anchor="middle" fill="#991b1b" font-size="11" font-weight="800">Hoàn thành</text>
     <text x="-4" y="50" text-anchor="middle" fill="#5c504a" font-size="10">Kiểm điểm 2026</text>
   </g>
 
   <!-- ================= LEGEND FOOTER ================= -->
-  <g transform="translate(24,860)">
-    <rect x="0" y="0" width="1842" height="46" rx="8" fill="#ffffff" stroke="#e7dfd8" stroke-width="1.2"/>
+  <g transform="translate(24,818)">
+    <rect x="0" y="0" width="2072" height="46" rx="8" fill="#ffffff" stroke="#e7dfd8" stroke-width="1.2"/>
     <text x="20" y="27" fill="#781215" font-size="11.5" font-weight="800">CHÚ GIẢI KÝ HIỆU BPMN 2.0:</text>
 
     <circle cx="242" cy="23" r="10" fill="#ecfdf5" stroke="#059669" stroke-width="2"/>

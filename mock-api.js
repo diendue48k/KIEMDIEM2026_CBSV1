@@ -21,7 +21,8 @@ const MOCK_API = (function () {
     },
     members: [],
     submissions: {},
-    docLogs: []
+    docLogs: [],
+    docDrafts: {}
   };
 
   const DEMO_MSSVS = new Set(['231121012345', '241125009988', '261121005201']);
@@ -49,6 +50,7 @@ const MOCK_API = (function () {
         const rawMembers = Array.isArray(parsed.members) ? parsed.members : [];
         const rawSubs = parsed.submissions && typeof parsed.submissions === 'object' ? parsed.submissions : {};
         const rawLogs = Array.isArray(parsed.docLogs) ? parsed.docLogs : [];
+        parsed.docDrafts = parsed.docDrafts && typeof parsed.docDrafts === 'object' ? parsed.docDrafts : {};
 
         let changed = false;
         parsed.members = rawMembers.filter(m => {
@@ -287,7 +289,8 @@ const MOCK_API = (function () {
     const fmtAch = a => (a ? [a.loai, a.donVi, a.thoiGian, a.ten].map(v => String(v || '').trim()).filter(Boolean).join(' - ') : '');
 
     const members = sortedMembers.map(m => {
-      const sub = (db.submissions && db.submissions[m.mssv]) || null;
+      const rawSub = (db.submissions && db.submissions[m.mssv]) || null;
+      const sub = (rawSub && rawSub.thoiGianGui) ? rawSub : null;
       const docMatch = docLogsSorted.find(l => l.mssv === m.mssv);
       let chiTiet = null;
       if (sub) {
@@ -373,9 +376,13 @@ const MOCK_API = (function () {
       if (!m) {
         return { success: false, message: 'Không tìm thấy Đảng viên khớp với MSSV và CCCD đã nhập. Vui lòng kiểm tra lại.' };
       }
+      const rawSub = db.submissions[m.mssv] || null;
+      const existing = (rawSub && rawSub.thoiGianGui) ? rawSub : null;
+      const docDraft = (db.docDrafts && db.docDrafts[m.mssv]) || (rawSub && rawSub.docDraft) || null;
       return {
         success: true,
-        existing: db.submissions[m.mssv] || null,
+        existing,
+        docDraft,
         member: Object.assign({}, m, { validNgayVaoDang: true, du6Thang: isDu6Thang(m.ngayVaoDang) })
       };
     }
@@ -384,13 +391,37 @@ const MOCK_API = (function () {
       const p = body.payload || {};
       const m = db.members.find(x => x.mssv === p.mssv);
       if (!m) return { success: false, message: 'Không tìm thấy Đảng viên.' };
-      const updated = Boolean(db.submissions[m.mssv]);
-      db.submissions[m.mssv] = buildSubmissionObj(p, m);
+      const rawSub = db.submissions[m.mssv] || null;
+      const updated = Boolean(rawSub && rawSub.thoiGianGui);
+      const prevDraft = (rawSub && rawSub.docDraft) || (db.docDrafts && db.docDrafts[m.mssv]) || null;
+      const subObj = buildSubmissionObj(p, m);
+      if (prevDraft) subObj.docDraft = prevDraft;
+      db.submissions[m.mssv] = subObj;
       saveLocalDb(db);
       return {
         success: true,
         updated,
         message: updated ? 'Cập nhật thông tin kê khai thành công!' : 'Gửi thông tin kê khai thành công!'
+      };
+    }
+
+    if (body.action === 'saveDocDraft') {
+      const p = body.payload || {};
+      const mssv = String(p.mssv || '').trim();
+      if (!mssv) return { success: false, message: 'Thiếu MSSV.' };
+      const updatedAt = nowVN();
+      const draftObj = Object.assign({}, p.docDraft || {}, { updatedAt });
+      db.docDrafts = db.docDrafts || {};
+      db.docDrafts[mssv] = draftObj;
+      if (db.submissions && db.submissions[mssv]) {
+        db.submissions[mssv].docDraft = draftObj;
+        db.submissions[mssv].docDraftUpdatedAt = updatedAt;
+      }
+      saveLocalDb(db);
+      return {
+        success: true,
+        updatedAt,
+        message: 'Đã lưu thông tin hồ sơ thành công! Đồng chí có thể chỉnh sửa và tải lại file bất cứ lúc nào.'
       };
     }
 
@@ -555,10 +586,13 @@ const MOCK_API = (function () {
       if (String(m.cccd || '').trim() !== cccd) {
         return { success: false, message: 'Không tìm thấy Đảng viên khớp với MSSV và CCCD đã nhập. Vui lòng kiểm tra lại.' };
       }
-      const existing = subDoc.exists ? subDoc.data() : null;
+      const rawSub = subDoc.exists ? subDoc.data() : null;
+      const existing = (rawSub && rawSub.thoiGianGui) ? rawSub : null;
+      const docDraft = (rawSub && rawSub.docDraft) ? rawSub.docDraft : null;
       return {
         success: true,
         existing,
+        docDraft,
         member: Object.assign({}, m, { validNgayVaoDang: true, du6Thang: isDu6Thang(m.ngayVaoDang) })
       };
     }
@@ -580,8 +614,10 @@ const MOCK_API = (function () {
         return { success: false, message: 'Không tìm thấy Đảng viên.' };
       }
       const m = memberDoc.data();
-      const updated = subDoc.exists;
+      const prevSub = subDoc.exists ? subDoc.data() : null;
+      const updated = Boolean(prevSub && prevSub.thoiGianGui);
       const subObj = buildSubmissionObj(p, m);
+      if (prevSub && prevSub.docDraft) subObj.docDraft = prevSub.docDraft;
       await withTimeout(
         fs.collection('submissions').doc(safeId).set(subObj),
         10000,
@@ -614,6 +650,38 @@ const MOCK_API = (function () {
       localDb.docLogs.unshift(entry);
       saveLocalDb(localDb);
       return { success: true };
+    }
+
+    if (body.action === 'saveDocDraft') {
+      const p = body.payload || {};
+      const mssv = String(p.mssv || '').trim();
+      if (!mssv) return { success: false, message: 'Thiếu MSSV.' };
+      const safeId = docSafeId(mssv);
+      const updatedAt = nowVN();
+      const draftObj = Object.assign({}, p.docDraft || {}, { updatedAt });
+      await withTimeout(
+        fs.collection('submissions').doc(safeId).set({
+          mssv,
+          docDraft: draftObj,
+          docDraftUpdatedAt: updatedAt
+        }, { merge: true }),
+        10000,
+        'Quá thời gian lưu bản nháp hồ sơ lên Firestore.'
+      );
+
+      const localDb = getLocalDb();
+      localDb.docDrafts = localDb.docDrafts || {};
+      localDb.docDrafts[mssv] = draftObj;
+      if (localDb.submissions && localDb.submissions[mssv]) {
+        localDb.submissions[mssv].docDraft = draftObj;
+        localDb.submissions[mssv].docDraftUpdatedAt = updatedAt;
+      }
+      saveLocalDb(localDb);
+      return {
+        success: true,
+        updatedAt,
+        message: 'Đã lưu thông tin hồ sơ thành công! Đồng chí có thể chỉnh sửa và tải lại file bất cứ lúc nào.'
+      };
     }
 
     if (body.action === 'adminDashboard') {
@@ -654,7 +722,8 @@ const MOCK_API = (function () {
         if (d) docLogs.push(d);
       });
 
-      const snapshotDb = { links, members, submissions, docLogs };
+      const prevLocal = getLocalDb();
+      const snapshotDb = { links, members, submissions, docLogs, docDrafts: prevLocal.docDrafts || {} };
       saveLocalDb(snapshotDb);
 
       return buildDashboardResponse(snapshotDb, {

@@ -46,7 +46,7 @@ Trân trọng!
 
 ## PHẦN 2: SƠ ĐỒ QUY TRÌNH THỰC HIỆN (CHUẨN BPMN 2.0)
 
-- **Ảnh vector sơ đồ BPMN 2.0:** `./so-do-bpmn-2026.svg`
+- **Ảnh vector sơ đồ BPMN 2.0 (3 làn: Đảng viên — Hệ thống — Chi ủy Chi bộ):** `./so-do-bpmn-2026.svg`
 - **Tệp mô hình chuẩn OMG BPMN 2.0 XML (mở được bằng bpmn.io / Camunda Modeler / draw.io):** `./quy-trinh-kiem-diem-2026.bpmn`
 
 ![Sơ đồ quy trình kiểm điểm Đảng viên năm 2026 chuẩn BPMN 2.0](./so-do-bpmn-2026.svg)

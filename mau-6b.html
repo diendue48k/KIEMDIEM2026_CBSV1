@@ -521,6 +521,54 @@
     .btn-primary:disabled { opacity: 0.65; cursor: not-allowed; }
     .btn-block { width: 100%; padding: 14px 24px; font-size: 1rem; border-radius: var(--radius-md); }
 
+    .btn-save-draft {
+      background: var(--gold-tint);
+      color: var(--crimson-dark);
+      border: 1.5px solid var(--gold);
+      font-weight: 700;
+      padding: 13px 18px;
+      border-radius: var(--radius-md);
+      font-size: 0.94rem;
+    }
+    .btn-save-draft:hover:not(:disabled) {
+      background: var(--gold-soft);
+      transform: translateY(-1px);
+    }
+    .btn-save-draft:disabled { opacity: 0.65; cursor: not-allowed; }
+
+    .btn-export-main {
+      width: 100%;
+      padding: 13px 20px;
+      font-size: 0.98rem;
+      border-radius: var(--radius-md);
+    }
+
+    .doc-action-bar {
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    @media (max-width: 640px) {
+      .doc-action-bar { grid-template-columns: 1fr; }
+    }
+
+    .btn-reset-draft {
+      background: #ffffff;
+      color: #92400e;
+      border: 1px solid #fcd34d;
+      padding: 5px 12px;
+      font-size: 0.78rem;
+      font-family: inherit;
+      font-weight: 700;
+      border-radius: 7px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.15s ease;
+    }
+    .btn-reset-draft:hover { background: var(--gold-soft); }
+
     .alert {
       padding: 13px 16px;
       border-radius: var(--radius-md);
@@ -651,6 +699,13 @@
           <h2 class="section-title">Thông Tin Cần Nhập &amp; Bổ Sung</h2>
         </div>
 
+        <div id="draftNotice" class="alert alert-gold hidden">
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;">
+            <span id="draftNoticeText">Đã khôi phục thông tin đã lưu trước đó để đồng chí tiếp tục chỉnh sửa.</span>
+            <button type="button" class="btn-reset-draft" onclick="resetDraft6b()">Khôi phục mặc định</button>
+          </div>
+        </div>
+
         <div class="alert alert-gold">
           <strong>Quy tắc ghi Mẫu 6b:</strong> Chỉ ghi những mục có nội dung thay đổi so với năm trước; nếu <strong>không thay đổi</strong> thì giữ nguyên chữ <strong>"K"</strong>.
         </div>
@@ -736,10 +791,16 @@
 
         <div id="docAlert" class="alert hidden" style="margin-top: 18px;"></div>
 
-        <button type="submit" id="btnGenerate" class="btn btn-primary btn-block" style="margin-top: 18px;">
-          <svg class="icon-svg" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          <span>Xuất &amp; Tải File Word Phiếu Bổ Sung 6b (.docx)</span>
-        </button>
+        <div class="doc-action-bar">
+          <button type="button" id="btnSaveDraft" class="btn btn-save-draft" onclick="handleSaveDraft6b()">
+            <svg class="icon-svg" viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+            <span>Lưu thông tin (để sửa lại sau)</span>
+          </button>
+          <button type="submit" id="btnGenerate" class="btn btn-primary btn-export-main">
+            <svg class="icon-svg" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <span>Lưu &amp; Xuất File Word Mẫu 6b (.docx)</span>
+          </button>
+        </div>
       </div>
     </form>
 
@@ -752,6 +813,167 @@
   <script src="mock-api.js"></script>
   <script>
     let currentMember = null;
+    let lastLookupExisting = null;
+
+    const FIELD_IDS_6B = [
+      'choOMoi', 'ngheNghiepMoi', 'cvDang', 'cvChinhQuyen',
+      'tdPhoThong', 'tdHocHam', 'tdHocVi', 'tdLyLuan', 'tdNgoaiNgu',
+      'khenThuong', 'kyLuat', 'gdChaDe', 'gdMeDe', 'gdChaVC', 'gdMeVC',
+      'gdVoChong', 'gdCon', 'ktThuNhap', 'ktBinhQuan', 'ktNhaO', 'ktDatO',
+      'ktHoatDong', 'mienCongTac', 'ktTaiSanTen', 'ktTaiSanGiaTri'
+    ];
+
+    function getDraftStorageKey(mssv) {
+      return 'CBSV1_DOC_DRAFT_2026_' + String(mssv || '').trim();
+    }
+
+    function readLocalDraft(mssv) {
+      if (!mssv) return {};
+      try {
+        return JSON.parse(localStorage.getItem(getDraftStorageKey(mssv)) || '{}') || {};
+      } catch (e) {
+        return {};
+      }
+    }
+
+    function writeLocalDraft(mssv, draftObj) {
+      if (!mssv) return;
+      try {
+        localStorage.setItem(getDraftStorageKey(mssv), JSON.stringify(draftObj || {}));
+      } catch (e) {}
+    }
+
+    function collectForm6bData() {
+      const data = {};
+      FIELD_IDS_6B.forEach(id => {
+        const el = document.getElementById(id);
+        data[id] = el ? el.value : 'K';
+      });
+      return data;
+    }
+
+    function saveDraft6bLocal(mssv) {
+      if (!mssv) return {};
+      const existingDraft = readLocalDraft(mssv);
+      const nextDraft = Object.assign({}, existingDraft, {
+        form6b: collectForm6bData(),
+        updatedAt: new Date().toLocaleString('vi-VN'),
+        updatedAtMs: Date.now()
+      });
+      writeLocalDraft(mssv, nextDraft);
+      return nextDraft;
+    }
+
+    function applyDefaults6b(member, existing) {
+      FIELD_IDS_6B.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = 'K';
+      });
+      const diaChi = (existing && existing.noiOHienNay) || (member && member.diaChiHienTai) || 'K';
+      document.getElementById('choOMoi').value = diaChi;
+      if (member && String(member.lop || '').toUpperCase().startsWith('52K')) {
+        document.getElementById('ngheNghiepMoi').value = `Sinh viên - Khoa ${member.khoa || ''}`;
+      } else {
+        document.getElementById('ngheNghiepMoi').value = 'K';
+      }
+    }
+
+    function pickLatestForm6b(serverDraft, localDraft) {
+      const serverData = serverDraft && serverDraft.form6b ? serverDraft.form6b : null;
+      const localData = localDraft && localDraft.form6b ? localDraft.form6b : null;
+      if (serverData && localData) {
+        const sMs = Number(serverDraft.updatedAtMs || 0);
+        const lMs = Number(localDraft.updatedAtMs || 0);
+        if (lMs > sMs) {
+          return { data: localData, updatedAt: localDraft.updatedAt || '' };
+        }
+        return { data: serverData, updatedAt: serverDraft.updatedAt || '' };
+      }
+      if (serverData) return { data: serverData, updatedAt: serverDraft.updatedAt || '' };
+      if (localData) return { data: localData, updatedAt: localDraft.updatedAt || '' };
+      return null;
+    }
+
+    async function handleSaveDraft6b(silent) {
+      if (!currentMember) return;
+      const btn = document.getElementById('btnSaveDraft');
+      const alertBox = document.getElementById('docAlert');
+      const mergedDraft = saveDraft6bLocal(currentMember.mssv);
+      const defaultSaveHtml = '<svg class="icon-svg" viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg><span>Lưu thông tin (để sửa lại sau)</span>';
+
+      if (!silent) {
+        alertBox.classList.add('hidden');
+        alertBox.classList.remove('alert-success', 'alert-danger');
+        if (btn) {
+          btn.disabled = true;
+          btn.textContent = 'Đang lưu thông tin...';
+        }
+      }
+
+      try {
+        const res = await callGasApi({
+          action: 'saveDocDraft',
+          payload: {
+            mssv: currentMember.mssv,
+            docDraft: mergedDraft
+          }
+        });
+        const noticeEl = document.getElementById('draftNotice');
+        const noticeText = document.getElementById('draftNoticeText');
+        if (noticeEl && noticeText) {
+          noticeText.innerHTML = '<strong>Đã lưu thông tin tạm thời</strong> (lúc ' + ((res && res.updatedAt) || mergedDraft.updatedAt) + '). Đồng chí có thể chỉnh sửa và tải lại file bất cứ lúc nào.';
+          noticeEl.classList.remove('hidden');
+        }
+        if (!silent) {
+          alertBox.textContent = 'Đã lưu thông tin thành công! Nếu file tải về có chỗ cần sửa, đồng chí chỉ cần chỉnh lại ở trên rồi bấm Xuất file.';
+          alertBox.classList.add('alert-success');
+          alertBox.classList.remove('hidden');
+        }
+      } catch (err) {
+        if (!silent) {
+          alertBox.textContent = 'Đã lưu tạm trên trình duyệt (lưu trực tuyến lỗi: ' + err.message + ').';
+          alertBox.classList.add('alert-success');
+          alertBox.classList.remove('hidden');
+        }
+      } finally {
+        if (!silent && btn) {
+          btn.disabled = false;
+          btn.innerHTML = defaultSaveHtml;
+        }
+      }
+    }
+
+    async function resetDraft6b() {
+      if (!currentMember) return;
+      if (!confirm('Đồng chí muốn xóa thông tin đã lưu của Mẫu 6b và khôi phục về giá trị mặc định ban đầu?')) {
+        return;
+      }
+      applyDefaults6b(currentMember, lastLookupExisting);
+      const nextDraft = Object.assign({}, readLocalDraft(currentMember.mssv), {
+        form6b: null,
+        updatedAt: new Date().toLocaleString('vi-VN'),
+        updatedAtMs: Date.now()
+      });
+      writeLocalDraft(currentMember.mssv, nextDraft);
+      document.getElementById('draftNotice').classList.add('hidden');
+      const alertBox = document.getElementById('docAlert');
+      alertBox.textContent = 'Đã khôi phục các mục Mẫu 6b về mặc định.';
+      alertBox.classList.remove('alert-danger', 'hidden');
+      alertBox.classList.add('alert-success');
+      callGasApi({
+        action: 'saveDocDraft',
+        payload: { mssv: currentMember.mssv, docDraft: nextDraft }
+      }).catch(() => {});
+    }
+
+    (function bindAutoSave6b() {
+      const formEl = document.getElementById('docForm');
+      if (formEl) {
+        formEl.addEventListener('input', () => {
+          if (currentMember) saveDraft6bLocal(currentMember.mssv);
+        });
+      }
+    })();
 
     async function callGasApi(bodyObj) {
       if (typeof APP_CONFIG !== 'undefined' && APP_CONFIG.USE_MOCK_DATA && typeof MOCK_API !== 'undefined') {
@@ -800,6 +1022,7 @@
         }
 
         currentMember = res.member;
+        lastLookupExisting = res.existing || null;
         sessionStorage.setItem('CBSV1_AUTH', JSON.stringify({ mssv, cccd }));
         document.getElementById('hoTen').value = currentMember.hoTen || '';
         document.getElementById('ngaySinh').value = currentMember.ngaySinh || '';
@@ -819,15 +1042,27 @@
           nhomBadge.classList.toggle('hidden', !currentMember.nhom);
         }
 
-        // Tự động điền nơi ở hiện nay nếu có từ hệ thống / lần kê khai trước
-        const diaChi = (res.existing && res.existing.noiOHienNay) || currentMember.diaChiHienTai || 'K';
-        document.getElementById('choOMoi').value = diaChi;
-
-        // Tự động điền nghề nghiệp nếu là Đảng viên năm 1 (52K)
-        if (String(currentMember.lop || '').toUpperCase().startsWith('52K')) {
-          document.getElementById('ngheNghiepMoi').value = `Sinh viên - Khoa ${currentMember.khoa || ''}`;
-        } else {
-          document.getElementById('ngheNghiepMoi').value = 'K';
+        // Tự động điền giá trị mặc định rồi khôi phục bản nháp nếu đã lưu
+        applyDefaults6b(currentMember, lastLookupExisting);
+        const draftNotice = document.getElementById('draftNotice');
+        const draftNoticeText = document.getElementById('draftNoticeText');
+        const localDraft = readLocalDraft(currentMember.mssv);
+        const restored = pickLatestForm6b(res.docDraft || null, localDraft);
+        if (restored && restored.data) {
+          FIELD_IDS_6B.forEach(id => {
+            if (Object.prototype.hasOwnProperty.call(restored.data, id)) {
+              const el = document.getElementById(id);
+              if (el) el.value = restored.data[id];
+            }
+          });
+          if (draftNotice && draftNoticeText) {
+            draftNoticeText.innerHTML = '<strong>Đã khôi phục thông tin đã lưu</strong>' +
+              (restored.updatedAt ? ' (lần lưu: <strong>' + restored.updatedAt + '</strong>)' : '') +
+              '. Đồng chí có thể sửa lại bất kỳ mục nào rồi bấm Xuất file.';
+            draftNotice.classList.remove('hidden');
+          }
+        } else if (draftNotice) {
+          draftNotice.classList.add('hidden');
         }
 
         memberBox.classList.remove('hidden');
@@ -857,7 +1092,9 @@
       const dobYear = dobParts[2] || '....';
 
       btn.disabled = true;
-      btn.textContent = 'Đang tạo file Word (.docx)...';
+      btn.textContent = 'Đang lưu & tạo file Word (.docx)...';
+
+      handleSaveDraft6b(true).catch(() => {});
 
       try {
         const response = await fetch('templates/mau-6b.docx');
@@ -929,7 +1166,7 @@
           }
         }).catch(() => {});
 
-        alertBox.textContent = 'Xuất file Phiếu bổ sung 6b (.docx) thành công! Vui lòng kiểm tra thư mục Tải xuống (Downloads).';
+        alertBox.textContent = 'Đã tự động lưu thông tin & xuất file Phiếu bổ sung 6b (.docx) thành công! Nếu cần chỉnh sửa, đồng chí cứ sửa trực tiếp ở trên rồi xuất lại.';
         alertBox.classList.add('alert-success');
         alertBox.classList.remove('hidden');
       } catch (err) {
@@ -938,7 +1175,7 @@
         alertBox.classList.remove('hidden');
       } finally {
         btn.disabled = false;
-        btn.innerHTML = '<svg class="icon-svg" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg><span>Xuất &amp; Tải File Word Phiếu Bổ Sung 6b (.docx)</span>';
+        btn.innerHTML = '<svg class="icon-svg" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg><span>Lưu &amp; Xuất File Word Mẫu 6b (.docx)</span>';
       }
     }
   </script>
