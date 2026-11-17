@@ -582,72 +582,105 @@
       gap: 6px;
     }
     .detail-section-title {
-      font-size: 0.78rem;
+      font-size: 0.74rem;
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.04em;
       color: var(--crimson-dark);
-      margin: 16px 0 8px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
+      margin: 0 0 8px;
     }
-    .detail-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 10px;
-    }
-    @media (max-width: 720px) {
-      .detail-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    }
-    @media (max-width: 480px) {
-      .detail-grid { grid-template-columns: 1fr; }
-    }
-    .detail-item {
-      background: #faf7f5;
-      border: 1px solid #efe7e2;
-      border-radius: 10px;
-      padding: 9px 12px;
-    }
-    .detail-item-label {
-      font-size: 0.7rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.03em;
-      color: var(--text-muted);
-      margin-bottom: 3px;
-    }
-    .detail-item-val {
-      font-size: 0.87rem;
-      font-weight: 600;
-      color: var(--text-main);
-      word-break: break-word;
-    }
-    .detail-text-stack {
+    .detail-sections {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 12px;
     }
-    .detail-text-card {
+    .detail-card {
       background: #ffffff;
       border: 1px solid #ece3dd;
-      border-left: 3.5px solid var(--crimson);
       border-radius: 10px;
       padding: 12px 14px;
     }
-    .detail-text-card-title {
-      font-size: 0.8rem;
-      font-weight: 700;
-      color: var(--crimson-dark);
-      margin-bottom: 6px;
+    .detail-kv-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 6px 20px;
     }
-    .detail-text-card pre {
+    .detail-kv-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 10px;
+      padding: 5px 0;
+      border-bottom: 1px dashed #f1e9e4;
+      font-size: 0.84rem;
+    }
+    .detail-kv-row:last-child { border-bottom: none; }
+    .detail-kv-label {
+      color: var(--text-muted);
+      font-weight: 600;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .detail-kv-val {
+      color: var(--text-main);
+      font-weight: 600;
+      text-align: right;
+      word-break: break-word;
+    }
+    .detail-score-strip {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+    }
+    .detail-score-box {
+      background: #faf7f5;
+      border: 1px solid #efe7e2;
+      border-radius: 8px;
+      padding: 7px 10px;
+      text-align: center;
+    }
+    .detail-score-box .lbl {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+    .detail-score-box .val {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--crimson-dark);
+      margin-top: 2px;
+    }
+    .detail-list {
+      margin: 0;
+      padding-left: 18px;
+      font-size: 0.85rem;
+      line-height: 1.5;
+      color: var(--text-main);
+    }
+    .detail-list li + li { margin-top: 4px; }
+    .detail-subblock + .detail-subblock {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px dashed #ece3dd;
+    }
+    .detail-subblock-title {
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+    .detail-pre {
       font-family: inherit;
       white-space: pre-wrap;
-      font-size: 0.88rem;
-      line-height: 1.55;
+      font-size: 0.85rem;
+      line-height: 1.5;
       color: var(--text-main);
       margin: 0;
+    }
+    @media (max-width: 680px) {
+      .detail-kv-grid { grid-template-columns: 1fr; }
+      .detail-score-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
     .detail-empty {
       color: #9ca3af;
@@ -1796,24 +1829,21 @@
       }[s]));
     }
 
+    function renderKvRows(items) {
+      return items.map(([label, val]) => `
+        <div class="detail-kv-row">
+          <span class="detail-kv-label">${escapeHtml(label)}</span>
+          <span class="detail-kv-val">${val ? escapeHtml(val) : '<span class="detail-empty">Chưa có</span>'}</span>
+        </div>
+      `).join('');
+    }
+
     function openDetail(mssv) {
       const m = dashboardData.members.find(x => x.mssv === mssv);
       if (!m || !m.chiTiet) return;
+      const c = m.chiTiet;
+      const sub = m.submission || {};
       document.getElementById('modalTitle').textContent = `${m.hoTen} (${m.mssv})`;
-
-      const entries = Object.keys(m.chiTiet).map(k => ({
-        key: k,
-        val: (m.chiTiet[k] === null || m.chiTiet[k] === undefined) ? '' : String(m.chiTiet[k]).trim()
-      }));
-
-      const longKeyRegex = /(ưu điểm|hạn chế|nguyên nhân|khắc phục|biện pháp|nội dung|giải trình|khen thưởng|kỷ luật|chỗ ở|nghề nghiệp|nhận xét|kiến nghị|ghi chú)/i;
-      const shortFields = [];
-      const longFields = [];
-      entries.forEach(item => {
-        const isLong = item.val.includes('\n') || item.val.length > 70 || longKeyRegex.test(item.key);
-        if (isLong) longFields.push(item);
-        else shortFields.push(item);
-      });
 
       const bannerHtml = `
         <div class="detail-banner">
@@ -1826,37 +1856,87 @@
           </div>
           <div class="detail-banner-actions">
             <button type="button" class="btn btn-gold btn-xs" onclick="closeModal(); openEditMember('${escapeHtml(m.mssv)}')">Sửa / Nhập hộ</button>
-            <button type="button" class="btn btn-outline btn-xs" onclick="closeModal(); openMemberTool('${escapeHtml(m.mssv)}', 'hoso')">Hồ sơ 02c/6b</button>
-            <button type="button" class="btn btn-outline btn-xs" onclick="closeModal(); openMemberTool('${escapeHtml(m.mssv)}', 'mau6b')">Mẫu 6b</button>
+            <button type="button" class="btn btn-outline btn-xs" onclick="closeModal(); openMemberTool('${escapeHtml(m.mssv)}', 'mau-02c.html')">Hồ sơ 02c/6b</button>
+            <button type="button" class="btn btn-outline btn-xs" onclick="closeModal(); openMemberTool('${escapeHtml(m.mssv)}', 'mau-6b.html')">Mẫu 6b</button>
           </div>
         </div>
       `;
 
-      const shortHtml = shortFields.length ? `
-        <div class="detail-section-title">Thông tin Đảng viên & Tổng hợp</div>
-        <div class="detail-grid">
-          ${shortFields.map(item => `
-            <div class="detail-item">
-              <div class="detail-item-label">${escapeHtml(item.key)}</div>
-              <div class="detail-item-val">${item.val ? escapeHtml(item.val) : '<span class="detail-empty">(Trống)</span>'}</div>
-            </div>
-          `).join('')}
+      const profileCard = `
+        <div class="detail-card">
+          <div class="detail-section-title">1. Hồ sơ Đảng viên</div>
+          <div class="detail-kv-grid">
+            ${renderKvRows([
+              ['Ngày sinh', c['Ngày sinh'] || m.ngaySinh],
+              ['Giới tính', c['Giới tính'] || m.gioiTinh],
+              ['CCCD', c['CCCD'] || m.cccd],
+              ['Lớp', c['Lớp'] || m.lop],
+              ['Khoa', c['Khoa'] || m.khoa],
+              ['Số thẻ Đảng viên', c['Số thẻ Đảng viên'] || m.soTDV],
+              ['Ngày vào Đảng', c['Ngày vào Đảng'] || m.ngayVaoDang],
+              ['Ngày chính thức', c['Ngày chính thức'] || m.ngayChinhThuc]
+            ])}
+          </div>
         </div>
-      ` : '';
+      `;
 
-      const longHtml = longFields.length ? `
-        <div class="detail-section-title">Nội dung kiểm điểm & Kê khai chi tiết</div>
-        <div class="detail-text-stack">
-          ${longFields.map(item => `
-            <div class="detail-text-card">
-              <div class="detail-text-card-title">${escapeHtml(item.key)}</div>
-              <pre>${item.val ? escapeHtml(item.val) : '<span class="detail-empty">(Trống)</span>'}</pre>
-            </div>
-          `).join('')}
+      const residenceCard = `
+        <div class="detail-card">
+          <div class="detail-section-title">2. Sinh hoạt nơi cư trú (221)</div>
+          ${renderKvRows([
+            ['Chi bộ sinh hoạt', c['Chi bộ Sinh hoạt nơi cư trú'] || sub.chiBoCuTru || m.chiBoCuTru],
+            ['Đảng bộ phường/xã', c['Đảng bộ phường/xã'] || sub.dangBoPhuongXa || m.dangBoPhuongXa],
+            ['Nơi ở hiện nay', c['Nơi ở hiện nay'] || sub.noiOHienNay || m.diaChiHienTai]
+          ])}
         </div>
-      ` : '';
+      `;
 
-      document.getElementById('modalBody').innerHTML = bannerHtml + shortHtml + longHtml;
+      const scoresCard = `
+        <div class="detail-card">
+          <div class="detail-section-title">3. Kết quả học tập - rèn luyện &amp; Hồ sơ</div>
+          <div class="detail-score-strip">
+            <div class="detail-score-box"><div class="lbl">Học tập HK1</div><div class="val">${escapeHtml(c['KQ Học tập HK1 (2025-2026)'] || '—')}</div></div>
+            <div class="detail-score-box"><div class="lbl">Rèn luyện HK1</div><div class="val">${escapeHtml(c['KQ Rèn luyện HK1 (2025-2026)'] || '—')}</div></div>
+            <div class="detail-score-box"><div class="lbl">Học tập HK2</div><div class="val">${escapeHtml(c['KQ Học tập HK2 (2025-2026)'] || '—')}</div></div>
+            <div class="detail-score-box"><div class="lbl">Rèn luyện HK2</div><div class="val">${escapeHtml(c['KQ Rèn luyện HK2 (2025-2026)'] || '—')}</div></div>
+          </div>
+          <div style="margin-top: 8px;">
+            ${renderKvRows([
+              ['Tự xếp loại năm 2026', c['Tự xếp loại mức HTNV năm 2026']],
+              ['Trạng thái hồ sơ in', c['Trạng thái tạo hồ sơ in (Mẫu 02c + 6b)']],
+              ['Tổng điểm tự chấm (02c)', c['Tổng điểm tự chấm (Mẫu 02c)']]
+            ])}
+          </div>
+        </div>
+      `;
+
+      const achs = ['Thành tích 1', 'Thành tích 2', 'Thành tích 3', 'Thành tích 4']
+        .map(k => String(c[k] || '').trim())
+        .filter(Boolean);
+      const dongGop = String(c['Đóng góp cho Chi bộ'] || '').trim();
+      const deXuat = String(c['Đề xuất, ý kiến'] || '').trim();
+
+      const extraCard = `
+        <div class="detail-card">
+          <div class="detail-section-title">4. Thành tích, Đóng góp &amp; Ý kiến</div>
+          <div class="detail-subblock">
+            <div class="detail-subblock-title">Thành tích nổi bật</div>
+            ${achs.length
+              ? `<ol class="detail-list">${achs.map(a => `<li>${escapeHtml(a)}</li>`).join('')}</ol>`
+              : '<div class="detail-empty" style="font-size: 0.84rem;">Không kê khai thành tích</div>'}
+          </div>
+          <div class="detail-subblock">
+            <div class="detail-subblock-title">Đóng góp cho Chi bộ</div>
+            ${dongGop ? `<pre class="detail-pre">${escapeHtml(dongGop)}</pre>` : '<div class="detail-empty" style="font-size: 0.84rem;">Không có</div>'}
+          </div>
+          <div class="detail-subblock">
+            <div class="detail-subblock-title">Đề xuất, ý kiến</div>
+            ${deXuat ? `<pre class="detail-pre">${escapeHtml(deXuat)}</pre>` : '<div class="detail-empty" style="font-size: 0.84rem;">Không có</div>'}
+          </div>
+        </div>
+      `;
+
+      document.getElementById('modalBody').innerHTML = bannerHtml + `<div class="detail-sections">${profileCard}${residenceCard}${scoresCard}${extraCard}</div>`;
       document.getElementById('detailModal').classList.remove('hidden');
     }
 
