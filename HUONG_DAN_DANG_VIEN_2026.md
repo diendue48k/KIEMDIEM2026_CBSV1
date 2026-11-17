@@ -8,8 +8,8 @@
 
 | Mốc công việc | Địa chỉ thực hiện | Thời hạn hoàn thành |
 |---|---|---|
-| **Bước 1: Kê khai thông tin trực tuyến** (`kekhai.html`) | Trang chủ → **Thực hiện kê khai ngay** | Trước **20h00 - Thứ 5, ngày 19/11/2026** |
-| **Bước 2: Tạo & in Mẫu 02c + Mẫu 6b** (`mau-02c.html`) | Trang chủ → **Tạo hồ sơ để in** *(hoặc tải mẫu trống)* | Hoàn thành trước buổi nộp hồ sơ |
+| **Bước 1: Kê khai thông tin trực tuyến** | Trang chủ → **Thực hiện kê khai ngay** | Trước **20h00 - Thứ 5, ngày 19/11/2026** |
+| **Bước 2: Tạo & in Mẫu 02c + Mẫu 6b** | Trang chủ → **Tạo hồ sơ để in** *(hoặc tải mẫu trống)* | Hoàn thành trước buổi nộp hồ sơ |
 | **Bước 3: Lấy Mẫu 6d & Nộp hồ sơ bản giấy** | [dichvucong.dcs.vn](https://dichvucong.dcs.vn) / Mẫu 6d giấy | **Sáng Chủ nhật, ngày 22/11/2026** |
 
 ---
@@ -44,18 +44,15 @@ Trân trọng!
 
 ---
 
-## PHẦN 2: SƠ ĐỒ QUY TRÌNH THỰC HIỆN (CHUẨN BPMN 2.0)
+## PHẦN 2: SƠ ĐỒ QUY TRÌNH THỰC HIỆN
 
-- **Ảnh vector sơ đồ BPMN 2.0 (3 làn: Đảng viên — Hệ thống — Chi ủy Chi bộ):** `./so-do-bpmn-2026.svg`
-- **Tệp mô hình chuẩn OMG BPMN 2.0 XML (mở được bằng bpmn.io / Camunda Modeler / draw.io):** `./quy-trinh-kiem-diem-2026.bpmn`
-
-![Sơ đồ quy trình kiểm điểm Đảng viên năm 2026 chuẩn BPMN 2.0](./so-do-bpmn-2026.svg)
+![Sơ đồ quy trình thực hiện](./so-do-bpmn-2026.svg)
 
 ---
 
 ## PHẦN 3: HƯỚNG DẪN CHI TIẾT TỪNG BƯỚC CHO ĐẢNG VIÊN
 
-### Bước 1: Kê khai thông tin trực tuyến (`kekhai.html`)
+### Bước 1: Kê khai thông tin trực tuyến
 > **Hạn cuối hoàn thành Bước 1:** Trước **20h00 - Thứ 5, ngày 19/11/2026**.  
 > Hãy thực hiện Bước 1 trước để dữ liệu của đồng chí được ghi nhận lên hệ thống Chi bộ và **tự động đổ sang Bước 2**.
 
@@ -89,7 +86,7 @@ Trân trọng!
 
 ---
 
-### Bước 2: Tạo và tải bộ biểu mẫu để in (`mau-02c.html`)
+### Bước 2: Tạo và tải bộ biểu mẫu để in
 
 Tại trang chủ, trong **Phần 2**, đồng chí chọn **1 trong 2 cách**:
 
@@ -124,7 +121,7 @@ Tại trang chủ, trong **Phần 2**, đồng chí chọn **1 trong 2 cách**:
    - **Bản online (ưu tiên):** Truy cập Cổng Dịch vụ công Đảng tại [dichvucong.dcs.vn](https://dichvucong.dcs.vn) → Đăng nhập → Chọn **Thủ tục hành chính của tôi** → Bấm vào dòng **Lấy ý kiến nhận xét của Chi ủy chi bộ đối với đảng viên sinh hoạt nơi cư trú** → **Chi tiết giấy tờ** → Bấm biểu tượng tải xuống và in ra.
    - **Nếu chưa có bản điện tử:** Phải **liên hệ ngay Bí thư Chi bộ nơi cư trú** để xử lý kịp thời theo 3 trường hợp:
      - *Trường hợp 1:* Chi bộ nơi cư trú báo sẽ làm bản điện tử → hỏi rõ thời điểm trả kết quả để kịp tải và nộp trong tuần.
-     - *Trường hợp 2:* Chi bộ nơi cư trú báo làm bản giấy theo mẫu 2-QĐ 221 → tải ngay mẫu giấy 6d (`Mau_6d_Nhan_xet_noi_cu_tru_2026.doc`) trên trang chủ, điền thông tin và xin ký xác nhận/đóng dấu.
+     - *Trường hợp 2:* Chi bộ nơi cư trú báo làm bản giấy theo mẫu 2-QĐ 221 → tải ngay mẫu giấy 6d trên trang chủ, điền thông tin và xin ký xác nhận/đóng dấu.
      - *Trường hợp 3:* Chưa nộp Giấy 221 và chưa có bản điện tử → khẩn trương liên hệ Bí thư Chi bộ nơi cư trú để xin sinh hoạt 221 trước và nhờ cấp nhận xét kịp tiến độ.
 
 2. **Kiểm tra đủ 3 loại hồ sơ bản giấy trước khi nộp vào `Sáng Chủ nhật, ngày 22/11/2026`:**
@@ -144,3 +141,7 @@ Tại trang chủ, trong **Phần 2**, đồng chí chọn **1 trong 2 cách**:
   Theo quy định của Chi bộ, mục `3.1` chỉ kê khai **tối đa 04 thành tích cao nhất, nổi bật nhất**. Khi đã đủ 4 dòng, hệ thống ẩn nút thêm; nếu muốn thay thành tích khác, đồng chí sửa trực tiếp trên 4 dòng hiện có hoặc bấm `×` xóa bớt dòng không cần thiết.
 - **4. Nên mở file `.zip` xuất ra từ Bước 2 trên thiết bị nào?**  
   Khuyên dùng **máy tính (Windows/macOS)** để bấm **"Xuất tệp ZIP hồ sơ để in (Mẫu 02c + Mẫu 6b)"**, sau đó giải nén file `.zip` bằng File Explorer / WinRAR / 7-Zip để mở bằng Microsoft Word kiểm tra bố cục trước khi in. Nếu dùng điện thoại, mở bằng ứng dụng *Tệp (Files)* để giải nén tệp `.zip`.
+
+---
+*Đây là hệ thống nội bộ, chỉ dùng cho Đảng viên Chi bộ Sinh viên 1. Vui lòng không phát hành ra bên ngoài.*  
+*Bản quyền thuộc về © 2026 - Lê Vĩnh Diện*

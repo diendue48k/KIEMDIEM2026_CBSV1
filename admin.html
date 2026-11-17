@@ -543,16 +543,116 @@
       .form-grid-2, .form-grid-3 { grid-template-columns: 1fr; }
     }
 
-    .detail-row {
-      padding: 8px 0;
-      border-bottom: 1px dashed #eee;
-      font-size: 0.88rem;
+    .modal-head-sticky {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding-bottom: 12px;
+      margin-bottom: 16px;
+      border-bottom: 1.5px solid #f3ebe6;
+      position: sticky;
+      top: -24px;
+      background: #ffffff;
+      z-index: 2;
+      padding-top: 4px;
     }
-    .detail-row strong { color: var(--crimson-dark); display: block; margin-bottom: 2px; }
-    .detail-row pre {
+
+    .detail-banner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #fffaf6 0%, #fef3ec 100%);
+      border: 1px solid #f2dcd0;
+      margin-bottom: 16px;
+    }
+    .detail-banner-meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+    }
+    .detail-banner-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .detail-section-title {
+      font-size: 0.78rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--crimson-dark);
+      margin: 16px 0 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .detail-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+    @media (max-width: 720px) {
+      .detail-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 480px) {
+      .detail-grid { grid-template-columns: 1fr; }
+    }
+    .detail-item {
+      background: #faf7f5;
+      border: 1px solid #efe7e2;
+      border-radius: 10px;
+      padding: 9px 12px;
+    }
+    .detail-item-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      color: var(--text-muted);
+      margin-bottom: 3px;
+    }
+    .detail-item-val {
+      font-size: 0.87rem;
+      font-weight: 600;
+      color: var(--text-main);
+      word-break: break-word;
+    }
+    .detail-text-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .detail-text-card {
+      background: #ffffff;
+      border: 1px solid #ece3dd;
+      border-left: 3.5px solid var(--crimson);
+      border-radius: 10px;
+      padding: 12px 14px;
+    }
+    .detail-text-card-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--crimson-dark);
+      margin-bottom: 6px;
+    }
+    .detail-text-card pre {
       font-family: inherit;
       white-space: pre-wrap;
+      font-size: 0.88rem;
+      line-height: 1.55;
       color: var(--text-main);
+      margin: 0;
+    }
+    .detail-empty {
+      color: #9ca3af;
+      font-style: italic;
+      font-weight: 400;
     }
 
     .admin-act-bar {
@@ -948,10 +1048,10 @@
 
   <!-- MODAL XEM CHI TIẾT -->
   <div id="detailModal" class="modal-backdrop hidden" onclick="if(event.target===this) closeModal()">
-    <div class="modal-card">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
-        <h3 style="color: var(--crimson);" id="modalTitle">Chi tiết kê khai</h3>
-        <button class="btn btn-outline" style="padding: 4px 10px;" onclick="closeModal()">✕</button>
+    <div class="modal-card modal-wide">
+      <div class="modal-head-sticky">
+        <h3 style="color: var(--crimson); margin: 0;" id="modalTitle">Chi tiết kê khai</h3>
+        <button type="button" class="btn btn-outline" style="padding: 5px 12px;" onclick="closeModal()">✕ Đóng</button>
       </div>
       <div id="modalBody"></div>
     </div>
@@ -1700,13 +1800,63 @@
       const m = dashboardData.members.find(x => x.mssv === mssv);
       if (!m || !m.chiTiet) return;
       document.getElementById('modalTitle').textContent = `${m.hoTen} (${m.mssv})`;
-      const html = Object.keys(m.chiTiet).map(k => `
-        <div class="detail-row">
-          <strong>${escapeHtml(k)}</strong>
-          <pre>${escapeHtml(m.chiTiet[k] || '(Trống)')}</pre>
+
+      const entries = Object.keys(m.chiTiet).map(k => ({
+        key: k,
+        val: (m.chiTiet[k] === null || m.chiTiet[k] === undefined) ? '' : String(m.chiTiet[k]).trim()
+      }));
+
+      const longKeyRegex = /(ưu điểm|hạn chế|nguyên nhân|khắc phục|biện pháp|nội dung|giải trình|khen thưởng|kỷ luật|chỗ ở|nghề nghiệp|nhận xét|kiến nghị|ghi chú)/i;
+      const shortFields = [];
+      const longFields = [];
+      entries.forEach(item => {
+        const isLong = item.val.includes('\n') || item.val.length > 70 || longKeyRegex.test(item.key);
+        if (isLong) longFields.push(item);
+        else shortFields.push(item);
+      });
+
+      const bannerHtml = `
+        <div class="detail-banner">
+          <div class="detail-banner-meta">
+            <span class="badge ${m.daKeKhai ? 'badge-success' : 'badge-pending'}">${m.daKeKhai ? 'Đã kê khai' : 'Chưa kê khai'}</span>
+            ${m.thoiGianGui ? `<span class="badge badge-info">🕒 ${escapeHtml(m.thoiGianGui)}</span>` : ''}
+            ${m.nhom ? `<span class="badge badge-info">${escapeHtml(m.nhom)}</span>` : ''}
+            ${m.loaiDangVien ? `<span class="badge badge-info">${escapeHtml(m.loaiDangVien)}</span>` : ''}
+            ${m.tuXepLoai ? `<span class="badge badge-success">${escapeHtml(m.tuXepLoai)}</span>` : ''}
+          </div>
+          <div class="detail-banner-actions">
+            <button type="button" class="btn btn-gold btn-xs" onclick="closeModal(); openEditMember('${escapeHtml(m.mssv)}')">Sửa / Nhập hộ</button>
+            <button type="button" class="btn btn-outline btn-xs" onclick="closeModal(); openMemberTool('${escapeHtml(m.mssv)}', 'hoso')">Hồ sơ 02c/6b</button>
+            <button type="button" class="btn btn-outline btn-xs" onclick="closeModal(); openMemberTool('${escapeHtml(m.mssv)}', 'mau6b')">Mẫu 6b</button>
+          </div>
         </div>
-      `).join('');
-      document.getElementById('modalBody').innerHTML = html;
+      `;
+
+      const shortHtml = shortFields.length ? `
+        <div class="detail-section-title">Thông tin Đảng viên & Tổng hợp</div>
+        <div class="detail-grid">
+          ${shortFields.map(item => `
+            <div class="detail-item">
+              <div class="detail-item-label">${escapeHtml(item.key)}</div>
+              <div class="detail-item-val">${item.val ? escapeHtml(item.val) : '<span class="detail-empty">(Trống)</span>'}</div>
+            </div>
+          `).join('')}
+        </div>
+      ` : '';
+
+      const longHtml = longFields.length ? `
+        <div class="detail-section-title">Nội dung kiểm điểm & Kê khai chi tiết</div>
+        <div class="detail-text-stack">
+          ${longFields.map(item => `
+            <div class="detail-text-card">
+              <div class="detail-text-card-title">${escapeHtml(item.key)}</div>
+              <pre>${item.val ? escapeHtml(item.val) : '<span class="detail-empty">(Trống)</span>'}</pre>
+            </div>
+          `).join('')}
+        </div>
+      ` : '';
+
+      document.getElementById('modalBody').innerHTML = bannerHtml + shortHtml + longHtml;
       document.getElementById('detailModal').classList.remove('hidden');
     }
 

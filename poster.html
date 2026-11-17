@@ -1,0 +1,1988 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Poster Giới Thiệu Hệ Thống Kiểm Điểm Đảng Viên 2026 - Chi Bộ Sinh Viên 1</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <style>
+    :root {
+      --crimson: #9e1b1e;
+      --crimson-dark: #781215;
+      --crimson-deep: #4c090b;
+      --crimson-bright: #c62828;
+      --gold: #f59e0b;
+      --gold-bright: #facc15;
+      --gold-soft: #fef9c3;
+      --gold-tint: #fffbeb;
+      --bg-cream: #fdf9f4;
+      --bg-card: #ffffff;
+      --border: #eadfd5;
+      --text-main: #1f1a18;
+      --text-secondary: #5c504a;
+      --text-muted: #857770;
+      --emerald: #059669;
+      --emerald-bg: #ecfdf5;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #231918;
+      color: var(--text-main);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ================= TOOLBAR ================= */
+    .toolbar {
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      background: rgba(31, 22, 21, 0.94);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(250, 204, 21, 0.25);
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      color: #ffffff;
+    }
+
+    .toolbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .toolbar-brand img {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: #ffffff;
+      padding: 2px;
+    }
+
+    .toolbar-brand-text strong {
+      display: block;
+      font-size: 0.9rem;
+      color: var(--gold-bright);
+    }
+
+    .toolbar-brand-text span {
+      display: block;
+      font-size: 0.74rem;
+      color: #d6ccc7;
+    }
+
+    .toolbar-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .tb-btn {
+      font-family: inherit;
+      font-size: 0.82rem;
+      font-weight: 700;
+      border-radius: 10px;
+      padding: 8px 14px;
+      cursor: pointer;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: rgba(255, 255, 255, 0.08);
+      color: #ffffff;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.18s ease;
+    }
+
+    .tb-btn:hover {
+      background: rgba(255, 255, 255, 0.16);
+      transform: translateY(-1px);
+    }
+
+    .tb-btn.active {
+      background: linear-gradient(135deg, var(--crimson) 0%, var(--crimson-dark) 100%);
+      border-color: var(--gold-bright);
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(158, 27, 30, 0.45);
+    }
+
+    .tb-btn-gold {
+      background: linear-gradient(135deg, var(--gold-bright) 0%, var(--gold) 100%);
+      color: #2c1306;
+      border-color: #fde047;
+    }
+
+    .tb-btn-gold:hover {
+      background: linear-gradient(135deg, #fde047 0%, var(--gold-bright) 100%);
+      color: #1f0d04;
+    }
+
+    .tb-btn:disabled {
+      opacity: 0.6;
+      cursor: wait;
+    }
+
+    /* ================= STAGE ================= */
+    .stage {
+      padding: 28px 20px 56px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 40px;
+    }
+
+    .poster-block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .poster-block.hidden {
+      display: none !important;
+    }
+
+    .poster-caption {
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: #f3e8df;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(250, 204, 21, 0.25);
+      padding: 6px 16px;
+      border-radius: 999px;
+      letter-spacing: 0.02em;
+    }
+
+    .poster-scale-box {
+      transform-origin: top center;
+    }
+
+    /* ================= COMMON POSTER TOKENS ================= */
+    .poster-canvas {
+      position: relative;
+      background: var(--bg-cream);
+      color: var(--text-main);
+      overflow: hidden;
+      box-shadow: 0 28px 70px rgba(0, 0, 0, 0.55);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .tricolor-ribbon {
+      height: 7px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1.1fr 1fr;
+      flex-shrink: 0;
+    }
+    .tricolor-ribbon span:nth-child(1),
+    .tricolor-ribbon span:nth-child(3) { background: var(--crimson); }
+    .tricolor-ribbon span:nth-child(2) { background: linear-gradient(90deg, var(--gold), var(--gold-bright), var(--gold)); }
+
+    /* ================= MOCKUP DEVICE COMPONENTS ================= */
+    .device-desktop {
+      background: #1d1615;
+      border-radius: 16px;
+      padding: 10px 10px 12px;
+      border: 2px solid rgba(250, 204, 21, 0.35);
+      box-shadow:
+        0 24px 48px -12px rgba(45, 10, 11, 0.36),
+        0 0 0 1px rgba(255, 255, 255, 0.12) inset;
+      position: relative;
+    }
+
+    .browser-topbar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 8px 9px;
+    }
+
+    .win-dots {
+      display: flex;
+      gap: 5px;
+    }
+    .win-dots i {
+      display: block;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+    }
+    .win-dots i:nth-child(1) { background: #ef4444; }
+    .win-dots i:nth-child(2) { background: #facc15; }
+    .win-dots i:nth-child(3) { background: #22c55e; }
+
+    .browser-url {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+      padding: 3px 12px;
+      font-size: 10.5px;
+      font-weight: 600;
+      color: #f3e8df;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      letter-spacing: 0.01em;
+    }
+
+    .browser-screen {
+      background: #fdf9f4;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid #e7dfd8;
+    }
+
+    .mock-web-top {
+      background: linear-gradient(135deg, #680e11 0%, #9e1b1e 100%);
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #ffffff;
+      border-bottom: 3px solid var(--gold-bright);
+    }
+
+    .mock-web-brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .mock-web-brand img {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #ffffff;
+      padding: 1.5px;
+    }
+
+    .mock-web-brand .title {
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+    .mock-web-brand .sub {
+      font-size: 9px;
+      color: #fde68a;
+      font-weight: 600;
+    }
+
+    .mock-countdown-chip {
+      background: rgba(250, 204, 21, 0.18);
+      border: 1px solid rgba(250, 204, 21, 0.55);
+      color: #fef08a;
+      padding: 3px 9px;
+      border-radius: 999px;
+      font-size: 9.5px;
+      font-weight: 700;
+    }
+
+    .mock-web-body {
+      padding: 10px 12px;
+      display: grid;
+      grid-template-columns: 1.28fr 0.85fr;
+      gap: 10px;
+    }
+
+    .mock-panel {
+      background: #ffffff;
+      border: 1px solid #eadfd5;
+      border-radius: 9px;
+      padding: 9px 10px;
+      box-shadow: 0 2px 6px rgba(31, 26, 24, 0.04);
+    }
+
+    .mock-panel-head {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 6px;
+    }
+
+    .mini-num {
+      width: 17px;
+      height: 17px;
+      border-radius: 5px;
+      background: var(--crimson);
+      color: #ffffff;
+      font-size: 9.5px;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .mock-panel-title {
+      font-size: 10.5px;
+      font-weight: 800;
+      color: var(--crimson-dark);
+    }
+
+    .mock-bpmn-box {
+      background: #fdf9f4;
+      border: 1px solid #e7dfd8;
+      border-radius: 7px;
+      padding: 5px;
+      margin-top: 6px;
+    }
+
+    .mock-bpmn-box img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 4px;
+    }
+
+    .mock-bpmn-caption {
+      font-size: 8.5px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      margin-top: 3px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .mock-admin-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5px;
+      margin-bottom: 7px;
+    }
+
+    .mock-stat {
+      background: #faf6f3;
+      border: 1px solid #eadfd5;
+      border-radius: 6px;
+      padding: 5px 6px;
+    }
+
+    .mock-stat span {
+      display: block;
+      font-size: 8px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    .mock-stat strong {
+      display: block;
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--crimson);
+    }
+
+    .mock-stat.ok strong { color: var(--emerald); }
+
+    .mock-progress-track {
+      height: 7px;
+      background: #f1e8e1;
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 4px 0 7px;
+    }
+    .mock-progress-fill {
+      width: 86%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--crimson), var(--gold));
+      border-radius: 999px;
+    }
+
+    .mock-checklist-mini {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .mock-check-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 8.8px;
+      font-weight: 600;
+      padding: 4px 6px;
+      border-radius: 5px;
+      background: #f8f5f2;
+      color: var(--text-main);
+    }
+
+    .tag-ok {
+      background: #dcfce7;
+      color: #166534;
+      padding: 1px 6px;
+      border-radius: 999px;
+      font-size: 8px;
+      font-weight: 800;
+    }
+
+    .tag-gold {
+      background: #fef3c7;
+      color: #92400e;
+      padding: 1px 6px;
+      border-radius: 999px;
+      font-size: 8px;
+      font-weight: 800;
+    }
+
+    /* Smartphone Mockup */
+    .device-phone {
+      background: #171211;
+      border-radius: 26px;
+      padding: 9px;
+      border: 2.5px solid #e7c56e;
+      box-shadow:
+        0 26px 48px rgba(31, 12, 13, 0.42),
+        0 0 0 1px rgba(255, 255, 255, 0.14) inset;
+      position: relative;
+    }
+
+    .phone-notch {
+      width: 68px;
+      height: 11px;
+      background: #171211;
+      border-radius: 0 0 9px 9px;
+      margin: 0 auto 4px;
+      position: relative;
+      z-index: 3;
+    }
+
+    .phone-screen {
+      background: #fdf9f4;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .phone-hero {
+      background: linear-gradient(135deg, var(--crimson-dark), var(--crimson));
+      color: #ffffff;
+      padding: 8px 11px 10px;
+      text-align: center;
+      border-bottom: 2.5px solid var(--gold-bright);
+    }
+
+    .phone-hero small {
+      display: block;
+      font-size: 7.5px;
+      font-weight: 700;
+      color: #fde68a;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .phone-hero strong {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      margin-top: 1px;
+    }
+
+    .phone-body {
+      padding: 9px 10px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .phone-field {
+      background: #ffffff;
+      border: 1px solid #e5d8ce;
+      border-radius: 7px;
+      padding: 5px 8px;
+    }
+
+    .phone-field label {
+      display: block;
+      font-size: 7.5px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    .phone-field span {
+      display: block;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .phone-cta {
+      background: linear-gradient(135deg, var(--crimson), var(--crimson-dark));
+      color: #ffffff;
+      border-radius: 7px;
+      padding: 6px 8px;
+      text-align: center;
+      font-size: 9.5px;
+      font-weight: 800;
+      box-shadow: 0 4px 10px rgba(158, 27, 30, 0.25);
+    }
+
+    .phone-verified-box {
+      background: #ecfdf5;
+      border: 1px solid #6ee7b7;
+      border-radius: 8px;
+      padding: 6px 8px;
+    }
+
+    .phone-verified-box .badge-6m {
+      display: inline-block;
+      background: #059669;
+      color: #ffffff;
+      font-size: 7.8px;
+      font-weight: 800;
+      padding: 2px 6px;
+      border-radius: 999px;
+      margin-bottom: 4px;
+    }
+
+    .phone-verified-box p {
+      font-size: 8.5px;
+      line-height: 1.35;
+      color: #065f46;
+      font-weight: 600;
+    }
+
+    .phone-sync-pill {
+      background: #fffbeb;
+      border: 1px solid #fcd34d;
+      color: #92400e;
+      font-size: 8.5px;
+      font-weight: 800;
+      padding: 5px 7px;
+      border-radius: 7px;
+      text-align: center;
+    }
+
+    /* Floating Glass/Gold Badges */
+    .floating-badge {
+      position: absolute;
+      z-index: 10;
+      background: rgba(255, 255, 255, 0.96);
+      border: 1.5px solid #f59e0b;
+      border-radius: 12px;
+      padding: 8px 12px;
+      box-shadow: 0 12px 26px rgba(45, 10, 11, 0.18);
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .floating-badge-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 9px;
+      background: linear-gradient(135deg, var(--crimson), var(--crimson-dark));
+      color: var(--gold-bright);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-weight: 800;
+      font-size: 14px;
+    }
+
+    .floating-badge.gold-icon .floating-badge-icon {
+      background: linear-gradient(135deg, var(--gold-bright), var(--gold));
+      color: #451a03;
+    }
+
+    .floating-badge-text strong {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--crimson-dark);
+      line-height: 1.2;
+    }
+
+    .floating-badge-text span {
+      display: block;
+      font-size: 9.5px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-top: 1px;
+    }
+
+    /* ================= POSTER 1: VERTICAL (1080 x 1528) ================= */
+    .poster-vertical {
+      width: 1080px;
+      height: 1528px;
+      border-radius: 0;
+    }
+
+    .pv-hero {
+      position: relative;
+      background:
+        radial-gradient(circle at 50% 18%, rgba(250, 204, 21, 0.16) 0%, transparent 55%),
+        radial-gradient(circle at 12% 80%, rgba(255, 255, 255, 0.06) 0%, transparent 45%),
+        linear-gradient(145deg, #56090c 0%, #8e171a 52%, #a61e22 100%);
+      color: #ffffff;
+      padding: 24px 48px 54px;
+      text-align: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .pv-hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 36px 36px;
+      pointer-events: none;
+    }
+
+    .pv-hero-inner {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .pv-logo-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 14px;
+    }
+
+    .pv-logo-ring {
+      width: 74px;
+      height: 74px;
+      border-radius: 50%;
+      background: #ffffff;
+      padding: 4px;
+      box-shadow:
+        0 0 0 4px rgba(250, 204, 21, 0.45),
+        0 10px 26px rgba(0, 0, 0, 0.35);
+      flex-shrink: 0;
+    }
+
+    .pv-logo-ring img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .pv-org-pill {
+      background: rgba(255, 255, 255, 0.12);
+      border: 1.5px solid rgba(250, 204, 21, 0.65);
+      color: #fef08a;
+      padding: 8px 20px;
+      border-radius: 999px;
+      font-size: 13.5px;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+    }
+
+    .pv-hero h1 {
+      font-size: 33px;
+      font-weight: 800;
+      line-height: 1.24;
+      letter-spacing: -0.015em;
+      text-transform: uppercase;
+      color: #ffffff;
+      text-shadow: 0 3px 14px rgba(0, 0, 0, 0.28);
+      max-width: 960px;
+    }
+
+    .pv-hero h1 .year-hl {
+      color: var(--gold-bright);
+    }
+
+    .pv-gold-line {
+      width: 240px;
+      height: 4px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, transparent, var(--gold-bright), #fef08a, var(--gold-bright), transparent);
+      margin: 12px auto 10px;
+    }
+
+    .pv-slogan {
+      font-size: 15px;
+      font-weight: 600;
+      color: #fef3c7;
+      letter-spacing: 0.02em;
+    }
+
+    /* Vertical Mockup Stage */
+    .pv-mockup-zone {
+      position: relative;
+      z-index: 5;
+      margin: -34px 44px 0;
+      padding: 20px 24px 16px;
+      background:
+        radial-gradient(circle at 75% 25%, rgba(250, 204, 21, 0.18) 0%, transparent 55%),
+        radial-gradient(circle at 20% 80%, rgba(158, 27, 30, 0.08) 0%, transparent 50%),
+        #ffffff;
+      border: 1.5px solid #ead8c9;
+      border-radius: 22px;
+      box-shadow: 0 20px 44px -10px rgba(76, 9, 11, 0.14);
+      height: 468px;
+      flex-shrink: 0;
+    }
+
+    .pv-mockup-tag {
+      position: absolute;
+      top: 13px;
+      left: 22px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #fffbeb;
+      border: 1px solid #fcd34d;
+      color: var(--crimson-dark);
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .pv-devices-wrap {
+      position: relative;
+      height: 100%;
+      padding-top: 22px;
+    }
+
+    .pv-desktop {
+      width: 685px;
+      margin-left: 10px;
+    }
+
+    .pv-phone {
+      position: absolute;
+      right: 12px;
+      top: 8px;
+      width: 248px;
+      transform: rotate(1.5deg);
+    }
+
+    /* Main Content Sections in Vertical Poster */
+    .pv-content {
+      padding: 20px 44px 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 14px;
+      flex: 1;
+    }
+
+    .sec-kicker {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 9px;
+    }
+
+    .sec-kicker-left {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--crimson);
+    }
+
+    .sec-kicker-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 3px;
+      background: linear-gradient(135deg, var(--crimson), var(--gold));
+    }
+
+    .sec-kicker-note {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+
+    /* 4 Feature Cards Grid */
+    .features-grid-4 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .feat-card {
+      background: #ffffff;
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      padding: 13px 15px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      box-shadow: 0 4px 12px rgba(31, 26, 24, 0.04);
+    }
+
+    .feat-num {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--crimson) 0%, var(--crimson-dark) 100%);
+      color: var(--gold-bright);
+      font-size: 14px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 4px 10px rgba(158, 27, 30, 0.22);
+    }
+
+    .feat-body h3 {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 3px;
+    }
+
+    .feat-body p {
+      font-size: 12px;
+      line-height: 1.45;
+      color: var(--text-secondary);
+    }
+
+    .feat-body strong {
+      color: var(--crimson-dark);
+    }
+
+    /* 3-Step Timeline */
+    .steps-grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      position: relative;
+    }
+
+    .step-box {
+      background: #ffffff;
+      border: 1.5px solid var(--border);
+      border-top: 4px solid var(--crimson);
+      border-radius: 14px;
+      padding: 13px 14px 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 9px;
+      box-shadow: 0 6px 16px rgba(31, 26, 24, 0.05);
+      position: relative;
+    }
+
+    .step-box.step-2 {
+      border-top-color: var(--gold);
+    }
+
+    .step-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 5px;
+    }
+
+    .step-pill {
+      background: var(--crimson);
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .step-box.step-2 .step-pill {
+      background: linear-gradient(135deg, var(--gold), #d97706);
+      color: #ffffff;
+    }
+
+    .step-icon-mini {
+      font-size: 15px;
+    }
+
+    .step-box h3 {
+      font-size: 14.5px;
+      font-weight: 800;
+      color: var(--crimson-dark);
+      margin-bottom: 4px;
+    }
+
+    .step-box p {
+      font-size: 11.8px;
+      line-height: 1.45;
+      color: var(--text-secondary);
+    }
+
+    .deadline-tag {
+      background: #fef2f2;
+      border: 1px solid #fca5a5;
+      color: #991b1b;
+      border-radius: 9px;
+      padding: 7px 10px;
+      font-size: 11.3px;
+      font-weight: 800;
+      text-align: center;
+    }
+
+    .deadline-tag.gold {
+      background: #fffbeb;
+      border-color: #fcd34d;
+      color: #92400e;
+    }
+
+    /* Footer CTA + QR (Vertical) */
+    .pv-footer {
+      background: linear-gradient(135deg, #4f090b 0%, #781215 55%, #8f1619 100%);
+      border-top: 4px solid var(--gold-bright);
+      color: #ffffff;
+      padding: 18px 44px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      flex-shrink: 0;
+    }
+
+    .pv-footer-left {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .cta-pill-head {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      align-self: flex-start;
+      background: rgba(250, 204, 21, 0.2);
+      border: 1px solid rgba(250, 204, 21, 0.7);
+      color: var(--gold-bright);
+      font-size: 11px;
+      font-weight: 800;
+      padding: 4px 12px;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .pv-footer-left h4 {
+      font-size: 17px;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .url-box {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      align-self: flex-start;
+      background: #ffffff;
+      color: var(--crimson-dark);
+      border: 2px solid var(--gold-bright);
+      border-radius: 10px;
+      padding: 7px 14px;
+      font-size: 13.5px;
+      font-weight: 800;
+      letter-spacing: 0.01em;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22);
+    }
+
+    .legal-lines {
+      margin-top: 3px;
+      font-size: 11px;
+      line-height: 1.45;
+      color: #f3d7d2;
+    }
+
+    .legal-lines strong {
+      color: #fef08a;
+    }
+
+    .qr-card {
+      background: #ffffff;
+      border: 2.5px solid var(--gold-bright);
+      border-radius: 14px;
+      padding: 9px 10px 8px;
+      text-align: center;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+      flex-shrink: 0;
+    }
+
+    .qr-card svg {
+      width: 122px;
+      height: 122px;
+      display: block;
+      margin: 0 auto;
+    }
+
+    .qr-card span {
+      display: block;
+      margin-top: 4px;
+      font-size: 10px;
+      font-weight: 800;
+      color: var(--crimson-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    /* ================= POSTER 2: HORIZONTAL 16:9 (1600 x 900) ================= */
+    .poster-horizontal {
+      width: 1600px;
+      height: 900px;
+    }
+
+    .ph-header {
+      background:
+        radial-gradient(circle at 18% 50%, rgba(250, 204, 21, 0.16) 0%, transparent 45%),
+        linear-gradient(135deg, #56090c 0%, #8e171a 55%, #a31d21 100%);
+      color: #ffffff;
+      padding: 18px 42px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 28px;
+      border-bottom: 4px solid var(--gold-bright);
+      flex-shrink: 0;
+    }
+
+    .ph-header-left {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .ph-logo-ring {
+      width: 78px;
+      height: 78px;
+      border-radius: 50%;
+      background: #ffffff;
+      padding: 4px;
+      box-shadow: 0 0 0 4px rgba(250, 204, 21, 0.45), 0 8px 22px rgba(0, 0, 0, 0.3);
+      flex-shrink: 0;
+    }
+
+    .ph-logo-ring img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .ph-title-group .ph-org {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(250, 204, 21, 0.65);
+      color: #fef08a;
+      font-size: 12px;
+      font-weight: 800;
+      padding: 4px 13px;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 7px;
+    }
+
+    .ph-title-group h1 {
+      font-size: 27px;
+      font-weight: 800;
+      text-transform: uppercase;
+      line-height: 1.2;
+      letter-spacing: -0.015em;
+      color: #ffffff;
+    }
+
+    .ph-title-group h1 .year-hl { color: var(--gold-bright); }
+
+    .ph-title-group p {
+      font-size: 13.5px;
+      color: #fef3c7;
+      font-weight: 600;
+      margin-top: 4px;
+    }
+
+    .ph-deadlines-box {
+      background: rgba(34, 4, 5, 0.42);
+      border: 1.5px solid rgba(250, 204, 21, 0.5);
+      border-radius: 14px;
+      padding: 11px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex-shrink: 0;
+      min-width: 345px;
+    }
+
+    .ph-dl-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 12px;
+    }
+
+    .ph-dl-row span {
+      color: #fde68a;
+      font-weight: 700;
+    }
+
+    .ph-dl-row strong {
+      color: #ffffff;
+      font-weight: 800;
+      background: rgba(255, 255, 255, 0.12);
+      padding: 3px 9px;
+      border-radius: 6px;
+    }
+
+    /* Horizontal Main Body */
+    .ph-body {
+      flex: 1;
+      padding: 20px 42px 18px;
+      display: grid;
+      grid-template-columns: 1.06fr 0.94fr;
+      gap: 26px;
+      align-items: stretch;
+    }
+
+    .ph-left-col {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .ph-features-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 11px;
+    }
+
+    .ph-features-grid .feat-card {
+      padding: 13px 14px;
+    }
+
+    .ph-features-grid .feat-num {
+      width: 30px;
+      height: 30px;
+      font-size: 13px;
+    }
+
+    .ph-features-grid .feat-body h3 {
+      font-size: 13.4px;
+    }
+
+    .ph-features-grid .feat-body p {
+      font-size: 11.5px;
+      line-height: 1.44;
+    }
+
+    .ph-steps-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 11px;
+    }
+
+    .ph-steps-row .step-box {
+      padding: 13px 13px;
+      gap: 8px;
+    }
+
+    .ph-steps-row .step-box h3 {
+      font-size: 13.2px;
+    }
+
+    .ph-steps-row .step-box p {
+      font-size: 11.2px;
+      line-height: 1.42;
+    }
+
+    .ph-steps-row .deadline-tag {
+      font-size: 10.5px;
+      padding: 6px 7px;
+    }
+
+    /* Horizontal Right Column: Mockup Stage */
+    .ph-right-col {
+      position: relative;
+      background:
+        radial-gradient(circle at 75% 25%, rgba(250, 204, 21, 0.2) 0%, transparent 55%),
+        radial-gradient(circle at 20% 85%, rgba(158, 27, 30, 0.1) 0%, transparent 55%),
+        #ffffff;
+      border: 1.5px solid #ead8c9;
+      border-radius: 20px;
+      padding: 16px 20px;
+      box-shadow: 0 18px 42px -12px rgba(76, 9, 11, 0.14);
+      overflow: hidden;
+    }
+
+    .ph-mockup-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #fffbeb;
+      border: 1px solid #fcd34d;
+      color: var(--crimson-dark);
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 10px;
+    }
+
+    .ph-desktop {
+      width: 522px;
+    }
+
+    .ph-desktop .mock-web-body {
+      grid-template-columns: 1.15fr 0.95fr;
+      padding: 8px 10px;
+      gap: 8px;
+    }
+
+    .ph-phone {
+      position: absolute;
+      right: 14px;
+      bottom: 12px;
+      width: 206px;
+      transform: rotate(1.5deg);
+    }
+
+    .ph-phone .phone-body {
+      padding: 7px 9px 9px;
+      gap: 5px;
+    }
+
+    /* Horizontal Footer */
+    .ph-footer {
+      background: linear-gradient(135deg, #4f090b 0%, #781215 55%, #8f1619 100%);
+      border-top: 4px solid var(--gold-bright);
+      color: #ffffff;
+      padding: 14px 42px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      flex-shrink: 0;
+    }
+
+    .ph-footer-info {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .ph-footer-info .internal-warn {
+      font-size: 12px;
+      font-weight: 700;
+      color: #fef3c7;
+    }
+
+    .ph-footer-info .copyright {
+      font-size: 12px;
+      font-weight: 700;
+      color: #e9cfc9;
+    }
+
+    .ph-footer-cta {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .ph-url-group {
+      text-align: right;
+    }
+
+    .ph-url-group .cta-mini-lbl {
+      display: block;
+      font-size: 10.5px;
+      font-weight: 800;
+      color: var(--gold-bright);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 4px;
+    }
+
+    .ph-qr-card {
+      background: #ffffff;
+      border: 2px solid var(--gold-bright);
+      border-radius: 12px;
+      padding: 6px 8px 5px;
+      text-align: center;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .ph-qr-card svg {
+      width: 82px;
+      height: 82px;
+      display: block;
+      margin: 0 auto;
+    }
+
+    .ph-qr-card span {
+      display: block;
+      font-size: 8.5px;
+      font-weight: 800;
+      color: var(--crimson-dark);
+      margin-top: 2px;
+      text-transform: uppercase;
+    }
+
+    /* ================= CLEAN EXPORT MODE (?clean=1) ================= */
+    body.clean-export {
+      background: #fdf9f4;
+      overflow: hidden;
+    }
+    body.clean-export .toolbar,
+    body.clean-export .poster-caption {
+      display: none !important;
+    }
+    body.clean-export .stage {
+      padding: 0 !important;
+      gap: 0 !important;
+      align-items: flex-start;
+    }
+    body.clean-export .poster-scale-box {
+      transform: none !important;
+      margin: 0 !important;
+    }
+    body.clean-export .poster-canvas {
+      box-shadow: none !important;
+    }
+
+    /* ================= PRINT STYLES ================= */
+    @media print {
+      body { background: #ffffff; }
+      .toolbar, .poster-caption { display: none !important; }
+      .stage { padding: 0; gap: 0; }
+      .poster-scale-box { transform: none !important; width: auto !important; height: auto !important; }
+      .poster-canvas { box-shadow: none; page-break-after: always; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- THANH CÔNG CỤ -->
+  <div class="toolbar">
+    <div class="toolbar-brand">
+      <img src="logo.png" alt="Logo Chi bộ Sinh viên">
+      <div class="toolbar-brand-text">
+        <strong>Poster Mockup Hệ Thống Kiểm Điểm 2026</strong>
+        <span>Chi bộ Sinh viên 1 • Đảng bộ Trường Đại học Kinh tế</span>
+      </div>
+    </div>
+
+    <div class="toolbar-group">
+      <button type="button" class="tb-btn active" data-mode="both" onclick="setViewMode('both', this)">Xem cả 2 bản</button>
+      <button type="button" class="tb-btn" data-mode="vertical" onclick="setViewMode('vertical', this)">Poster Dọc (A4/Standee)</button>
+      <button type="button" class="tb-btn" data-mode="horizontal" onclick="setViewMode('horizontal', this)">Banner Ngang (16:9)</button>
+    </div>
+
+    <div class="toolbar-group">
+      <button type="button" class="tb-btn tb-btn-gold" onclick="exportPng('posterVertical', 'Poster_Gioi_Thieu_He_Thong_2026_Doc.png', this)">⬇ Tải PNG Dọc</button>
+      <button type="button" class="tb-btn tb-btn-gold" onclick="exportPng('posterHorizontal', 'Poster_Gioi_Thieu_He_Thong_2026_Ngang.png', this)">⬇ Tải PNG Ngang</button>
+      <button type="button" class="tb-btn" onclick="window.print()">🖨 In / Lưu PDF</button>
+    </div>
+  </div>
+
+  <!-- SÂN KHẤU HIỂN THỊ -->
+  <main class="stage" id="posterStage">
+
+    <!-- ==================== BẢN 1: POSTER DỌC (1080 × 1528) ==================== -->
+    <section class="poster-block" id="blockVertical">
+      <div class="poster-caption">Bản 1 — Poster Dọc chuẩn A3/A4 &amp; Standee / Zalo (1080 × 1528 px)</div>
+      <div class="poster-scale-box" id="scaleVertical">
+        <article class="poster-canvas poster-vertical" id="posterVertical">
+          <div class="tricolor-ribbon"><span></span><span></span><span></span></div>
+
+          <!-- HERO -->
+          <header class="pv-hero">
+            <div class="pv-hero-inner">
+              <div class="pv-logo-row">
+                <div class="pv-logo-ring"><img src="logo.png" alt="Logo Đảng bộ Trường Đại học Kinh tế - Chi bộ Sinh viên"></div>
+                <div class="pv-org-pill">Đảng Bộ Trường Đại Học Kinh Tế • Chi Bộ Sinh Viên 1</div>
+              </div>
+              <h1>
+                Hệ Thống Hỗ Trợ Kiểm Điểm,<br>
+                Đánh Giá Và Xếp Loại Đảng Viên <span class="year-hl">Năm 2026</span>
+              </h1>
+              <div class="pv-gold-line"></div>
+              <p class="pv-slogan">Số hóa quy trình • Đồng bộ tự động • Chuẩn hóa hồ sơ • Nhanh chóng &amp; Chính xác</p>
+            </div>
+          </header>
+
+          <!-- MULTI-DEVICE UI MOCKUP SHOWCASE -->
+          <section class="pv-mockup-zone">
+            <div class="pv-mockup-tag">✦ Giao diện trực quan đa thiết bị</div>
+
+            <div class="pv-devices-wrap">
+              <!-- Desktop Frame -->
+              <div class="device-desktop pv-desktop">
+                <div class="browser-topbar">
+                  <div class="win-dots"><i></i><i></i><i></i></div>
+                  <div class="browser-url">🔒 https://kiemdiem2026cbsv1.vercel.app/</div>
+                </div>
+                <div class="browser-screen">
+                  <div class="mock-web-top">
+                    <div class="mock-web-brand">
+                      <img src="logo.png" alt="Logo">
+                      <div>
+                        <div class="title">Chi Bộ Sinh Viên 1 — Kiểm Điểm 2026</div>
+                        <div class="sub">Trang chủ hướng dẫn • Kê khai • Xuất Mẫu 02c + 6b</div>
+                      </div>
+                    </div>
+                    <div class="mock-countdown-chip">⏱ Hạn Bước 1: 20h00 - 19/11/2026</div>
+                  </div>
+                  <div class="mock-web-body">
+                    <div class="mock-panel">
+                      <div class="mock-panel-head">
+                        <span class="mini-num">1</span>
+                        <span class="mock-panel-title">Quy trình số hóa 3 làn &amp; Tự động đồng bộ</span>
+                      </div>
+                      <div style="display:flex; gap:6px; margin-bottom:4px;">
+                        <span class="tag-ok">✓ Tự đổ Bước 1 → Bước 2</span>
+                        <span class="tag-gold">★ Gợi ý mục I.1 – VI</span>
+                      </div>
+                      <div class="mock-bpmn-box">
+                        <img src="so-do-bpmn-2026.svg" alt="Sơ đồ quy trình hệ thống 2026">
+                        <div class="mock-bpmn-caption">
+                          <span>Sơ đồ quy trình: Đảng viên • Hệ thống • Chi ủy</span>
+                          <span>Chuẩn hóa 2026</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="mock-panel">
+                      <div class="mock-panel-head">
+                        <span class="mini-num" style="background:#f59e0b;color:#2c1306;">★</span>
+                        <span class="mock-panel-title">Cổng Quản Trị Chi Ủy</span>
+                      </div>
+                      <div class="mock-admin-stats">
+                        <div class="mock-stat"><span>Tổng Đảng viên</span><strong>100%</strong></div>
+                        <div class="mock-stat ok"><span>Đã kê khai</span><strong>Realtime</strong></div>
+                      </div>
+                      <div style="font-size:8.5px;font-weight:700;color:#5c504a;display:flex;justify-content:space-between;">
+                        <span>Tiến độ hoàn thiện hồ sơ</span>
+                        <span style="color:#9e1b1e;">Theo dõi trực tiếp</span>
+                      </div>
+                      <div class="mock-progress-track"><div class="mock-progress-fill"></div></div>
+                      <div class="mock-checklist-mini">
+                        <div class="mock-check-row"><span>1. Kiểm tra kê khai &amp; xuất Excel</span><span class="tag-ok">Sẵn sàng</span></div>
+                        <div class="mock-check-row"><span>2. Lịch sử xuất Mẫu 02c + 6b</span><span class="tag-ok">Ghi nhận</span></div>
+                        <div class="mock-check-row"><span>3. Cấu hình thời hạn &amp; Link</span><span class="tag-gold">Linh hoạt</span></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Smartphone Frame -->
+              <div class="device-phone pv-phone">
+                <div class="phone-notch"></div>
+                <div class="phone-screen">
+                  <div class="phone-hero">
+                    <small>Bước 1 • Kê khai trực tuyến</small>
+                    <strong>Tra Cứu Đảng Viên</strong>
+                  </div>
+                  <div class="phone-body">
+                    <div class="phone-field">
+                      <label>Mã số sinh viên (MSSV)</label>
+                      <span>221121514***</span>
+                    </div>
+                    <div class="phone-field">
+                      <label>Số CCCD (Xác thực)</label>
+                      <span>04820400****</span>
+                    </div>
+                    <div class="phone-cta">Kiểm tra &amp; Tải thông tin</div>
+                    <div class="phone-verified-box">
+                      <span class="badge-6m">✓ Đủ 6 tháng tuổi Đảng (21/11/2026)</span>
+                      <p>Tự động điền: Họ tên, Ngày vào Đảng, Nhóm, Nơi cư trú 221.</p>
+                    </div>
+                    <div class="phone-sync-pill">⚡ Tự đổ sang Mẫu 02c &amp; Mẫu 6b</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Floating Badges -->
+              <div class="floating-badge" style="left: 16px; bottom: 4px;">
+                <div class="floating-badge-icon">ZIP</div>
+                <div class="floating-badge-text">
+                  <strong>Xuất 1 chạm gói .ZIP hồ sơ in</strong>
+                  <span>Gồm Mẫu 02c.docx + Mẫu 6b.docx chuẩn thể thức</span>
+                </div>
+              </div>
+
+              <div class="floating-badge gold-icon" style="left: 392px; bottom: 4px;">
+                <div class="floating-badge-icon">100</div>
+                <div class="floating-badge-text">
+                  <strong>Tự động chấm điểm Phụ lục 04</strong>
+                  <span>30đ Tiêu chí chung + 70đ Thực hiện nhiệm vụ</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- MAIN CONTENT -->
+          <div class="pv-content">
+            <!-- 4 CORE FEATURES -->
+            <section>
+              <div class="sec-kicker">
+                <div class="sec-kicker-left"><span class="sec-kicker-dot"></span>4 Tính Năng Cốt Lõi Của Hệ Thống</div>
+                <div class="sec-kicker-note">Thiết kế riêng cho Chi bộ Sinh viên 1</div>
+              </div>
+              <div class="features-grid-4">
+                <div class="feat-card">
+                  <div class="feat-num">01</div>
+                  <div class="feat-body">
+                    <h3>Tra cứu &amp; Đồng bộ 1 chạm</h3>
+                    <p>Nhập <strong>MSSV &amp; CCCD</strong> tải tự động lý lịch, dữ liệu nơi cư trú (Giấy 221/213) và <strong>tự động đổ dữ liệu từ Bước 1 sang Bước 2</strong>.</p>
+                  </div>
+                </div>
+                <div class="feat-card">
+                  <div class="feat-num">02</div>
+                  <div class="feat-body">
+                    <h3>Kiểm tra nghiệp vụ thông minh</h3>
+                    <p>Tự nhận diện Đảng viên mới kết nạp <strong>chưa đủ 6 tháng</strong> (tính đến 21/11/2026), quy tắc nhập <strong>"0"</strong> cho Khóa <strong>52K</strong> &amp; lọc tối đa 04 thành tích.</p>
+                  </div>
+                </div>
+                <div class="feat-card">
+                  <div class="feat-num">03</div>
+                  <div class="feat-body">
+                    <h3>Ngân hàng gợi ý &amp; Phụ lục 04</h3>
+                    <p>Tích hợp sẵn đoạn văn gợi ý chuẩn Chi bộ cho từng mục <strong>I.1 – VI</strong> và bảng tự chấm điểm theo <strong>Biểu số 32 — Quy định 345-QĐ/TU</strong>.</p>
+                  </div>
+                </div>
+                <div class="feat-card">
+                  <div class="feat-num">04</div>
+                  <div class="feat-body">
+                    <h3>Xuất tệp .ZIP (02c + 6b) &amp; Quản trị</h3>
+                    <p>Xuất đồng thời 2 file Word <strong>Mẫu 02c + Mẫu 6b</strong> để in ký tên; Chi ủy theo dõi tiến độ kê khai và xuất Excel báo cáo theo thời gian thực.</p>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- 3-STEP WORKFLOW & TIMELINE -->
+            <section>
+              <div class="sec-kicker">
+                <div class="sec-kicker-left"><span class="sec-kicker-dot"></span>Quy Trình 3 Bước &amp; Mốc Thời Gian Quan Trọng</div>
+                <div class="sec-kicker-note">Thực hiện đúng hạn quy định</div>
+              </div>
+              <div class="steps-grid-3">
+                <div class="step-box">
+                  <div>
+                    <div class="step-top">
+                      <span class="step-pill">Bước 1</span>
+                      <span class="step-icon-mini">📝</span>
+                    </div>
+                    <h3>Kê khai thông tin trực tuyến</h3>
+                    <p>Tra cứu MSSV + CCCD, kiểm tra nơi cư trú 221, nhập kết quả học tập – rèn luyện 2025–2026 (52K nhập 0), thành tích, đóng góp &amp; tự xếp loại.</p>
+                  </div>
+                  <div class="deadline-tag">⏰ Trước 20h00 — Thứ 5, ngày 19/11/2026</div>
+                </div>
+
+                <div class="step-box step-2">
+                  <div>
+                    <div class="step-top">
+                      <span class="step-pill">Bước 2</span>
+                      <span class="step-icon-mini">📦</span>
+                    </div>
+                    <h3>Tạo &amp; Xuất biểu mẫu in</h3>
+                    <p>Hệ thống tự đổ dữ liệu từ Bước 1 sang <strong>Mẫu 02c</strong> &amp; <strong>Mẫu 6b</strong>. Bổ sung kiểm điểm, chấm điểm Phụ lục 04 và xuất tệp <strong>.ZIP</strong> (2 file Word) in ký tên.</p>
+                  </div>
+                  <div class="deadline-tag gold">📄 Hoàn thành trước buổi nộp hồ sơ</div>
+                </div>
+
+                <div class="step-box">
+                  <div>
+                    <div class="step-top">
+                      <span class="step-pill">Bước 3</span>
+                      <span class="step-icon-mini">📁</span>
+                    </div>
+                    <h3>Lấy Mẫu 6d &amp; Nộp bản giấy</h3>
+                    <p>Tải <strong>Mẫu 6d</strong> điện tử tại <strong>dichvucong.dcs.vn</strong> (hoặc bản giấy mẫu 2-QĐ 221 có xác nhận nơi cư trú). Nộp đủ 03 bản: <strong>02c + 6b + 6d</strong>.</p>
+                  </div>
+                  <div class="deadline-tag">📌 Sáng Chủ nhật, ngày 22/11/2026</div>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <!-- FOOTER CTA + QR -->
+          <footer class="pv-footer">
+            <div class="pv-footer-left">
+              <div class="cta-pill-head">✦ Truy Cập Hệ Thống Trực Tuyến Ngay</div>
+              <h4>Quét mã QR hoặc truy cập địa chỉ chính thức của Chi bộ Sinh viên 1:</h4>
+              <div class="url-box">🔗 https://kiemdiem2026cbsv1.vercel.app/</div>
+              <div class="legal-lines">
+                <div>Đây là hệ thống nội bộ, chỉ dùng cho Đảng viên Chi bộ Sinh viên 1. Vui lòng không phát hành ra bên ngoài.</div>
+                <div><strong>Bản quyền thuộc về &copy; 2026 - Lê Vĩnh Diện</strong></div>
+              </div>
+            </div>
+
+            <div class="qr-card">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 37 37" shape-rendering="crispEdges"><rect width="37" height="37" fill="#ffffff"/><path fill="#1f1a18" d="M2,2h7v1h-7zM11,2h1v1h-1zM14,2h1v1h-1zM18,2h1v1h-1zM20,2h4v1h-4zM25,2h1v1h-1zM28,2h7v1h-7zM2,3h1v1h-1zM8,3h1v1h-1zM12,3h2v1h-2zM17,3h1v1h-1zM20,3h1v1h-1zM22,3h2v1h-2zM26,3h1v1h-1zM28,3h1v1h-1zM34,3h1v1h-1zM2,4h1v1h-1zM4,4h3v1h-3zM8,4h1v1h-1zM10,4h2v1h-2zM13,4h1v1h-1zM16,4h1v1h-1zM21,4h1v1h-1zM23,4h2v1h-2zM28,4h1v1h-1zM30,4h3v1h-3zM34,4h1v1h-1zM2,5h1v1h-1zM4,5h3v1h-3zM8,5h1v1h-1zM10,5h1v1h-1zM12,5h1v1h-1zM17,5h1v1h-1zM20,5h1v1h-1zM23,5h1v1h-1zM26,5h1v1h-1zM28,5h1v1h-1zM30,5h3v1h-3zM34,5h1v1h-1zM2,6h1v1h-1zM4,6h3v1h-3zM8,6h1v1h-1zM10,6h2v1h-2zM14,6h1v1h-1zM16,6h3v1h-3zM22,6h1v1h-1zM24,6h1v1h-1zM28,6h1v1h-1zM30,6h3v1h-3zM34,6h1v1h-1zM2,7h1v1h-1zM8,7h1v1h-1zM10,7h1v1h-1zM12,7h4v1h-4zM19,7h3v1h-3zM23,7h1v1h-1zM25,7h2v1h-2zM28,7h1v1h-1zM34,7h1v1h-1zM2,8h7v1h-7zM10,8h1v1h-1zM12,8h1v1h-1zM14,8h1v1h-1zM16,8h1v1h-1zM18,8h1v1h-1zM20,8h1v1h-1zM22,8h1v1h-1zM24,8h1v1h-1zM26,8h1v1h-1zM28,8h7v1h-7zM10,9h4v1h-4zM16,9h1v1h-1zM18,9h1v1h-1zM20,9h6v1h-6zM2,10h1v1h-1zM4,10h5v1h-5zM12,10h5v1h-5zM18,10h2v1h-2zM21,10h1v1h-1zM24,10h3v1h-3zM28,10h5v1h-5zM3,11h5v1h-5zM9,11h2v1h-2zM14,11h2v1h-2zM18,11h2v1h-2zM21,11h2v1h-2zM25,11h1v1h-1zM28,11h2v1h-2zM31,11h2v1h-2zM34,11h1v1h-1zM2,12h1v1h-1zM4,12h1v1h-1zM6,12h1v1h-1zM8,12h3v1h-3zM12,12h2v1h-2zM15,12h5v1h-5zM24,12h1v1h-1zM30,12h1v1h-1zM32,12h2v1h-2zM5,13h3v1h-3zM9,13h4v1h-4zM14,13h2v1h-2zM17,13h6v1h-6zM27,13h1v1h-1zM30,13h3v1h-3zM34,13h1v1h-1zM3,14h1v1h-1zM6,14h1v1h-1zM8,14h2v1h-2zM11,14h4v1h-4zM16,14h3v1h-3zM22,14h4v1h-4zM29,14h1v1h-1zM31,14h1v1h-1zM33,14h2v1h-2zM2,15h4v1h-4zM9,15h1v1h-1zM11,15h1v1h-1zM13,15h1v1h-1zM15,15h1v1h-1zM17,15h1v1h-1zM20,15h1v1h-1zM23,15h1v1h-1zM26,15h2v1h-2zM30,15h1v1h-1zM32,15h3v1h-3zM2,16h1v1h-1zM8,16h1v1h-1zM10,16h11v1h-11zM22,16h3v1h-3zM27,16h7v1h-7zM3,17h1v1h-1zM5,17h1v1h-1zM9,17h1v1h-1zM11,17h4v1h-4zM17,17h1v1h-1zM23,17h2v1h-2zM26,17h3v1h-3zM30,17h3v1h-3zM2,18h1v1h-1zM7,18h2v1h-2zM10,18h1v1h-1zM12,18h1v1h-1zM15,18h3v1h-3zM19,18h1v1h-1zM22,18h1v1h-1zM24,18h1v1h-1zM26,18h2v1h-2zM29,18h3v1h-3zM34,18h1v1h-1zM2,19h2v1h-2zM5,19h3v1h-3zM9,19h1v1h-1zM12,19h1v1h-1zM16,19h1v1h-1zM18,19h1v1h-1zM21,19h1v1h-1zM23,19h1v1h-1zM25,19h1v1h-1zM28,19h2v1h-2zM31,19h2v1h-2zM34,19h1v1h-1zM5,20h1v1h-1zM7,20h2v1h-2zM11,20h1v1h-1zM13,20h2v1h-2zM17,20h1v1h-1zM20,20h1v1h-1zM23,20h1v1h-1zM27,20h4v1h-4zM32,20h1v1h-1zM2,21h1v1h-1zM6,21h1v1h-1zM11,21h2v1h-2zM15,21h2v1h-2zM18,21h1v1h-1zM21,21h1v1h-1zM23,21h2v1h-2zM28,21h5v1h-5zM2,22h16v1h-16zM20,22h1v1h-1zM23,22h1v1h-1zM26,22h4v1h-4zM31,22h1v1h-1zM33,22h2v1h-2zM2,23h1v1h-1zM4,23h1v1h-1zM7,23h1v1h-1zM9,23h2v1h-2zM12,23h1v1h-1zM14,23h1v1h-1zM16,23h3v1h-3zM22,23h1v1h-1zM24,23h1v1h-1zM29,23h1v1h-1zM32,23h1v1h-1zM34,23h1v1h-1zM2,24h1v1h-1zM4,24h1v1h-1zM6,24h6v1h-6zM13,24h1v1h-1zM19,24h1v1h-1zM21,24h1v1h-1zM23,24h4v1h-4zM28,24h1v1h-1zM30,24h1v1h-1zM32,24h2v1h-2zM2,25h1v1h-1zM5,25h1v1h-1zM10,25h3v1h-3zM16,25h1v1h-1zM18,25h1v1h-1zM20,25h6v1h-6zM27,25h2v1h-2zM30,25h4v1h-4zM2,26h1v1h-1zM8,26h3v1h-3zM12,26h1v1h-1zM15,26h2v1h-2zM18,26h5v1h-5zM25,26h7v1h-7zM33,26h1v1h-1zM10,27h4v1h-4zM18,27h2v1h-2zM21,27h1v1h-1zM24,27h1v1h-1zM26,27h1v1h-1zM30,27h1v1h-1zM32,27h1v1h-1zM34,27h1v1h-1zM2,28h7v1h-7zM12,28h1v1h-1zM14,28h2v1h-2zM17,28h1v1h-1zM19,28h1v1h-1zM24,28h3v1h-3zM28,28h1v1h-1zM30,28h1v1h-1zM32,28h2v1h-2zM2,29h1v1h-1zM8,29h1v1h-1zM10,29h1v1h-1zM12,29h2v1h-2zM16,29h1v1h-1zM18,29h3v1h-3zM25,29h2v1h-2zM30,29h4v1h-4zM2,30h1v1h-1zM4,30h3v1h-3zM8,30h1v1h-1zM10,30h2v1h-2zM14,30h3v1h-3zM18,30h1v1h-1zM22,30h3v1h-3zM26,30h6v1h-6zM33,30h1v1h-1zM2,31h1v1h-1zM4,31h3v1h-3zM8,31h1v1h-1zM10,31h1v1h-1zM13,31h2v1h-2zM16,31h2v1h-2zM20,31h1v1h-1zM23,31h1v1h-1zM25,31h3v1h-3zM30,31h1v1h-1zM32,31h1v1h-1zM34,31h1v1h-1zM2,32h1v1h-1zM4,32h3v1h-3zM8,32h1v1h-1zM10,32h5v1h-5zM17,32h2v1h-2zM20,32h1v1h-1zM22,32h1v1h-1zM28,32h2v1h-2zM32,32h1v1h-1zM2,33h1v1h-1zM8,33h1v1h-1zM11,33h2v1h-2zM14,33h1v1h-1zM17,33h1v1h-1zM23,33h1v1h-1zM25,33h2v1h-2zM30,33h1v1h-1zM32,33h1v1h-1zM2,34h7v1h-7zM10,34h2v1h-2zM13,34h1v1h-1zM15,34h3v1h-3zM19,34h2v1h-2zM22,34h1v1h-1zM26,34h2v1h-2zM29,34h1v1h-1zM33,34h1v1h-1z"/></svg>
+              <span>Quét mã mở web</span>
+            </div>
+          </footer>
+        </article>
+      </div>
+    </section>
+
+    <!-- ==================== BẢN 2: BANNER NGANG 16:9 (1600 × 900) ==================== -->
+    <section class="poster-block" id="blockHorizontal">
+      <div class="poster-caption">Bản 2 — Poster / Banner Ngang chuẩn 16:9 Trình chiếu &amp; Truyền thông (1600 × 900 px)</div>
+      <div class="poster-scale-box" id="scaleHorizontal">
+        <article class="poster-canvas poster-horizontal" id="posterHorizontal">
+          <div class="tricolor-ribbon"><span></span><span></span><span></span></div>
+
+          <!-- HEADER -->
+          <header class="ph-header">
+            <div class="ph-header-left">
+              <div class="ph-logo-ring"><img src="logo.png" alt="Logo Chi bộ Sinh viên"></div>
+              <div class="ph-title-group">
+                <div class="ph-org">Đảng Bộ Trường Đại Học Kinh Tế • Chi Bộ Sinh Viên 1</div>
+                <h1>Hệ Thống Hỗ Trợ Kiểm Điểm, Đánh Giá &amp; Xếp Loại Đảng Viên <span class="year-hl">Năm 2026</span></h1>
+                <p>Số hóa quy trình • Đồng bộ tự động • Chuẩn hóa hồ sơ • Nhanh chóng &amp; Chính xác</p>
+              </div>
+            </div>
+
+            <div class="ph-deadlines-box">
+              <div class="ph-dl-row">
+                <span>⏰ Hạn cuối Bước 1 (Online):</span>
+                <strong>20h00 • Thứ 5, 19/11/2026</strong>
+              </div>
+              <div class="ph-dl-row">
+                <span>📌 Nộp hồ sơ giấy (02c + 6b + 6d):</span>
+                <strong>Sáng Chủ nhật, 22/11/2026</strong>
+              </div>
+            </div>
+          </header>
+
+          <!-- BODY -->
+          <div class="ph-body">
+            <!-- LEFT COLUMN: 4 FEATURES + 3 STEPS -->
+            <div class="ph-left-col">
+              <div>
+                <div class="sec-kicker" style="margin-bottom:8px;">
+                  <div class="sec-kicker-left"><span class="sec-kicker-dot"></span>4 Điểm Nổi Bật Của Hệ Thống</div>
+                  <div class="sec-kicker-note">Đồng bộ dữ liệu xuyên suốt</div>
+                </div>
+                <div class="ph-features-grid">
+                  <div class="feat-card">
+                    <div class="feat-num">01</div>
+                    <div class="feat-body">
+                      <h3>Tra cứu &amp; Đồng bộ 1 chạm</h3>
+                      <p>Nhập <strong>MSSV &amp; CCCD</strong> tải tự động thông tin Đảng viên, nơi cư trú 221/213 và tự đổ dữ liệu sang Bước 2.</p>
+                    </div>
+                  </div>
+                  <div class="feat-card">
+                    <div class="feat-num">02</div>
+                    <div class="feat-body">
+                      <h3>Kiểm tra nghiệp vụ thông minh</h3>
+                      <p>Nhận diện Đảng viên <strong>chưa đủ 6 tháng</strong> (21/11/2026), quy tắc Khóa <strong>52K nhập "0"</strong> &amp; lọc tối đa 04 thành tích.</p>
+                    </div>
+                  </div>
+                  <div class="feat-card">
+                    <div class="feat-num">03</div>
+                    <div class="feat-body">
+                      <h3>Gợi ý mẫu &amp; Phụ lục 04</h3>
+                      <p>Có sẵn đoạn văn gợi ý mục <strong>I.1 – VI</strong> chuẩn Chi bộ và bảng tự chấm điểm theo <strong>Quy định 345-QĐ/TU</strong>.</p>
+                    </div>
+                  </div>
+                  <div class="feat-card">
+                    <div class="feat-num">04</div>
+                    <div class="feat-body">
+                      <h3>Xuất .ZIP (02c + 6b) &amp; Quản trị</h3>
+                      <p>Sinh ngay 2 file Word <strong>Mẫu 02c + Mẫu 6b</strong> để in ký tên; Chi ủy theo dõi tiến độ kê khai theo thời gian thực.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <div class="sec-kicker" style="margin-bottom:8px;">
+                  <div class="sec-kicker-left"><span class="sec-kicker-dot"></span>Quy Trình 3 Bước Thực Hiện</div>
+                  <div class="sec-kicker-note">Dành cho 100% Đảng viên Chi bộ</div>
+                </div>
+                <div class="ph-steps-row">
+                  <div class="step-box">
+                    <div>
+                      <div class="step-top"><span class="step-pill">Bước 1</span><span>📝</span></div>
+                      <h3>Kê khai trực tuyến</h3>
+                      <p>Tra cứu MSSV + CCCD, rà soát nơi cư trú 221, nhập điểm 2025–2026, thành tích &amp; tự xếp loại.</p>
+                    </div>
+                    <div class="deadline-tag">Trước 20h00 • 19/11/2026</div>
+                  </div>
+                  <div class="step-box step-2">
+                    <div>
+                      <div class="step-top"><span class="step-pill">Bước 2</span><span>📦</span></div>
+                      <h3>Tạo &amp; Xuất Mẫu 02c + 6b</h3>
+                      <p>Nhận dữ liệu từ Bước 1, chèn gợi ý, chấm điểm Phụ lục 04 và xuất tệp <strong>.ZIP</strong> 2 file Word để in.</p>
+                    </div>
+                    <div class="deadline-tag gold">Tự động đổ từ Bước 1</div>
+                  </div>
+                  <div class="step-box">
+                    <div>
+                      <div class="step-top"><span class="step-pill">Bước 3</span><span>📁</span></div>
+                      <h3>Mẫu 6d &amp; Nộp bản giấy</h3>
+                      <p>Tải Mẫu 6d trên <strong>dichvucong.dcs.vn</strong> (hoặc bản giấy 2-QĐ 221); nộp đủ <strong>02c + 6b + 6d</strong>.</p>
+                    </div>
+                    <div class="deadline-tag">Sáng Chủ nhật • 22/11/2026</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- RIGHT COLUMN: MULTI-DEVICE MOCKUP -->
+            <div class="ph-right-col">
+              <div class="ph-mockup-label">✦ Mockup Giao Diện Đa Thiết Bị</div>
+
+              <div class="device-desktop ph-desktop">
+                <div class="browser-topbar">
+                  <div class="win-dots"><i></i><i></i><i></i></div>
+                  <div class="browser-url">🔒 https://kiemdiem2026cbsv1.vercel.app/</div>
+                </div>
+                <div class="browser-screen">
+                  <div class="mock-web-top">
+                    <div class="mock-web-brand">
+                      <img src="logo.png" alt="Logo">
+                      <div>
+                        <div class="title">Chi Bộ Sinh Viên 1 — Hệ Thống 2026</div>
+                        <div class="sub">Kê khai trực tuyến • Mẫu 02c • Mẫu 6b • Cổng Quản trị</div>
+                      </div>
+                    </div>
+                    <div class="mock-countdown-chip">⏱ Hạn: 20h00 - 19/11</div>
+                  </div>
+                  <div class="mock-web-body">
+                    <div class="mock-panel">
+                      <div class="mock-panel-head">
+                        <span class="mini-num">1</span>
+                        <span class="mock-panel-title">Sơ đồ quy trình số hóa 2026</span>
+                      </div>
+                      <div class="mock-bpmn-box">
+                        <img src="so-do-bpmn-2026.svg" alt="Sơ đồ quy trình">
+                      </div>
+                      <div style="margin-top:6px;display:flex;gap:5px;flex-wrap:wrap;">
+                        <span class="tag-ok">✓ Tự đổ dữ liệu 2 bước</span>
+                        <span class="tag-gold">★ Xuất ZIP Word A4</span>
+                      </div>
+                    </div>
+                    <div class="mock-panel">
+                      <div class="mock-panel-head">
+                        <span class="mini-num" style="background:#f59e0b;color:#2c1306;">★</span>
+                        <span class="mock-panel-title">Quản Trị Chi Ủy</span>
+                      </div>
+                      <div class="mock-admin-stats">
+                        <div class="mock-stat"><span>Tiến độ</span><strong>Realtime</strong></div>
+                        <div class="mock-stat ok"><span>Xuất Excel</span><strong>1 chạm</strong></div>
+                      </div>
+                      <div class="mock-progress-track"><div class="mock-progress-fill"></div></div>
+                      <div class="mock-checklist-mini">
+                        <div class="mock-check-row"><span>Kiểm tra kê khai</span><span class="tag-ok">Đủ</span></div>
+                        <div class="mock-check-row"><span>Lịch sử Mẫu 02c+6b</span><span class="tag-ok">Lưu</span></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Phone Overlap -->
+              <div class="device-phone ph-phone">
+                <div class="phone-notch"></div>
+                <div class="phone-screen">
+                  <div class="phone-hero">
+                    <small>Bước 1 • Trên điện thoại</small>
+                    <strong>Kê Khai Trực Tuyến</strong>
+                  </div>
+                  <div class="phone-body">
+                    <div class="phone-field"><label>MSSV</label><span>221121514***</span></div>
+                    <div class="phone-field"><label>CCCD</label><span>04820400****</span></div>
+                    <div class="phone-cta">Kiểm tra &amp; Tải thông tin</div>
+                    <div class="phone-verified-box">
+                      <span class="badge-6m">✓ Đủ 6 tháng tuổi Đảng</span>
+                      <p>Tự động đồng bộ thông tin cư trú 221 &amp; điểm số.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Floating Badges inside Horizontal Stage -->
+              <div class="floating-badge" style="left: 20px; bottom: 72px;">
+                <div class="floating-badge-icon">ZIP</div>
+                <div class="floating-badge-text">
+                  <strong>Xuất 1 chạm gói .ZIP</strong>
+                  <span>Mẫu 02c.docx + Mẫu 6b.docx</span>
+                </div>
+              </div>
+
+              <div class="floating-badge gold-icon" style="left: 20px; bottom: 16px;">
+                <div class="floating-badge-icon">100</div>
+                <div class="floating-badge-text">
+                  <strong>Chấm điểm Phụ lục 04</strong>
+                  <span>30đ Tiêu chí chung + 70đ Thực hiện NV</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- FOOTER -->
+          <footer class="ph-footer">
+            <div class="ph-footer-info">
+              <div class="internal-warn">⚠ Đây là hệ thống nội bộ, chỉ dùng cho Đảng viên Chi bộ Sinh viên 1. Vui lòng không phát hành ra bên ngoài.</div>
+              <div class="copyright">Bản quyền thuộc về &copy; 2026 - Lê Vĩnh Diện</div>
+            </div>
+
+            <div class="ph-footer-cta">
+              <div class="ph-url-group">
+                <span class="cta-mini-lbl">✦ Truy cập hệ thống trực tuyến ngay</span>
+                <div class="url-box" style="font-size:13px; padding:6px 13px;">🔗 https://kiemdiem2026cbsv1.vercel.app/</div>
+              </div>
+              <div class="ph-qr-card">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 37 37" shape-rendering="crispEdges"><rect width="37" height="37" fill="#ffffff"/><path fill="#1f1a18" d="M2,2h7v1h-7zM11,2h1v1h-1zM14,2h1v1h-1zM18,2h1v1h-1zM20,2h4v1h-4zM25,2h1v1h-1zM28,2h7v1h-7zM2,3h1v1h-1zM8,3h1v1h-1zM12,3h2v1h-2zM17,3h1v1h-1zM20,3h1v1h-1zM22,3h2v1h-2zM26,3h1v1h-1zM28,3h1v1h-1zM34,3h1v1h-1zM2,4h1v1h-1zM4,4h3v1h-3zM8,4h1v1h-1zM10,4h2v1h-2zM13,4h1v1h-1zM16,4h1v1h-1zM21,4h1v1h-1zM23,4h2v1h-2zM28,4h1v1h-1zM30,4h3v1h-3zM34,4h1v1h-1zM2,5h1v1h-1zM4,5h3v1h-3zM8,5h1v1h-1zM10,5h1v1h-1zM12,5h1v1h-1zM17,5h1v1h-1zM20,5h1v1h-1zM23,5h1v1h-1zM26,5h1v1h-1zM28,5h1v1h-1zM30,5h3v1h-3zM34,5h1v1h-1zM2,6h1v1h-1zM4,6h3v1h-3zM8,6h1v1h-1zM10,6h2v1h-2zM14,6h1v1h-1zM16,6h3v1h-3zM22,6h1v1h-1zM24,6h1v1h-1zM28,6h1v1h-1zM30,6h3v1h-3zM34,6h1v1h-1zM2,7h1v1h-1zM8,7h1v1h-1zM10,7h1v1h-1zM12,7h4v1h-4zM19,7h3v1h-3zM23,7h1v1h-1zM25,7h2v1h-2zM28,7h1v1h-1zM34,7h1v1h-1zM2,8h7v1h-7zM10,8h1v1h-1zM12,8h1v1h-1zM14,8h1v1h-1zM16,8h1v1h-1zM18,8h1v1h-1zM20,8h1v1h-1zM22,8h1v1h-1zM24,8h1v1h-1zM26,8h1v1h-1zM28,8h7v1h-7zM10,9h4v1h-4zM16,9h1v1h-1zM18,9h1v1h-1zM20,9h6v1h-6zM2,10h1v1h-1zM4,10h5v1h-5zM12,10h5v1h-5zM18,10h2v1h-2zM21,10h1v1h-1zM24,10h3v1h-3zM28,10h5v1h-5zM3,11h5v1h-5zM9,11h2v1h-2zM14,11h2v1h-2zM18,11h2v1h-2zM21,11h2v1h-2zM25,11h1v1h-1zM28,11h2v1h-2zM31,11h2v1h-2zM34,11h1v1h-1zM2,12h1v1h-1zM4,12h1v1h-1zM6,12h1v1h-1zM8,12h3v1h-3zM12,12h2v1h-2zM15,12h5v1h-5zM24,12h1v1h-1zM30,12h1v1h-1zM32,12h2v1h-2zM5,13h3v1h-3zM9,13h4v1h-4zM14,13h2v1h-2zM17,13h6v1h-6zM27,13h1v1h-1zM30,13h3v1h-3zM34,13h1v1h-1zM3,14h1v1h-1zM6,14h1v1h-1zM8,14h2v1h-2zM11,14h4v1h-4zM16,14h3v1h-3zM22,14h4v1h-4zM29,14h1v1h-1zM31,14h1v1h-1zM33,14h2v1h-2zM2,15h4v1h-4zM9,15h1v1h-1zM11,15h1v1h-1zM13,15h1v1h-1zM15,15h1v1h-1zM17,15h1v1h-1zM20,15h1v1h-1zM23,15h1v1h-1zM26,15h2v1h-2zM30,15h1v1h-1zM32,15h3v1h-3zM2,16h1v1h-1zM8,16h1v1h-1zM10,16h11v1h-11zM22,16h3v1h-3zM27,16h7v1h-7zM3,17h1v1h-1zM5,17h1v1h-1zM9,17h1v1h-1zM11,17h4v1h-4zM17,17h1v1h-1zM23,17h2v1h-2zM26,17h3v1h-3zM30,17h3v1h-3zM2,18h1v1h-1zM7,18h2v1h-2zM10,18h1v1h-1zM12,18h1v1h-1zM15,18h3v1h-3zM19,18h1v1h-1zM22,18h1v1h-1zM24,18h1v1h-1zM26,18h2v1h-2zM29,18h3v1h-3zM34,18h1v1h-1zM2,19h2v1h-2zM5,19h3v1h-3zM9,19h1v1h-1zM12,19h1v1h-1zM16,19h1v1h-1zM18,19h1v1h-1zM21,19h1v1h-1zM23,19h1v1h-1zM25,19h1v1h-1zM28,19h2v1h-2zM31,19h2v1h-2zM34,19h1v1h-1zM5,20h1v1h-1zM7,20h2v1h-2zM11,20h1v1h-1zM13,20h2v1h-2zM17,20h1v1h-1zM20,20h1v1h-1zM23,20h1v1h-1zM27,20h4v1h-4zM32,20h1v1h-1zM2,21h1v1h-1zM6,21h1v1h-1zM11,21h2v1h-2zM15,21h2v1h-2zM18,21h1v1h-1zM21,21h1v1h-1zM23,21h2v1h-2zM28,21h5v1h-5zM2,22h16v1h-16zM20,22h1v1h-1zM23,22h1v1h-1zM26,22h4v1h-4zM31,22h1v1h-1zM33,22h2v1h-2zM2,23h1v1h-1zM4,23h1v1h-1zM7,23h1v1h-1zM9,23h2v1h-2zM12,23h1v1h-1zM14,23h1v1h-1zM16,23h3v1h-3zM22,23h1v1h-1zM24,23h1v1h-1zM29,23h1v1h-1zM32,23h1v1h-1zM34,23h1v1h-1zM2,24h1v1h-1zM4,24h1v1h-1zM6,24h6v1h-6zM13,24h1v1h-1zM19,24h1v1h-1zM21,24h1v1h-1zM23,24h4v1h-4zM28,24h1v1h-1zM30,24h1v1h-1zM32,24h2v1h-2zM2,25h1v1h-1zM5,25h1v1h-1zM10,25h3v1h-3zM16,25h1v1h-1zM18,25h1v1h-1zM20,25h6v1h-6zM27,25h2v1h-2zM30,25h4v1h-4zM2,26h1v1h-1zM8,26h3v1h-3zM12,26h1v1h-1zM15,26h2v1h-2zM18,26h5v1h-5zM25,26h7v1h-7zM33,26h1v1h-1zM10,27h4v1h-4zM18,27h2v1h-2zM21,27h1v1h-1zM24,27h1v1h-1zM26,27h1v1h-1zM30,27h1v1h-1zM32,27h1v1h-1zM34,27h1v1h-1zM2,28h7v1h-7zM12,28h1v1h-1zM14,28h2v1h-2zM17,28h1v1h-1zM19,28h1v1h-1zM24,28h3v1h-3zM28,28h1v1h-1zM30,28h1v1h-1zM32,28h2v1h-2zM2,29h1v1h-1zM8,29h1v1h-1zM10,29h1v1h-1zM12,29h2v1h-2zM16,29h1v1h-1zM18,29h3v1h-3zM25,29h2v1h-2zM30,29h4v1h-4zM2,30h1v1h-1zM4,30h3v1h-3zM8,30h1v1h-1zM10,30h2v1h-2zM14,30h3v1h-3zM18,30h1v1h-1zM22,30h3v1h-3zM26,30h6v1h-6zM33,30h1v1h-1zM2,31h1v1h-1zM4,31h3v1h-3zM8,31h1v1h-1zM10,31h1v1h-1zM13,31h2v1h-2zM16,31h2v1h-2zM20,31h1v1h-1zM23,31h1v1h-1zM25,31h3v1h-3zM30,31h1v1h-1zM32,31h1v1h-1zM34,31h1v1h-1zM2,32h1v1h-1zM4,32h3v1h-3zM8,32h1v1h-1zM10,32h5v1h-5zM17,32h2v1h-2zM20,32h1v1h-1zM22,32h1v1h-1zM28,32h2v1h-2zM32,32h1v1h-1zM2,33h1v1h-1zM8,33h1v1h-1zM11,33h2v1h-2zM14,33h1v1h-1zM17,33h1v1h-1zM23,33h1v1h-1zM25,33h2v1h-2zM30,33h1v1h-1zM32,33h1v1h-1zM2,34h7v1h-7zM10,34h2v1h-2zM13,34h1v1h-1zM15,34h3v1h-3zM19,34h2v1h-2zM22,34h1v1h-1zM26,34h2v1h-2zM29,34h1v1h-1zM33,34h1v1h-1z"/></svg>
+                <span>Quét mã QR</span>
+              </div>
+            </div>
+          </footer>
+        </article>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    function setViewMode(mode, btn) {
+      document.querySelectorAll('.toolbar-group .tb-btn[data-mode]').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      const vBlock = document.getElementById('blockVertical');
+      const hBlock = document.getElementById('blockHorizontal');
+      vBlock.classList.toggle('hidden', mode === 'horizontal');
+      hBlock.classList.toggle('hidden', mode === 'vertical');
+      fitPostersToViewport();
+    }
+
+    function fitPostersToViewport() {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('native') === '1') {
+        resetBox('scaleVertical', 1080, 1528, 1);
+        resetBox('scaleHorizontal', 1600, 900, 1);
+        return;
+      }
+      const avail = Math.max(320, window.innerWidth - 48);
+      applyScale('scaleVertical', 1080, 1528, avail);
+      applyScale('scaleHorizontal', 1600, 900, avail);
+    }
+
+    function applyScale(boxId, w, h, avail) {
+      const box = document.getElementById(boxId);
+      if (!box) return;
+      const scale = Math.min(1, avail / w);
+      resetBox(boxId, w, h, scale);
+    }
+
+    function resetBox(boxId, w, h, scale) {
+      const box = document.getElementById(boxId);
+      if (!box) return;
+      if (scale >= 0.999) {
+        box.style.transform = 'none';
+        box.style.width = w + 'px';
+        box.style.height = h + 'px';
+      } else {
+        box.style.transform = `scale(${scale})`;
+        box.style.width = w + 'px';
+        box.style.height = Math.round(h * scale) + 'px';
+        box.style.marginLeft = Math.round((w * (scale - 1)) / 2) + 'px';
+        box.style.marginRight = Math.round((w * (scale - 1)) / 2) + 'px';
+      }
+    }
+
+    async function exportPng(elementId, filename, btn) {
+      if (typeof html2canvas === 'undefined') {
+        alert('Không tải được thư viện xuất ảnh. Bạn có thể nhấn "In / Lưu PDF" hoặc mở qua mạng để tải PNG.');
+        return;
+      }
+      const target = document.getElementById(elementId);
+      if (!target) return;
+      const origText = btn ? btn.textContent : '';
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = '⏳ Đang kết xuất PNG...';
+      }
+
+      const scaleParent = target.closest('.poster-scale-box');
+      const prevTransform = scaleParent ? scaleParent.style.transform : '';
+      const prevMl = scaleParent ? scaleParent.style.marginLeft : '';
+      const prevMr = scaleParent ? scaleParent.style.marginRight : '';
+
+      try {
+        if (scaleParent) {
+          scaleParent.style.transform = 'none';
+          scaleParent.style.marginLeft = '0';
+          scaleParent.style.marginRight = '0';
+        }
+        await document.fonts.ready;
+        const canvas = await html2canvas(target, {
+          scale: 2,
+          useCORS: true,
+          backgroundColor: '#fdf9f4',
+          logging: false
+        });
+        const link = document.createElement('a');
+        link.download = filename;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      } catch (err) {
+        alert('Không thể xuất PNG trực tiếp (' + err.message + '). Vui lòng dùng nút "In / Lưu PDF".');
+      } finally {
+        if (scaleParent) {
+          scaleParent.style.transform = prevTransform;
+          scaleParent.style.marginLeft = prevMl;
+          scaleParent.style.marginRight = prevMr;
+        }
+        if (btn) {
+          btn.disabled = false;
+          btn.textContent = origText;
+        }
+      }
+    }
+
+    (function initView() {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('clean') === '1') {
+        document.body.classList.add('clean-export');
+      }
+      const mode = params.get('mode');
+      if (mode === 'vertical' || mode === 'horizontal') {
+        const btn = document.querySelector(`.tb-btn[data-mode="${mode}"]`);
+        setViewMode(mode, btn);
+      } else {
+        fitPostersToViewport();
+      }
+      window.addEventListener('resize', fitPostersToViewport);
+    })();
+  </script>
+</body>
+</html>
