@@ -504,6 +504,75 @@
       font-size: 0.76rem;
       white-space: nowrap;
     }
+
+    /* Pagination */
+    .pagination-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 14px;
+      padding: 12px 16px;
+      background: #fcfaf7;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+    }
+    .pagination-info {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      font-weight: 600;
+    }
+    .pagination-controls {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .page-size-select {
+      width: auto !important;
+      padding: 6px 10px !important;
+      font-size: 0.82rem !important;
+      font-weight: 700;
+      color: var(--crimson-dark);
+      border-radius: 8px !important;
+      cursor: pointer;
+    }
+    .page-btn {
+      min-width: 34px;
+      height: 34px;
+      padding: 0 10px;
+      border-radius: 8px;
+      border: 1.5px solid var(--border);
+      background: #ffffff;
+      color: var(--text-main);
+      font-family: inherit;
+      font-size: 0.84rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
+    }
+    .page-btn:hover:not(:disabled):not(.active) {
+      border-color: var(--crimson);
+      color: var(--crimson);
+      background: #fffafa;
+    }
+    .page-btn.active {
+      background: linear-gradient(135deg, var(--crimson) 0%, var(--crimson-dark) 100%);
+      color: #ffffff;
+      border-color: var(--crimson);
+      box-shadow: 0 2px 8px rgba(158, 27, 30, 0.22);
+    }
+    .page-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+    .page-ellipsis {
+      padding: 0 4px;
+      color: var(--text-muted);
+      font-weight: 700;
+      font-size: 0.85rem;
+    }
   </style>
 </head>
 <body>
@@ -577,11 +646,11 @@
         <!-- TAB 1: TIẾN ĐỘ & XUẤT / NHẬP -->
         <div id="tab-progress" style="margin-top: 20px;">
           <div class="toolbar">
-            <input type="text" id="searchInput" placeholder="Tìm theo Họ tên, MSSV, Nhóm, Khoa..." oninput="renderMembersTable()">
-            <select id="groupFilter" onchange="renderMembersTable()">
+            <input type="text" id="searchInput" placeholder="Tìm theo Họ tên, MSSV, Nhóm, Khoa..." oninput="onMembersFilterChange()">
+            <select id="groupFilter" onchange="onMembersFilterChange()">
               <option value="all">Tất cả các nhóm</option>
             </select>
-            <select id="statusFilter" onchange="renderMembersTable()">
+            <select id="statusFilter" onchange="onMembersFilterChange()">
               <option value="all">Tất cả trạng thái</option>
               <option value="submitted">Đã kê khai</option>
               <option value="pending">Chưa kê khai</option>
@@ -631,6 +700,12 @@
                 <button type="button" id="btnImport" class="btn btn-primary btn-sm hidden" onclick="confirmImport()">
                   Xác nhận nhập vào Hệ thống
                 </button>
+                <button type="button" id="btnResetAllSub" class="btn btn-outline btn-sm" style="color: #92400e; border-color: #fcd34d;" onclick="resetAllSubmissions()">
+                  Reset kê khai toàn bộ
+                </button>
+                <button type="button" id="btnResetMembers" class="btn btn-outline btn-sm" style="color: #991b1b; border-color: #fecaca;" onclick="resetAllMembers()">
+                  Reset DS Đảng viên
+                </button>
               </div>
             </div>
             <div id="importPreview" style="font-size: 0.85rem; font-weight: 600; color: var(--crimson-dark); display: none;"></div>
@@ -657,6 +732,7 @@
               <tbody id="membersTableBody"></tbody>
             </table>
           </div>
+          <div id="membersPagination" class="pagination-bar hidden"></div>
         </div>
 
         <!-- TAB 2: LỊCH SỬ TẠO BIỂU MẪU ONLINE -->
@@ -695,6 +771,7 @@
               <tbody id="docLogsTableBody"></tbody>
             </table>
           </div>
+          <div id="logsPagination" class="pagination-bar hidden"></div>
         </div>
 
         <!-- TAB 3: CẤU HÌNH THỜI HẠN & LINK -->
@@ -857,10 +934,14 @@
             <input type="text" id="editNgayChinhThuc" placeholder="dd/mm/yyyy hoặc Chưa">
           </div>
         </div>
-        <div class="form-grid-2">
+        <div class="form-grid-3">
           <div class="form-group">
             <label for="editChiBoCuTru">Chi bộ nơi cư trú (221)</label>
             <input type="text" id="editChiBoCuTru" placeholder="Tên Chi bộ nơi cư trú">
+          </div>
+          <div class="form-group">
+            <label for="editDangBoPhuongXa">Đảng bộ phường/xã</label>
+            <input type="text" id="editDangBoPhuongXa" placeholder="Tên Đảng bộ phường/xã">
           </div>
           <div class="form-group">
             <label for="editDiaChiHienTai">Địa chỉ hiện tại</label>
@@ -987,7 +1068,10 @@
         </details>
 
         <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border);">
-          <button type="button" id="btnDeleteMember" class="btn btn-outline" style="color: #991b1b; border-color: #fecaca;" onclick="deleteMemberFromModal()">Xóa Đảng viên</button>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button type="button" id="btnResetMemberSub" class="btn btn-outline" style="color: #92400e; border-color: #fcd34d;" onclick="resetMemberSubmissionFromModal()">Reset kê khai ĐV này</button>
+            <button type="button" id="btnDeleteMember" class="btn btn-outline" style="color: #991b1b; border-color: #fecaca;" onclick="deleteMemberFromModal()">Xóa Đảng viên</button>
+          </div>
           <div style="display: flex; gap: 10px;">
             <button type="button" class="btn btn-outline" onclick="closeEditModal()">Hủy</button>
             <button type="submit" id="btnSaveMember" class="btn btn-primary">Lưu thay đổi</button>
@@ -1140,6 +1224,95 @@
       });
     }
 
+    let membersPage = 1;
+    let membersPageSize = 15;
+    let logsPage = 1;
+    let logsPageSize = 15;
+
+    function onMembersFilterChange() {
+      membersPage = 1;
+      renderMembersTable();
+    }
+
+    function setMembersPage(p) {
+      membersPage = p;
+      renderMembersTable();
+    }
+
+    function setMembersPageSize(size) {
+      membersPageSize = Number(size) || 15;
+      membersPage = 1;
+      renderMembersTable();
+    }
+
+    function setLogsPage(p) {
+      logsPage = p;
+      renderDocLogsTable();
+    }
+
+    function setLogsPageSize(size) {
+      logsPageSize = Number(size) || 15;
+      logsPage = 1;
+      renderDocLogsTable();
+    }
+
+    function getPageRange(current, totalPages) {
+      if (totalPages <= 7) {
+        return Array.from({ length: totalPages }, (_, i) => i + 1);
+      }
+      const pages = [1];
+      const left = Math.max(2, current - 1);
+      const right = Math.min(totalPages - 1, current + 1);
+      if (left > 2) pages.push('...');
+      for (let i = left; i <= right; i++) pages.push(i);
+      if (right < totalPages - 1) pages.push('...');
+      pages.push(totalPages);
+      return pages;
+    }
+
+    function renderPaginationBar({ containerId, totalItems, page, pageSize, itemLabel, pageFn, sizeFn }) {
+      const container = document.getElementById(containerId);
+      if (!container) return { page: 1, startIdx: 0, endIdx: totalItems };
+      if (totalItems === 0) {
+        container.classList.add('hidden');
+        container.innerHTML = '';
+        return { page: 1, startIdx: 0, endIdx: 0 };
+      }
+
+      const effectiveSize = pageSize >= 9999 ? totalItems : Math.max(1, pageSize);
+      const totalPages = Math.max(1, Math.ceil(totalItems / effectiveSize));
+      const safePage = Math.min(Math.max(1, page), totalPages);
+      const startIdx = (safePage - 1) * effectiveSize;
+      const endIdx = Math.min(startIdx + effectiveSize, totalItems);
+      const range = getPageRange(safePage, totalPages);
+
+      const sizeOptions = [10, 15, 25, 50, 100, 9999];
+      const sizeSelectHtml = `
+        <select class="page-size-select" onchange="${sizeFn}(this.value)" title="Số dòng mỗi trang">
+          ${sizeOptions.map(opt => `<option value="${opt}" ${pageSize === opt ? 'selected' : ''}>${opt >= 9999 ? 'Tất cả' : opt + ' / trang'}</option>`).join('')}
+        </select>
+      `;
+
+      const buttonsHtml = range.map(p => {
+        if (p === '...') return '<span class="page-ellipsis">…</span>';
+        return `<button type="button" class="page-btn ${p === safePage ? 'active' : ''}" onclick="${pageFn}(${p})">${p}</button>`;
+      }).join('');
+
+      container.innerHTML = `
+        <div class="pagination-info">
+          Hiển thị <strong>${startIdx + 1} – ${endIdx}</strong> / <strong>${totalItems}</strong> ${itemLabel}
+        </div>
+        <div class="pagination-controls">
+          ${sizeSelectHtml}
+          <button type="button" class="page-btn" ${safePage <= 1 ? 'disabled' : ''} onclick="${pageFn}(${safePage - 1})">&lsaquo; Trước</button>
+          ${buttonsHtml}
+          <button type="button" class="page-btn" ${safePage >= totalPages ? 'disabled' : ''} onclick="${pageFn}(${safePage + 1})">Sau &rsaquo;</button>
+        </div>
+      `;
+      container.classList.remove('hidden');
+      return { page: safePage, startIdx, endIdx };
+    }
+
     function renderMembersTable() {
       if (!dashboardData) return;
       const q = document.getElementById('searchInput').value.trim().toLowerCase();
@@ -1160,12 +1333,25 @@
 
       if (filtered.length === 0) {
         tbody.innerHTML = '<tr><td colspan="11" style="text-align:center; padding: 24px;">Không có dữ liệu phù hợp.</td></tr>';
+        renderPaginationBar({ containerId: 'membersPagination', totalItems: 0, page: 1, pageSize: membersPageSize, itemLabel: 'Đảng viên', pageFn: 'setMembersPage', sizeFn: 'setMembersPageSize' });
         return;
       }
 
-      tbody.innerHTML = filtered.map((m, idx) => `
+      const pg = renderPaginationBar({
+        containerId: 'membersPagination',
+        totalItems: filtered.length,
+        page: membersPage,
+        pageSize: membersPageSize,
+        itemLabel: 'Đảng viên',
+        pageFn: 'setMembersPage',
+        sizeFn: 'setMembersPageSize'
+      });
+      membersPage = pg.page;
+      const pageRows = filtered.slice(pg.startIdx, pg.endIdx);
+
+      tbody.innerHTML = pageRows.map((m, idx) => `
         <tr>
-          <td>${idx + 1}</td>
+          <td>${pg.startIdx + idx + 1}</td>
           <td><strong>${escapeHtml(m.hoTen)}</strong></td>
           <td>${escapeHtml(m.mssv)}</td>
           <td>${escapeHtml(m.nhom)}</td>
@@ -1205,11 +1391,23 @@
       const tbody = document.getElementById('docLogsTableBody');
       if (logs.length === 0) {
         tbody.innerHTML = '<tr><td colspan="9" style="text-align:center; padding: 24px;">Chưa có Đảng viên nào tải biểu mẫu online.</td></tr>';
+        renderPaginationBar({ containerId: 'logsPagination', totalItems: 0, page: 1, pageSize: logsPageSize, itemLabel: 'lượt tải', pageFn: 'setLogsPage', sizeFn: 'setLogsPageSize' });
         return;
       }
-      tbody.innerHTML = logs.map((l, idx) => `
+      const pg = renderPaginationBar({
+        containerId: 'logsPagination',
+        totalItems: logs.length,
+        page: logsPage,
+        pageSize: logsPageSize,
+        itemLabel: 'lượt tải',
+        pageFn: 'setLogsPage',
+        sizeFn: 'setLogsPageSize'
+      });
+      logsPage = pg.page;
+      const pageLogs = logs.slice(pg.startIdx, pg.endIdx);
+      tbody.innerHTML = pageLogs.map((l, idx) => `
         <tr>
-          <td>${idx + 1}</td>
+          <td>${pg.startIdx + idx + 1}</td>
           <td>${escapeHtml(l.thoiGian)}</td>
           <td><strong>${escapeHtml(l.hoTen)}</strong></td>
           <td>${escapeHtml(l.mssv)}</td>
@@ -1318,6 +1516,7 @@
 
       const sub = (isEdit && m.daKeKhai && m.submission) ? m.submission : null;
       document.getElementById('editChiBoCuTru').value = isEdit ? ((sub && sub.chiBoCuTru) || m.chiBoCuTru || '') : '';
+      document.getElementById('editDangBoPhuongXa').value = isEdit ? ((sub && sub.dangBoPhuongXa) || m.dangBoPhuongXa || '') : '';
       document.getElementById('editDiaChiHienTai').value = isEdit ? ((sub && sub.noiOHienNay) || m.diaChiHienTai || '') : '';
 
       const subSec = document.getElementById('editSubmissionSection');
@@ -1371,6 +1570,8 @@
         initialAdminDraftSnapshot = {};
       }
 
+      const canResetSub = Boolean(isEdit && m && (m.daKeKhai || m.daTaoHoSo || m.docDraft));
+      document.getElementById('btnResetMemberSub').classList.toggle('hidden', !canResetSub);
       document.getElementById('btnDeleteMember').classList.toggle('hidden', !isEdit);
       document.getElementById('editMemberModal').classList.remove('hidden');
     }
@@ -1402,6 +1603,7 @@
         ngayChinhThuc: document.getElementById('editNgayChinhThuc').value.trim(),
         soTDV: document.getElementById('editSoTDV').value.trim(),
         chiBoCuTru: document.getElementById('editChiBoCuTru').value.trim(),
+        dangBoPhuongXa: document.getElementById('editDangBoPhuongXa').value.trim(),
         diaChiHienTai: document.getElementById('editDiaChiHienTai').value.trim()
       };
 
@@ -1409,6 +1611,7 @@
       if (!document.getElementById('editSubmissionSection').classList.contains('hidden')) {
         submissionPatch = {
           chiBoCuTru: member.chiBoCuTru,
+          dangBoPhuongXa: member.dangBoPhuongXa,
           noiOHienNay: member.diaChiHienTai,
           kqHocTapHK1: document.getElementById('editSubHt1').value.trim(),
           kqRenLuyenHK1: document.getElementById('editSubRl1').value.trim(),
@@ -1516,6 +1719,80 @@
       }
     }
 
+    async function resetMemberSubmissionFromModal() {
+      const mssv = document.getElementById('editOriginalMssv').value.trim();
+      const hoTen = document.getElementById('editHoTen').value.trim();
+      if (!mssv) return;
+      if (!confirm(`Xác nhận RESET dữ liệu kê khai & hồ sơ biểu mẫu của Đảng viên "${hoTen}" (${mssv})?\n(Thông tin Đảng viên trong danh sách vẫn được giữ lại.)`)) return;
+
+      const alertBox = document.getElementById('editMemberAlert');
+      const btn = document.getElementById('btnResetMemberSub');
+      alertBox.classList.add('hidden');
+      alertBox.classList.remove('alert-success', 'alert-danger');
+      btn.disabled = true;
+      try {
+        const res = await callGasApi({ action: 'adminResetMemberSubmission', password: adminPassword, mssv });
+        if (!res || !res.success) {
+          alertBox.textContent = (res && res.message) ? res.message : 'Reset thất bại.';
+          alertBox.classList.add('alert-danger');
+          alertBox.classList.remove('hidden');
+          return;
+        }
+        await loadDashboard();
+        closeEditModal();
+      } catch (err) {
+        alertBox.textContent = err.message;
+        alertBox.classList.add('alert-danger');
+        alertBox.classList.remove('hidden');
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    async function runBulkReset(actionName, btnId, confirmMsg, loadingText, defaultText) {
+      if (!confirm(confirmMsg)) return;
+      const btn = document.getElementById(btnId);
+      const alertBox = document.getElementById('importAlert');
+      alertBox.classList.add('hidden');
+      alertBox.classList.remove('alert-success', 'alert-danger');
+      btn.disabled = true;
+      btn.textContent = loadingText;
+      try {
+        const res = await callGasApi({ action: actionName, password: adminPassword });
+        alertBox.textContent = (res && res.message) ? res.message : 'Đã thực hiện.';
+        alertBox.classList.add(res && res.success ? 'alert-success' : 'alert-danger');
+        alertBox.classList.remove('hidden');
+        if (res && res.success) await loadDashboard();
+      } catch (err) {
+        alertBox.textContent = err.message;
+        alertBox.classList.add('alert-danger');
+        alertBox.classList.remove('hidden');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = defaultText;
+      }
+    }
+
+    function resetAllSubmissions() {
+      return runBulkReset(
+        'adminResetAllSubmissions',
+        'btnResetAllSub',
+        'Xác nhận RESET toàn bộ dữ liệu kê khai & lịch sử tạo biểu mẫu của TẤT CẢ Đảng viên?\n(Danh sách Đảng viên và cấu hình đường link vẫn được giữ nguyên.)',
+        'Đang reset kê khai...',
+        'Reset kê khai toàn bộ'
+      );
+    }
+
+    function resetAllMembers() {
+      return runBulkReset(
+        'adminResetMembers',
+        'btnResetMembers',
+        'CẢNH BÁO: Thao tác này sẽ XÓA SẠCH toàn bộ danh sách Đảng viên và dữ liệu kê khai hiện có để nhập lại từ đầu. Bạn có chắc chắn muốn tiếp tục?',
+        'Đang reset danh sách...',
+        'Reset DS Đảng viên'
+      );
+    }
+
     function syncDeadlineTextFromIso(isoVal) {
       const m = String(isoVal || '').trim().match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/);
       if (!m) return;
@@ -1596,6 +1873,7 @@
         'Loại Đảng viên': m.loaiDangVien || '',
         'Số thẻ Đảng viên': m.soTDV || '',
         'Chi bộ Sinh hoạt nơi cư trú': m.chiBoCuTru || '',
+        'Đảng bộ phường/xã': m.dangBoPhuongXa || '',
         'Nơi ở hiện nay': m.diaChiHienTai || '',
         'KQ Học tập HK1 (2025-2026)': '',
         'KQ Rèn luyện HK1 (2025-2026)': '',
@@ -1638,6 +1916,7 @@
           'Số thẻ Đảng viên': m.soTDV || '',
           'Địa chỉ hiện tại đang ở(Nơi đã nộp Giấy 221': m.diaChiHienTai || '',
           'Chi bộ nơi cư trú (221)': m.chiBoCuTru || '',
+          'Đảng bộ phường/xã': m.dangBoPhuongXa || '',
           'Trạng thái kê khai': 'Chưa kê khai'
         }));
       exportToExcel(pending, 'DanhSach_ChuaKeKhai_2026.xlsx');
@@ -1659,6 +1938,7 @@
         'Loại Đảng viên': m.loaiDangVien,
         'Địa chỉ hiện tại đang ở(Nơi đã nộp Giấy 221': m.diaChiHienTai || '',
         'Chi bộ nơi cư trú (221)': m.chiBoCuTru || '',
+        'Đảng bộ phường/xã': m.dangBoPhuongXa || '',
         'Số thẻ Đảng viên': m.soTDV || ''
       }));
       exportToExcel(list, 'DanhSach_DangVien_2026.xlsx');
@@ -1697,6 +1977,7 @@
           'Loại Đảng viên (Dự bị / Chính thức)': 'Chính thức',
           'Địa chỉ hiện tại đang ở(Nơi đã nộp Giấy 221': '71 Ngũ Hành Sơn, TP. Đà Nẵng',
           'Chi bộ nơi cư trú (221)': 'Chi bộ Khu dân cư số 5',
+          'Đảng bộ phường/xã': 'Đảng bộ phường Ngũ Hành Sơn',
           'Số thẻ Đảng viên': '48.000001'
         }
       ];
