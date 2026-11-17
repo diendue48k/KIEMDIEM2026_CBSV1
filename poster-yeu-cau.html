@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Poster Yêu Cầu Thực Hiện Kiểm Điểm Đảng Viên 2026 (1:1) - Chi Bộ Sinh Viên 1</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <style>
+    :root {
+      --crimson: #9e1b1e;
+      --crimson-dark: #741013;
+      --crimson-deep: #480608;
+      --gold: #d97706;
+      --gold-bright: #fbbf24;
+      --gold-soft: #fef3c7;
+      --gold-gradient: linear-gradient(135deg, #fef08a 0%, #f59e0b 50%, #d97706 100%);
+      --bg-cream: #faf5ed;
+      --card-bg: #ffffff;
+      --text-main: #1c1514;
+      --text-muted: #5e524d;
+      --emerald: #047857;
+      --emerald-bg: #ecfdf5;
+      --blue: #1d4ed8;
+      --blue-bg: #eff6ff;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #1e1716;
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* TOP BAR THAO TÁC */
+    .top-actions {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      width: 100%;
+      background: rgba(28, 20, 19, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(251, 191, 36, 0.3);
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      color: #fff;
+    }
+
+    .top-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .top-brand img {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #fff;
+      padding: 2px;
+    }
+
+    .top-brand h1 {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--gold-bright);
+      margin: 0;
+    }
+
+    .top-brand p {
+      font-size: 0.75rem;
+      color: #cbd5e1;
+      margin: 0;
+    }
+
+    .action-group {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn-act {
+      font-family: inherit;
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .btn-act.btn-primary {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: #3e1200;
+      border: none;
+      font-weight: 800;
+      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+    }
+    .btn-act.btn-primary:hover {
+      filter: brightness(1.1);
+      transform: translateY(-1px);
+    }
+
+    .btn-act.btn-secondary {
+      background: rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+    }
+    .btn-act.btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.18);
+    }
+
+    body.clean-export {
+      background: transparent !important;
+      min-height: auto;
+      padding: 0;
+      margin: 0;
+    }
+    body.clean-export .top-actions {
+      display: none !important;
+    }
+    body.clean-export .poster-wrapper {
+      padding: 0;
+      margin: 0;
+    }
+    body.clean-export .poster-scale-box {
+      transform: none !important;
+      margin: 0 !important;
+    }
+
+    .poster-scale-box {
+      transform-origin: top center;
+    }
+
+    /* CANVAS 1:1 (1200 x 1200 px) */
+    .poster-1x1 {
+      width: 1200px;
+      height: 1200px;
+      background: var(--bg-cream);
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+    }
+
+    /* DẢI RUY BĂNG CỜ */
+    .ribbon-top {
+      height: 8px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      flex-shrink: 0;
+    }
+    .ribbon-top span:nth-child(1),
+    .ribbon-top span:nth-child(3) { background: var(--crimson-dark); }
+    .ribbon-top span:nth-child(2) { background: var(--gold-gradient); }
+
+    /* HEADER POSTER */
+    .poster-header {
+      background:
+        radial-gradient(circle at 50% -20%, rgba(251, 191, 36, 0.22) 0%, transparent 65%),
+        linear-gradient(135deg, var(--crimson-deep) 0%, var(--crimson-dark) 45%, var(--crimson) 100%);
+      color: #ffffff;
+      padding: 24px 36px 20px;
+      position: relative;
+      border-bottom: 3px solid var(--gold-bright);
+      flex-shrink: 0;
+    }
+
+    .header-org {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .org-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .org-logo {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: #ffffff;
+      padding: 4px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+      border: 2px solid var(--gold-bright);
+    }
+
+    .org-titles h2 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.9);
+      margin-bottom: 2px;
+    }
+
+    .org-titles h3 {
+      font-size: 1.18rem;
+      font-weight: 900;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--gold-bright);
+    }
+
+    .mandatory-badge {
+      background: rgba(251, 191, 36, 0.15);
+      border: 1.5px solid var(--gold-bright);
+      color: #fef08a;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .header-main-title {
+      text-align: center;
+      padding: 4px 0 2px;
+    }
+
+    .header-main-title .kicker {
+      display: inline-block;
+      font-size: 0.9rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #fef08a;
+      background: rgba(0, 0, 0, 0.25);
+      padding: 4px 16px;
+      border-radius: 6px;
+      margin-bottom: 6px;
+      border: 1px solid rgba(251, 191, 36, 0.4);
+    }
+
+    .header-main-title h1 {
+      font-size: 1.85rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      color: #ffffff;
+      line-height: 1.25;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+    }
+
+    .header-main-title h1 span {
+      background: var(--gold-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* BODY POSTER (CHỨA 3 BƯỚC + LƯU Ý) */
+    .poster-body {
+      padding: 24px 36px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      flex: 1;
+      justify-content: space-between;
+    }
+
+    /* DANH SÁCH 3 BƯỚC THỰC HIỆN */
+    .steps-container {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .step-card {
+      background: var(--card-bg);
+      border-radius: 14px;
+      border: 1.5px solid #ebdcd0;
+      box-shadow: 0 6px 20px rgba(76, 9, 11, 0.06);
+      display: grid;
+      grid-template-columns: 100px 1fr 310px;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.2s;
+    }
+
+    .step-card::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 6px;
+    }
+
+    /* MÀU ĐẶC TRƯNG TỪNG BƯỚC */
+    .step-card.step-1::before { background: var(--crimson); }
+    .step-card.step-2::before { background: var(--gold); }
+    .step-card.step-3::before { background: var(--emerald); }
+
+    /* CỘT 1: SỐ THỨ TỰ BƯỚC */
+    .step-col-num {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 16px 12px;
+      text-align: center;
+      border-right: 1px solid #f0e6dd;
+      background: #faf7f4;
+      height: 100%;
+    }
+
+    .step-icon {
+      font-size: 1.5rem;
+      margin-bottom: 4px;
+    }
+
+    .step-badge {
+      font-size: 0.72rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
+
+    .step-1 .step-badge { background: #fee2e2; color: var(--crimson-dark); }
+    .step-2 .step-badge { background: #fef3c7; color: #92400e; }
+    .step-3 .step-badge { background: #d1fae5; color: #065f46; }
+
+    /* CỘT 2: NỘI DUNG YÊU CẦU */
+    .step-col-content {
+      padding: 14px 20px;
+    }
+
+    .step-col-content h4 {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .step-col-content ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .step-col-content li {
+      font-size: 0.86rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+      position: relative;
+      padding-left: 14px;
+    }
+
+    .step-col-content li::before {
+      content: '•';
+      position: absolute;
+      left: 0;
+      color: var(--crimson);
+      font-weight: bold;
+    }
+
+    .step-col-content li strong {
+      color: var(--text-main);
+    }
+
+    /* CỘT 3: HẠN CHÓT (HIGHLIGHT RÕ RÀNG NHẤT) */
+    .step-col-deadline {
+      padding: 14px 18px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      border-left: 1.5px dashed #f0e6dd;
+      background: #fffcf8;
+    }
+
+    .dl-label {
+      font-size: 0.7rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .dl-time {
+      font-size: 1.05rem;
+      font-weight: 900;
+      line-height: 1.3;
+      margin-bottom: 4px;
+    }
+
+    .step-1 .dl-time { color: var(--crimson); }
+    .step-2 .dl-time { color: var(--gold); }
+    .step-3 .dl-time { color: var(--emerald); }
+
+    .dl-action-note {
+      font-size: 0.76rem;
+      font-weight: 700;
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 4px;
+    }
+
+    .step-1 .dl-action-note { background: #fee2e2; color: #991b1b; }
+    .step-2 .dl-action-note { background: #fef3c7; color: #854d0e; }
+    .step-3 .dl-action-note { background: #d1fae5; color: #047857; }
+
+    /* KHỐI 3 LƯU Ý ĐẶC BIỆT QUAN TRỌNG (DẠNG 3 CỘT) */
+    .notes-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .note-item {
+      background: #ffffff;
+      border-radius: 10px;
+      border: 1px solid #ebdcd0;
+      padding: 12px 14px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+    }
+
+    .note-header {
+      font-size: 0.8rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--crimson-dark);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 6px;
+      letter-spacing: 0.02em;
+    }
+
+    .note-desc {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+    .note-desc strong { color: var(--text-main); }
+
+    /* FOOTER POSTER: KÊNH TRUY CẬP + QR CODE */
+    .poster-footer {
+      background:
+        radial-gradient(circle at 80% 50%, rgba(251, 191, 36, 0.15) 0%, transparent 60%),
+        linear-gradient(135deg, var(--crimson-deep) 0%, var(--crimson-dark) 60%, var(--crimson) 100%);
+      color: #ffffff;
+      padding: 18px 36px;
+      border-top: 3px solid var(--gold-bright);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      flex-shrink: 0;
+    }
+
+    .footer-left {
+      flex: 1;
+    }
+
+    .footer-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.76rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #fef08a;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 3px 10px;
+      border-radius: 4px;
+      margin-bottom: 6px;
+    }
+
+    .footer-url-box {
+      background: rgba(255, 255, 255, 0.12);
+      border: 1.5px solid rgba(251, 191, 36, 0.5);
+      border-radius: 8px;
+      padding: 8px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+
+    .footer-url-text {
+      font-family: monospace;
+      font-size: 0.96rem;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: 0.02em;
+    }
+
+    .footer-url-hint {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--gold-bright);
+      text-transform: uppercase;
+    }
+
+    .footer-support {
+      font-size: 0.76rem;
+      color: #f1e5dc;
+      line-height: 1.35;
+    }
+    .footer-support strong { color: #ffffff; }
+
+    /* QR CARD BÊN PHẢI */
+    .footer-qr-card {
+      background: #ffffff;
+      border: 2.5px solid var(--gold-bright);
+      border-radius: 12px;
+      padding: 8px 10px 6px;
+      text-align: center;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+      flex-shrink: 0;
+    }
+
+    .footer-qr-card svg {
+      width: 106px;
+      height: 106px;
+      display: block;
+      margin: 0 auto;
+    }
+
+    .footer-qr-card span {
+      display: block;
+      margin-top: 3px;
+      font-size: 9.5px;
+      font-weight: 800;
+      color: var(--crimson-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+
+    /* DẢI RUY BĂNG DƯỚI */
+    .ribbon-bottom {
+      height: 6px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      flex-shrink: 0;
+    }
+    .ribbon-bottom span:nth-child(1),
+    .ribbon-bottom span:nth-child(3) { background: var(--crimson-dark); }
+    .ribbon-bottom span:nth-child(2) { background: var(--gold-gradient); }
+
+    /* BẢN QUYỀN MẢNH DƯỚI CÙNG */
+    .copyright-strip {
+      background: #2b0304;
+      color: #cfb9b2;
+      font-size: 0.7rem;
+      text-align: center;
+      padding: 4px 12px;
+      flex-shrink: 0;
+      letter-spacing: 0.02em;
+    }
+
+    @media print {
+      .top-actions { display: none !important; }
+      body { background: #fff; }
+      .poster-wrapper { padding: 0; }
+      .poster-1x1 { box-shadow: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP ACTION BAR -->
+  <header class="top-actions">
+    <div class="top-brand">
+      <img src="logo.png" alt="Logo">
+      <div>
+        <h1>POSTER YÊU CẦU THỰC HIỆN KIỂM ĐIỂM ĐẢNG VIÊN 2026</h1>
+        <p>Tỷ lệ vuông 1:1 chuẩn Zalo / Facebook / Tin nhắn nhóm • Chi bộ Sinh viên 1</p>
+      </div>
+    </div>
+    <div class="action-group">
+      <button class="btn-act btn-primary" onclick="downloadPosterPng(this)">
+        📥 Tải ảnh PNG 1:1 (Sắc nét)
+      </button>
+      <button class="btn-act btn-secondary" onclick="window.print()">
+        🖨️ In / Lưu PDF
+      </button>
+      <a href="index.html" class="btn-act btn-secondary">
+        ← Về Trang chủ
+      </a>
+      <a href="admin.html" class="btn-act btn-secondary">
+        Quản trị
+      </a>
+    </div>
+  </header>
+
+  <!-- VÙNG CHỨA POSTER VUÔNG 1:1 -->
+  <main class="poster-wrapper">
+    <div class="poster-scale-box" id="posterScaleBox">
+      <div id="posterCanvas" class="poster-1x1">
+      <!-- CỜ TRÊN -->
+      <div class="ribbon-top">
+        <span></span><span></span><span></span>
+      </div>
+
+      <!-- HEADER POSTER -->
+      <div class="poster-header">
+        <div class="header-org">
+          <div class="org-left">
+            <img src="logo.png" alt="Logo" class="org-logo">
+            <div class="org-titles">
+              <h2>Đảng bộ Trường Đại học Kinh tế – ĐHĐN</h2>
+              <h3>Chi bộ Sinh viên 1</h3>
+            </div>
+          </div>
+          <div class="mandatory-badge">
+            ⚠️ Bắt buộc với 100% Đảng viên
+          </div>
+        </div>
+
+        <div class="header-main-title">
+          <span class="kicker">THÔNG BÁO QUAN TRỌNG TỪ CHI ỦY</span>
+          <h1>YÊU CẦU &amp; THỜI HẠN HOÀN THÀNH<br><span>KIỂM ĐIỂM, ĐÁNH GIÁ ĐẢNG VIÊN NĂM 2026</span></h1>
+        </div>
+      </div>
+
+      <!-- NỘI DUNG 3 BƯỚC VÀ LƯU Ý -->
+      <div class="poster-body">
+        <div class="steps-container">
+
+          <!-- BƯỚC 1 -->
+          <div class="step-card step-1">
+            <div class="step-col-num">
+              <span class="step-icon">📝</span>
+              <span class="step-badge">BƯỚC 1</span>
+            </div>
+            <div class="step-col-content">
+              <h4>Kê khai thông tin trực tuyến</h4>
+              <ul>
+                <li>Truy cập hệ thống, tra cứu bằng <strong>MSSV + CCCD</strong>.</li>
+                <li>Rà soát chính xác <strong>Chi bộ nơi cư trú (Giấy 221)</strong> &amp; <strong>Nơi ở hiện nay</strong>.</li>
+                <li>Nhập điểm học tập &amp; rèn luyện năm 2025–2026 (Khóa 52K nhập số <strong>0</strong>).</li>
+                <li>Kê khai tối đa <strong>04 thành tích cao nhất</strong> + tối thiểu <strong>01 đóng góp</strong> cho Chi bộ.</li>
+              </ul>
+            </div>
+            <div class="step-col-deadline">
+              <div class="dl-label">⏰ Hạn chót Bước 1:</div>
+              <div class="dl-time">TRƯỚC 20H00<br>Thứ 5, 19/11/2026</div>
+              <span class="dl-action-note">Nộp dữ liệu trên hệ thống</span>
+            </div>
+          </div>
+
+          <!-- BƯỚC 2 -->
+          <div class="step-card step-2">
+            <div class="step-col-num">
+              <span class="step-icon">📋</span>
+              <span class="step-badge">BƯỚC 2</span>
+            </div>
+            <div class="step-col-content">
+              <h4>Tạo hồ sơ, tự chấm điểm &amp; in ấn</h4>
+              <ul>
+                <li>Dữ liệu Bước 1 tự động đổ sang <strong>Mẫu 02c</strong> (Bản kiểm điểm) &amp; <strong>Mẫu 6b</strong> (Biểu điểm).</li>
+                <li>Thực hiện tự chấm điểm theo đúng <strong>Phụ lục 04</strong> (Biểu số 32).</li>
+                <li>Bấm xuất tệp <strong>.ZIP</strong> (2 file Word), in ra bản giấy và <strong>ký tên</strong>.</li>
+                <li><em>Đảng viên kết nạp chưa đủ 6 tháng (tính đến 21/11/2026): Miễn chấm điểm, chỉ nộp 02c.</em></li>
+              </ul>
+            </div>
+            <div class="step-col-deadline">
+              <div class="dl-label">🖨️ Hoàn thành trước:</div>
+              <div class="dl-time">BUỔI NỘP HỒ SƠ<br>Thứ 7, 21/11/2026</div>
+              <span class="dl-action-note">In ra giấy &amp; ký tên đầy đủ</span>
+            </div>
+          </div>
+
+          <!-- BƯỚC 3 -->
+          <div class="step-card step-3">
+            <div class="step-col-num">
+              <span class="step-icon">📂</span>
+              <span class="step-badge">BƯỚC 3</span>
+            </div>
+            <div class="step-col-content">
+              <h4>Lấy Mẫu 6d &amp; nộp hồ sơ bản cứng</h4>
+              <ul>
+                <li>Lấy <strong>Mẫu 6d điện tử</strong> trên hệ thống <strong style="color: var(--blue);">dichvucong.dcs.vn</strong>.</li>
+                <li>Trường hợp chưa có bản điện tử: Liên hệ Bí thư nơi cư trú xin bản giấy 2-QĐ 221.</li>
+                <li>Nộp đủ bộ hồ sơ gồm: <strong>Bản kiểm điểm 02c + Biểu điểm 6b + Nhận xét 6d</strong>.</li>
+                <li>Có mặt đúng giờ để Chi bộ tiếp nhận và đối soát hồ sơ.</li>
+              </ul>
+            </div>
+            <div class="step-col-deadline">
+              <div class="dl-label">📌 Hạn nộp bản cứng:</div>
+              <div class="dl-time">SÁNG CHỦ NHẬT<br>22/11/2026</div>
+              <span class="dl-action-note">Nộp trực tiếp cho Chi bộ</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- 3 LƯU Ý QUAN TRỌNG -->
+        <div class="notes-grid">
+          <div class="note-item">
+            <div class="note-header">🎓 Khóa 52K tân sinh viên</div>
+            <div class="note-desc">Nhập số <strong>0</strong> vào cả 4 ô kết quả học tập &amp; rèn luyện; chú ý rà soát đúng Chi bộ nơi cư trú theo Giấy 221.</div>
+          </div>
+          <div class="note-item">
+            <div class="note-header">⏳ Đảng viên &lt; 6 tháng</div>
+            <div class="note-desc">Kết nạp sau ngày <strong>21/05/2026</strong> được <strong>miễn tự chấm điểm &amp; xếp loại</strong>, chỉ thực hiện kiểm điểm và in nộp Mẫu 02c.</div>
+          </div>
+          <div class="note-item">
+            <div class="note-header">📁 Hồ sơ nộp bản cứng</div>
+            <div class="note-desc">Bắt buộc nộp đủ <strong>03 loại giấy tờ</strong>: Bản kiểm điểm (02c) + Biểu điểm (6b) + Nhận xét nơi cư trú (6d).</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FOOTER POSTER: KÊNH TRUY CẬP + QR CODE -->
+      <div class="poster-footer">
+        <div class="footer-left">
+          <span class="footer-badge">✦ ĐỊA CHỈ TRUY CẬP HỆ THỐNG TRỰC TUYẾN</span>
+          <div class="footer-url-box">
+            <span class="footer-url-text">https://diendue48k.github.io/KIEMDIEM2026_CBSV1/</span>
+            <span class="footer-url-hint">Quét mã hoặc mở link ↗</span>
+          </div>
+          <div class="footer-support">
+            Nội bộ Chi bộ Sinh viên 1 • Mọi vướng mắc về dữ liệu liên hệ ngay <strong>Chi ủy / Nhóm trưởng</strong> để được hỗ trợ kịp thời.
+          </div>
+        </div>
+
+        <div class="footer-qr-card">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 37 37" shape-rendering="crispEdges">
+            <rect width="37" height="37" fill="#ffffff"/>
+            <path fill="#1c1514" d="M2,2h7v1h-7zM11,2h1v1h-1zM14,2h1v1h-1zM18,2h1v1h-1zM20,2h4v1h-4zM25,2h1v1h-1zM28,2h7v1h-7zM2,3h1v1h-1zM8,3h1v1h-1zM12,3h2v1h-2zM17,3h1v1h-1zM20,3h1v1h-1zM22,3h2v1h-2zM26,3h1v1h-1zM28,3h1v1h-1zM34,3h1v1h-1zM2,4h1v1h-1zM4,4h3v1h-3zM8,4h1v1h-1zM10,4h2v1h-2zM13,4h1v1h-1zM16,4h1v1h-1zM21,4h1v1h-1zM23,4h2v1h-2zM28,4h1v1h-1zM30,4h3v1h-3zM34,4h1v1h-1zM2,5h1v1h-1zM4,5h3v1h-3zM8,5h1v1h-1zM10,5h1v1h-1zM12,5h1v1h-1zM17,5h1v1h-1zM20,5h1v1h-1zM23,5h1v1h-1zM26,5h1v1h-1zM28,5h1v1h-1zM30,5h3v1h-3zM34,5h1v1h-1zM2,6h1v1h-1zM4,6h3v1h-3zM8,6h1v1h-1zM10,6h2v1h-2zM14,6h1v1h-1zM16,6h3v1h-3zM22,6h1v1h-1zM24,6h1v1h-1zM28,6h1v1h-1zM30,6h3v1h-3zM34,6h1v1h-1zM2,7h1v1h-1zM8,7h1v1h-1zM10,7h1v1h-1zM12,7h4v1h-4zM19,7h3v1h-3zM23,7h1v1h-1zM25,7h2v1h-2zM28,7h1v1h-1zM34,7h1v1h-1zM2,8h7v1h-7zM10,8h1v1h-1zM12,8h1v1h-1zM14,8h1v1h-1zM16,8h1v1h-1zM18,8h1v1h-1zM20,8h1v1h-1zM22,8h1v1h-1zM24,8h1v1h-1zM26,8h1v1h-1zM28,8h7v1h-7zM10,9h4v1h-4zM16,9h1v1h-1zM18,9h1v1h-1zM20,9h6v1h-6zM2,10h1v1h-1zM4,10h5v1h-5zM12,10h5v1h-5zM18,10h2v1h-2zM21,10h1v1h-1zM24,10h3v1h-3zM28,10h5v1h-5zM3,11h5v1h-5zM9,11h2v1h-2zM14,11h2v1h-2zM18,11h2v1h-2zM21,11h2v1h-2zM25,11h1v1h-1zM28,11h2v1h-2zM31,11h2v1h-2zM34,11h1v1h-1zM2,12h1v1h-1zM4,12h1v1h-1zM6,12h1v1h-1zM8,12h3v1h-3zM12,12h2v1h-2zM15,12h5v1h-5zM24,12h1v1h-1zM30,12h1v1h-1zM32,12h2v1h-2zM5,13h3v1h-3zM9,13h4v1h-4zM14,13h2v1h-2zM17,13h6v1h-6zM27,13h1v1h-1zM30,13h3v1h-3zM34,13h1v1h-1zM3,14h1v1h-1zM6,14h1v1h-1zM8,14h2v1h-2zM11,14h4v1h-4zM16,14h3v1h-3zM22,14h4v1h-4zM29,14h1v1h-1zM31,14h1v1h-1zM33,14h2v1h-2zM2,15h4v1h-4zM9,15h1v1h-1zM11,15h1v1h-1zM13,15h1v1h-1zM15,15h1v1h-1zM17,15h1v1h-1zM20,15h1v1h-1zM23,15h1v1h-1zM26,15h2v1h-2zM30,15h1v1h-1zM32,15h3v1h-3zM2,16h1v1h-1zM8,16h1v1h-1zM10,16h11v1h-11zM22,16h3v1h-3zM27,16h7v1h-7zM3,17h1v1h-1zM5,17h1v1h-1zM9,17h1v1h-1zM11,17h4v1h-4zM17,17h1v1h-1zM23,17h2v1h-2zM26,17h3v1h-3zM30,17h3v1h-3zM2,18h1v1h-1zM7,18h2v1h-2zM10,18h1v1h-1zM12,18h1v1h-1zM15,18h3v1h-3zM19,18h1v1h-1zM22,18h1v1h-1zM24,18h1v1h-1zM26,18h2v1h-2zM29,18h3v1h-3zM34,18h1v1h-1zM2,19h2v1h-2zM5,19h3v1h-3zM9,19h1v1h-1zM12,19h1v1h-1zM16,19h1v1h-1zM18,19h1v1h-1zM21,19h1v1h-1zM23,19h1v1h-1zM25,19h1v1h-1zM28,19h2v1h-2zM31,19h2v1h-2zM34,19h1v1h-1zM5,20h1v1h-1zM7,20h2v1h-2zM11,20h1v1h-1zM13,20h2v1h-2zM17,20h1v1h-1zM20,20h1v1h-1zM23,20h1v1h-1zM27,20h4v1h-4zM32,20h1v1h-1zM2,21h1v1h-1zM6,21h1v1h-1zM11,21h2v1h-2zM15,21h2v1h-2zM18,21h1v1h-1zM21,21h1v1h-1zM23,21h2v1h-2zM28,21h5v1h-5zM2,22h16v1h-16zM20,22h1v1h-1zM23,22h1v1h-1zM26,22h4v1h-4zM31,22h1v1h-1zM33,22h2v1h-2zM2,23h1v1h-1zM4,23h1v1h-1zM7,23h1v1h-1zM9,23h2v1h-2zM12,23h1v1h-1zM14,23h1v1h-1zM16,23h3v1h-3zM22,23h1v1h-1zM24,23h1v1h-1zM29,23h1v1h-1zM32,23h1v1h-1zM34,23h1v1h-1zM2,24h1v1h-1zM4,24h1v1h-1zM6,24h6v1h-6zM13,24h1v1h-1zM19,24h1v1h-1zM21,24h1v1h-1zM23,24h4v1h-4zM28,24h1v1h-1zM30,24h1v1h-1zM32,24h2v1h-2zM2,25h1v1h-1zM5,25h1v1h-1zM10,25h3v1h-3zM16,25h1v1h-1zM18,25h1v1h-1zM20,25h6v1h-6zM27,25h2v1h-2zM30,25h4v1h-4zM2,26h1v1h-1zM8,26h3v1h-3zM12,26h1v1h-1zM15,26h2v1h-2zM18,26h5v1h-5zM25,26h7v1h-7zM33,26h1v1h-1zM10,27h4v1h-4zM18,27h2v1h-2zM21,27h1v1h-1zM24,27h1v1h-1zM26,27h1v1h-1zM30,27h1v1h-1zM32,27h1v1h-1zM34,27h1v1h-1zM2,28h7v1h-7zM12,28h1v1h-1zM14,28h2v1h-2zM17,28h1v1h-1zM19,28h1v1h-1zM24,28h3v1h-3zM28,28h1v1h-1zM30,28h1v1h-1zM32,28h2v1h-2zM2,29h1v1h-1zM8,29h1v1h-1zM10,29h1v1h-1zM12,29h2v1h-2zM16,29h1v1h-1zM18,29h3v1h-3zM25,29h2v1h-2zM30,29h4v1h-4zM2,30h1v1h-1zM4,30h3v1h-3zM8,30h1v1h-1zM10,30h2v1h-2zM14,30h3v1h-3zM18,30h1v1h-1zM22,30h3v1h-3zM26,30h6v1h-6zM33,30h1v1h-1zM2,31h1v1h-1zM4,31h3v1h-3zM8,31h1v1h-1zM10,31h1v1h-1zM13,31h2v1h-2zM16,31h2v1h-2zM20,31h1v1h-1zM23,31h1v1h-1zM25,31h3v1h-3zM30,31h1v1h-1zM32,31h1v1h-1zM34,31h1v1h-1zM2,32h1v1h-1zM4,32h3v1h-3zM8,32h1v1h-1zM10,32h5v1h-5zM17,32h2v1h-2zM20,32h1v1h-1zM22,32h1v1h-1zM28,32h2v1h-2zM32,32h1v1h-1zM2,33h1v1h-1zM8,33h1v1h-1zM11,33h2v1h-2zM14,33h1v1h-1zM17,33h1v1h-1zM23,33h1v1h-1zM25,33h2v1h-2zM30,33h1v1h-1zM32,33h1v1h-1zM2,34h7v1h-7zM10,34h2v1h-2zM13,34h1v1h-1zM15,34h3v1h-3zM19,34h2v1h-2zM22,34h1v1h-1zM26,34h2v1h-2zM29,34h1v1h-1zM33,34h1v1h-1z"/>
+          </svg>
+          <span>QUÉT MÃ MỞ WEB</span>
+        </div>
+      </div>
+
+      <!-- CỜ DƯỚI -->
+      <div class="ribbon-bottom">
+        <span></span><span></span><span></span>
+      </div>
+
+      <!-- BẢN QUYỀN MẢNH DƯỚI -->
+      <div class="copyright-strip">
+        HỆ THỐNG HỖ TRỢ KIỂM ĐIỂM, ĐÁNH GIÁ VÀ XẾP LOẠI ĐẢNG VIÊN NĂM 2026 &bull; BẢN QUYỀN &copy; 2026 - LÊ VĨNH DIỆN
+      </div>
+    </div>
+    </div>
+  </main>
+
+  <script>
+    function fitToViewport() {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('native') === '1' || params.get('clean') === '1') {
+        resetBox(1);
+        return;
+      }
+      const avail = Math.max(320, window.innerWidth - 48);
+      const scale = Math.min(1, avail / 1200);
+      resetBox(scale);
+    }
+
+    function resetBox(scale) {
+      const box = document.getElementById('posterScaleBox');
+      if (!box) return;
+      if (scale >= 0.999) {
+        box.style.transform = 'none';
+        box.style.width = '1200px';
+        box.style.height = '1200px';
+        box.style.marginLeft = 'auto';
+        box.style.marginRight = 'auto';
+      } else {
+        box.style.transform = `scale(${scale})`;
+        box.style.width = '1200px';
+        box.style.height = Math.round(1200 * scale) + 'px';
+        box.style.marginLeft = Math.round((1200 * (scale - 1)) / 2) + 'px';
+        box.style.marginRight = Math.round((1200 * (scale - 1)) / 2) + 'px';
+      }
+    }
+
+    (function init() {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('clean') === '1') {
+        document.body.classList.add('clean-export');
+      }
+      fitToViewport();
+      window.addEventListener('resize', fitToViewport);
+    })();
+
+    async function downloadPosterPng(btn) {
+      if (typeof html2canvas === 'undefined') {
+        alert('Không tìm thấy thư viện xuất ảnh. Bạn có thể bấm "In / Lưu PDF".');
+        return;
+      }
+      const target = document.getElementById('posterCanvas');
+      const scaleBox = document.getElementById('posterScaleBox');
+      if (!target) return;
+      const originalText = btn ? btn.innerHTML : '';
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '⏳ Đang tạo ảnh 1:1...';
+      }
+
+      const prevTransform = scaleBox ? scaleBox.style.transform : '';
+      const prevMl = scaleBox ? scaleBox.style.marginLeft : '';
+      const prevMr = scaleBox ? scaleBox.style.marginRight : '';
+
+      try {
+        if (scaleBox) {
+          scaleBox.style.transform = 'none';
+          scaleBox.style.marginLeft = '0';
+          scaleBox.style.marginRight = '0';
+        }
+        await document.fonts.ready;
+        const canvas = await html2canvas(target, {
+          scale: 2,
+          useCORS: true,
+          backgroundColor: '#faf5ed',
+          logging: false
+        });
+        const link = document.createElement('a');
+        link.download = 'Poster_Yeu_Cau_Thuc_Hien_Kiem_Diem_2026_1x1.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      } catch (err) {
+        alert('Không thể tạo file ảnh tự động (' + err.message + '). Vui lòng bấm In / Lưu PDF.');
+      } finally {
+        if (scaleBox) {
+          scaleBox.style.transform = prevTransform;
+          scaleBox.style.marginLeft = prevMl;
+          scaleBox.style.marginRight = prevMr;
+        }
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = originalText;
+        }
+      }
+    }
+  </script>
+</body>
+</html>
