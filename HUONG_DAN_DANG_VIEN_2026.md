@@ -9,8 +9,8 @@
 | Mốc công việc | Địa chỉ thực hiện | Thời hạn hoàn thành |
 |---|---|---|
 | **Bước 1: Kê khai thông tin trực tuyến** | Trang chủ → **Thực hiện kê khai ngay** | Trước **20h00 - Thứ 5, ngày 19/11/2026** |
-| **Bước 2: Tạo & in Mẫu 02c + Mẫu 6b** | Trang chủ → **Tạo hồ sơ để in** *(hoặc tải mẫu trống)* | Hoàn thành trước buổi nộp hồ sơ |
-| **Bước 3: Lấy Mẫu 6d & Nộp hồ sơ bản giấy** | [dichvucong.dcs.vn](https://dichvucong.dcs.vn) / Mẫu 6d giấy | **Sáng Chủ nhật, ngày 22/11/2026** |
+| **Bước 2: Chuẩn bị đầy đủ hồ sơ (02c + 6b + 6d)** | Trang chủ → **Tạo hồ sơ để in** & [dichvucong.dcs.vn](https://dichvucong.dcs.vn) | Hoàn thành trước buổi nộp hồ sơ (Thứ 7, 21/11/2026) |
+| **Bước 3: Nộp hồ sơ bản cứng & đối soát** | Chi bộ Sinh viên 1 (nộp trực tiếp 03 bản giấy) | **Sáng Chủ nhật, ngày 22/11/2026** |
 
 ---
 
@@ -23,21 +23,22 @@ Kính gửi các đồng chí Đảng viên Chi bộ Sinh viên 1,
 Đề nghị các đồng chí truy cập Hệ thống hỗ trợ kiểm điểm, đánh giá và xếp loại Đảng viên năm 2026 tại đường dẫn:
 👉 https://diendue48k.github.io/KIEMDIEM2026_CBSV1/
 
-Các đồng chí thực hiện đầy đủ theo 3 bước trên hệ thống:
+Các đồng chí thực hiện đầy đủ theo 3 bước:
 1️⃣ BƯỚC 1 - Kê khai trực tuyến ("Thực hiện kê khai ngay"):
-   • Tra cứu bằng MSSV và CCCD; kiểm tra lại thông tin Chi bộ nơi cư trú & nơi ở hiện nay.
+   • Tra cứu bằng MSSV và CCCD; kiểm tra lại thông tin Chi bộ nơi cư trú (Giấy 221) & nơi ở hiện nay.
    • Nhập điểm học tập, rèn luyện năm học 2025 - 2026 (Khóa 52K nhập "0").
-   • Mục 3.1: chỉ kê khai tối đa 04 thành tích cao nhất, nổi bật nhất.
+   • Mục 3.1: chỉ kê khai tối đa 04 thành tích cao nhất, nổi bật nhất; tối thiểu 01 hoạt động đóng góp cho Chi bộ.
    • HẠN CUỐI KÊ KHAI TRỰC TUYẾN: Trước 20h00 - Thứ 5, ngày 19/11/2026.
 
-2️⃣ BƯỚC 2 - Tạo và xuất biểu mẫu để in ("Tạo hồ sơ để in"):
-   • Sau khi kê khai xong Bước 1, hệ thống tự đổ dữ liệu sang Mẫu 02c và Mẫu 6b.
-   • Chỉnh sửa, tự chấm điểm (theo Phụ lục 04) và bấm xuất tệp ZIP gồm 2 file Word (Mẫu 02c + Mẫu 6b) để in và ký tên.
-   (Đảng viên kết nạp chưa đủ 6 tháng tính đến 21/11/2026 được miễn tự chấm điểm/xếp loại, chỉ thực hiện kê khai và xuất bản kiểm điểm).
+2️⃣ BƯỚC 2 - Chuẩn bị đầy đủ bộ hồ sơ (Mẫu 02c + Mẫu 6b + Mẫu 6d):
+   • Xuất và in Mẫu 02c & 6b từ mục "Tạo hồ sơ để in" (tự chấm điểm theo Phụ lục 04), in ra giấy và ký tên.
+   • Lấy Mẫu 6d (Nhận xét nơi cư trú): Tải bản điện tử trên https://dichvucong.dcs.vn (hoặc xin bản giấy xác nhận 2-QĐ 221).
+   • Tập hợp trọn bộ 03 loại giấy tờ sẵn sàng trước ngày nộp.
+   (Đảng viên kết nạp chưa đủ 6 tháng tính đến 21/11/2026 được miễn tự chấm điểm/xếp loại, chỉ in nộp Mẫu 02c + 6d).
 
-3️⃣ BƯỚC 3 - Lấy Mẫu 6d (Nhận xét nơi cư trú) và nộp hồ sơ bản cứng:
-   • Tải bản điện tử trên https://dichvucong.dcs.vn (nếu chưa có bản điện tử cần liên hệ ngay Bí thư Chi bộ nơi cư trú theo hướng dẫn trên trang chủ).
-   • HẠN NỘP ĐẦY ĐỦ HỒ SƠ CHO CHI BỘ: Sáng Chủ nhật, ngày 22/11/2026.
+3️⃣ BƯỚC 3 - Nộp hồ sơ bản cứng & đối soát:
+   • Có mặt đúng giờ tại buổi họp của Chi bộ, nộp trực tiếp đủ 03 bản giấy: Mẫu 02c + Mẫu 6b + Mẫu 6d.
+   • HẠN NỘP BẢN CỨNG CHO CHI BỘ: Sáng Chủ nhật, ngày 22/11/2026.
 
 Trân trọng!
 ```
