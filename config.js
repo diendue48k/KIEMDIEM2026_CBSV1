@@ -1,5 +1,5 @@
 /**
- * CẤU HÌNH HỆ THỐNG
+ * CẤU HÌNH HỆ THỐNG - CHI BỘ SINH VIÊN 2
  * Bật USE_FIREBASE: true để lưu dữ liệu trực tuyến trên Firebase Cloud Firestore (tự động dự phòng localStorage nếu mất kết nối)
  */
 const APP_CONFIG = {
@@ -7,12 +7,13 @@ const APP_CONFIG = {
   USE_FIREBASE: true,
 
   FIREBASE_CONFIG: {
-    apiKey: "AIzaSyAkHv_P8vZd9s0yliPwKUSNhpf1AoFa4jY",
-    authDomain: "csdlkiemdiem.firebaseapp.com",
-    projectId: "csdlkiemdiem",
-    storageBucket: "csdlkiemdiem.firebasestorage.app",
-    messagingSenderId: "827668696597",
-    appId: "1:827668696597:web:c3cf89890061df5a22881c"
+    apiKey: "AIzaSyCeTlE3XaxqIXj9AxPa1HROSdpbdlNmGCw",
+    authDomain: "cbsv-f0558.firebaseapp.com",
+    projectId: "cbsv-f0558",
+    storageBucket: "cbsv-f0558.firebasestorage.app",
+    messagingSenderId: "872631800120",
+    appId: "1:872631800120:web:6cef03c0a7ce66d78631cd",
+    measurementId: "G-2S4Q7ZVJJS"
   },
 
   // Thời hạn mặc định

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hướng Dẫn Sử Dụng Hệ Thống Cho Đảng Viên Năm 2026 - Chi Bộ Sinh Viên 1</title>
+  <title>Hướng Dẫn Sử Dụng Hệ Thống Cho Đảng Viên Năm 2026 - Chi Bộ Sinh Viên 2</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -709,7 +709,7 @@
 
     <header class="hero-header">
       <img src="logo.png" alt="Logo Chi bộ Sinh viên" class="hero-logo">
-      <div class="org-pill">Chi Bộ Sinh Viên 1</div>
+      <div class="org-pill">Chi Bộ Sinh Viên 2</div>
       <h1>Hướng Dẫn Sử Dụng Chi Tiết<br>Dành Cho Đảng Viên Năm 2026</h1>
       <div class="hero-underline"></div>
       <p>Tài liệu hướng dẫn từng bước thực hiện kê khai thông tin trực tuyến, tạo hồ sơ kiểm điểm (Mẫu 02c, Mẫu 6b), lấy nhận xét nơi cư trú (Mẫu 6d) và nộp hồ sơ đúng thời hạn quy định.</p>
@@ -799,7 +799,7 @@
             </ul>
           </li>
           <li>
-            <strong>Mục 3.2 (Đóng góp cho Chi bộ):</strong> Bắt buộc liệt kê tối thiểu 01 hoạt động đã tham gia/đóng góp cho Chi bộ Sinh viên và Chi bộ Sinh viên 1 trong năm học 2025 – 2026 (điền đủ 3 cột: <em>Hoạt động, Thời gian, Các nội dung đã đóng góp</em>). Nhấn <strong><code>+ Thêm hoạt động đóng góp</code></strong> nếu muốn khai thêm.
+            <strong>Mục 3.2 (Đóng góp cho Chi bộ):</strong> Bắt buộc liệt kê tối thiểu 01 hoạt động đã tham gia/đóng góp cho Chi bộ Sinh viên và Chi bộ Sinh viên 2 trong năm học 2025 – 2026 (điền đủ 3 cột: <em>Hoạt động, Thời gian, Các nội dung đã đóng góp</em>). Nhấn <strong><code>+ Thêm hoạt động đóng góp</code></strong> nếu muốn khai thêm.
           </li>
         </ul>
       </div>
@@ -948,8 +948,8 @@
     </section>
 
     <div class="footer-note">
-      <div>Chi bộ Sinh viên 1 — Hướng dẫn sử dụng Hệ thống Hỗ trợ Kiểm điểm, Đánh giá và Xếp loại Đảng viên năm 2026</div>
-      <div>Đây là hệ thống nội bộ, chỉ dùng cho Đảng viên Chi bộ Sinh viên 1. Vui lòng không phát hành ra bên ngoài.</div>
+      <div>Chi bộ Sinh viên 2 — Hướng dẫn sử dụng Hệ thống Hỗ trợ Kiểm điểm, Đánh giá và Xếp loại Đảng viên năm 2026</div>
+      <div>Đây là hệ thống nội bộ, chỉ dùng cho Đảng viên Chi bộ Sinh viên 2. Vui lòng không phát hành ra bên ngoài.</div>
       <div>Bản quyền thuộc về &copy; 2026 - Lê Vĩnh Diện</div>
     </div>
   </div>
@@ -1126,15 +1126,15 @@
       const label = cb.closest('.checklist-item');
       if (label) label.classList.toggle('checked', cb.checked);
       try {
-        const saved = JSON.parse(localStorage.getItem('CBSV1_DOC_CHECKLIST_2026') || '{}');
+        const saved = JSON.parse(localStorage.getItem('CBSV2_DOC_CHECKLIST_2026') || '{}');
         saved[cb.getAttribute('data-key')] = cb.checked;
-        localStorage.setItem('CBSV1_DOC_CHECKLIST_2026', JSON.stringify(saved));
+        localStorage.setItem('CBSV2_DOC_CHECKLIST_2026', JSON.stringify(saved));
       } catch (e) {}
     }
 
     (function restoreChecklist() {
       try {
-        const saved = JSON.parse(localStorage.getItem('CBSV1_DOC_CHECKLIST_2026') || '{}');
+        const saved = JSON.parse(localStorage.getItem('CBSV2_DOC_CHECKLIST_2026') || '{}');
         document.querySelectorAll('.checklist-item input[type="checkbox"]').forEach(cb => {
           const key = cb.getAttribute('data-key');
           if (saved[key]) {

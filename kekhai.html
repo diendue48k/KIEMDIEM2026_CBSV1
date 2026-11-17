@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kê Khai Thông Tin Đánh Giá Kiểm Điểm Năm 2026 - Chi Bộ Sinh Viên 1</title>
+  <title>Kê Khai Thông Tin Đánh Giá Kiểm Điểm Năm 2026 - Chi Bộ Sinh Viên 2</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -1025,7 +1025,7 @@
 
     <header class="hero-header">
       <img src="logo.png" alt="Logo Chi bộ Sinh viên" class="hero-logo">
-      <div class="org-pill">Chi Bộ Sinh Viên 1</div>
+      <div class="org-pill">Chi Bộ Sinh Viên 2</div>
       <h1>Kê Khai Thông Tin Phục Vụ<br>Đánh Giá Kiểm Điểm Năm 2026</h1>
       <div class="hero-underline"></div>
       <p>Đồng chí vui lòng tra cứu thông tin Đảng viên, kiểm tra bổ sung đầy đủ các mục và cam đoan trước khi gửi.</p>
@@ -1277,7 +1277,7 @@
 
           <div class="form-group" style="margin-top: 22px; padding-top: 18px; border-top: 1px dashed var(--border);">
             <label class="required">
-              3.2. Liệt kê những đóng góp cho Chi bộ trong năm học 2025-2026 (Bao gồm các hoạt động của Chi bộ Sinh viên và Chi bộ Sinh viên 1)
+              3.2. Liệt kê những đóng góp cho Chi bộ trong năm học 2025-2026 (Bao gồm các hoạt động của Chi bộ Sinh viên và Chi bộ Sinh viên 2)
             </label>
             <div id="contribTableBody" class="entry-list">
               <div class="entry-card contrib-row">
@@ -1293,7 +1293,7 @@
                 <div class="entry-grid-2">
                   <div class="entry-field">
                     <label class="required">Tên hoạt động</label>
-                    <input type="text" class="contrib-hoatdong" required placeholder="VD: Đại hội Chi bộ Sinh viên 1, Sinh hoạt chuyên đề...">
+                    <input type="text" class="contrib-hoatdong" required placeholder="VD: Đại hội Chi bộ Sinh viên 2, Sinh hoạt chuyên đề...">
                   </div>
                   <div class="entry-field">
                     <label class="required">Thời gian</label>
@@ -1386,8 +1386,8 @@
     </form>
 
     <div class="footer-note">
-      <div>Chi bộ Sinh viên 1 — Hệ thống kê khai kiểm điểm năm 2026</div>
-      <div>Đây là hệ thống nội bộ, chỉ dùng cho Đảng viên Chi bộ Sinh viên 1. Vui lòng không phát hành ra bên ngoài.</div>
+      <div>Chi bộ Sinh viên 2 — Hệ thống kê khai kiểm điểm năm 2026</div>
+      <div>Đây là hệ thống nội bộ, chỉ dùng cho Đảng viên Chi bộ Sinh viên 2. Vui lòng không phát hành ra bên ngoài.</div>
       <div>Bản quyền thuộc về &copy; 2026 - Lê Vĩnh Diện</div>
     </div>
   </div>
@@ -1453,7 +1453,7 @@
         }
 
         currentMember = res.member;
-        sessionStorage.setItem('CBSV1_AUTH', JSON.stringify({ mssv, cccd }));
+        sessionStorage.setItem('CBSV2_AUTH', JSON.stringify({ mssv, cccd }));
         populateMemberForm(currentMember, res.existing);
         memberBox.classList.remove('hidden');
         form.classList.remove('hidden');
@@ -1705,7 +1705,7 @@
         <div class="entry-grid-2">
           <div class="entry-field">
             <label class="required">Tên hoạt động</label>
-            <input type="text" class="contrib-hoatdong" required placeholder="VD: Đại hội Chi bộ Sinh viên 1, Sinh hoạt chuyên đề...">
+            <input type="text" class="contrib-hoatdong" required placeholder="VD: Đại hội Chi bộ Sinh viên 2, Sinh hoạt chuyên đề...">
           </div>
           <div class="entry-field">
             <label class="required">Thời gian</label>
@@ -1861,9 +1861,9 @@
             '<a href="mau-02c.html" style="color:#065f46;font-weight:800;">Tạo hồ sơ để in (Mẫu 02c + 6b)</a> • ' +
             '<a href="index.html" style="color:#065f46;font-weight:800;">Về trang hướng dẫn</a>';
           try {
-            const ck = JSON.parse(localStorage.getItem('CBSV1_CHECKLIST_2026') || '{}');
+            const ck = JSON.parse(localStorage.getItem('CBSV2_CHECKLIST_2026') || '{}');
             ck.kekhai = true;
-            localStorage.setItem('CBSV1_CHECKLIST_2026', JSON.stringify(ck));
+            localStorage.setItem('CBSV2_CHECKLIST_2026', JSON.stringify(ck));
           } catch (e) {}
           submitAlert.classList.add('alert-success');
           submitAlert.classList.remove('hidden');
@@ -1893,18 +1893,18 @@
         const params = new URLSearchParams(window.location.search);
         const urlMssv = (params.get('mssv') || '').trim();
         const fromAdminParam = params.get('fromAdmin') === '1';
-        const actAs = JSON.parse(localStorage.getItem('CBSV1_ADMIN_ACT_AS') || 'null');
-        const isAdminSession = Boolean(sessionStorage.getItem('CBSV1_ADMIN_PASS'));
+        const actAs = JSON.parse(localStorage.getItem('CBSV2_ADMIN_ACT_AS') || 'null');
+        const isAdminSession = Boolean(sessionStorage.getItem('CBSV2_ADMIN_PASS'));
 
         if (actAs && actAs.mssv && actAs.cccd && (fromAdminParam || (urlMssv && actAs.mssv === urlMssv))) {
-          sessionStorage.setItem('CBSV1_AUTH', JSON.stringify({ mssv: actAs.mssv, cccd: actAs.cccd }));
+          sessionStorage.setItem('CBSV2_AUTH', JSON.stringify({ mssv: actAs.mssv, cccd: actAs.cccd }));
         }
         if (fromAdminParam || isAdminSession) {
           const banner = document.getElementById('adminModeBanner');
           if (banner) banner.classList.remove('hidden');
         }
 
-        const saved = JSON.parse(sessionStorage.getItem('CBSV1_AUTH') || 'null');
+        const saved = JSON.parse(sessionStorage.getItem('CBSV2_AUTH') || 'null');
         if (saved && saved.mssv && saved.cccd) {
           document.getElementById('mssv').value = saved.mssv;
           document.getElementById('cccd').value = saved.cccd;

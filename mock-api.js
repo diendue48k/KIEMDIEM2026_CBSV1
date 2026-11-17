@@ -4,9 +4,9 @@
  * nếu chưa bật Firestore / mất kết nối / bị chặn Rules sẽ dự phòng localStorage và báo trạng thái ở Trang Quản trị.
  */
 const MOCK_API = (function () {
-  const STORAGE_KEY = 'CBSV1_MOCK_DB_2026';
+  const STORAGE_KEY = 'CBSV2_MOCK_DB_2026';
   const FIREBASE_SDK_VERSION = '10.14.1';
-  const ADMIN_PASSWORD = 'CBSV1@2026';
+  const ADMIN_PASSWORD = 'CBSV2@2026';
 
   const DEFAULT_DB = {
     links: {

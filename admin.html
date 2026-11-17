@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cổng Quản Trị - Chi Bộ Sinh Viên 1</title>
+  <title>Cổng Quản Trị - Chi Bộ Sinh Viên 2</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
   <style>
@@ -830,7 +830,7 @@
 
     <header class="hero-header">
       <img src="logo.png" alt="Logo Chi bộ Sinh viên" class="hero-logo">
-      <div class="org-pill">Chi Bộ Sinh Viên 1</div>
+      <div class="org-pill">Chi Bộ Sinh Viên 2</div>
       <h1>Cổng Quản Trị Hệ Thống Năm 2026</h1>
       <div class="hero-underline"></div>
       <p>Cấu hình đường link biểu mẫu, theo dõi tiến độ kê khai và xuất/nhập dữ liệu Đảng viên.</p>
@@ -1073,8 +1073,8 @@
     </div>
 
     <div class="footer-note" style="text-align: center; font-size: 0.8rem; color: var(--text-muted); line-height: 1.6; margin-top: 22px;">
-      <div>Chi bộ Sinh viên 1 — Cổng quản trị Hệ thống kiểm điểm năm 2026</div>
-      <div>Đây là hệ thống nội bộ, chỉ dùng cho Đảng viên Chi bộ Sinh viên 1. Vui lòng không phát hành ra bên ngoài.</div>
+      <div>Chi bộ Sinh viên 2 — Cổng quản trị Hệ thống kiểm điểm năm 2026</div>
+      <div>Đây là hệ thống nội bộ, chỉ dùng cho Đảng viên Chi bộ Sinh viên 2. Vui lòng không phát hành ra bên ngoài.</div>
       <div>Bản quyền thuộc về &copy; 2026 - Lê Vĩnh Diện</div>
     </div>
   </div>
@@ -1335,7 +1335,7 @@
   <script src="config.js"></script>
   <script src="mock-api.js"></script>
   <script>
-    let adminPassword = sessionStorage.getItem('CBSV1_ADMIN_PASS') || '';
+    let adminPassword = sessionStorage.getItem('CBSV2_ADMIN_PASS') || '';
     let dashboardData = null;
     let parsedImportRows = [];
 
@@ -1374,7 +1374,7 @@
 
       if (!ok) {
         adminPassword = '';
-        sessionStorage.removeItem('CBSV1_ADMIN_PASS');
+        sessionStorage.removeItem('CBSV2_ADMIN_PASS');
       }
     }
 
@@ -1387,7 +1387,7 @@
           alertBox.classList.remove('hidden');
           return false;
         }
-        sessionStorage.setItem('CBSV1_ADMIN_PASS', adminPassword);
+        sessionStorage.setItem('CBSV2_ADMIN_PASS', adminPassword);
         dashboardData = res;
         document.getElementById('loginView').classList.add('hidden');
         document.getElementById('dashboardView').classList.remove('hidden');
@@ -1463,7 +1463,7 @@
     }
 
     function logout() {
-      sessionStorage.removeItem('CBSV1_ADMIN_PASS');
+      sessionStorage.removeItem('CBSV2_ADMIN_PASS');
       location.reload();
     }
 
@@ -1808,8 +1808,8 @@
         return;
       }
       try {
-        sessionStorage.setItem('CBSV1_AUTH', JSON.stringify({ mssv: m.mssv, cccd: m.cccd }));
-        localStorage.setItem('CBSV1_ADMIN_ACT_AS', JSON.stringify({
+        sessionStorage.setItem('CBSV2_AUTH', JSON.stringify({ mssv: m.mssv, cccd: m.cccd }));
+        localStorage.setItem('CBSV2_ADMIN_ACT_AS', JSON.stringify({
           mssv: m.mssv,
           cccd: m.cccd,
           hoTen: m.hoTen,
@@ -1817,7 +1817,7 @@
           ts: Date.now()
         }));
         if (m.docDraft) {
-          localStorage.setItem('CBSV1_DOC_DRAFT_2026_' + m.mssv, JSON.stringify(m.docDraft));
+          localStorage.setItem('CBSV2_DOC_DRAFT_2026_' + m.mssv, JSON.stringify(m.docDraft));
         }
       } catch (e) {}
       window.location.href = `${targetPage}?mssv=${encodeURIComponent(m.mssv)}&fromAdmin=1`;
@@ -2146,7 +2146,7 @@
           const savedM = (dashboardData.members || []).find(x => x.mssv === member.mssv);
           if (savedM && savedM.docDraft) {
             try {
-              localStorage.setItem('CBSV1_DOC_DRAFT_2026_' + member.mssv, JSON.stringify(savedM.docDraft));
+              localStorage.setItem('CBSV2_DOC_DRAFT_2026_' + member.mssv, JSON.stringify(savedM.docDraft));
             } catch (err) {}
           }
         }

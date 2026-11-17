@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tạo Bản Kiểm Điểm Mẫu 02c Năm 2026 - Chi Bộ Sinh Viên 1</title>
+  <title>Tạo Bản Kiểm Điểm Mẫu 02c Năm 2026 - Chi Bộ Sinh Viên 2</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/pizzip@3.1.6/dist/pizzip.js"></script>
   <script src="https://unpkg.com/docxtemplater@3.47.2/build/docxtemplater.js"></script>
@@ -732,7 +732,7 @@
 
     <header class="hero-header">
       <img src="logo.png" alt="Logo Chi bộ Sinh viên" class="hero-logo">
-      <div class="org-pill">Chi Bộ Sinh Viên 1</div>
+      <div class="org-pill">Chi Bộ Sinh Viên 2</div>
       <h1>Tạo Hồ Sơ Để In<br>Mẫu 02c + Mẫu 6b Năm 2026</h1>
       <div class="hero-underline"></div>
       <p>Điền một lần, hệ thống xuất cùng lúc 2 file Word: Bản kiểm điểm (Mẫu 02c) và Phiếu bổ sung hồ sơ Đảng viên (Mẫu 6b).</p>
@@ -1127,8 +1127,8 @@
     </form>
 
     <div class="footer-note">
-      <div>Chi bộ Sinh viên 1 — Công cụ tạo Bản kiểm điểm Mẫu 02c năm 2026</div>
-      <div>Đây là hệ thống nội bộ, chỉ dùng cho Đảng viên Chi bộ Sinh viên 1. Vui lòng không phát hành ra bên ngoài.</div>
+      <div>Chi bộ Sinh viên 2 — Công cụ tạo Bản kiểm điểm Mẫu 02c năm 2026</div>
+      <div>Đây là hệ thống nội bộ, chỉ dùng cho Đảng viên Chi bộ Sinh viên 2. Vui lòng không phát hành ra bên ngoài.</div>
       <div>Bản quyền thuộc về &copy; 2026 - Lê Vĩnh Diện</div>
     </div>
   </div>
@@ -1206,7 +1206,7 @@
     ];
 
     function getDraftStorageKey(mssv) {
-      return 'CBSV1_DOC_DRAFT_2026_' + String(mssv || '').trim();
+      return 'CBSV2_DOC_DRAFT_2026_' + String(mssv || '').trim();
     }
 
     function readLocalDraft(mssv) {
@@ -1531,7 +1531,7 @@
 
         currentMember = res.member;
         lastLookupExisting = res.existing || null;
-        sessionStorage.setItem('CBSV1_AUTH', JSON.stringify({ mssv, cccd }));
+        sessionStorage.setItem('CBSV2_AUTH', JSON.stringify({ mssv, cccd }));
         document.getElementById('hoTen').value = currentMember.hoTen || '';
         document.getElementById('ngaySinh').value = currentMember.ngaySinh || '';
 
@@ -1828,18 +1828,18 @@
         const params = new URLSearchParams(window.location.search);
         const urlMssv = (params.get('mssv') || '').trim();
         const fromAdminParam = params.get('fromAdmin') === '1';
-        const actAs = JSON.parse(localStorage.getItem('CBSV1_ADMIN_ACT_AS') || 'null');
-        const isAdminSession = Boolean(sessionStorage.getItem('CBSV1_ADMIN_PASS'));
+        const actAs = JSON.parse(localStorage.getItem('CBSV2_ADMIN_ACT_AS') || 'null');
+        const isAdminSession = Boolean(sessionStorage.getItem('CBSV2_ADMIN_PASS'));
 
         if (actAs && actAs.mssv && actAs.cccd && (fromAdminParam || (urlMssv && actAs.mssv === urlMssv))) {
-          sessionStorage.setItem('CBSV1_AUTH', JSON.stringify({ mssv: actAs.mssv, cccd: actAs.cccd }));
+          sessionStorage.setItem('CBSV2_AUTH', JSON.stringify({ mssv: actAs.mssv, cccd: actAs.cccd }));
         }
         if (fromAdminParam || isAdminSession) {
           const banner = document.getElementById('adminModeBanner');
           if (banner) banner.classList.remove('hidden');
         }
 
-        const saved = JSON.parse(sessionStorage.getItem('CBSV1_AUTH') || 'null');
+        const saved = JSON.parse(sessionStorage.getItem('CBSV2_AUTH') || 'null');
         if (saved && saved.mssv && saved.cccd) {
           document.getElementById('mssv').value = saved.mssv;
           document.getElementById('cccd').value = saved.cccd;
