@@ -1698,7 +1698,7 @@
       handleSaveDraft02c(true).catch(() => {});
 
       try {
-        const response = await fetch('templates/mau-02c.docx');
+        const response = await fetch('templates/mau-02c.docx?v=' + Date.now());
         if (!response.ok) throw new Error('Không tải được file mẫu mau-02c.docx.');
         const arrayBuffer = await response.arrayBuffer();
 
@@ -1751,7 +1751,7 @@
         const safeName = (currentMember.hoTen || 'DangVien').replace(/\s+/g, '_');
 
         // ===== Tạo tiếp Mẫu 6b =====
-        const res6b = await fetch('templates/mau-6b.docx');
+        const res6b = await fetch('templates/mau-6b.docx?v=' + Date.now());
         if (!res6b.ok) throw new Error('Không tải được file mẫu mau-6b.docx.');
         const doc6b = new window.docxtemplater(new PizZip(await res6b.arrayBuffer()), {
           paragraphLoop: true,

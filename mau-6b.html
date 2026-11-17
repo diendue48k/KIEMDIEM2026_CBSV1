@@ -1134,7 +1134,7 @@
       handleSaveDraft6b(true).catch(() => {});
 
       try {
-        const response = await fetch('templates/mau-6b.docx');
+        const response = await fetch('templates/mau-6b.docx?v=' + Date.now());
         if (!response.ok) throw new Error('Không tải được file mẫu mau-6b.docx.');
         const arrayBuffer = await response.arrayBuffer();
 
