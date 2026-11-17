@@ -7,14 +7,12 @@ const APP_CONFIG = {
   USE_FIREBASE: true,
 
   FIREBASE_CONFIG: {
-    apiKey: "AIzaSyCeTlE3XaxqIXj9AxPa1HROSdpbdlNmGCw",
-    authDomain: "cbsv-f0558.firebaseapp.com",
-    projectId: "cbsv-f0558",
-    databaseId: "default",
-    storageBucket: "cbsv-f0558.firebasestorage.app",
-    messagingSenderId: "872631800120",
-    appId: "1:872631800120:web:6cef03c0a7ce66d78631cd",
-    measurementId: "G-2S4Q7ZVJJS"
+    apiKey: "AIzaSyC_qbbjgXwAFuvF_y_tILtiN3DnAsvQFFo",
+    authDomain: "kiemdiem2026cbsv2.firebaseapp.com",
+    projectId: "kiemdiem2026cbsv2",
+    storageBucket: "kiemdiem2026cbsv2.firebasestorage.app",
+    messagingSenderId: "469698364723",
+    appId: "1:469698364723:web:ac76e6ef8b734bc89eea46"
   },
 
   // Thời hạn mặc định
