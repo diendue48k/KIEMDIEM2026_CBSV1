@@ -1167,6 +1167,10 @@
             <input type="text" id="chiBoCuTru" required placeholder="Nhập tên Chi bộ sinh hoạt nơi cư trú (VD: Chi bộ Tổ dân phố An Thượng 5, Chi bộ Thôn Bất Nhị...)">
           </div>
           <div class="form-group">
+            <label for="dangBoPhuongXa" class="required">Đảng bộ phường/xã</label>
+            <input type="text" id="dangBoPhuongXa" required placeholder="Nhập tên Đảng bộ phường/xã (VD: Đảng bộ phường Ngũ Hành Sơn, Đảng bộ xã Hòa Tiến...)">
+          </div>
+          <div class="form-group">
             <label for="noiOHienNay" class="required">
               Nơi ở hiện nay (Nơi đã tạm trú hoặc thường trú *Nơi đăng ký sinh hoạt 221, giấy 213 trước đây)
             </label>
@@ -1500,6 +1504,7 @@
       }
 
       document.getElementById('chiBoCuTru').value = (existing && existing.chiBoCuTru) ? existing.chiBoCuTru : (m.chiBoCuTru || '');
+      document.getElementById('dangBoPhuongXa').value = (existing && existing.dangBoPhuongXa) ? existing.dangBoPhuongXa : (m.dangBoPhuongXa || '');
       document.getElementById('noiOHienNay').value = (existing && existing.noiOHienNay) ? existing.noiOHienNay : (m.diaChiHienTai || '');
       document.getElementById('kqHocTapHK1').value = existing ? (existing.kqHocTapHK1 || '') : '';
       document.getElementById('kqRenLuyenHK1').value = existing ? (existing.kqRenLuyenHK1 || '') : '';
@@ -1828,6 +1833,7 @@
         mssv: currentMember.mssv,
         cccd: currentMember.cccd,
         chiBoCuTru: document.getElementById('chiBoCuTru').value.trim(),
+        dangBoPhuongXa: document.getElementById('dangBoPhuongXa').value.trim(),
         noiOHienNay: document.getElementById('noiOHienNay').value.trim(),
         kqHocTapHK1: document.getElementById('kqHocTapHK1').value.trim(),
         kqRenLuyenHK1: document.getElementById('kqRenLuyenHK1').value.trim(),

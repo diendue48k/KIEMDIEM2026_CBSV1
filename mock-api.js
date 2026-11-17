@@ -251,6 +251,11 @@ const MOCK_API = (function () {
         ['chiBoCuTru', 'Chi bộ nơi cư trú', 'Chi bộ nơi cư trú (221)', 'Chi bộ Sinh hoạt nơi cư trú'],
         ['chi bộ nơi cư trú', 'sinh hoạt nơi cư trú', 'nơi cư trú (221)']
       ),
+      dangBoPhuongXa: pickCol(
+        item,
+        ['dangBoPhuongXa', 'Đảng bộ phường/xã', 'Đảng bộ phường xã', 'Đảng bộ nơi cư trú'],
+        ['đảng bộ phường', 'đảng bộ xã', 'đảng bộ nơi cư trú']
+      ),
       soTDV: String(rawSoTdv || '').trim()
     };
   }
@@ -260,6 +265,7 @@ const MOCK_API = (function () {
       mssv: member.mssv,
       thoiGianGui: nowVN(),
       chiBoCuTru: String(p.chiBoCuTru || ''),
+      dangBoPhuongXa: String(p.dangBoPhuongXa || ''),
       noiOHienNay: String(p.noiOHienNay || ''),
       kqHocTapHK1: String(p.kqHocTapHK1 || ''),
       kqRenLuyenHK1: String(p.kqRenLuyenHK1 || ''),
@@ -346,6 +352,7 @@ const MOCK_API = (function () {
           'Loại Đảng viên': m.loaiDangVien || '',
           'Số thẻ Đảng viên': m.soTDV || '',
           'Chi bộ Sinh hoạt nơi cư trú': sub.chiBoCuTru || m.chiBoCuTru || '',
+          'Đảng bộ phường/xã': sub.dangBoPhuongXa || m.dangBoPhuongXa || '',
           'Nơi ở hiện nay': sub.noiOHienNay || m.diaChiHienTai || '',
           'KQ Học tập HK1 (2025-2026)': sub.kqHocTapHK1 || '',
           'KQ Rèn luyện HK1 (2025-2026)': sub.kqRenLuyenHK1 || '',
@@ -545,6 +552,7 @@ const MOCK_API = (function () {
         const sp = body.submissionPatch;
         db.submissions[newMssv] = Object.assign({}, db.submissions[newMssv], {
           chiBoCuTru: String(sp.chiBoCuTru || ''),
+          dangBoPhuongXa: String(sp.dangBoPhuongXa || ''),
           noiOHienNay: String(sp.noiOHienNay || ''),
           kqHocTapHK1: String(sp.kqHocTapHK1 || ''),
           kqRenLuyenHK1: String(sp.kqRenLuyenHK1 || ''),
@@ -581,10 +589,57 @@ const MOCK_API = (function () {
       if (!mssv) return { success: false, message: 'Thiếu MSSV cần xóa.' };
       db.members = db.members.filter(x => x.mssv !== mssv);
       if (db.submissions && db.submissions[mssv]) delete db.submissions[mssv];
+      if (db.docDrafts && db.docDrafts[mssv]) delete db.docDrafts[mssv];
+      db.docLogs = (db.docLogs || []).filter(l => l.mssv !== mssv);
       saveLocalDb(db);
       return {
         success: true,
         message: `Đã xóa Đảng viên (${mssv}) khỏi danh sách cục bộ.`,
+        firebaseConnected: false,
+        firebaseError: extra.firebaseError || ''
+      };
+    }
+
+    if (body.action === 'adminResetMemberSubmission') {
+      if (body.password !== ADMIN_PASSWORD) return { success: false, message: 'Mật khẩu quản trị không đúng.' };
+      const mssv = String(body.mssv || '').trim();
+      if (!mssv) return { success: false, message: 'Thiếu MSSV cần reset kê khai.' };
+      if (db.submissions && db.submissions[mssv]) delete db.submissions[mssv];
+      if (db.docDrafts && db.docDrafts[mssv]) delete db.docDrafts[mssv];
+      db.docLogs = (db.docLogs || []).filter(l => l.mssv !== mssv);
+      saveLocalDb(db);
+      return {
+        success: true,
+        message: `Đã reset dữ liệu kê khai của Đảng viên (${mssv}) trên bộ nhớ cục bộ.`,
+        firebaseConnected: false,
+        firebaseError: extra.firebaseError || ''
+      };
+    }
+
+    if (body.action === 'adminResetAllSubmissions') {
+      if (body.password !== ADMIN_PASSWORD) return { success: false, message: 'Mật khẩu quản trị không đúng.' };
+      db.submissions = {};
+      db.docDrafts = {};
+      db.docLogs = [];
+      saveLocalDb(db);
+      return {
+        success: true,
+        message: 'Đã reset toàn bộ dữ liệu kê khai & lịch sử tạo biểu mẫu trên bộ nhớ cục bộ.',
+        firebaseConnected: false,
+        firebaseError: extra.firebaseError || ''
+      };
+    }
+
+    if (body.action === 'adminResetMembers') {
+      if (body.password !== ADMIN_PASSWORD) return { success: false, message: 'Mật khẩu quản trị không đúng.' };
+      db.members = [];
+      db.submissions = {};
+      db.docDrafts = {};
+      db.docLogs = [];
+      saveLocalDb(db);
+      return {
+        success: true,
+        message: 'Đã reset toàn bộ danh sách Đảng viên trên bộ nhớ cục bộ.',
         firebaseConnected: false,
         firebaseError: extra.firebaseError || ''
       };
@@ -922,6 +977,7 @@ const MOCK_API = (function () {
           const sp = body.submissionPatch;
           updatedSub = Object.assign(baseSub, {
             chiBoCuTru: String(sp.chiBoCuTru || ''),
+            dangBoPhuongXa: String(sp.dangBoPhuongXa || ''),
             noiOHienNay: String(sp.noiOHienNay || ''),
             kqHocTapHK1: String(sp.kqHocTapHK1 || ''),
             kqRenLuyenHK1: String(sp.kqRenLuyenHK1 || ''),
@@ -993,11 +1049,99 @@ const MOCK_API = (function () {
       const localDb = getLocalDb();
       localDb.members = localDb.members.filter(x => x.mssv !== mssv);
       if (localDb.submissions && localDb.submissions[mssv]) delete localDb.submissions[mssv];
+      if (localDb.docDrafts && localDb.docDrafts[mssv]) delete localDb.docDrafts[mssv];
+      localDb.docLogs = (localDb.docLogs || []).filter(l => l.mssv !== mssv);
       saveLocalDb(localDb);
 
       return {
         success: true,
         message: `Đã xóa Đảng viên (${mssv}) khỏi Firebase thành công!`,
+        firebaseConnected: true
+      };
+    }
+
+    async function clearFirestoreCollection(colName) {
+      const snap = await withTimeout(
+        fs.collection(colName).get(),
+        15000,
+        `Quá thời gian đọc dữ liệu ${colName} trên Firestore.`
+      );
+      if (snap.empty) return 0;
+      const docs = snap.docs;
+      for (let i = 0; i < docs.length; i += 400) {
+        const chunk = docs.slice(i, i + 400);
+        const batch = fs.batch();
+        chunk.forEach(d => batch.delete(d.ref));
+        await withTimeout(batch.commit(), 15000, `Quá thời gian xóa dữ liệu ${colName} trên Firestore.`);
+      }
+      return docs.length;
+    }
+
+    if (body.action === 'adminResetMemberSubmission') {
+      if (body.password !== ADMIN_PASSWORD) return { success: false, message: 'Mật khẩu quản trị không đúng.' };
+      const mssv = String(body.mssv || '').trim();
+      if (!mssv) return { success: false, message: 'Thiếu MSSV cần reset kê khai.' };
+      const safeId = docSafeId(mssv);
+      const logSnap = await withTimeout(
+        fs.collection('docLogs').where('mssv', '==', mssv).get(),
+        12000,
+        'Quá thời gian đọc lịch sử biểu mẫu trên Firestore.'
+      );
+      const batch = fs.batch();
+      batch.delete(fs.collection('submissions').doc(safeId));
+      batch.delete(fs.collection('docDrafts').doc(safeId));
+      logSnap.forEach(doc => batch.delete(doc.ref));
+      await withTimeout(batch.commit(), 15000, 'Quá thời gian reset dữ liệu kê khai trên Firestore.');
+
+      const localDb = getLocalDb();
+      if (localDb.submissions && localDb.submissions[mssv]) delete localDb.submissions[mssv];
+      if (localDb.docDrafts && localDb.docDrafts[mssv]) delete localDb.docDrafts[mssv];
+      localDb.docLogs = (localDb.docLogs || []).filter(l => l.mssv !== mssv);
+      saveLocalDb(localDb);
+
+      return {
+        success: true,
+        message: `Đã reset dữ liệu kê khai của Đảng viên (${mssv}) trên Firebase thành công!`,
+        firebaseConnected: true
+      };
+    }
+
+    if (body.action === 'adminResetAllSubmissions') {
+      if (body.password !== ADMIN_PASSWORD) return { success: false, message: 'Mật khẩu quản trị không đúng.' };
+      await clearFirestoreCollection('submissions');
+      await clearFirestoreCollection('docLogs');
+      await clearFirestoreCollection('docDrafts');
+
+      const localDb = getLocalDb();
+      localDb.submissions = {};
+      localDb.docDrafts = {};
+      localDb.docLogs = [];
+      saveLocalDb(localDb);
+
+      return {
+        success: true,
+        message: 'Đã reset toàn bộ dữ liệu kê khai & lịch sử tạo biểu mẫu trên Firebase thành công!',
+        firebaseConnected: true
+      };
+    }
+
+    if (body.action === 'adminResetMembers') {
+      if (body.password !== ADMIN_PASSWORD) return { success: false, message: 'Mật khẩu quản trị không đúng.' };
+      await clearFirestoreCollection('members');
+      await clearFirestoreCollection('submissions');
+      await clearFirestoreCollection('docLogs');
+      await clearFirestoreCollection('docDrafts');
+
+      const localDb = getLocalDb();
+      localDb.members = [];
+      localDb.submissions = {};
+      localDb.docDrafts = {};
+      localDb.docLogs = [];
+      saveLocalDb(localDb);
+
+      return {
+        success: true,
+        message: 'Đã reset toàn bộ danh sách Đảng viên trên Firebase thành công!',
         firebaseConnected: true
       };
     }
@@ -1015,7 +1159,10 @@ const MOCK_API = (function () {
       'adminSaveLinks',
       'adminImportMembers',
       'adminSaveMember',
-      'adminDeleteMember'
+      'adminDeleteMember',
+      'adminResetMemberSubmission',
+      'adminResetAllSubmissions',
+      'adminResetMembers'
     ]);
     if (ADMIN_ACTIONS.has(body.action)) {
       if (body.password !== ADMIN_PASSWORD) {
