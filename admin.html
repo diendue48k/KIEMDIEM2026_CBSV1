@@ -63,7 +63,7 @@
     .top-tricolor-bar span:nth-child(2) { background-color: var(--gold-bright); }
 
     .container {
-      max-width: 1120px;
+      max-width: 1280px;
       margin: 0 auto;
       padding-top: 28px;
       display: flex;
@@ -250,11 +250,91 @@
       gap: 8px;
     }
     .io-group-label {
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       font-weight: 800;
       text-transform: uppercase;
       color: var(--text-muted);
-      margin-right: 4px;
+      margin-right: 2px;
+    }
+
+    .action-dropdown {
+      position: relative;
+      display: inline-block;
+    }
+    .action-menu {
+      position: absolute;
+      top: calc(100% + 6px);
+      right: 0;
+      min-width: 240px;
+      background: #ffffff;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      box-shadow: 0 12px 28px rgba(31, 26, 24, 0.14);
+      padding: 6px;
+      z-index: 50;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .action-menu-item {
+      width: 100%;
+      text-align: left;
+      background: transparent;
+      border: none;
+      border-radius: 8px;
+      padding: 9px 12px;
+      font-family: inherit;
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: var(--text-main);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+    .action-menu-item:hover {
+      background: #fdf6f2;
+      color: var(--crimson);
+    }
+    .action-menu-item.highlight {
+      color: var(--crimson-dark);
+      font-weight: 700;
+    }
+    .action-menu-item.danger {
+      color: #991b1b;
+    }
+    .action-menu-item.danger:hover {
+      background: #fef2f2;
+      color: #dc2626;
+    }
+
+    .member-cell-name {
+      font-weight: 800;
+      color: var(--text-main);
+      line-height: 1.3;
+    }
+    .member-cell-sub {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .member-type-tag {
+      display: inline-block;
+      padding: 1px 7px;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      background: #f5efe9;
+      color: var(--text-secondary);
+    }
+    .member-type-tag.chinh-thuc {
+      background: #fef2f2;
+      color: var(--crimson-dark);
     }
 
     /* Stats */
@@ -355,6 +435,7 @@
       border-radius: 999px;
       font-size: 0.76rem;
       font-weight: 700;
+      white-space: nowrap;
     }
 
     .badge-success { background: var(--success-bg); color: var(--success-text); }
@@ -665,47 +746,58 @@
           <div class="io-quickbar">
             <div class="io-quickbar-row">
               <div class="io-btn-group">
-                <span class="io-group-label">Xuất Excel:</span>
-                <button type="button" class="btn btn-primary btn-sm" onclick="exportSubmissions()">
-                  <svg class="icon-svg" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                  <span>Xuất ĐÃ kê khai (.xlsx)</span>
-                </button>
-                <button type="button" class="btn btn-gold btn-sm" onclick="exportPending()">
-                  <svg class="icon-svg" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                  <span>Xuất CHƯA kê khai (.xlsx)</span>
-                </button>
-                <button type="button" class="btn btn-outline btn-sm" onclick="exportSourceMembers()">
-                  <svg class="icon-svg" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                  <span>Xuất DS Đảng viên (.xlsx)</span>
-                </button>
-                <button type="button" class="btn btn-outline btn-sm" onclick="exportAllSummary()" style="border-color: var(--crimson); color: var(--crimson);">
-                  <svg class="icon-svg" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                  <span>Xuất TẤT CẢ tổng hợp (.xlsx)</span>
-                </button>
-              </div>
-              <div class="io-btn-group">
-                <span class="io-group-label">Quản lý ĐV:</span>
                 <button type="button" class="btn btn-primary btn-sm" onclick="openEditMember('')">
                   <span>+ Thêm Đảng viên</span>
                 </button>
-                <button type="button" class="btn btn-gold btn-sm" onclick="downloadImportTemplate()">
-                  <svg class="icon-svg" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                  <span>Tải mẫu nhập (.xlsx)</span>
-                </button>
-                <label for="importFile" class="btn btn-outline btn-sm" style="cursor: pointer;">
+                <label for="importFile" class="btn btn-outline btn-sm" style="cursor: pointer; margin-bottom: 0;">
                   <svg class="icon-svg" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
                   <span>Nhập danh sách (.xlsx/.csv)</span>
                 </label>
                 <input type="file" id="importFile" accept=".xlsx,.xls,.csv" onchange="previewImportFile(event)" style="display: none;">
+                <button type="button" class="btn btn-outline btn-sm" onclick="downloadImportTemplate()">
+                  <svg class="icon-svg" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  <span>Tải mẫu nhập</span>
+                </button>
                 <button type="button" id="btnImport" class="btn btn-primary btn-sm hidden" onclick="confirmImport()">
                   Xác nhận nhập vào Hệ thống
                 </button>
-                <button type="button" id="btnResetAllSub" class="btn btn-outline btn-sm" style="color: #92400e; border-color: #fcd34d;" onclick="resetAllSubmissions()">
-                  Reset kê khai toàn bộ
-                </button>
-                <button type="button" id="btnResetMembers" class="btn btn-outline btn-sm" style="color: #991b1b; border-color: #fecaca;" onclick="resetAllMembers()">
-                  Reset DS Đảng viên
-                </button>
+              </div>
+
+              <div class="io-btn-group">
+                <div class="action-dropdown">
+                  <button type="button" class="btn btn-gold btn-sm" onclick="toggleActionMenu('exportMenu', event)">
+                    <svg class="icon-svg" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    <span>Xuất báo cáo Excel &#9662;</span>
+                  </button>
+                  <div id="exportMenu" class="action-menu hidden">
+                    <button type="button" class="action-menu-item highlight" onclick="closeActionMenus(); exportAllSummary()">
+                      <span>Xuất TẤT CẢ tổng hợp (.xlsx)</span>
+                    </button>
+                    <button type="button" class="action-menu-item" onclick="closeActionMenus(); exportSubmissions()">
+                      <span>Xuất ĐÃ kê khai (.xlsx)</span>
+                    </button>
+                    <button type="button" class="action-menu-item" onclick="closeActionMenus(); exportPending()">
+                      <span>Xuất CHƯA kê khai (.xlsx)</span>
+                    </button>
+                    <button type="button" class="action-menu-item" onclick="closeActionMenus(); exportSourceMembers()">
+                      <span>Xuất DS Đảng viên (.xlsx)</span>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="action-dropdown">
+                  <button type="button" class="btn btn-outline btn-sm" style="color: #991b1b; border-color: #fecaca;" onclick="toggleActionMenu('resetMenu', event)">
+                    <span>Reset dữ liệu &#9662;</span>
+                  </button>
+                  <div id="resetMenu" class="action-menu hidden">
+                    <button type="button" id="btnResetAllSub" class="action-menu-item danger" onclick="closeActionMenus(); resetAllSubmissions()">
+                      <span>Reset kê khai toàn bộ</span>
+                    </button>
+                    <button type="button" id="btnResetMembers" class="action-menu-item danger" onclick="closeActionMenus(); resetAllMembers()">
+                      <span>Reset DS Đảng viên</span>
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
             <div id="importPreview" style="font-size: 0.85rem; font-weight: 600; color: var(--crimson-dark); display: none;"></div>
@@ -716,15 +808,12 @@
             <table>
               <thead>
                 <tr>
-                  <th>STT</th>
-                  <th>Họ và tên</th>
-                  <th>MSSV</th>
+                  <th style="width: 48px; text-align: center;">STT</th>
+                  <th>Đảng viên</th>
                   <th>Nhóm</th>
                   <th>Khoa</th>
-                  <th>Loại ĐV</th>
-                  <th>Trạng thái</th>
-                  <th>Tạo hồ sơ in</th>
-                  <th>Thời gian gửi</th>
+                  <th>Kê khai</th>
+                  <th>Hồ sơ in</th>
                   <th>Tự xếp loại</th>
                   <th>Thao tác</th>
                 </tr>
@@ -1229,6 +1318,21 @@
     let logsPage = 1;
     let logsPageSize = 15;
 
+    function closeActionMenus() {
+      document.querySelectorAll('.action-menu').forEach(m => m.classList.add('hidden'));
+    }
+
+    function toggleActionMenu(menuId, event) {
+      if (event) event.stopPropagation();
+      const target = document.getElementById(menuId);
+      if (!target) return;
+      const wasHidden = target.classList.contains('hidden');
+      closeActionMenus();
+      if (wasHidden) target.classList.remove('hidden');
+    }
+
+    document.addEventListener('click', closeActionMenus);
+
     function onMembersFilterChange() {
       membersPage = 1;
       renderMembersTable();
@@ -1332,7 +1436,7 @@
       });
 
       if (filtered.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="11" style="text-align:center; padding: 24px;">Không có dữ liệu phù hợp.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding: 24px;">Không có dữ liệu phù hợp.</td></tr>';
         renderPaginationBar({ containerId: 'membersPagination', totalItems: 0, page: 1, pageSize: membersPageSize, itemLabel: 'Đảng viên', pageFn: 'setMembersPage', sizeFn: 'setMembersPageSize' });
         return;
       }
@@ -1351,15 +1455,19 @@
 
       tbody.innerHTML = pageRows.map((m, idx) => `
         <tr>
-          <td>${pg.startIdx + idx + 1}</td>
-          <td><strong>${escapeHtml(m.hoTen)}</strong></td>
-          <td>${escapeHtml(m.mssv)}</td>
+          <td style="text-align: center; color: var(--text-muted); font-weight: 700;">${pg.startIdx + idx + 1}</td>
+          <td>
+            <div class="member-cell-name">${escapeHtml(m.hoTen)}</div>
+            <div class="member-cell-sub">
+              <span>${escapeHtml(m.mssv)}</span>
+              ${m.loaiDangVien ? `<span class="member-type-tag ${m.loaiDangVien === 'Chính thức' ? 'chinh-thuc' : ''}">${escapeHtml(m.loaiDangVien)}</span>` : ''}
+            </div>
+          </td>
           <td>${escapeHtml(m.nhom)}</td>
           <td>${escapeHtml(m.khoa)}</td>
-          <td>${escapeHtml(m.loaiDangVien)}</td>
           <td>
             ${m.daKeKhai
-              ? '<span class="badge badge-success">Đã kê khai</span>'
+              ? `<span class="badge badge-success">Đã kê khai</span>${m.thoiGianGui ? `<div style="font-size:0.74rem;color:var(--text-muted);margin-top:3px;">${escapeHtml(m.thoiGianGui)}</div>` : ''}`
               : '<span class="badge badge-danger">Chưa kê khai</span>'}
           </td>
           <td>
@@ -1369,13 +1477,12 @@
                 ? '<span class="badge" style="background:var(--gold-tint);color:#92400e;border:1px solid #fcd34d;">Đã lưu nháp</span>'
                 : '<span class="badge badge-danger">Chưa tạo</span>')}
           </td>
-          <td>${escapeHtml(m.thoiGianGui || '-')}</td>
           <td>${escapeHtml(m.tuXepLoai || '-')}</td>
           <td>
-            <div style="display: flex; gap: 5px; flex-wrap: wrap;">
+            <div style="display: flex; gap: 5px; flex-wrap: nowrap;">
               <button class="btn btn-gold btn-xs" onclick="openEditMember('${escapeHtml(m.mssv)}')">Sửa</button>
-              <button class="btn btn-outline btn-xs" style="border-color:#f3b8b9; color:var(--crimson-dark);" onclick="openMemberTool('${escapeHtml(m.mssv)}', 'mau-02c.html')">Hồ sơ 02c/6b</button>
-              <button class="btn btn-outline btn-xs" onclick="openMemberTool('${escapeHtml(m.mssv)}', 'mau-6b.html')">Mẫu 6b</button>
+              <button class="btn btn-outline btn-xs" style="border-color:#f3b8b9; color:var(--crimson-dark);" onclick="openMemberTool('${escapeHtml(m.mssv)}', 'mau-02c.html')">02c/6b</button>
+              <button class="btn btn-outline btn-xs" onclick="openMemberTool('${escapeHtml(m.mssv)}', 'mau-6b.html')">6b</button>
               ${m.daKeKhai
                 ? `<button class="btn btn-outline btn-xs" onclick="openDetail('${escapeHtml(m.mssv)}')">Xem</button>`
                 : ''}
