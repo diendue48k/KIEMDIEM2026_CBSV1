@@ -1009,6 +1009,51 @@
       white-space: nowrap;
     }
     .admin-mode-back:hover { background: var(--crimson-dark); }
+    .btn-gold {
+      background: linear-gradient(135deg, var(--gold) 0%, #f59e0b 100%);
+      color: var(--crimson-dark);
+      border: 1px solid #f59e0b;
+      font-weight: 700;
+    }
+    .btn-gold:hover {
+      filter: brightness(1.05);
+      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.25);
+    }
+
+    /* Modal Phụ lục 04 */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.55);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 999;
+    }
+
+    .modal-card {
+      background: #ffffff;
+      max-width: 780px;
+      width: 100%;
+      max-height: 88vh;
+      overflow-y: auto;
+      border-radius: var(--radius-lg);
+      padding: 26px;
+      box-shadow: 0 24px 48px rgba(0, 0, 0, 0.25);
+    }
+
+    .pl-group {
+      margin-top: 16px;
+      padding: 16px;
+      background: #fcfaf8;
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--crimson);
+      border-radius: var(--radius-md);
+    }
+    .pl-group h4 { color: var(--crimson-dark); font-size: 0.96rem; margin-bottom: 10px; }
+    .pl-group p, .pl-group li { font-size: 0.87rem; color: var(--text-secondary); margin-bottom: 6px; }
+    .pl-group ul { margin-left: 18px; }
   </style>
 </head>
 <body>
@@ -1327,9 +1372,14 @@
 
       <!-- PHẦN III -->
       <div class="section-card">
-        <div class="section-header">
-          <span class="roman-badge">III</span>
-          <h2 class="section-title">Tự Đánh Giá Xếp Loại</h2>
+        <div class="section-header" style="justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <span class="roman-badge">III</span>
+            <h2 class="section-title">Tự Đánh Giá Xếp Loại</h2>
+          </div>
+          <button type="button" class="btn btn-gold" onclick="openPhuLuc04()">
+            <span>Xem Phụ lục 04 chấm điểm</span>
+          </button>
         </div>
 
         <div class="form-group">
@@ -1367,6 +1417,54 @@
               <input type="radio" name="tuXepLoai" value="Không hoàn thành nhiệm vụ">
               <span>Không hoàn thành nhiệm vụ</span>
             </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- PHẦN IV -->
+      <div class="section-card">
+        <div class="section-header">
+          <span class="roman-badge">IV</span>
+          <h2 class="section-title">Xác Nhận Tham Gia Hội Nghị Kiểm Điểm Năm 2026</h2>
+        </div>
+
+        <div class="alert alert-gold" style="display: flex; gap: 14px; align-items: flex-start; margin-bottom: 20px;">
+          <div style="font-size: 24px; line-height: 1;">📅</div>
+          <div style="flex: 1; font-size: 14px; line-height: 1.6;">
+            <div style="font-weight: 700; color: #991b1b; margin-bottom: 4px; font-size: 15px;">
+              Hội nghị kiểm điểm, đánh giá, xếp loại năm 2026 của Chi bộ Sinh viên 1
+            </div>
+            <div>⏰ <strong>Thời gian:</strong> <span style="color: #991b1b; font-weight: 700;">8h30 — Ngày 22/11/2026</span></div>
+            <div>📍 <strong>Địa điểm:</strong> <span style="font-weight: 700;">Hội trường A</span></div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="required">Đồng chí có tham gia trực tiếp Hội nghị kiểm điểm, đánh giá, xếp loại không?</label>
+          <div class="radio-group" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin-top: 8px;">
+            <label class="radio-item" style="padding: 14px 16px; border: 1.5px solid var(--border); border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 10px;">
+              <input type="radio" name="xacNhanThamGiaHoiNghi" value="tham_gia" required onchange="handleHoiNghiChange(this.value)">
+              <span style="font-weight: 600; color: #166534;">✅ Xác nhận tham gia</span>
+            </label>
+            <label class="radio-item" style="padding: 14px 16px; border: 1.5px solid var(--border); border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 10px;">
+              <input type="radio" name="xacNhanThamGiaHoiNghi" value="khong_tham_gia" required onchange="handleHoiNghiChange(this.value)">
+              <span style="font-weight: 600; color: #991b1b;">❌ Không tham gia (Vắng mặt)</span>
+            </label>
+          </div>
+        </div>
+
+        <div id="boxLyDoVangMat" class="hidden" style="margin-top: 18px; padding-top: 16px; border-top: 1px dashed var(--border);">
+          <div class="form-group">
+            <label for="lyDoVangMat" class="required">Nêu rõ lý do không tham gia Hội nghị</label>
+            <textarea id="lyDoVangMat" rows="3" placeholder="Đồng chí vui lòng nêu rõ lý do vắng mặt để Chi ủy xem xét..."></textarea>
+          </div>
+
+          <div class="alert alert-danger" style="margin-top: 12px; display: flex; gap: 12px; align-items: flex-start; line-height: 1.6;">
+            <div style="font-size: 22px; line-height: 1;">⚠️</div>
+            <div style="flex: 1; font-size: 13.5px;">
+              <strong style="color: #991b1b; text-transform: uppercase;">Yêu cầu bắt buộc nếu không tham gia trực tiếp:</strong><br>
+              Đồng chí phải chủ động theo dõi thông báo tại <strong>Group Zalo của Chi bộ</strong> để thực hiện bình bầu, bỏ phiếu xếp loại và gửi hồ sơ trực tuyến để nộp đúng thời hạn theo thông báo của Chi bộ.
+            </div>
           </div>
         </div>
 
@@ -1545,6 +1643,29 @@
         sixMonthWarning.classList.add('hidden');
         xepLoaiOptions.classList.remove('hidden');
         radios.forEach(r => { r.required = true; });
+      }
+
+      // Khôi phục xác nhận tham gia hội nghị
+      const xnRadios = document.querySelectorAll('input[name="xacNhanThamGiaHoiNghi"]');
+      const valXn = (existing && existing.xacNhanThamGiaHoiNghi) || '';
+      xnRadios.forEach(r => {
+        r.checked = Boolean(valXn && r.value === valXn);
+      });
+      const txtLyDo = document.getElementById('lyDoVangMat');
+      if (txtLyDo) txtLyDo.value = (existing && existing.lyDoVangMat) || '';
+      handleHoiNghiChange(valXn);
+    }
+
+    function handleHoiNghiChange(val) {
+      const box = document.getElementById('boxLyDoVangMat');
+      const txt = document.getElementById('lyDoVangMat');
+      if (!box || !txt) return;
+      if (val === 'khong_tham_gia') {
+        box.classList.remove('hidden');
+        txt.required = true;
+      } else {
+        box.classList.add('hidden');
+        txt.required = false;
       }
     }
 
@@ -1809,6 +1930,23 @@
         return;
       }
 
+      const xnRadio = document.querySelector('input[name="xacNhanThamGiaHoiNghi"]:checked');
+      if (!xnRadio) {
+        submitAlert.textContent = 'Đồng chí vui lòng chọn xác nhận có tham gia Hội nghị kiểm điểm hay không.';
+        submitAlert.classList.add('alert-danger');
+        submitAlert.classList.remove('hidden');
+        return;
+      }
+      const xacNhanThamGiaHoiNghi = xnRadio.value;
+      const lyDoVangMat = (document.getElementById('lyDoVangMat')?.value || '').trim();
+      if (xacNhanThamGiaHoiNghi === 'khong_tham_gia' && !lyDoVangMat) {
+        submitAlert.textContent = 'Đồng chí vui lòng nêu rõ lý do không tham gia Hội nghị kiểm điểm.';
+        submitAlert.classList.add('alert-danger');
+        submitAlert.classList.remove('hidden');
+        document.getElementById('lyDoVangMat')?.focus();
+        return;
+      }
+
       const dongGopList = collectContribRows();
       const hasIncomplete = dongGopList.some(r => !r.hoatDong || !r.thoiGian || !r.noiDung);
       if (dongGopList.length === 0 || hasIncomplete) {
@@ -1847,6 +1985,8 @@
         dongGopList: dongGopList,
         deXuat: document.getElementById('deXuat').value.trim(),
         tuXepLoai: tuXepLoai,
+        xacNhanThamGiaHoiNghi: xacNhanThamGiaHoiNghi,
+        lyDoVangMat: xacNhanThamGiaHoiNghi === 'khong_tham_gia' ? lyDoVangMat : '',
         camDoan: camDoanChecked
       };
 
@@ -1912,6 +2052,66 @@
         }
       } catch (e) {}
     })();
+  </script>
+  <!-- POPUP PHỤ LỤC 04 CHẤM ĐIỂM -->
+  <div id="phuLucModal" class="modal-backdrop hidden" onclick="if(event.target===this) closePhuLuc04()">
+    <div class="modal-card">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+        <div>
+          <h3 style="color: var(--crimson); font-size: 1.12rem; text-transform: uppercase;">
+            Phụ Lục 4: Khung Tiêu Chí Đánh Giá Đối Với Đảng Viên Là Sinh Viên
+          </h3>
+          <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: 2px;">
+            (Kèm theo Hướng dẫn số 05-HD/ĐU, ngày 16/11/2026 của Đảng ủy ĐHĐN)
+          </p>
+        </div>
+        <button type="button" class="btn" style="padding: 6px 12px; background: #f3ece7;" onclick="closePhuLuc04()">✕</button>
+      </div>
+
+      <div class="pl-group">
+        <h4>I. NHÓM TIÊU CHÍ CHUNG (Tối đa 30 điểm)</h4>
+        <p><strong>1. Về phẩm chất chính trị, đạo đức, lối sống và ý thức tổ chức kỷ luật:</strong></p>
+        <ul>
+          <li><strong>a)</strong> Có lập trường tư tưởng chính trị vững vàng; chấp hành đường lối, chủ trương của Đảng, chính sách, pháp luật của Nhà nước và các quy định nơi lao động, học tập, sinh sống.</li>
+          <li><strong>b)</strong> Có phẩm chất đạo đức tốt, lối sống trung thực; không vi phạm Quy định về những điều đảng viên không được làm, văn hóa ứng xử nơi cư trú.</li>
+          <li><strong>c)</strong> Chấp hành các nguyên tắc tổ chức, sinh hoạt đảng; nghiêm túc trong tự phê bình và phê bình; có ý thức trách nhiệm trong xây dựng tổ chức đảng, giữ gìn đoàn kết nội bộ trong chi bộ; có quan hệ tốt với quần chúng nhân dân nơi sinh hoạt và nơi cư trú.</li>
+        </ul>
+        <p style="margin-top: 8px;"><strong>2. Nhóm tiêu chí về tự phê bình và phê bình, khắc phục hạn chế, khuyết điểm:</strong></p>
+        <p>Tinh thần tự phê bình, tự soi, tự sửa của cá nhân; mức độ tự giác nhận diện hạn chế, khuyết điểm của bản thân và kết quả khắc phục những hạn chế, khuyết điểm đã được chỉ ra.</p>
+      </div>
+
+      <div class="pl-group">
+        <h4>II. NHÓM TIÊU CHÍ VỀ KẾT QUẢ THỰC HIỆN NHIỆM VỤ (Tối đa 70 điểm)</h4>
+        <ul>
+          <li><strong>1.</strong> Thực hiện đầy đủ quyền và nghĩa vụ của đảng viên. Hoàn thành các nhiệm vụ chính trị được cấp ủy, chi bộ phân công.</li>
+          <li><strong>2.</strong> Tham gia học tập nghị quyết, các văn bản chỉ đạo của cấp trên đầy đủ; phát huy vai trò của đảng viên, tích cực phát biểu ý kiến xây dựng chi bộ.</li>
+          <li><strong>3.</strong> Việc phấn đấu, nỗ lực trong học tập và rèn luyện (thể hiện qua kết quả học tập và rèn luyện của bản thân).</li>
+        </ul>
+      </div>
+
+      <div class="pl-group" style="border-left-color: var(--gold); background: var(--gold-tint);">
+        <h4>III. LƯU Ý ĐIỀU KIỆN VỀ MỨC XẾP LOẠI</h4>
+        <ul>
+          <li><strong>1. Hoàn thành xuất sắc nhiệm vụ:</strong> Tổng điểm đánh giá đạt từ <strong>90 điểm trở lên</strong>; <strong>điều kiện bắt buộc:</strong> kết quả học tập từ loại <strong>Giỏi</strong> trở lên và kết quả rèn luyện từ loại <strong>Tốt</strong> trở lên trong 2 kỳ năm học 2025 - 2026, Đảng viên tham gia tích cực và nổi bật trong các hoạt động của Chi bộ.</li>
+          <li><strong>2. Hoàn thành tốt nhiệm vụ:</strong> Tổng điểm đánh giá đạt từ <strong>70 đến dưới 90 điểm</strong>; <strong>điều kiện bắt buộc:</strong> kết quả học tập từ loại <strong>Khá</strong> trở lên và kết quả rèn luyện từ loại <strong>Tốt</strong> trở lên trong 2 kỳ năm học 2025 - 2026, Đảng viên tham gia đầy đủ các hoạt động của Chi bộ.</li>
+          <li><strong>3. Hoàn thành nhiệm vụ:</strong> Tổng điểm đánh giá đạt từ <strong>50 đến dưới 70 điểm</strong>; <strong>điều kiện bắt buộc:</strong> kết quả học tập từ loại <strong>Trung bình</strong> trở lên và kết quả rèn luyện từ loại <strong>Khá</strong> trở lên trong 2 kỳ năm học 2025 - 2026, Đảng viên thực hiện đầy đủ các yêu cầu của Chi bộ.</li>
+          <li><strong>4. Không hoàn thành nhiệm vụ:</strong> Tổng điểm đánh giá <strong>dưới 50 điểm</strong> hoặc không đáp ứng các điều kiện bắt buộc nêu trên.</li>
+        </ul>
+      </div>
+
+      <div style="margin-top: 18px; text-align: right;">
+        <button type="button" class="btn btn-primary" onclick="closePhuLuc04()">Đã hiểu, đóng lại</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function openPhuLuc04() {
+      document.getElementById('phuLucModal').classList.remove('hidden');
+    }
+    function closePhuLuc04() {
+      document.getElementById('phuLucModal').classList.add('hidden');
+    }
   </script>
 </body>
 </html>

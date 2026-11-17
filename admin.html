@@ -1235,6 +1235,20 @@
             <label for="editSubDeXuat">Đề xuất, ý kiến</label>
             <textarea id="editSubDeXuat" rows="2" style="width:100%; padding:8px 10px; border:1.5px solid var(--border); border-radius:var(--radius-sm); font-family:inherit;"></textarea>
           </div>
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label for="editSubXacNhanHoiNghi">Tham gia Hội nghị (22/11/2026)</label>
+              <select id="editSubXacNhanHoiNghi">
+                <option value="">-- Chưa xác nhận --</option>
+                <option value="tham_gia">Có tham gia</option>
+                <option value="khong_tham_gia">Không tham gia (Vắng mặt)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="editSubLyDoVangMat">Lý do vắng mặt Hội nghị</label>
+              <input type="text" id="editSubLyDoVangMat" placeholder="Ghi rõ lý do nếu vắng mặt">
+            </div>
+          </div>
         </div>
 
         <details id="editDocDraftSection" class="edit-draft-box hidden">
@@ -1735,7 +1749,13 @@
           <td>${escapeHtml(m.khoa)}</td>
           <td>
             ${m.daKeKhai
-              ? `<span class="badge badge-success">Đã kê khai</span>${m.thoiGianGui ? `<div style="font-size:0.74rem;color:var(--text-muted);margin-top:3px;">${escapeHtml(m.thoiGianGui)}</div>` : ''}`
+              ? `<span class="badge badge-success">Đã kê khai</span>
+                 ${m.thoiGianGui ? `<div style="font-size:0.74rem;color:var(--text-muted);margin-top:3px;">${escapeHtml(m.thoiGianGui)}</div>` : ''}
+                 ${m.xacNhanThamGiaHoiNghi === 'tham_gia'
+                    ? '<div style="font-size:0.72rem;color:#166534;font-weight:700;margin-top:2px;">✅ Dự hội nghị</div>'
+                    : (m.xacNhanThamGiaHoiNghi === 'khong_tham_gia'
+                        ? `<div style="font-size:0.72rem;color:#991b1b;font-weight:700;margin-top:2px;" title="${escapeHtml(m.lyDoVangMat || '')}">❌ Vắng hội nghị</div>`
+                        : '')}`
               : '<span class="badge badge-danger">Chưa kê khai</span>'}
           </td>
           <td>
@@ -1903,6 +1923,13 @@
           <div style="margin-top: 8px;">
             ${renderKvRows([
               ['Tự xếp loại năm 2026', c['Tự xếp loại mức HTNV năm 2026']],
+              ['Hội nghị kiểm điểm (22/11)', c['Tham gia Hội nghị (22/11/2026)']
+                ? (c['Tham gia Hội nghị (22/11/2026)'] === 'Có tham gia'
+                    ? '<span class="status-badge success" style="padding:2px 8px;font-size:12px;">✅ Tham gia trực tiếp</span>'
+                    : (c['Tham gia Hội nghị (22/11/2026)'] === 'Vắng mặt'
+                        ? `<span class="status-badge danger" style="padding:2px 8px;font-size:12px;">❌ Vắng mặt</span> <span style="font-size:12px;color:#991b1b;">(Lý do: ${escapeHtml(c['Lý do vắng mặt Hội nghị'] || 'Chưa ghi')})</span>`
+                        : '<span class="status-badge warning" style="padding:2px 8px;font-size:12px;">Chưa xác nhận</span>'))
+                : '—'],
               ['Trạng thái hồ sơ in', c['Trạng thái tạo hồ sơ in (Mẫu 02c + 6b)']],
               ['Tổng điểm tự chấm (02c)', c['Tổng điểm tự chấm (Mẫu 02c)']]
             ])}
@@ -2000,6 +2027,8 @@
         document.getElementById('editSubRl2').value = sub.kqRenLuyenHK2 || '';
         document.getElementById('editSubTuXepLoai').value = sub.tuXepLoai || '';
         document.getElementById('editSubDeXuat').value = sub.deXuat || '';
+        document.getElementById('editSubXacNhanHoiNghi').value = sub.xacNhanThamGiaHoiNghi || '';
+        document.getElementById('editSubLyDoVangMat').value = sub.lyDoVangMat || '';
       } else {
         subSec.classList.add('hidden');
       }
@@ -2090,7 +2119,9 @@
           kqHocTapHK2: document.getElementById('editSubHt2').value.trim(),
           kqRenLuyenHK2: document.getElementById('editSubRl2').value.trim(),
           tuXepLoai: document.getElementById('editSubTuXepLoai').value,
-          deXuat: document.getElementById('editSubDeXuat').value.trim()
+          deXuat: document.getElementById('editSubDeXuat').value.trim(),
+          xacNhanThamGiaHoiNghi: document.getElementById('editSubXacNhanHoiNghi').value,
+          lyDoVangMat: document.getElementById('editSubLyDoVangMat').value.trim()
         };
       }
 
