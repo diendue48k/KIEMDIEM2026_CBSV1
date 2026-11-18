@@ -1311,9 +1311,9 @@
             <span>Thành tích và đóng góp</span>
           </div>
           <div class="form-group">
-            <label>3.1. Thành tích đã đạt được trong năm học 2025 – 2026 và tính đến thời điểm hiện tại (nếu có)</label>
+            <label>3.1. Thành tích đã đạt được trong năm 2026 (nếu có)</label>
             <div class="alert alert-gold" style="margin-bottom: 12px; padding: 10px 14px; font-size: 0.86rem;">
-              <strong>* Lưu ý:</strong> Chỉ kê khai các thành tích đạt được <strong>từ bậc Đại học</strong> và chọn <strong>tối đa 04 loại thành tích cao nhất, nổi bật nhất</strong>. Nếu không có thành tích có thể để trống.
+              <strong>* Lưu ý:</strong> Chỉ kê khai các thành tích đạt được <strong>từ bậc Đại học trong năm 2026</strong> và chọn <strong>tối đa 04 loại thành tích cao nhất, nổi bật nhất</strong>. Nếu không có thành tích có thể để trống.
             </div>
             <div id="achTableBody" class="entry-list">
               <div class="entry-card ach-row">
@@ -1352,12 +1352,12 @@
               </div>
             </div>
             <button type="button" id="btnAddAch" class="btn-add-row" onclick="addAchRow()">+ Thêm thành tích (1/4)</button>
-            <div id="achLimitNote" class="helper-text">Chỉ kê khai thành tích từ bậc Đại học, tối đa 04 thành tích cao nhất, nổi bật nhất (đang có 1/4 dòng).</div>
+            <div id="achLimitNote" class="helper-text">Chỉ kê khai thành tích từ bậc Đại học trong năm 2026, tối đa 04 thành tích cao nhất, nổi bật nhất (đang có 1/4 dòng).</div>
           </div>
 
           <div class="form-group" style="margin-top: 22px; padding-top: 18px; border-top: 1px dashed var(--border);">
             <label>
-              3.2. Liệt kê những đóng góp cho Chi bộ trong năm học 2025-2026 (Bao gồm các hoạt động của Chi bộ Sinh viên và Chi bộ Sinh viên 2) (nếu có)
+              3.2. Liệt kê những đóng góp cho Chi bộ trong năm 2026 (Bao gồm các hoạt động của Chi bộ Sinh viên và Chi bộ Sinh viên 2) (nếu có)
             </label>
             <div class="alert alert-gold" style="margin-bottom: 12px; padding: 10px 14px; font-size: 0.86rem;">
               <strong>* Lưu ý:</strong> Nếu không có hoạt động đóng góp có thể để trống.
@@ -1380,7 +1380,7 @@
                   </div>
                   <div class="entry-field">
                     <label>Thời gian</label>
-                    <input type="text" class="contrib-thoigian" placeholder="VD: 10/2025">
+                    <input type="text" class="contrib-thoigian" placeholder="VD: 10/2026">
                   </div>
                 </div>
                 <div class="entry-field">
@@ -1794,8 +1794,8 @@
       }
       if (note) {
         note.textContent = reachedMax
-          ? 'Đã đủ tối đa 04 thành tích cao nhất, nổi bật nhất (từ bậc Đại học).'
-          : `Chỉ kê khai thành tích từ bậc Đại học, tối đa 04 thành tích cao nhất, nổi bật nhất (đang có ${count}/${MAX_ACH_ROWS} dòng).`;
+          ? 'Đã đủ tối đa 04 thành tích cao nhất, nổi bật nhất (từ bậc Đại học trong năm 2026).'
+          : `Chỉ kê khai thành tích từ bậc Đại học trong năm 2026, tối đa 04 thành tích cao nhất, nổi bật nhất (đang có ${count}/${MAX_ACH_ROWS} dòng).`;
       }
     }
 
@@ -1876,7 +1876,7 @@
           </div>
           <div class="entry-field">
             <label>Thời gian</label>
-            <input type="text" class="contrib-thoigian" placeholder="VD: 10/2025">
+            <input type="text" class="contrib-thoigian" placeholder="VD: 10/2026">
           </div>
         </div>
         <div class="entry-field">
