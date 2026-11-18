@@ -1475,8 +1475,8 @@
             <div style="font-weight: 700; color: #991b1b; margin-bottom: 4px; font-size: 15px;">
               Hội nghị kiểm điểm, đánh giá, xếp loại năm 2026 của Chi bộ Sinh viên 1
             </div>
-            <div>⏰ <strong>Thời gian:</strong> <span style="color: #991b1b; font-weight: 700;">8h30 — Ngày 22/11/2026</span></div>
-            <div>📍 <strong>Địa điểm:</strong> <span style="font-weight: 700;">Hội trường A</span></div>
+            <div>⏰ <strong>Thời gian:</strong> <span id="hoiNghiTimeText" style="color: #991b1b; font-weight: 700;">8h30 — Ngày 22/11/2026</span></div>
+            <div>📍 <strong>Địa điểm:</strong> <span id="hoiNghiLocationText" style="font-weight: 700;">Hội trường A</span></div>
           </div>
         </div>
 
@@ -2185,6 +2185,21 @@
     function closePhuLuc04() {
       document.getElementById('phuLucModal').classList.add('hidden');
     }
+    (async function syncHoiNghiConfig() {
+      try {
+        if (typeof callGasApi !== 'function') return;
+        const res = await callGasApi({ action: 'getLinks' });
+        const links = (res && res.links) ? res.links : res;
+        if (links && links.HOI_NGHI_TIME) {
+          const tEl = document.getElementById('hoiNghiTimeText');
+          if (tEl) tEl.textContent = links.HOI_NGHI_TIME;
+        }
+        if (links && links.HOI_NGHI_LOCATION) {
+          const lEl = document.getElementById('hoiNghiLocationText');
+          if (lEl) lEl.textContent = links.HOI_NGHI_LOCATION;
+        }
+      } catch (e) {}
+    })();
   </script>
 </body>
 </html>
