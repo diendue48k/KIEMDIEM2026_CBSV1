@@ -1313,7 +1313,7 @@
           <div class="form-group">
             <label>3.1. Thành tích đã đạt được trong năm học 2025 – 2026 và tính đến thời điểm hiện tại (nếu có)</label>
             <div class="alert alert-gold" style="margin-bottom: 12px; padding: 10px 14px; font-size: 0.86rem;">
-              <strong>* Lưu ý:</strong> Chỉ kê khai <strong>tối đa 04 loại thành tích cao nhất, nổi bật nhất</strong>. Nếu không có thành tích có thể để trống.
+              <strong>* Lưu ý:</strong> Chỉ kê khai các thành tích đạt được <strong>từ bậc Đại học</strong> và chọn <strong>tối đa 04 loại thành tích cao nhất, nổi bật nhất</strong>. Nếu không có thành tích có thể để trống.
             </div>
             <div id="achTableBody" class="entry-list">
               <div class="entry-card ach-row">
@@ -1352,37 +1352,40 @@
               </div>
             </div>
             <button type="button" id="btnAddAch" class="btn-add-row" onclick="addAchRow()">+ Thêm thành tích (1/4)</button>
-            <div id="achLimitNote" class="helper-text">Chỉ kê khai tối đa 04 thành tích cao nhất, nổi bật nhất (đang có 1/4 dòng).</div>
+            <div id="achLimitNote" class="helper-text">Chỉ kê khai thành tích từ bậc Đại học, tối đa 04 thành tích cao nhất, nổi bật nhất (đang có 1/4 dòng).</div>
           </div>
 
           <div class="form-group" style="margin-top: 22px; padding-top: 18px; border-top: 1px dashed var(--border);">
-            <label class="required">
-              3.2. Liệt kê những đóng góp cho Chi bộ trong năm học 2025-2026 (Bao gồm các hoạt động của Chi bộ Sinh viên và Chi bộ Sinh viên 1)
+            <label>
+              3.2. Liệt kê những đóng góp cho Chi bộ trong năm học 2025-2026 (Bao gồm các hoạt động của Chi bộ Sinh viên và Chi bộ Sinh viên 1) (nếu có)
             </label>
+            <div class="alert alert-gold" style="margin-bottom: 12px; padding: 10px 14px; font-size: 0.86rem;">
+              <strong>* Lưu ý:</strong> Nếu không có hoạt động đóng góp có thể để trống.
+            </div>
             <div id="contribTableBody" class="entry-list">
               <div class="entry-card contrib-row">
                 <div class="entry-card-header">
                   <span class="entry-badge">
                     <span class="contrib-index">Hoạt động đóng góp #1</span>
                   </span>
-                  <button type="button" class="btn-remove-row" onclick="removeContribRow(this)" title="Xóa hoạt động này" disabled>
+                  <button type="button" class="btn-remove-row" onclick="removeContribRow(this)" title="Xóa hoạt động này">
                     <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
                     <span>Xóa</span>
                   </button>
                 </div>
                 <div class="entry-grid-2">
                   <div class="entry-field">
-                    <label class="required">Tên hoạt động</label>
-                    <input type="text" class="contrib-hoatdong" required placeholder="VD: Hướng dẫn làm hồ sơ kết nạp Đảng, ...">
+                    <label>Tên hoạt động</label>
+                    <input type="text" class="contrib-hoatdong" placeholder="VD: Hướng dẫn làm hồ sơ kết nạp Đảng, ...">
                   </div>
                   <div class="entry-field">
-                    <label class="required">Thời gian</label>
-                    <input type="text" class="contrib-thoigian" required placeholder="VD: 10/2025">
+                    <label>Thời gian</label>
+                    <input type="text" class="contrib-thoigian" placeholder="VD: 10/2025">
                   </div>
                 </div>
                 <div class="entry-field">
-                  <label class="required">Các nội dung đã đóng góp</label>
-                  <textarea class="contrib-noidung" required placeholder="Mô tả rõ công việc, vai trò và kết quả đóng góp của đồng chí cho hoạt động..."></textarea>
+                  <label>Các nội dung đã đóng góp</label>
+                  <textarea class="contrib-noidung" placeholder="Mô tả rõ công việc, vai trò và kết quả đóng góp của đồng chí cho hoạt động..."></textarea>
                 </div>
               </div>
             </div>
@@ -1789,8 +1792,8 @@
       }
       if (note) {
         note.textContent = reachedMax
-          ? 'Đã đủ tối đa 04 thành tích cao nhất, nổi bật nhất.'
-          : `Chỉ kê khai tối đa 04 thành tích cao nhất, nổi bật nhất (đang có ${count}/${MAX_ACH_ROWS} dòng).`;
+          ? 'Đã đủ tối đa 04 thành tích cao nhất, nổi bật nhất (từ bậc Đại học).'
+          : `Chỉ kê khai thành tích từ bậc Đại học, tối đa 04 thành tích cao nhất, nổi bật nhất (đang có ${count}/${MAX_ACH_ROWS} dòng).`;
       }
     }
 
@@ -1866,17 +1869,17 @@
         </div>
         <div class="entry-grid-2">
           <div class="entry-field">
-            <label class="required">Tên hoạt động</label>
-            <input type="text" class="contrib-hoatdong" required placeholder="VD: Hướng dẫn làm hồ sơ kết nạp Đảng, ...">
+            <label>Tên hoạt động</label>
+            <input type="text" class="contrib-hoatdong" placeholder="VD: Hướng dẫn làm hồ sơ kết nạp Đảng, ...">
           </div>
           <div class="entry-field">
-            <label class="required">Thời gian</label>
-            <input type="text" class="contrib-thoigian" required placeholder="VD: 10/2025">
+            <label>Thời gian</label>
+            <input type="text" class="contrib-thoigian" placeholder="VD: 10/2025">
           </div>
         </div>
         <div class="entry-field">
-          <label class="required">Các nội dung đã đóng góp</label>
-          <textarea class="contrib-noidung" required placeholder="Mô tả rõ công việc, vai trò và kết quả đóng góp của đồng chí cho hoạt động..."></textarea>
+          <label>Các nội dung đã đóng góp</label>
+          <textarea class="contrib-noidung" placeholder="Mô tả rõ công việc, vai trò và kết quả đóng góp của đồng chí cho hoạt động..."></textarea>
         </div>
       `;
       if (item) {
@@ -1894,8 +1897,6 @@
       rows.forEach((row, idx) => {
         const idxEl = row.querySelector('.contrib-index');
         if (idxEl) idxEl.textContent = `Hoạt động đóng góp #${idx + 1}`;
-        const btn = row.querySelector('.btn-remove-row');
-        if (btn) btn.disabled = rows.length <= 1;
       });
     }
 
@@ -1907,7 +1908,15 @@
 
     function removeContribRow(btn) {
       const container = document.getElementById('contribTableBody');
-      if (container.querySelectorAll('.contrib-row').length <= 1) return;
+      const rows = container.querySelectorAll('.contrib-row');
+      if (rows.length <= 1) {
+        const card = btn.closest('.contrib-row');
+        card.querySelector('.contrib-hoatdong').value = '';
+        card.querySelector('.contrib-thoigian').value = '';
+        card.querySelector('.contrib-noidung').value = '';
+        updateRemoveButtons();
+        return;
+      }
       btn.closest('.contrib-row').remove();
       updateRemoveButtons();
     }
@@ -1937,7 +1946,9 @@
         const hoatDong = card.querySelector('.contrib-hoatdong').value.trim();
         const thoiGian = card.querySelector('.contrib-thoigian').value.trim();
         const noiDung = card.querySelector('.contrib-noidung').value.trim();
-        list.push({ hoatDong, thoiGian, noiDung });
+        if (hoatDong || thoiGian || noiDung) {
+          list.push({ hoatDong, thoiGian, noiDung });
+        }
       });
       return list;
     }
@@ -1990,8 +2001,8 @@
 
       const dongGopList = collectContribRows();
       const hasIncomplete = dongGopList.some(r => !r.hoatDong || !r.thoiGian || !r.noiDung);
-      if (dongGopList.length === 0 || hasIncomplete) {
-        submitAlert.textContent = 'Vui lòng điền đầy đủ cả 3 cột (Hoạt động, Thời gian, Các nội dung đã đóng góp) cho tất cả các dòng.';
+      if (hasIncomplete) {
+        submitAlert.textContent = 'Với các dòng Hoạt động đóng góp đã nhập, vui lòng điền đủ 3 mục (Tên hoạt động, Thời gian, Các nội dung đã đóng góp) hoặc xóa bớt dòng trống.';
         submitAlert.classList.add('alert-danger');
         submitAlert.classList.remove('hidden');
         return;
