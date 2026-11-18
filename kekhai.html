@@ -1338,7 +1338,7 @@
                 <div class="entry-grid-2">
                   <div class="entry-field">
                     <label class="required">Tên hoạt động</label>
-                    <input type="text" class="contrib-hoatdong" required placeholder="VD: Đại hội Chi bộ Sinh viên 2, Sinh hoạt chuyên đề...">
+                    <input type="text" class="contrib-hoatdong" required placeholder="VD: Hướng dẫn làm hồ sơ kết nạp Đảng, ...">
                   </div>
                   <div class="entry-field">
                     <label class="required">Thời gian</label>
@@ -1394,6 +1394,9 @@
               <li style="margin-bottom: 4px;"><strong>3. Mức Hoàn thành nhiệm vụ:</strong> <em>Điều kiện bắt buộc:</em> Điểm trung bình học tập năm học 2025 - 2026 đạt từ loại <strong>Trung bình</strong> trở lên, rèn luyện từ loại <strong>Khá</strong> trở lên, Đảng viên thực hiện đầy đủ các yêu cầu của Chi bộ.</li>
               <li><strong>4. Mức Không hoàn thành nhiệm vụ:</strong> Không đáp ứng các điều kiện trên.</li>
             </ul>
+            <div style="margin-top: 8px; font-weight: 600; color: #854d0e; border-top: 1px dashed #fde047; padding-top: 6px;">
+              * Đối với Đảng viên 52K kết nạp từ đủ 6 tháng trở lên thì được chọn mức xếp loại là Hoàn thành tốt nhiệm vụ.
+            </div>
           </div>
 
           <div id="sixMonthWarning" class="alert alert-danger hidden">
@@ -1525,11 +1528,13 @@
       const memberBox = document.getElementById('memberInfoBox');
       const form = document.getElementById('declarationForm');
 
+      const isFromAdmin = new URLSearchParams(window.location.search).get('fromAdmin') === '1' || Boolean(sessionStorage.getItem('CBSV1_ADMIN_PASS'));
+
       alertBox.classList.add('hidden');
       existingNotice.classList.add('hidden');
       document.getElementById('submitAlert').classList.add('hidden');
 
-      if (!mssv || !cccd) {
+      if (!mssv || (!cccd && !isFromAdmin)) {
         alertBox.textContent = 'Vui lòng nhập đầy đủ MSSV và CCCD.';
         alertBox.classList.remove('hidden');
         return;
@@ -1540,7 +1545,7 @@
       btn.textContent = 'Đang tra cứu...';
 
       try {
-        const res = await callGasApi({ action: 'lookup', mssv: mssv, cccd: cccd });
+        const res = await callGasApi({ action: 'lookup', mssv: mssv, cccd: cccd, fromAdmin: isFromAdmin });
 
         if (!res || !res.success) {
           memberBox.classList.add('hidden');
@@ -1552,7 +1557,9 @@
         }
 
         currentMember = res.member;
-        sessionStorage.setItem('CBSV2_AUTH', JSON.stringify({ mssv, cccd }));
+        const authData = JSON.stringify({ mssv, cccd: cccd || (currentMember && currentMember.cccd) || '' });
+        sessionStorage.setItem('CBSV2_AUTH', authData);
+        sessionStorage.setItem('CBSV1_AUTH', authData);
         populateMemberForm(currentMember, res.existing);
         memberBox.classList.remove('hidden');
         form.classList.remove('hidden');
@@ -1827,7 +1834,7 @@
         <div class="entry-grid-2">
           <div class="entry-field">
             <label class="required">Tên hoạt động</label>
-            <input type="text" class="contrib-hoatdong" required placeholder="VD: Đại hội Chi bộ Sinh viên 2, Sinh hoạt chuyên đề...">
+            <input type="text" class="contrib-hoatdong" required placeholder="VD: Hướng dẫn làm hồ sơ kết nạp Đảng, ...">
           </div>
           <div class="entry-field">
             <label class="required">Thời gian</label>
@@ -2033,19 +2040,39 @@
       try {
         const params = new URLSearchParams(window.location.search);
         const urlMssv = (params.get('mssv') || '').trim();
+        const urlCccd = (params.get('cccd') || '').trim();
         const fromAdminParam = params.get('fromAdmin') === '1';
-        const actAs = JSON.parse(localStorage.getItem('CBSV2_ADMIN_ACT_AS') || 'null');
-        const isAdminSession = Boolean(sessionStorage.getItem('CBSV2_ADMIN_PASS'));
+        const actAs = JSON.parse(localStorage.getItem('CBSV2_ADMIN_ACT_AS') || localStorage.getItem('CBSV1_ADMIN_ACT_AS') || 'null');
+        const isAdminSession = Boolean(sessionStorage.getItem('CBSV2_ADMIN_PASS') || sessionStorage.getItem('CBSV1_ADMIN_PASS'));
 
-        if (actAs && actAs.mssv && actAs.cccd && (fromAdminParam || (urlMssv && actAs.mssv === urlMssv))) {
-          sessionStorage.setItem('CBSV2_AUTH', JSON.stringify({ mssv: actAs.mssv, cccd: actAs.cccd }));
-        }
         if (fromAdminParam || isAdminSession) {
           const banner = document.getElementById('adminModeBanner');
           if (banner) banner.classList.remove('hidden');
         }
 
-        const saved = JSON.parse(sessionStorage.getItem('CBSV2_AUTH') || 'null');
+        if (urlMssv) {
+          let cccdToUse = urlCccd;
+          if (!cccdToUse && actAs && String(actAs.mssv).trim() === urlMssv && actAs.cccd) {
+            cccdToUse = actAs.cccd;
+          }
+          if (!cccdToUse) {
+            const saved = JSON.parse(sessionStorage.getItem('CBSV2_AUTH') || sessionStorage.getItem('CBSV1_AUTH') || 'null');
+            if (saved && String(saved.mssv).trim() === urlMssv && saved.cccd) {
+              cccdToUse = saved.cccd;
+            }
+          }
+          const authData = JSON.stringify({ mssv: urlMssv, cccd: cccdToUse || '' });
+          sessionStorage.setItem('CBSV2_AUTH', authData);
+          sessionStorage.setItem('CBSV1_AUTH', authData);
+          document.getElementById('mssv').value = urlMssv;
+          document.getElementById('cccd').value = cccdToUse || '';
+          if (cccdToUse || fromAdminParam || isAdminSession) {
+            handleLookup();
+          }
+          return;
+        }
+
+        const saved = JSON.parse(sessionStorage.getItem('CBSV2_AUTH') || sessionStorage.getItem('CBSV1_AUTH') || 'null');
         if (saved && saved.mssv && saved.cccd) {
           document.getElementById('mssv').value = saved.mssv;
           document.getElementById('cccd').value = saved.cccd;
@@ -2098,6 +2125,9 @@
           <li><strong>3. Hoàn thành nhiệm vụ:</strong> Tổng điểm đánh giá đạt từ <strong>50 đến dưới 70 điểm</strong>; <strong>điều kiện bắt buộc:</strong> kết quả học tập từ loại <strong>Trung bình</strong> trở lên và kết quả rèn luyện từ loại <strong>Khá</strong> trở lên trong 2 kỳ năm học 2025 - 2026, Đảng viên thực hiện đầy đủ các yêu cầu của Chi bộ.</li>
           <li><strong>4. Không hoàn thành nhiệm vụ:</strong> Tổng điểm đánh giá <strong>dưới 50 điểm</strong> hoặc không đáp ứng các điều kiện bắt buộc nêu trên.</li>
         </ul>
+        <div style="margin-top: 8px; font-weight: 600; color: #854d0e; border-top: 1px dashed #fde047; padding-top: 6px;">
+          * Đối với Đảng viên 52K kết nạp từ đủ 6 tháng trở lên thì được chọn mức xếp loại là Hoàn thành tốt nhiệm vụ.
+        </div>
       </div>
 
       <div style="margin-top: 18px; text-align: right;">

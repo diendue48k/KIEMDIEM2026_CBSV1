@@ -1109,9 +1109,6 @@
             <button type="button" class="btn btn-primary btn-sm" onclick="openMemberTool(document.getElementById('editOriginalMssv').value, 'mau-02c.html')">
               Mở, Sửa &amp; Xuất Hồ sơ (02c + 6b)
             </button>
-            <button type="button" class="btn btn-gold btn-sm" onclick="openMemberTool(document.getElementById('editOriginalMssv').value, 'mau-6b.html')">
-              Mở, Sửa &amp; Xuất Mẫu 6b
-            </button>
           </div>
         </div>
         <div class="form-grid-3">
@@ -1770,7 +1767,6 @@
             <div style="display: flex; gap: 5px; flex-wrap: nowrap;">
               <button class="btn btn-gold btn-xs" onclick="openEditMember('${escapeHtml(m.mssv)}')">Sửa</button>
               <button class="btn btn-outline btn-xs" style="border-color:#f3b8b9; color:var(--crimson-dark);" onclick="openMemberTool('${escapeHtml(m.mssv)}', 'mau-02c.html')">02c/6b</button>
-              <button class="btn btn-outline btn-xs" onclick="openMemberTool('${escapeHtml(m.mssv)}', 'mau-6b.html')">6b</button>
               ${m.daKeKhai
                 ? `<button class="btn btn-outline btn-xs" onclick="openDetail('${escapeHtml(m.mssv)}')">Xem</button>`
                 : ''}
@@ -1812,8 +1808,7 @@
           <td>${escapeHtml(l.xepLoai || '-')}</td>
           <td>
             <div style="display: flex; gap: 5px; flex-wrap: nowrap;">
-              <button class="btn btn-gold btn-xs" onclick="openMemberTool('${escapeHtml(l.mssv)}', 'mau-02c.html')">Sửa &amp; Tải 02c+6b</button>
-              <button class="btn btn-outline btn-xs" onclick="openMemberTool('${escapeHtml(l.mssv)}', 'mau-6b.html')">Sửa &amp; Tải 6b</button>
+              <button class="btn btn-gold btn-xs" onclick="openMemberTool('${escapeHtml(l.mssv)}', 'mau-02c.html')">Sửa &amp; Tải Hồ sơ</button>
             </div>
           </td>
         </tr>
@@ -1828,11 +1823,21 @@
         return;
       }
       try {
-        sessionStorage.setItem('CBSV2_AUTH', JSON.stringify({ mssv: m.mssv, cccd: m.cccd }));
-        localStorage.setItem('CBSV2_ADMIN_ACT_AS', JSON.stringify({
+        const authPayload = JSON.stringify({ mssv: m.mssv, cccd: m.cccd || '' });
+        sessionStorage.setItem('CBSV2_AUTH', authPayload);
+        sessionStorage.setItem('CBSV1_AUTH', authPayload);
+        const actAsPayload = JSON.stringify({
           mssv: m.mssv,
-          cccd: m.cccd,
-          hoTen: m.hoTen,
+          cccd: m.cccd || '',
+          hoTen: m.hoTen || '',
+          fromAdmin: true,
+          ts: Date.now()
+        });
+        localStorage.setItem('CBSV2_ADMIN_ACT_AS', actAsPayload);
+        localStorage.setItem('CBSV1_ADMIN_ACT_AS', actAsPayload);
+          mssv: m.mssv,
+          cccd: m.cccd || '',
+          hoTen: m.hoTen || '',
           fromAdmin: true,
           ts: Date.now()
         }));
@@ -1840,7 +1845,7 @@
           localStorage.setItem('CBSV2_DOC_DRAFT_2026_' + m.mssv, JSON.stringify(m.docDraft));
         }
       } catch (e) {}
-      window.location.href = `${targetPage}?mssv=${encodeURIComponent(m.mssv)}&fromAdmin=1`;
+      window.location.href = `${targetPage}?mssv=${encodeURIComponent(m.mssv)}&cccd=${encodeURIComponent(m.cccd || '')}&fromAdmin=1`;
     }
 
     function escapeHtml(str) {
@@ -1877,7 +1882,6 @@
           <div class="detail-banner-actions">
             <button type="button" class="btn btn-gold btn-xs" onclick="closeModal(); openEditMember('${escapeHtml(m.mssv)}')">Sửa / Nhập hộ</button>
             <button type="button" class="btn btn-outline btn-xs" onclick="closeModal(); openMemberTool('${escapeHtml(m.mssv)}', 'mau-02c.html')">Hồ sơ 02c/6b</button>
-            <button type="button" class="btn btn-outline btn-xs" onclick="closeModal(); openMemberTool('${escapeHtml(m.mssv)}', 'mau-6b.html')">Mẫu 6b</button>
           </div>
         </div>
       `;
