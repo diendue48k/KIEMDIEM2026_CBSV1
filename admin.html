@@ -1958,12 +1958,6 @@
         });
         localStorage.setItem('CBSV2_ADMIN_ACT_AS', actAsPayload);
         localStorage.setItem('CBSV1_ADMIN_ACT_AS', actAsPayload);
-          mssv: m.mssv,
-          cccd: m.cccd || '',
-          hoTen: m.hoTen || '',
-          fromAdmin: true,
-          ts: Date.now()
-        }));
         if (m.docDraft) {
           localStorage.setItem('CBSV2_DOC_DRAFT_2026_' + m.mssv, JSON.stringify(m.docDraft));
         }
