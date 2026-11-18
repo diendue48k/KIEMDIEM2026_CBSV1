@@ -1,0 +1,473 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2260 960" width="2260" height="960" font-family="SVN-Gilroy, Plus Jakarta Sans, Segoe UI, Arial, sans-serif">
+  <defs>
+    <marker id="arrowSeq" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#2c2420"/>
+    </marker>
+    <marker id="arrowMsg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 1 1 L 9 5 L 1 9 z" fill="#ffffff" stroke="#9e1b1e" stroke-width="1.5"/>
+    </marker>
+    <marker id="circleMsg" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6">
+      <circle cx="5" cy="5" r="3.4" fill="#ffffff" stroke="#9e1b1e" stroke-width="2"/>
+    </marker>
+    <marker id="arrowData" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 1 1 L 9 5 L 1 9" fill="none" stroke="#1d4ed8" stroke-width="1.6"/>
+    </marker>
+    <filter id="cardShadow" x="-4%" y="-4%" width="108%" height="112%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2.5" flood-color="#1f1a18" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+
+  <!-- Canvas background -->
+  <rect x="0" y="0" width="2260" height="960" fill="#fdf9f4"/>
+
+  <!-- BPMN Pool -->
+  <rect x="24" y="24" width="2212" height="860" rx="4" fill="#ffffff" stroke="#9e1b1e" stroke-width="2.2"/>
+  <rect x="24" y="24" width="44" height="860" fill="#9e1b1e"/>
+  <text x="46" y="454" text-anchor="middle" fill="#facc15" font-size="14" font-weight="800" letter-spacing="0.8" transform="rotate(-90 46 454)">
+    QUY TRÌNH QUẢN TRỊ &amp; ĐIỀU HÀNH HỆ THỐNG KIỂM ĐIỂM ĐẢNG VIÊN NĂM 2026 — ADMIN (CHI ỦY CHI BỘ SINH VIÊN 1)
+  </text>
+
+  <!-- Lane 1: Cấp ủy / Admin -->
+  <rect x="68" y="24" width="2168" height="350" fill="#fffdfc" stroke="#d8cfc7" stroke-width="1.2"/>
+  <rect x="68" y="24" width="42" height="350" fill="#fef2f2" stroke="#d8cfc7" stroke-width="1.2"/>
+  <text x="89" y="199" text-anchor="middle" fill="#781215" font-size="13" font-weight="800" transform="rotate(-90 89 199)">CẤP ỦY / ADMIN (admin.html)</text>
+
+  <!-- Lane 2: Hệ thống & Firebase Cloud Firestore -->
+  <rect x="68" y="374" width="2168" height="290" fill="#fffdf7" stroke="#d8cfc7" stroke-width="1.2"/>
+  <rect x="68" y="374" width="42" height="290" fill="#fffbeb" stroke="#d8cfc7" stroke-width="1.2"/>
+  <text x="89" y="519" text-anchor="middle" fill="#92400e" font-size="12.5" font-weight="800" transform="rotate(-90 89 519)">HỆ THỐNG &amp; FIREBASE (csdlkiemdiem)</text>
+
+  <!-- Lane 3: Đảng viên Sinh viên -->
+  <rect x="68" y="664" width="2168" height="220" fill="#f9fcfa" stroke="#d8cfc7" stroke-width="1.2"/>
+  <rect x="68" y="664" width="42" height="220" fill="#ecfdf5" stroke="#d8cfc7" stroke-width="1.2"/>
+  <text x="89" y="774" text-anchor="middle" fill="#065f46" font-size="12.5" font-weight="800" transform="rotate(-90 89 774)">ĐẢNG VIÊN SINH VIÊN</text>
+
+  <!-- ================= DATA STORES & DATA OBJECTS ================= -->
+  <!-- Data Store 1: LocalStorage Fallback -->
+  <g transform="translate(525,574)" filter="url(#cardShadow)">
+    <path d="M 0,10 A 58,10 0 0,1 116,10 L 116,58 A 58,10 0 0,1 0,58 Z" fill="#fffbeb" stroke="#d97706" stroke-width="1.8"/>
+    <ellipse cx="58" cy="10" rx="58" ry="10" fill="#fef3c7" stroke="#d97706" stroke-width="1.8"/>
+    <path d="M 0,17 A 58,10 0 0,0 116,17" fill="none" stroke="#d97706" stroke-width="1.2"/>
+    <text x="58" y="38" text-anchor="middle" fill="#78350f" font-size="10.5" font-weight="800">LocalStorage</text>
+    <text x="58" y="52" text-anchor="middle" fill="#92400e" font-size="9.5" font-weight="700">CBSV1_MOCK_DB_2026</text>
+  </g>
+
+  <!-- Data Store 2: Firebase Collections (members & settings) -->
+  <g transform="translate(868,574)" filter="url(#cardShadow)">
+    <path d="M 0,10 A 62,10 0 0,1 124,10 L 124,58 A 62,10 0 0,1 0,58 Z" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+    <ellipse cx="62" cy="10" rx="62" ry="10" fill="#dbeafe" stroke="#1d4ed8" stroke-width="2"/>
+    <path d="M 0,17 A 62,10 0 0,0 124,17" fill="none" stroke="#1d4ed8" stroke-width="1.2"/>
+    <text x="62" y="38" text-anchor="middle" fill="#1e3a8a" font-size="10.5" font-weight="800">Firestore DB</text>
+    <text x="62" y="52" text-anchor="middle" fill="#1e40af" font-size="9.5" font-weight="700">settings + members</text>
+  </g>
+
+  <!-- Data Store 3: Firebase Collections (submissions & docLogs) -->
+  <g transform="translate(1168,574)" filter="url(#cardShadow)">
+    <path d="M 0,10 A 68,10 0 0,1 136,10 L 136,58 A 68,10 0 0,1 0,58 Z" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+    <ellipse cx="68" cy="10" rx="68" ry="10" fill="#dbeafe" stroke="#1d4ed8" stroke-width="2"/>
+    <path d="M 0,17 A 68,10 0 0,0 136,17" fill="none" stroke="#1d4ed8" stroke-width="1.2"/>
+    <text x="68" y="38" text-anchor="middle" fill="#1e3a8a" font-size="10.5" font-weight="800">Firestore Collections</text>
+    <text x="68" y="52" text-anchor="middle" fill="#1e40af" font-size="9.5" font-weight="700">submissions + docLogs</text>
+  </g>
+
+  <!-- Data Object: Mau_Nhap_DanhSach_DangVien.xlsx -->
+  <g transform="translate(748,266)" filter="url(#cardShadow)">
+    <path d="M 0,0 L 48,0 L 62,14 L 62,62 L 0,62 Z" fill="#ffffff" stroke="#059669" stroke-width="1.8"/>
+    <path d="M 48,0 L 48,14 L 62,14" fill="#ecfdf5" stroke="#059669" stroke-width="1.5"/>
+    <text x="31" y="32" text-anchor="middle" fill="#065f46" font-size="9.5" font-weight="800">.XLSX</text>
+    <text x="31" y="46" text-anchor="middle" fill="#5c504a" font-size="8.5" font-weight="700">16 cột chuẩn</text>
+  </g>
+
+  <!-- Data Object: TongHop_KeKhai_DangVien_2026.xlsx -->
+  <g transform="translate(2115,264)" filter="url(#cardShadow)">
+    <path d="M 0,0 L 62,0 L 76,14 L 76,66 L 0,66 Z" fill="#ffffff" stroke="#9e1b1e" stroke-width="1.8"/>
+    <path d="M 62,0 L 62,14 L 76,14" fill="#fef2f2" stroke="#9e1b1e" stroke-width="1.5"/>
+    <text x="38" y="33" text-anchor="middle" fill="#781215" font-size="9.5" font-weight="800">Báo cáo</text>
+    <text x="38" y="47" text-anchor="middle" fill="#5c504a" font-size="8.5" font-weight="700">Excel 32 cột</text>
+    <text x="38" y="59" text-anchor="middle" fill="#9e1b1e" font-size="8.5" font-weight="700">(.xlsx)</text>
+  </g>
+
+  <!-- ================= DATA ASSOCIATIONS ================= -->
+  <path d="M 583,546 L 583,572" fill="none" stroke="#d97706" stroke-width="1.5" stroke-dasharray="4 4" marker-end="url(#arrowData)"/>
+  <path d="M 930,500 L 930,572" fill="none" stroke="#1d4ed8" stroke-width="1.5" stroke-dasharray="4 4" marker-end="url(#arrowData)"/>
+  <path d="M 1236,500 L 1236,572" fill="none" stroke="#1d4ed8" stroke-width="1.5" stroke-dasharray="4 4" marker-end="url(#arrowData)"/>
+  <path d="M 1480,460 L 1304,460 L 1304,603 L 1306,603" fill="none" stroke="#1d4ed8" stroke-width="1.5" stroke-dasharray="4 4" marker-end="url(#arrowData)"/>
+  <path d="M 810,296 L 833,296" fill="none" stroke="#059669" stroke-width="1.5" stroke-dasharray="4 4" marker-end="url(#arrowData)"/>
+  <path d="M 2075,204 L 2153,204 L 2153,262" fill="none" stroke="#9e1b1e" stroke-width="1.5" stroke-dasharray="4 4" marker-end="url(#arrowData)"/>
+
+  <!-- ================= SEQUENCE FLOWS ================= -->
+  <!-- Lane 1 Start -> Login -> Lane 2 Auth -->
+  <path d="M 178,180 L 223,180" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
+  <path d="M 297,220 L 297,418" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
+
+  <!-- Lane 2 Auth -> XOR -> Firebase / Local -> XOR Join -> Lane 1 AND Split -->
+  <path d="M 370,460 L 415,460" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
+  <path d="M 445,432 L 445,416 L 503,416" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
+  <rect x="448" y="393" width="52" height="18" rx="4" fill="#ecfdf5" stroke="#a7f3d0"/>
+  <text x="474" y="406" text-anchor="middle" fill="#065f46" font-size="10" font-weight="800">Kết nối</text>
+
+  <path d="M 445,488 L 445,516 L 503,516" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
+  <rect x="444" y="522" width="58" height="18" rx="4" fill="#fffbeb" stroke="#fde68a"/>
+  <text x="473" y="535" text-anchor="middle" fill="#92400e" font-size="10" font-weight="800">Dự phòng</text>
+
+  <path d="M 665,416 L 705,416 L 705,432" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
+  <path d="M 665,516 L 705,516 L 705,488" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
+  <path d="M 733,460 L 748,460 L 748,180 L 752,180" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
+
+  <!-- Lane 1 AND Split -> Task 2a / Task 2b -> AND Join -->
+  <path d="M 780,152 L 780,94 L 833,94" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
+  <path d="M 780,208 L 780,264 L 833,264" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
+  <path d="M 1025,94 L 1085,94 L 1085,152" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
+  <path d="M 1025,264 L 1085,264 L 1085,208" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
+
+  <!-- Lane 1 AND Join -> Task 4 Monitor -> XOR 2 -->
+  <path d="M 1113,180 L 1143,180" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
+  <path d="M 1330,180 L 1373,180" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
+
+  <!-- XOR 2 -> 3 Branches -> XOR 2 Join -->
+  <path d="M 1403,152 L 1403,80 L 1468,80" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
+  <rect x="1406" y="55" width="58" height="18" rx="4" fill="#fffbeb" stroke="#fde68a"/>
+  <text x="1435" y="68" text-anchor="middle" fill="#92400e" font-size="10" font-weight="800">Đôn đốc</text>
+
+  <path d="M 1431,180 L 1468,180" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
+  <rect x="1431" y="156" width="38" height="17" rx="4" fill="#fef2f2" stroke="#fecaca"/>
+  <text x="1450" y="168" text-anchor="middle" fill="#991b1b" font-size="9.5" font-weight="800">Sửa hộ</text>
+
+  <path d="M 1403,208 L 1403,280 L 1468,280" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
+  <rect x="1406" y="286" width="58" height="18" rx="4" fill="#eff6ff" stroke="#bfdbfe"/>
+  <text x="1435" y="299" text-anchor="middle" fill="#1e40af" font-size="10" font-weight="800">Đối soát</text>
+
+  <path d="M 1670,80 L 1735,80 L 1735,152" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
+  <path d="M 1670,180 L 1705,180" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
+  <path d="M 1670,280 L 1735,280 L 1735,208" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
+
+  <!-- XOR 2 Join -> Timer 22/11 -> Task 6 Export -> End -->
+  <path d="M 1763,180 L 1798,180" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
+  <path d="M 1844,180 L 1878,180" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
+  <path d="M 2075,180 L 2133,180" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
+
+  <!-- Lane 3: Đảng viên sequence flows -->
+  <path d="M 798,774 L 833,774" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
+  <path d="M 1015,774 L 1051,774" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
+  <path d="M 1095,774 L 1133,774" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
+  <path d="M 1325,774 L 1373,774" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
+  <path d="M 1560,774 L 1613,774" fill="none" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
+
+  <!-- ================= MESSAGE FLOWS (CROSS-LANE / API CALLS) ================= -->
+  <!-- Task 2a & Task 2b -> Service Task 3 -->
+  <path d="M 930,306 L 930,418" fill="none" stroke="#9e1b1e" stroke-width="1.8" stroke-dasharray="6 4" marker-start="url(#circleMsg)" marker-end="url(#arrowMsg)"/>
+  <path d="M 1025,112 L 1044,112 L 1044,460 L 1027,460" fill="none" stroke="#9e1b1e" stroke-width="1.8" stroke-dasharray="6 4" marker-start="url(#circleMsg)" marker-end="url(#arrowMsg)"/>
+
+  <!-- Service Task 3 -> Lane 3 Đảng viên (getLinks + members) -->
+  <path d="M 885,500 L 885,732" fill="none" stroke="#9e1b1e" stroke-width="1.8" stroke-dasharray="6 4" marker-start="url(#circleMsg)" marker-end="url(#arrowMsg)"/>
+  <rect x="828" y="622" width="114" height="18" rx="4" fill="#ffffff" stroke="#fecaca"/>
+  <text x="885" y="635" text-anchor="middle" fill="#9e1b1e" font-size="9.5" font-weight="800">getLinks &amp; lookup</text>
+
+  <!-- Lane 3 Đảng viên -> Service Task 4 (submit, saveDocDraft, logDocExport) -->
+  <path d="M 970,734 L 970,695 L 1190,695 L 1190,502" fill="none" stroke="#9e1b1e" stroke-width="1.8" stroke-dasharray="6 4" marker-start="url(#circleMsg)" marker-end="url(#arrowMsg)"/>
+  <rect x="1028" y="686" width="108" height="18" rx="4" fill="#ffffff" stroke="#fecaca"/>
+  <text x="1082" y="699" text-anchor="middle" fill="#9e1b1e" font-size="9.5" font-weight="800">POST submit</text>
+
+  <path d="M 1236,734 L 1236,502" fill="none" stroke="#9e1b1e" stroke-width="1.8" stroke-dasharray="6 4" marker-start="url(#circleMsg)" marker-end="url(#arrowMsg)"/>
+  <rect x="1166" y="686" width="142" height="18" rx="4" fill="#ffffff" stroke="#fecaca"/>
+  <text x="1237" y="699" text-anchor="middle" fill="#9e1b1e" font-size="9.5" font-weight="800">saveDocDraft / logDocExport</text>
+
+  <!-- Service Task 4 -> Lane 1 Monitor (Realtime sync) -->
+  <path d="M 1236,420 L 1236,224" fill="none" stroke="#9e1b1e" stroke-width="1.8" stroke-dasharray="6 4" marker-start="url(#circleMsg)" marker-end="url(#arrowMsg)"/>
+  <rect x="1170" y="316" width="132" height="18" rx="4" fill="#ffffff" stroke="#fecaca"/>
+  <text x="1236" y="329" text-anchor="middle" fill="#9e1b1e" font-size="9.5" font-weight="800">Đồng bộ Stats &amp; Logs</text>
+
+  <!-- Task 5b Sửa hộ -> Service Task 5 Admin Save / Reset -->
+  <path d="M 1470,196 L 1450,196 L 1450,460 L 1478,460" fill="none" stroke="#9e1b1e" stroke-width="1.8" stroke-dasharray="6 4" marker-start="url(#circleMsg)" marker-end="url(#arrowMsg)"/>
+  <rect x="1378" y="346" width="144" height="18" rx="4" fill="#ffffff" stroke="#fecaca"/>
+  <text x="1450" y="359" text-anchor="middle" fill="#9e1b1e" font-size="9.5" font-weight="800">SaveMember / Reset</text>
+
+  <!-- Lane 3 Nộp giấy -> Lane 1 Timer 22/11 -->
+  <path d="M 1467,734 L 1467,638 L 1822,638 L 1822,204" fill="none" stroke="#9e1b1e" stroke-width="1.8" stroke-dasharray="6 4" marker-start="url(#circleMsg)" marker-end="url(#arrowMsg)"/>
+  <rect x="1675" y="629" width="160" height="18" rx="4" fill="#ffffff" stroke="#fecaca"/>
+  <text x="1755" y="642" text-anchor="middle" fill="#9e1b1e" font-size="9.5" font-weight="800">Nộp hồ sơ giấy (22/11/2026)</text>
+
+  <!-- ================= BPMN NODES: LANE 1 (ADMIN) ================= -->
+  <g transform="translate(158,180)" filter="url(#cardShadow)">
+    <circle cx="0" cy="0" r="20" fill="#ecfdf5" stroke="#059669" stroke-width="2.5"/>
+    <text x="0" y="36" text-anchor="middle" fill="#065f46" font-size="11" font-weight="800">Bắt đầu</text>
+    <text x="0" y="50" text-anchor="middle" fill="#5c504a" font-size="10">Mở admin.html</text>
+  </g>
+
+  <g transform="translate(225,140)" filter="url(#cardShadow)">
+    <rect x="0" y="0" width="145" height="80" rx="10" fill="#ffffff" stroke="#9e1b1e" stroke-width="2"/>
+    <circle cx="14" cy="12" r="4" fill="none" stroke="#9e1b1e" stroke-width="1.5"/>
+    <path d="M 7,22 C 7,17 21,17 21,22" fill="none" stroke="#9e1b1e" stroke-width="1.5"/>
+    <text x="72" y="33" text-anchor="middle" fill="#1f1a18" font-size="11.5" font-weight="800">Đăng nhập Quản trị</text>
+    <text x="72" y="49" text-anchor="middle" fill="#5c504a" font-size="10">Nhập mật khẩu</text>
+    <text x="72" y="64" text-anchor="middle" fill="#9e1b1e" font-size="10" font-weight="700">CBSV1@2026 / CBSV2</text>
+  </g>
+
+  <!-- Parallel Split + -->
+  <g transform="translate(780,180)" filter="url(#cardShadow)">
+    <polygon points="0,-28 28,0 0,28 -28,0" fill="#ecfdf5" stroke="#059669" stroke-width="2.2"/>
+    <path d="M 0,-11 L 0,11 M -11,0 L 11,0" stroke="#059669" stroke-width="3" stroke-linecap="round"/>
+    <text x="0" y="45" text-anchor="middle" fill="#065f46" font-size="10" font-weight="800">Thiết lập</text>
+    <text x="0" y="57" text-anchor="middle" fill="#5c504a" font-size="9.5">đầu kỳ</text>
+  </g>
+
+  <!-- Task 2a: Tab 3 Cấu hình thời hạn & link -->
+  <g transform="translate(835,52)" filter="url(#cardShadow)">
+    <rect x="0" y="0" width="190" height="84" rx="10" fill="#ffffff" stroke="#9e1b1e" stroke-width="2"/>
+    <circle cx="14" cy="12" r="4" fill="none" stroke="#9e1b1e" stroke-width="1.5"/>
+    <path d="M 7,22 C 7,17 21,17 21,22" fill="none" stroke="#9e1b1e" stroke-width="1.5"/>
+    <text x="95" y="30" text-anchor="middle" fill="#1f1a18" font-size="11" font-weight="800">Tab 3: Cấu hình Hạn &amp; Link</text>
+    <text x="95" y="46" text-anchor="middle" fill="#5c504a" font-size="10">Đặt đếm ngược Bước 1 (19/11)</text>
+    <text x="95" y="60" text-anchor="middle" fill="#5c504a" font-size="10">Hạn giấy 22/11 &amp; 2 link Drive</text>
+    <text x="95" y="74" text-anchor="middle" fill="#9e1b1e" font-size="9.5" font-weight="700">Lưu cấu hình hệ thống</text>
+  </g>
+
+  <!-- Task 2b: Tab 1 Nhập DS / Thêm ĐV -->
+  <g transform="translate(835,222)" filter="url(#cardShadow)">
+    <rect x="0" y="0" width="190" height="84" rx="10" fill="#ffffff" stroke="#9e1b1e" stroke-width="2"/>
+    <circle cx="14" cy="12" r="4" fill="none" stroke="#9e1b1e" stroke-width="1.5"/>
+    <path d="M 7,22 C 7,17 21,17 21,22" fill="none" stroke="#9e1b1e" stroke-width="1.5"/>
+    <text x="95" y="30" text-anchor="middle" fill="#1f1a18" font-size="11" font-weight="800">Tab 1: Nhập DS Đảng viên</text>
+    <text x="95" y="46" text-anchor="middle" fill="#5c504a" font-size="10">Tải mẫu 16 cột, nhập .xlsx/.csv</text>
+    <text x="95" y="60" text-anchor="middle" fill="#5c504a" font-size="10">Hoặc bấm "+ Thêm Đảng viên"</text>
+    <text x="95" y="74" text-anchor="middle" fill="#065f46" font-size="9.5" font-weight="700">Xác nhận nhập lên Hệ thống</text>
+  </g>
+
+  <!-- Parallel Join + -->
+  <g transform="translate(1085,180)" filter="url(#cardShadow)">
+    <polygon points="0,-28 28,0 0,28 -28,0" fill="#ecfdf5" stroke="#059669" stroke-width="2.2"/>
+    <path d="M 0,-11 L 0,11 M -11,0 L 11,0" stroke="#059669" stroke-width="3" stroke-linecap="round"/>
+  </g>
+
+  <!-- Task 4: Theo dõi Dashboard -->
+  <g transform="translate(1145,138)" filter="url(#cardShadow)">
+    <rect x="0" y="0" width="185" height="84" rx="10" fill="#ffffff" stroke="#9e1b1e" stroke-width="2"/>
+    <circle cx="14" cy="12" r="4" fill="none" stroke="#9e1b1e" stroke-width="1.5"/>
+    <path d="M 7,22 C 7,17 21,17 21,22" fill="none" stroke="#9e1b1e" stroke-width="1.5"/>
+    <text x="92" y="30" text-anchor="middle" fill="#1f1a18" font-size="11.5" font-weight="800">Theo dõi Dashboard &amp; Lọc</text>
+    <text x="92" y="46" text-anchor="middle" fill="#5c504a" font-size="10">4 Thẻ Stats (Tổng / Đã / Chưa / %)</text>
+    <text x="92" y="60" text-anchor="middle" fill="#5c504a" font-size="10">Tìm kiếm, Lọc Nhóm, Phân trang</text>
+    <text x="92" y="74" text-anchor="middle" fill="#9e1b1e" font-size="9.5" font-weight="700">Xem ✅ Dự / ❌ Vắng hội nghị</text>
+  </g>
+
+  <!-- XOR 2: Tình huống quản trị -->
+  <g transform="translate(1403,180)" filter="url(#cardShadow)">
+    <polygon points="0,-28 28,0 0,28 -28,0" fill="#fffbeb" stroke="#d97706" stroke-width="2.2"/>
+    <path d="M -8,-8 L 8,8 M 8,-8 L -8,8" stroke="#92400e" stroke-width="2.5" stroke-linecap="round"/>
+    <text x="-38" y="-34" text-anchor="middle" fill="#78350f" font-size="10" font-weight="800">Nghiệp vụ</text>
+    <text x="-38" y="-22" text-anchor="middle" fill="#5c504a" font-size="9.5">xử lý?</text>
+  </g>
+
+  <!-- Task 5a: Đôn đốc -->
+  <g transform="translate(1470,42)" filter="url(#cardShadow)">
+    <rect x="0" y="0" width="200" height="76" rx="10" fill="#fffbeb" stroke="#d97706" stroke-width="2"/>
+    <circle cx="14" cy="12" r="4" fill="none" stroke="#92400e" stroke-width="1.5"/>
+    <path d="M 7,22 C 7,17 21,17 21,22" fill="none" stroke="#92400e" stroke-width="1.5"/>
+    <text x="100" y="29" text-anchor="middle" fill="#1f1a18" font-size="11" font-weight="800">Đôn đốc theo Nhóm</text>
+    <text x="100" y="45" text-anchor="middle" fill="#5c504a" font-size="10">Bấm Thẻ % xem tiến độ Nhóm</text>
+    <text x="100" y="60" text-anchor="middle" fill="#92400e" font-size="10" font-weight="700">Xuất DS Chưa kê khai (.xlsx)</text>
+  </g>
+
+  <!-- Task 5b: Sửa / Làm hộ / Reset -->
+  <g transform="translate(1470,140)" filter="url(#cardShadow)">
+    <rect x="0" y="0" width="200" height="80" rx="10" fill="#ffffff" stroke="#9e1b1e" stroke-width="2"/>
+    <circle cx="14" cy="12" r="4" fill="none" stroke="#9e1b1e" stroke-width="1.5"/>
+    <path d="M 7,22 C 7,17 21,17 21,22" fill="none" stroke="#9e1b1e" stroke-width="1.5"/>
+    <text x="100" y="29" text-anchor="middle" fill="#1f1a18" font-size="11" font-weight="800">Sửa / Kê khai hộ (fromAdmin=1)</text>
+    <text x="100" y="45" text-anchor="middle" fill="#5c504a" font-size="10">Sửa 16 cột, bài nộp, nháp 02c/6b</text>
+    <text x="100" y="60" text-anchor="middle" fill="#9e1b1e" font-size="10" font-weight="700">Xuất hộ 02c/6b • Reset • Xóa ĐV</text>
+  </g>
+
+  <!-- Task 5c: Xem chi tiết & Tab 2 Lịch sử -->
+  <g transform="translate(1470,242)" filter="url(#cardShadow)">
+    <rect x="0" y="0" width="200" height="76" rx="10" fill="#ffffff" stroke="#1d4ed8" stroke-width="2"/>
+    <circle cx="14" cy="12" r="4" fill="none" stroke="#1d4ed8" stroke-width="1.5"/>
+    <path d="M 7,22 C 7,17 21,17 21,22" fill="none" stroke="#1d4ed8" stroke-width="1.5"/>
+    <text x="100" y="29" text-anchor="middle" fill="#1f1a18" font-size="11" font-weight="800">Kiểm tra &amp; Tab 2 Lịch sử</text>
+    <text x="100" y="45" text-anchor="middle" fill="#5c504a" font-size="10">Bấm "Xem" Modal 4 thẻ thông tin</text>
+    <text x="100" y="60" text-anchor="middle" fill="#1e40af" font-size="10" font-weight="700">Xem lịch sử tải 02c/6b &amp; điểm</text>
+  </g>
+
+  <!-- XOR 2 Join -->
+  <g transform="translate(1735,180)" filter="url(#cardShadow)">
+    <polygon points="0,-28 28,0 0,28 -28,0" fill="#fffbeb" stroke="#d97706" stroke-width="2.2"/>
+    <path d="M -8,-8 L 8,8 M 8,-8 L -8,8" stroke="#92400e" stroke-width="2.5" stroke-linecap="round"/>
+  </g>
+
+  <!-- Timer Event: 22/11/2026 -->
+  <g transform="translate(1822,180)" filter="url(#cardShadow)">
+    <circle cx="0" cy="0" r="22" fill="#fef2f2" stroke="#9e1b1e" stroke-width="2"/>
+    <circle cx="0" cy="0" r="17" fill="#ffffff" stroke="#9e1b1e" stroke-width="1.4"/>
+    <circle cx="0" cy="0" r="11" fill="none" stroke="#9e1b1e" stroke-width="1.4"/>
+    <path d="M 0,-7 L 0,0 L 5,3" fill="none" stroke="#9e1b1e" stroke-width="1.8" stroke-linecap="round"/>
+    <text x="0" y="-32" text-anchor="middle" fill="#991b1b" font-size="10.5" font-weight="800">Hội nghị Chi bộ</text>
+    <text x="0" y="-45" text-anchor="middle" fill="#781215" font-size="10.5" font-weight="800">Sáng CN 22/11/2026</text>
+  </g>
+
+  <!-- Task 6: Đối soát & Xuất Tổng hợp -->
+  <g transform="translate(1880,138)" filter="url(#cardShadow)">
+    <rect x="0" y="0" width="195" height="84" rx="10" fill="#ffffff" stroke="#9e1b1e" stroke-width="2"/>
+    <circle cx="14" cy="12" r="4" fill="none" stroke="#9e1b1e" stroke-width="1.5"/>
+    <path d="M 7,22 C 7,17 21,17 21,22" fill="none" stroke="#9e1b1e" stroke-width="1.5"/>
+    <text x="97" y="30" text-anchor="middle" fill="#1f1a18" font-size="11.5" font-weight="800">Đối soát &amp; Xuất báo cáo</text>
+    <text x="97" y="46" text-anchor="middle" fill="#5c504a" font-size="10">Thu 03 bản cứng (02c+6b+6d)</text>
+    <text x="97" y="60" text-anchor="middle" fill="#5c504a" font-size="10">Xuất TẤT CẢ tổng hợp (.xlsx)</text>
+    <text x="97" y="74" text-anchor="middle" fill="#9e1b1e" font-size="9.5" font-weight="700">Lưu trữ kết quả Chi bộ</text>
+  </g>
+
+  <!-- End Event -->
+  <g transform="translate(2155,180)" filter="url(#cardShadow)">
+    <circle cx="0" cy="0" r="20" fill="#fef2f2" stroke="#9e1b1e" stroke-width="4.5"/>
+    <text x="0" y="36" text-anchor="middle" fill="#991b1b" font-size="11" font-weight="800">Hoàn thành</text>
+    <text x="0" y="50" text-anchor="middle" fill="#5c504a" font-size="10">Kiểm điểm 2026</text>
+  </g>
+
+
+  <!-- ================= BPMN NODES: LANE 2 (HỆ THỐNG & FIREBASE) ================= -->
+  <g transform="translate(225,420)" filter="url(#cardShadow)">
+    <rect x="0" y="0" width="145" height="80" rx="10" fill="#fffbeb" stroke="#d97706" stroke-width="2"/>
+    <circle cx="15" cy="15" r="5" fill="none" stroke="#b45309" stroke-width="1.5" stroke-dasharray="2.5 1.5"/>
+    <text x="72" y="34" text-anchor="middle" fill="#1f1a18" font-size="11.5" font-weight="800">adminDashboard</text>
+    <text x="72" y="50" text-anchor="middle" fill="#5c504a" font-size="10">Kiểm tra mật khẩu</text>
+    <text x="72" y="64" text-anchor="middle" fill="#92400e" font-size="10" font-weight="700">&amp; Thử kết nối Firestore</text>
+  </g>
+
+  <g transform="translate(445,460)" filter="url(#cardShadow)">
+    <polygon points="0,-28 28,0 0,28 -28,0" fill="#fffbeb" stroke="#d97706" stroke-width="2.2"/>
+    <path d="M -8,-8 L 8,8 M 8,-8 L -8,8" stroke="#92400e" stroke-width="2.5" stroke-linecap="round"/>
+    <text x="-38" y="45" text-anchor="middle" fill="#78350f" font-size="10" font-weight="800">Firestore</text>
+    <text x="-38" y="58" text-anchor="middle" fill="#5c504a" font-size="9.5">sẵn sàng?</text>
+  </g>
+
+  <g transform="translate(505,388)" filter="url(#cardShadow)">
+    <rect x="0" y="0" width="160" height="56" rx="9" fill="#ecfdf5" stroke="#059669" stroke-width="1.8"/>
+    <text x="80" y="24" text-anchor="middle" fill="#065f46" font-size="10.5" font-weight="800">Badge: Firebase csdlkiemdiem</text>
+    <text x="80" y="41" text-anchor="middle" fill="#047857" font-size="9.5" font-weight="600">Đọc 4 collections trực tuyến</text>
+  </g>
+
+  <g transform="translate(505,488)" filter="url(#cardShadow)">
+    <rect x="0" y="0" width="160" height="56" rx="9" fill="#fef2f2" stroke="#dc2626" stroke-width="1.8"/>
+    <text x="80" y="24" text-anchor="middle" fill="#991b1b" font-size="10.5" font-weight="800">Dự phòng LocalStorage</text>
+    <text x="80" y="41" text-anchor="middle" fill="#b91c1c" font-size="9.5" font-weight="600">Hiện Banner kiểm tra Rules</text>
+  </g>
+
+  <g transform="translate(705,460)" filter="url(#cardShadow)">
+    <polygon points="0,-28 28,0 0,28 -28,0" fill="#fffbeb" stroke="#d97706" stroke-width="2.2"/>
+    <path d="M -8,-8 L 8,8 M 8,-8 L -8,8" stroke="#92400e" stroke-width="2.5" stroke-linecap="round"/>
+  </g>
+
+  <g transform="translate(835,420)" filter="url(#cardShadow)">
+    <rect x="0" y="0" width="190" height="80" rx="10" fill="#fffbeb" stroke="#d97706" stroke-width="2"/>
+    <circle cx="15" cy="15" r="5" fill="none" stroke="#b45309" stroke-width="1.5" stroke-dasharray="2.5 1.5"/>
+    <text x="95" y="32" text-anchor="middle" fill="#1f1a18" font-size="11" font-weight="800">adminSaveLinks &amp; Import</text>
+    <text x="95" y="48" text-anchor="middle" fill="#5c504a" font-size="10">Lưu settings/portal (Link + Hạn)</text>
+    <text x="95" y="63" text-anchor="middle" fill="#92400e" font-size="10" font-weight="700">Upsert members (Batch 400)</text>
+  </g>
+
+  <g transform="translate(1145,420)" filter="url(#cardShadow)">
+    <rect x="0" y="0" width="185" height="80" rx="10" fill="#fffbeb" stroke="#d97706" stroke-width="2"/>
+    <circle cx="15" cy="15" r="5" fill="none" stroke="#b45309" stroke-width="1.5" stroke-dasharray="2.5 1.5"/>
+    <text x="92" y="32" text-anchor="middle" fill="#1f1a18" font-size="11" font-weight="800">Lưu Kê khai &amp; Lịch sử tải</text>
+    <text x="92" y="48" text-anchor="middle" fill="#5c504a" font-size="10">Cập nhật submissions, docDraft</text>
+    <text x="92" y="63" text-anchor="middle" fill="#92400e" font-size="10" font-weight="700">&amp; docLogs lên Firestore</text>
+  </g>
+
+  <g transform="translate(1480,420)" filter="url(#cardShadow)">
+    <rect x="0" y="0" width="185" height="80" rx="10" fill="#fffbeb" stroke="#d97706" stroke-width="2"/>
+    <circle cx="15" cy="15" r="5" fill="none" stroke="#b45309" stroke-width="1.5" stroke-dasharray="2.5 1.5"/>
+    <text x="92" y="32" text-anchor="middle" fill="#1f1a18" font-size="11" font-weight="800">Xử lý Quản trị (Write/Reset)</text>
+    <text x="92" y="48" text-anchor="middle" fill="#5c504a" font-size="10">adminSaveMember / Delete</text>
+    <text x="92" y="63" text-anchor="middle" fill="#991b1b" font-size="10" font-weight="700">Reset (1 ĐV / Toàn bộ)</text>
+  </g>
+
+
+  <!-- ================= BPMN NODES: LANE 3 (ĐẢNG VIÊN) ================= -->
+  <g transform="translate(780,774)" filter="url(#cardShadow)">
+    <circle cx="0" cy="0" r="18" fill="#ecfdf5" stroke="#059669" stroke-width="2.5"/>
+    <text x="0" y="33" text-anchor="middle" fill="#065f46" font-size="10" font-weight="800">Mở đợt</text>
+    <text x="0" y="46" text-anchor="middle" fill="#5c504a" font-size="9.5">kê khai</text>
+  </g>
+
+  <g transform="translate(835,734)" filter="url(#cardShadow)">
+    <rect x="0" y="0" width="180" height="80" rx="10" fill="#ffffff" stroke="#059669" stroke-width="2"/>
+    <circle cx="14" cy="12" r="4" fill="none" stroke="#059669" stroke-width="1.5"/>
+    <path d="M 7,22 C 7,17 21,17 21,22" fill="none" stroke="#059669" stroke-width="1.5"/>
+    <text x="90" y="32" text-anchor="middle" fill="#1f1a18" font-size="11" font-weight="800">Kê khai Bước 1 (kekhai.html)</text>
+    <text x="90" y="48" text-anchor="middle" fill="#5c504a" font-size="10">Tra cứu MSSV+CCCD, Điểm 25-26</text>
+    <text x="90" y="63" text-anchor="middle" fill="#065f46" font-size="10" font-weight="700">Xếp loại &amp; Dự hội nghị 22/11</text>
+  </g>
+
+  <g transform="translate(1073,774)" filter="url(#cardShadow)">
+    <circle cx="0" cy="0" r="22" fill="#fef2f2" stroke="#9e1b1e" stroke-width="2"/>
+    <circle cx="0" cy="0" r="17" fill="#ffffff" stroke="#9e1b1e" stroke-width="1.4"/>
+    <circle cx="0" cy="0" r="11" fill="none" stroke="#9e1b1e" stroke-width="1.4"/>
+    <path d="M 0,-7 L 0,0 L 5,3" fill="none" stroke="#9e1b1e" stroke-width="1.8" stroke-linecap="round"/>
+    <text x="0" y="36" text-anchor="middle" fill="#991b1b" font-size="10" font-weight="800">Trước 20h00</text>
+    <text x="0" y="49" text-anchor="middle" fill="#781215" font-size="10" font-weight="800">Thứ 5, 19/11</text>
+  </g>
+
+  <g transform="translate(1135,734)" filter="url(#cardShadow)">
+    <rect x="0" y="0" width="190" height="80" rx="10" fill="#ffffff" stroke="#059669" stroke-width="2"/>
+    <circle cx="14" cy="12" r="4" fill="none" stroke="#059669" stroke-width="1.5"/>
+    <path d="M 7,22 C 7,17 21,17 21,22" fill="none" stroke="#059669" stroke-width="1.5"/>
+    <text x="95" y="32" text-anchor="middle" fill="#1f1a18" font-size="11" font-weight="800">Tạo Hồ sơ in (mau-02c/6b)</text>
+    <text x="95" y="48" text-anchor="middle" fill="#5c504a" font-size="10">Chấm điểm PL04, Lưu nháp</text>
+    <text x="95" y="63" text-anchor="middle" fill="#065f46" font-size="10" font-weight="700">Xuất file .zip (Mẫu 02c + 6b)</text>
+  </g>
+
+  <g transform="translate(1375,734)" filter="url(#cardShadow)">
+    <rect x="0" y="0" width="185" height="80" rx="10" fill="#ffffff" stroke="#059669" stroke-width="2"/>
+    <rect x="9" y="10" width="14" height="9" rx="2" fill="none" stroke="#059669" stroke-width="1.4"/>
+    <text x="92" y="32" text-anchor="middle" fill="#1f1a18" font-size="11" font-weight="800">In ký &amp; Nộp bản giấy</text>
+    <text x="92" y="48" text-anchor="middle" fill="#5c504a" font-size="10">Kèm Mẫu 6d (dichvucong.dcs.vn)</text>
+    <text x="92" y="63" text-anchor="middle" fill="#9e1b1e" font-size="10" font-weight="700">Nộp Chi bộ sáng CN 22/11</text>
+  </g>
+
+  <g transform="translate(1633,774)" filter="url(#cardShadow)">
+    <circle cx="0" cy="0" r="18" fill="#fef2f2" stroke="#9e1b1e" stroke-width="4.2"/>
+    <text x="0" y="33" text-anchor="middle" fill="#991b1b" font-size="10" font-weight="800">Đảng viên</text>
+    <text x="0" y="46" text-anchor="middle" fill="#5c504a" font-size="9.5">hoàn tất</text>
+  </g>
+
+
+  <!-- ================= LEGEND FOOTER ================= -->
+  <g transform="translate(24,898)">
+    <rect x="0" y="0" width="2212" height="46" rx="8" fill="#ffffff" stroke="#e7dfd8" stroke-width="1.2"/>
+    <text x="18" y="27" fill="#781215" font-size="11.5" font-weight="800">CHÚ GIẢI KÝ HIỆU BPMN 2.0:</text>
+
+    <circle cx="222" cy="23" r="10" fill="#ecfdf5" stroke="#059669" stroke-width="2"/>
+    <text x="240" y="27" fill="#1f1a18" font-size="11">Start Event</text>
+
+    <circle cx="322" cy="23" r="10" fill="#fef2f2" stroke="#9e1b1e" stroke-width="3.8"/>
+    <text x="340" y="27" fill="#1f1a18" font-size="11">End Event</text>
+
+    <rect x="415" y="13" width="26" height="20" rx="4" fill="#ffffff" stroke="#9e1b1e" stroke-width="1.8"/>
+    <text x="449" y="27" fill="#1f1a18" font-size="11">User Task (Admin / ĐV)</text>
+
+    <rect x="595" y="13" width="26" height="20" rx="4" fill="#fffbeb" stroke="#d97706" stroke-width="1.8"/>
+    <text x="629" y="27" fill="#1f1a18" font-size="11">Service Task (JS / Firebase)</text>
+
+    <polygon points="798,12 810,23 798,34 786,23" fill="#fffbeb" stroke="#d97706" stroke-width="1.8"/>
+    <path d="M 794,19 L 802,27 M 802,19 L 794,27" stroke="#92400e" stroke-width="1.8"/>
+    <text x="818" y="27" fill="#1f1a18" font-size="11">Exclusive Gateway (XOR)</text>
+
+    <polygon points="982,12 994,23 982,34 970,23" fill="#ecfdf5" stroke="#059669" stroke-width="1.8"/>
+    <path d="M 982,17 L 982,29 M 976,23 L 988,23" stroke="#059669" stroke-width="2"/>
+    <text x="1002" y="27" fill="#1f1a18" font-size="11">Parallel Gateway (AND)</text>
+
+    <circle cx="1165" cy="23" r="11" fill="#fef2f2" stroke="#9e1b1e" stroke-width="1.6"/>
+    <circle cx="1165" cy="23" r="8" fill="#ffffff" stroke="#9e1b1e" stroke-width="1.1"/>
+    <path d="M 1165,18 L 1165,23 L 1169,25" fill="none" stroke="#9e1b1e" stroke-width="1.4"/>
+    <text x="1184" y="27" fill="#1f1a18" font-size="11">Timer Event (Mốc hạn)</text>
+
+    <line x1="1340" y1="23" x2="1374" y2="23" stroke="#2c2420" stroke-width="2" marker-end="url(#arrowSeq)"/>
+    <text x="1382" y="27" fill="#1f1a18" font-size="11">Sequence Flow</text>
+
+    <line x1="1490" y1="23" x2="1528" y2="23" stroke="#9e1b1e" stroke-width="1.8" stroke-dasharray="6 4" marker-start="url(#circleMsg)" marker-end="url(#arrowMsg)"/>
+    <text x="1536" y="27" fill="#1f1a18" font-size="11">Message Flow (API / Giao tiếp)</text>
+
+    <line x1="1730" y1="23" x2="1764" y2="23" stroke="#1d4ed8" stroke-width="1.6" stroke-dasharray="4 3" marker-end="url(#arrowData)"/>
+    <text x="1772" y="27" fill="#1f1a18" font-size="11">Data Association (Firestore / Excel)</text>
+  </g>
+</svg>

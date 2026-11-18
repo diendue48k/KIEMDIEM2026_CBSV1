@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hướng Dẫn Sử Dụng Cho Admin &amp; Quy Trình BPMN 2.0 - Chi Bộ Sinh Viên 1</title>
+  <style>
+    @font-face {
+      font-family: 'SVN-Gilroy';
+      src: local('SVN-Gilroy Regular'), local('SVN-Gilroy'), url('fonts/SVN-Gilroy-Regular.otf') format('opentype');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'SVN-Gilroy';
+      src: local('SVN-Gilroy Medium'), url('fonts/SVN-Gilroy-Medium.otf') format('opentype');
+      font-weight: 500;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'SVN-Gilroy';
+      src: local('SVN-Gilroy SemiBold'), local('SVN-Gilroy Bold'), url('fonts/SVN-Gilroy-Bold.otf') format('opentype');
+      font-weight: 600;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'SVN-Gilroy';
+      src: local('SVN-Gilroy Bold'), url('fonts/SVN-Gilroy-Bold.otf') format('opentype');
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'SVN-Gilroy';
+      src: local('SVN-Gilroy Heavy'), local('SVN-Gilroy Bold'), url('fonts/SVN-Gilroy-Bold.otf') format('opentype');
+      font-weight: 800;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    :root {
+      --crimson: #9e1b1e;
+      --crimson-dark: #781215;
+      --crimson-bright: #c62828;
+      --gold: #f59e0b;
+      --gold-bright: #facc15;
+      --gold-soft: #fef9c3;
+      --gold-tint: #fffbeb;
+
+      --bg-page: #faf6f3;
+      --bg-card: #ffffff;
+      --border: #e7dfd8;
+
+      --text-main: #1f1a18;
+      --text-secondary: #5c504a;
+      --text-muted: #857770;
+
+      --success-bg: #ecfdf5;
+      --success-text: #065f46;
+      --danger-bg: #fef2f2;
+      --danger-text: #991b1b;
+
+      --radius-lg: 18px;
+      --radius-md: 12px;
+      --radius-sm: 8px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'SVN-Gilroy', 'SVN Gilroy', 'Gilroy', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: #fdf9f4;
+      background-image:
+        radial-gradient(at 0% 15%, rgba(158, 27, 30, 0.05) 0px, transparent 45%),
+        radial-gradient(at 100% 20%, rgba(250, 204, 21, 0.12) 0px, transparent 45%);
+      color: var(--text-main);
+      line-height: 1.65;
+      padding: 0 16px 64px;
+      min-height: 100vh;
+    }
+
+    .top-tricolor-bar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 5px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      z-index: 100;
+    }
+    .top-tricolor-bar span:nth-child(1),
+    .top-tricolor-bar span:nth-child(3) { background-color: var(--crimson); }
+    .top-tricolor-bar span:nth-child(2) { background-color: var(--gold-bright); }
+
+    .container {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding-top: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .topbar-actions {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--crimson-dark);
+      font-size: 0.88rem;
+      font-weight: 700;
+      text-decoration: none;
+      padding: 8px 15px;
+      border-radius: 999px;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      transition: all 0.2s ease;
+    }
+    .back-link:hover {
+      background: var(--crimson);
+      color: #ffffff;
+      border-color: var(--crimson);
+    }
+
+    .back-link.primary-link {
+      background: linear-gradient(135deg, var(--crimson) 0%, var(--crimson-dark) 100%);
+      color: #ffffff;
+      border-color: var(--crimson-dark);
+    }
+    .back-link.primary-link:hover { opacity: 0.92; }
+
+    .btn-print {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      border-radius: 999px;
+      background: var(--gold-tint);
+      color: #92400e;
+      border: 1.5px solid #fcd34d;
+      font-family: inherit;
+      font-size: 0.86rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    .btn-print:hover {
+      background: var(--gold);
+      color: #ffffff;
+      border-color: var(--gold);
+    }
+
+    .hero-header {
+      text-align: center;
+      padding: 6px 16px 4px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .hero-logo {
+      width: 68px;
+      height: 68px;
+      object-fit: contain;
+      border-radius: 50%;
+      margin-bottom: 10px;
+      animation: logoAura 3.4s ease-in-out infinite;
+    }
+
+    .org-pill {
+      display: inline-block;
+      background: #ffffff;
+      color: var(--crimson);
+      border: 1px solid #f0e6df;
+      padding: 5px 18px;
+      border-radius: 8px;
+      font-size: 0.94rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      box-shadow: 0 2px 8px rgba(31, 26, 24, 0.05);
+      margin-bottom: 12px;
+    }
+
+    .hero-header h1 {
+      font-size: 1.68rem;
+      font-weight: 800;
+      color: var(--crimson);
+      text-transform: uppercase;
+      line-height: 1.28;
+      max-width: 820px;
+    }
+
+    .hero-underline {
+      width: 260px;
+      max-width: 80%;
+      height: 4px;
+      background: linear-gradient(90deg, var(--gold) 0%, var(--gold-bright) 35%, #fef08a 50%, var(--gold-bright) 65%, var(--gold) 100%);
+      background-size: 200% 100%;
+      border-radius: 999px;
+      margin-top: 10px;
+      margin-bottom: 12px;
+      animation: goldShimmer 3.2s linear infinite;
+    }
+
+    .hero-header p {
+      font-size: 0.92rem;
+      color: var(--text-secondary);
+      max-width: 720px;
+      margin-bottom: 16px;
+    }
+
+    .quick-nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .nav-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      border-radius: 999px;
+      background: #ffffff;
+      border: 1.5px solid var(--border);
+      color: var(--crimson-dark);
+      font-size: 0.84rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    .nav-pill:hover {
+      background: var(--crimson);
+      color: #ffffff;
+      border-color: var(--crimson);
+      transform: translateY(-2px);
+    }
+
+    .part-heading {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.08rem;
+      font-weight: 800;
+      color: var(--crimson-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      padding: 6px 4px 0;
+    }
+    .part-heading::after {
+      content: '';
+      flex: 1;
+      height: 2px;
+      background: linear-gradient(90deg, rgba(158, 27, 30, 0.25), transparent);
+      border-radius: 999px;
+    }
+
+    .section-card {
+      background: var(--bg-card);
+      padding: 26px 28px;
+      border-radius: var(--radius-lg);
+      box-shadow: 0 6px 24px -6px rgba(31, 26, 24, 0.07);
+      border: 1px solid var(--border);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 18px;
+      padding-bottom: 14px;
+      border-bottom: 2px solid #f3ece7;
+    }
+
+    .section-header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .step-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 36px;
+      height: 36px;
+      padding: 0 12px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--crimson) 0%, var(--crimson-dark) 100%);
+      color: var(--gold-bright);
+      font-size: 0.88rem;
+      font-weight: 800;
+      flex-shrink: 0;
+      box-shadow: 0 3px 8px rgba(158, 27, 30, 0.22);
+    }
+
+    .section-title {
+      font-size: 1.06rem;
+      font-weight: 800;
+      color: var(--crimson);
+      text-transform: uppercase;
+      line-height: 1.35;
+    }
+
+    .alert-important {
+      padding: 15px 18px;
+      background: linear-gradient(135deg, #fef2f2 0%, #fffbeb 100%);
+      border: 1.5px solid #fca5a5;
+      border-left: 5px solid var(--crimson);
+      border-radius: var(--radius-md);
+      margin-bottom: 16px;
+      font-size: 0.92rem;
+    }
+    .alert-important-tag {
+      display: inline-block;
+      background: var(--crimson);
+      color: var(--gold-bright);
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 2px 8px;
+      border-radius: 5px;
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+
+    .alert-gold {
+      padding: 13px 16px;
+      background: var(--gold-tint);
+      border: 1px solid #fde68a;
+      border-left: 4px solid var(--gold);
+      border-radius: var(--radius-sm);
+      font-size: 0.9rem;
+      color: #78350f;
+      margin: 12px 0;
+    }
+
+    .alert-green {
+      padding: 13px 16px;
+      background: var(--success-bg);
+      border: 1px solid #a7f3d0;
+      border-left: 4px solid #059669;
+      border-radius: var(--radius-sm);
+      font-size: 0.9rem;
+      color: var(--success-text);
+      margin: 12px 0;
+    }
+
+    .guide-block {
+      background: #fcfaf8;
+      border: 1px solid #efe7e1;
+      border-radius: var(--radius-md);
+      padding: 16px 18px;
+      margin-bottom: 14px;
+    }
+    .guide-block:last-of-type { margin-bottom: 0; }
+
+    .guide-block h3 {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.96rem;
+      font-weight: 800;
+      color: var(--crimson-dark);
+      margin-bottom: 8px;
+    }
+
+    .num-circle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--gold-soft);
+      border: 1px solid #fcd34d;
+      color: var(--crimson-dark);
+      font-size: 0.78rem;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .guide-ul {
+      margin-left: 20px;
+      font-size: 0.91rem;
+      color: var(--text-main);
+    }
+    .guide-ul li { margin-bottom: 6px; }
+    .guide-ul li:last-child { margin-bottom: 0; }
+    .guide-sub-ul {
+      margin-left: 20px;
+      margin-top: 6px;
+      color: var(--text-secondary);
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin: 12px 0;
+    }
+    @media (max-width: 780px) {
+      .grid-4 { grid-template-columns: repeat(2, 1fr); }
+    }
+    .mini-stat {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+    }
+    .mini-stat strong {
+      display: block;
+      font-size: 0.86rem;
+      color: var(--crimson-dark);
+      margin-bottom: 4px;
+    }
+    .mini-stat p {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      line-height: 1.45;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      margin: 12px 0;
+    }
+    table.guide-table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 660px;
+      font-size: 0.87rem;
+    }
+    table.guide-table thead th {
+      background: linear-gradient(135deg, var(--crimson) 0%, var(--crimson-dark) 100%);
+      color: #ffffff;
+      text-align: left;
+      padding: 11px 12px;
+      font-size: 0.76rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      border-bottom: 3px solid var(--gold-bright);
+    }
+    table.guide-table tbody td {
+      padding: 10px 12px;
+      border-bottom: 1px solid #f0e8e2;
+      vertical-align: top;
+      color: var(--text-secondary);
+    }
+    table.guide-table tbody tr:last-child td { border-bottom: none; }
+    table.guide-table tbody tr:nth-child(even) { background: #fcfaf8; }
+
+    .badge {
+      display: inline-block;
+      padding: 2px 9px;
+      border-radius: 999px;
+      font-size: 0.74rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .badge-green { background: var(--success-bg); color: var(--success-text); }
+    .badge-red { background: var(--danger-bg); color: var(--danger-text); }
+    .badge-gold { background: var(--gold-tint); color: #92400e; border: 1px solid #fcd34d; }
+
+    .faq-item {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      background: #fcfaf8;
+      margin-bottom: 12px;
+      overflow: hidden;
+    }
+    .faq-item:last-child { margin-bottom: 0; }
+    .faq-item[open] { background: #ffffff; border-color: #f3b8b9; }
+    .faq-item summary {
+      padding: 14px 18px;
+      font-weight: 800;
+      font-size: 0.94rem;
+      color: var(--crimson-dark);
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-item summary::after {
+      content: '+';
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--crimson);
+    }
+    .faq-item[open] summary::after { content: '−'; }
+    .faq-answer {
+      padding: 12px 18px 16px;
+      font-size: 0.91rem;
+      color: var(--text-secondary);
+      border-top: 1px dashed #efe7e1;
+    }
+
+    .icon-svg {
+      width: 17px;
+      height: 17px;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+      flex-shrink: 0;
+    }
+
+    code {
+      background: #f4ebe4;
+      color: var(--crimson-dark);
+      padding: 1px 6px;
+      border-radius: 5px;
+      font-size: 0.86em;
+      font-weight: 700;
+    }
+
+    .bpmn-wrap {
+      overflow: hidden;
+      position: relative;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-md);
+      background: #fdf9f4;
+      user-select: none;
+      touch-action: none;
+      cursor: zoom-in;
+    }
+    .bpmn-img {
+      display: block;
+      width: 100%;
+      min-width: 0 !important;
+      height: auto;
+      transform-origin: 0 0;
+      will-change: transform;
+      -webkit-user-drag: none;
+      pointer-events: none;
+    }
+    .bpmn-actions-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .zoom-pill {
+      display: inline-flex;
+      align-items: center;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      background: #ffffff;
+      overflow: hidden;
+      box-shadow: 0 1px 2px rgba(31, 26, 24, 0.04);
+    }
+    .zoom-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 28px;
+      border: none;
+      background: transparent;
+      color: var(--crimson-dark);
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+    .zoom-btn:hover { background: #fdf4f4; color: var(--crimson); }
+    .zoom-readout {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 48px;
+      height: 28px;
+      padding: 0 6px;
+      border: none;
+      border-left: 1px solid var(--border);
+      border-right: 1px solid var(--border);
+      background: #fdf9f4;
+      color: var(--text-main);
+      font-family: inherit;
+      font-size: 0.76rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+    .zoom-expand { border-left: 1px solid var(--border); width: 32px; }
+    .btn-dl-bpmn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 10px;
+      border-radius: 8px;
+      border: 1.5px solid var(--border);
+      background: #ffffff;
+      color: var(--crimson-dark);
+      font-size: 0.76rem;
+      font-weight: 700;
+      text-decoration: none;
+    }
+    .btn-dl-bpmn:hover { border-color: var(--crimson); background: #fffafa; }
+
+    .bpmn-lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+      background: rgba(20, 14, 12, 0.92);
+      display: flex;
+      flex-direction: column;
+      padding: 14px 18px;
+      gap: 12px;
+    }
+    .hidden,
+    .bpmn-lightbox.hidden { display: none !important; }
+    .bpmn-lb-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      background: #ffffff;
+      padding: 10px 16px;
+      border-radius: var(--radius-md);
+    }
+    .bpmn-lb-viewport {
+      flex: 1;
+      overflow: hidden;
+      position: relative;
+      border-radius: var(--radius-md);
+      background: #fdf9f4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      user-select: none;
+      touch-action: none;
+      cursor: zoom-in;
+    }
+    .bpmn-lb-img {
+      max-width: 96%;
+      max-height: 96%;
+      width: auto;
+      height: auto;
+      display: block;
+      transform-origin: 0 0;
+      will-change: transform;
+      -webkit-user-drag: none;
+      pointer-events: none;
+    }
+
+    .footer-note {
+      text-align: center;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-top: 6px;
+    }
+
+    @keyframes logoAura {
+      0%, 100% { filter: drop-shadow(0 4px 10px rgba(158, 27, 30, 0.18)); transform: scale(1); }
+      50% { filter: drop-shadow(0 8px 18px rgba(245, 158, 11, 0.34)); transform: scale(1.04); }
+    }
+    @keyframes goldShimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+    @media (max-width: 640px) {
+      .hero-header h1 { font-size: 1.32rem; }
+      .section-card { padding: 18px 16px; }
+    }
+    @media print {
+      .top-tricolor-bar, .topbar, .quick-nav, .bpmn-actions-row, .bpmn-lightbox { display: none !important; }
+      body { background: #ffffff; padding: 0; }
+      .section-card { box-shadow: none; break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <div class="top-tricolor-bar"><span></span><span></span><span></span></div>
+
+  <div class="container">
+    <div class="topbar">
+      <div class="topbar-actions">
+        <a href="admin.html?v=20261117" class="back-link primary-link">
+          <svg class="icon-svg" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+          <span>Mở Cổng Quản trị (Admin)</span>
+        </a>
+        <a href="index.html?v=20261117" class="back-link">
+          <span>Về Trang chính</span>
+        </a>
+        <a href="huong-dan.html?v=20261117" class="back-link">
+          <span>Hướng dẫn Đảng viên</span>
+        </a>
+      </div>
+      <button type="button" class="btn-print" onclick="window.print()">
+        <svg class="icon-svg" viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        <span>In / Lưu PDF hướng dẫn</span>
+      </button>
+    </div>
+
+    <header class="hero-header">
+      <img src="logo.png" alt="Logo Chi bộ Sinh viên" class="hero-logo">
+      <div class="org-pill">Chi Bộ Sinh Viên 1 • Dành Cho Ban Quản Trị / Chi Ủy</div>
+      <h1>Hướng Dẫn Sử Dụng Cổng Quản Trị (Admin)<br>&amp; Quy Trình Nghiệp Vụ BPMN 2.0 Năm 2026</h1>
+      <div class="hero-underline"></div>
+      <p>Tài liệu chuẩn hóa quy trình vận hành Hệ thống Kiểm điểm, Đánh giá và Xếp loại Đảng viên năm 2026 trên nền tảng <strong>Firebase Cloud Firestore (<code>csdlkiemdiem</code>)</strong> kết hợp dự phòng <code>localStorage</code>.</p>
+      <div class="quick-nav">
+        <a href="#so-do-bpmn-admin" class="nav-pill">Sơ đồ BPMN 2.0 Admin</a>
+        <a href="#so-do-bpmn-member" class="nav-pill">Sơ đồ BPMN 2.0 Đảng viên</a>
+        <a href="#phan-1" class="nav-pill">1. Đăng nhập &amp; Firebase</a>
+        <a href="#phan-2" class="nav-pill">2. Tab 1: Kiểm tra &amp; Sửa/Hộ</a>
+        <a href="#phan-3" class="nav-pill">3. Tab 2 &amp; Tab 3</a>
+        <a href="#phan-4" class="nav-pill">4. Chuẩn Excel &amp; FAQ</a>
+      </div>
+    </header>
+
+    <!-- SƠ ĐỒ BPMN 2.0 QUẢN TRỊ (ADMIN) -->
+    <section id="so-do-bpmn-admin" class="section-card">
+      <div class="section-header">
+        <div class="section-header-left">
+          <span class="step-badge">BPMN 1</span>
+          <h2 class="section-title">Sơ đồ BPMN 2.0 Quy trình Quản trị &amp; Điều hành (Admin)</h2>
+        </div>
+        <div class="bpmn-actions-row">
+          <a href="so-do-bpmn-admin-2026.svg" download="so-do-bpmn-admin-2026.svg" class="btn-dl-bpmn" title="Tải file ảnh vector SVG">Tải SVG</a>
+          <a href="quy-trinh-admin-2026.bpmn" download="quy-trinh-admin-2026.bpmn" class="btn-dl-bpmn" title="Tải file chuẩn OMG BPMN 2.0 XML (mở bằng Camunda / bpmn.io)">Tải .BPMN</a>
+          <div class="zoom-pill">
+            <button type="button" class="zoom-btn" onclick="bpmnAdminCtrl.stepZoom(-0.5)" title="Thu nhỏ">−</button>
+            <button type="button" id="bpmnAdminZoomBadge" class="zoom-readout" onclick="bpmnAdminCtrl.reset()" title="Nhấn để đặt lại 100%">100%</button>
+            <button type="button" class="zoom-btn" onclick="bpmnAdminCtrl.stepZoom(0.5)" title="Phóng to">+</button>
+            <button type="button" class="zoom-btn zoom-expand" onclick="openLightbox('so-do-bpmn-admin-2026.svg', 'Sơ đồ BPMN 2.0 Quy trình Quản trị (Admin)')" title="Xem toàn màn hình">
+              <svg class="icon-svg" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+      <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 10px;">
+        Cuộn chuột hoặc nhấp đúp để phóng to/thu nhỏ; kéo để di chuyển trên sơ đồ; hoặc bấm nút mở rộng góc phải để xem toàn màn hình. Sơ đồ gồm 3 Swimlanes: <strong>Cấp ủy / Admin (<code>admin.html</code>)</strong> — <strong>Hệ thống &amp; Firebase (<code>csdlkiemdiem</code>)</strong> — <strong>Đảng viên Sinh viên</strong>.
+      </p>
+      <div id="bpmnAdminWrap" class="bpmn-wrap">
+        <img id="bpmnAdminImg" src="so-do-bpmn-admin-2026.svg" alt="Sơ đồ BPMN 2.0 Quy trình Quản trị Admin 2026" class="bpmn-img">
+      </div>
+    </section>
+
+    <!-- SƠ ĐỒ BPMN 2.0 PHÍA ĐẢNG VIÊN -->
+    <section id="so-do-bpmn-member" class="section-card">
+      <div class="section-header">
+        <div class="section-header-left">
+          <span class="step-badge">BPMN 2</span>
+          <h2 class="section-title">Sơ đồ BPMN 2.0 Luồng nghiệp vụ phía Đảng viên (Đối chiếu)</h2>
+        </div>
+        <div class="bpmn-actions-row">
+          <a href="so-do-bpmn-2026.svg" download="so-do-bpmn-2026.svg" class="btn-dl-bpmn">Tải SVG</a>
+          <a href="quy-trinh-kiem-diem-2026.bpmn" download="quy-trinh-kiem-diem-2026.bpmn" class="btn-dl-bpmn">Tải .BPMN</a>
+          <div class="zoom-pill">
+            <button type="button" class="zoom-btn" onclick="bpmnMemberCtrl.stepZoom(-0.5)" title="Thu nhỏ">−</button>
+            <button type="button" id="bpmnMemberZoomBadge" class="zoom-readout" onclick="bpmnMemberCtrl.reset()" title="Nhấn để đặt lại 100%">100%</button>
+            <button type="button" class="zoom-btn" onclick="bpmnMemberCtrl.stepZoom(0.5)" title="Phóng to">+</button>
+            <button type="button" class="zoom-btn zoom-expand" onclick="openLightbox('so-do-bpmn-2026.svg', 'Sơ đồ BPMN 2.0 Quy trình Đảng viên thực hiện')" title="Xem toàn màn hình">
+              <svg class="icon-svg" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div id="bpmnMemberWrap" class="bpmn-wrap">
+        <img id="bpmnMemberImg" src="so-do-bpmn-2026.svg" alt="Sơ đồ BPMN 2.0 Quy trình Đảng viên 2026" class="bpmn-img">
+      </div>
+    </section>
+
+    <div id="phan-1" class="part-heading">Phần I: Đăng nhập, Kiểm tra kết nối Firebase &amp; Thẻ Thống kê</div>
+
+    <section class="section-card">
+      <div class="section-header">
+        <div class="section-header-left">
+          <span class="step-badge">Mục 1</span>
+          <h2 class="section-title">Đăng nhập, Trạng thái đồng bộ Cloud Firestore &amp; 4 Thẻ Thống kê</h2>
+        </div>
+      </div>
+
+      <div class="guide-block">
+        <h3><span class="num-circle">1</span> Đăng nhập Cổng Quản trị &amp; Phiên làm việc</h3>
+        <ul class="guide-ul">
+          <li>Truy cập <code>admin.html</code> (hoặc bấm liên kết <strong>Cổng quản trị</strong> ở chân trang chủ <code>index.html</code>).</li>
+          <li>Nhập mật khẩu quản trị (mặc định hệ thống chấp nhận <code>CBSV1@2026</code> hoặc <code>CBSV2@2026</code>, không phân biệt hoa thường) rồi bấm <strong>"Đăng nhập"</strong>.</li>
+          <li>Sau khi đăng nhập thành công, mật khẩu được lưu tạm trong <code>sessionStorage</code> (khóa <code>CBSV1_ADMIN_PASS</code>) để tự động đăng nhập lại khi tải lại trang. Khi dùng máy tính dùng chung, nhớ bấm nút <strong>"Đăng xuất"</strong> ở góc trên bên phải.</li>
+        </ul>
+      </div>
+
+      <div class="guide-block">
+        <h3><span class="num-circle">2</span> Nhận biết trạng thái Cơ sở dữ liệu (Firebase vs LocalStorage)</h3>
+        <ul class="guide-ul">
+          <li><strong><span class="badge badge-green">Firebase: csdlkiemdiem</span> (Trạng thái chuẩn):</strong> Hệ thống đang đồng bộ trực tuyến với Cloud Firestore (4 collections: <code>settings</code>, <code>members</code>, <code>submissions</code>, <code>docLogs</code>) theo cấu hình trong <code>config.js</code> (<code>USE_FIREBASE: true</code>). Mọi dữ liệu Đảng viên gửi lên đều hiển thị ngay tại đây.</li>
+          <li><strong><span class="badge badge-gold">Dự phòng cục bộ (LocalStorage)</span>:</strong> Hiện banner cảnh báo vàng khi mất kết nối mạng, chưa bật Firestore Database hoặc bị chặn Firestore Rules. Lúc này dữ liệu chỉ đọc/lưu trên bộ nhớ trình duyệt hiện tại (<code>CBSV1_MOCK_DB_2026</code>). Cần kiểm tra lại <strong>Firebase Console (csdlkiemdiem) &rarr; Firestore Database &rarr; Rules</strong> rồi bấm <strong>"Làm mới"</strong>.</li>
+        </ul>
+      </div>
+
+      <div class="guide-block">
+        <h3><span class="num-circle">3</span> Sử dụng 4 Thẻ Thống kê Tương tác (Click-to-Filter)</h3>
+        <p style="font-size: 0.89rem; color: var(--text-secondary);">Bốn thẻ thống kê trên đầu Dashboard đều là các nút bấm lọc nhanh:</p>
+        <div class="grid-4">
+          <div class="mini-stat">
+            <strong>1. Tổng Đảng viên</strong>
+            <p>Bấm để chuyển về Tab 1 và hiển thị <em>Tất cả</em> Đảng viên trong danh sách.</p>
+          </div>
+          <div class="mini-stat">
+            <strong style="color:#059669;">2. Đã kê khai</strong>
+            <p>Bấm để lọc ngay danh sách các đồng chí <em>Đã gửi kê khai Bước 1</em>.</p>
+          </div>
+          <div class="mini-stat">
+            <strong style="color:#d97706;">3. Chưa kê khai</strong>
+            <p>Bấm để lọc danh sách các đồng chí <em>Chưa kê khai</em> nhằm theo dõi đôn đốc.</p>
+          </div>
+          <div class="mini-stat">
+            <strong>4. Tỷ lệ hoàn thành (%)</strong>
+            <p>Bấm để mở Popup <strong>"Tổng hợp hoạt động &amp; Tiến độ theo Nhóm"</strong> — xem chi tiết ai đã kê khai, ai đã tải <code>02c/6b</code>, ai đã lưu nháp và bảng tỷ lệ từng Nhóm (bấm vào tên nhóm để lọc nhanh).</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div id="phan-2" class="part-heading">Phần II: Tab 1 — Kiểm tra kê khai, Sửa/Làm hộ &amp; Xuất/Nhập Excel</div>
+
+    <section class="section-card">
+      <div class="section-header">
+        <div class="section-header-left">
+          <span class="step-badge">Tab 1</span>
+          <h2 class="section-title">Quản lý danh sách Đảng viên, Sửa trực tiếp &amp; Kê khai hộ</h2>
+        </div>
+      </div>
+
+      <div class="guide-block">
+        <h3><span class="num-circle">1</span> Tìm kiếm, Lọc theo Nhóm &amp; Phân trang</h3>
+        <ul class="guide-ul">
+          <li><strong>Tìm kiếm tức thì:</strong> Gõ vào ô <em>"Tìm theo Họ tên, MSSV, Nhóm, Khoa..."</em> để lọc đồng thời trên 5 trường (kể cả <code>Loại Đảng viên</code>: Chính thức / Dự bị).</li>
+          <li><strong>Bộ lọc Nhóm sinh hoạt &amp; Trạng thái:</strong> Kết hợp chọn <code>Tất cả các nhóm</code> / từng nhóm cụ thể với <code>Tất cả trạng thái</code> / <code>Đã kê khai</code> / <code>Chưa kê khai</code>.</li>
+          <li><strong>Phân trang linh hoạt:</strong> Thanh phân trang cuối bảng cho phép chọn số dòng mỗi trang (<code>10</code>, <code>15</code>, <code>25</code>, <code>50</code>, <code>100</code> hoặc <code>Tất cả</code>).</li>
+          <li><strong>Đọc nhanh trạng thái trên bảng:</strong>
+            <ul class="guide-sub-ul">
+              <li>Cột <strong>Kê khai:</strong> Ngoài badge <span class="badge badge-success">Đã kê khai</span> + thời gian gửi, hệ thống hiển thị thêm xác nhận dự Hội nghị kiểm điểm <code>22/11/2026</code>: <strong>✅ Dự hội nghị</strong> hoặc <strong>❌ Vắng hội nghị</strong> (rê chuột vào để xem lý do vắng).</li>
+              <li>Cột <strong>Hồ sơ in:</strong> Phân biệt 3 trạng thái: <span class="badge badge-success">Đã tải</span> (đã xuất tệp ZIP/DOCX), <span class="badge badge-gold">Đã lưu nháp</span> (đã nhập liệu và bấm lưu nháp trên <code>mau-02c.html</code>), <span class="badge badge-red">Chưa tạo</span>.</li>
+              <li>Cột <strong>Tự xếp loại:</strong> Tự động gắn nhãn <code>Chưa đủ 6 tháng</code> với Đảng viên kết nạp sau <code>21/05/2026</code>.</li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+
+      <div class="guide-block">
+        <h3><span class="num-circle">2</span> Thanh thao tác nhanh: Thêm, Nhập Excel, Xuất báo cáo &amp; Reset</h3>
+        <ul class="guide-ul">
+          <li><strong><code>+ Thêm Đảng viên</code>:</strong> Mở hộp thoại nhập mới từng đồng chí (yêu cầu tối thiểu <strong>Họ và tên</strong> và <strong>MSSV</strong>).</li>
+          <li><strong><code>Tải mẫu nhập</code> &amp; <code>Nhập danh sách (.xlsx/.csv)</code>:</strong> Tải file mẫu <code>Mau_Nhap_DanhSach_DangVien.xlsx</code> (16 cột chuẩn), điền dữ liệu rồi chọn file &rarr; hệ thống đọc trước số dòng &rarr; bấm <strong>"Xác nhận nhập vào Hệ thống"</strong>. Tự động <strong>Upsert theo MSSV</strong> (cập nhật nếu trùng MSSV, thêm mới nếu chưa có, ghi lên Firestore theo từng batch 400 dòng).</li>
+          <li><strong>Menu <code>Xuất báo cáo Excel</code> (4 chế độ xuất):</strong>
+            <ul class="guide-sub-ul">
+              <li><strong>Xuất TẤT CẢ tổng hợp (.xlsx)</strong> &rarr; <code>TongHop_KeKhai_DangVien_2026.xlsx</code>: Xuất toàn bộ danh sách Đảng viên (kèm đủ 32 cột thông tin hồ sơ, điểm HK1-HK2, thành tích 1-4, đóng góp, tự xếp loại, xác nhận Hội nghị, trạng thái tạo hồ sơ in và tổng điểm 02c; ai chưa nộp tự đánh dấu <em>"Chưa kê khai"</em>).</li>
+              <li><strong>Xuất ĐÃ kê khai (.xlsx)</strong> &rarr; <code>KetQua_KeKhai_2026.xlsx</code>: Chỉ xuất những đồng chí đã nộp Bước 1.</li>
+              <li><strong>Xuất CHƯA kê khai (.xlsx)</strong> &rarr; <code>DanhSach_ChuaKeKhai_2026.xlsx</code>: Xuất danh sách chưa nộp (17 cột đầy đủ thông tin liên hệ/nhóm) để gửi Nhóm trưởng đôn đốc.</li>
+              <li><strong>Xuất DS Đảng viên (.xlsx)</strong> &rarr; <code>DanhSach_DangVien_2026.xlsx</code>: Sao lưu danh sách gốc 16 cột.</li>
+            </ul>
+          </li>
+          <li><strong>Menu <code>Reset dữ liệu</code> (Cẩn trọng):</strong>
+            <ul class="guide-sub-ul">
+              <li><strong>Reset kê khai toàn bộ:</strong> Xóa sạch toàn bộ <code>submissions</code>, <code>docLogs</code>, <code>docDrafts</code>; <strong>giữ nguyên</strong> danh sách Đảng viên và cấu hình link (dùng khi kết thúc chạy thử để bắt đầu đợt thật).</li>
+              <li><strong>Reset DS Đảng viên:</strong> Xóa sạch toàn bộ cả danh sách <code>members</code> lẫn bài kê khai (chỉ dùng khi muốn nhập lại toàn bộ từ đầu).</li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+
+      <div class="guide-block">
+        <h3><span class="num-circle">3</span> Chi tiết 3 nút thao tác trên từng dòng Đảng viên</h3>
+        <div class="table-wrap">
+          <table class="guide-table">
+            <thead>
+              <tr>
+                <th style="width: 18%;">Nút thao tác</th>
+                <th style="width: 82%;">Chức năng thực tế</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Sửa</strong></td>
+                <td>
+                  Mở hộp thoại đa năng (<code>editMemberModal</code>) cho phép Admin:
+                  <ul class="guide-ul" style="margin-top: 4px;">
+                    <li><strong>Công cụ làm hộ (<code>fromAdmin=1</code>):</strong> Bấm <strong>"Mở trang Kê khai hộ"</strong> (sang <code>kekhai.html</code>) hoặc <strong>"Mở, Sửa &amp; Xuất Hồ sơ (02c + 6b)"</strong> (sang <code>mau-02c.html</code>) mà không cần Đảng viên nhập CCCD.</li>
+                    <li><strong>Sửa 16 trường hồ sơ gốc:</strong> STT, Họ tên, MSSV, CCCD, Ngày sinh, Giới tính, Lớp, Khoa, Nhóm sinh hoạt, Loại Đảng viên, Số thẻ Đảng viên, Ngày vào Đảng, Ngày chính thức, Chi bộ 221, Đảng bộ phường/xã, Địa chỉ hiện tại.</li>
+                    <li><strong>Sửa thông tin đã kê khai:</strong> Khi đồng chí đã nộp Bước 1, hiện thêm phần sửa điểm học tập/rèn luyện HK1-HK2, Tự xếp loại, Đề xuất, Tham gia Hội nghị 22/11 &amp; Lý do vắng mặt.</li>
+                    <li><strong>Sửa trực tiếp bản nháp 02c / 6b:</strong> Bấm mở dòng <em>"Chỉnh sửa &amp; Lưu trực tiếp thông tin Hồ sơ Mẫu 02c / Mẫu 6b của Đảng viên"</em> để chỉnh điểm tiêu chí chung (0–30), điểm NV (0–70), đề xuất xếp loại, nội dung I.1–VI và 4 mục Mẫu 6b ngay trong Admin rồi lưu đồng bộ lên Firestore.</li>
+                    <li><strong>Xử lý từng cá nhân:</strong> Có sẵn nút <strong>"Reset kê khai ĐV này"</strong> (chỉ xóa bài nộp &amp; nháp của riêng người đó để làm lại) và nút <strong>"Xóa Đảng viên"</strong>.</li>
+                  </ul>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>02c/6b</strong></td>
+                <td>Chuyển thẳng sang <code>mau-02c.html?mssv=...&amp;fromAdmin=1</code>, tự nạp sẵn phiên đăng nhập và bản nháp <code>CBSV1_DOC_DRAFT_2026_...</code> để Admin rà soát, chỉnh sửa câu chữ hoặc xuất hộ tệp <code>.zip</code> cho Đảng viên.</td>
+              </tr>
+              <tr>
+                <td><strong>Xem</strong></td>
+                <td>Hiển thị trên dòng đã kê khai. Mở <code>detailModal</code> trình bày rõ ràng theo 4 thẻ: <em>1. Hồ sơ Đảng viên</em>, <em>2. Sinh hoạt nơi cư trú (221)</em>, <em>3. Kết quả học tập - rèn luyện &amp; Hồ sơ</em>, <em>4. Thành tích, Đóng góp &amp; Ý kiến</em>, kèm nút chuyển nhanh sang <strong>Sửa / Nhập hộ</strong> hoặc <strong>Hồ sơ 02c/6b</strong>.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <div id="phan-3" class="part-heading">Phần III: Tab 2 (Lịch sử tạo biểu mẫu) &amp; Tab 3 (Cấu hình thời hạn &amp; Link)</div>
+
+    <section class="section-card">
+      <div class="section-header">
+        <div class="section-header-left">
+          <span class="step-badge">Tab 2 &amp; 3</span>
+          <h2 class="section-title">Theo dõi Lịch sử xuất hồ sơ &amp; Cấu hình thời hạn / đường link</h2>
+        </div>
+      </div>
+
+      <div class="guide-block">
+        <h3><span class="num-circle">1</span> Tab 2 — Lịch sử tạo biểu mẫu online</h3>
+        <ul class="guide-ul">
+          <li>Ghi nhận mỗi lần Đảng viên (hoặc Admin làm hộ) bấm xuất tệp Word/ZIP trên <code>mau-02c.html</code> hoặc <code>mau-6b.html</code> (lưu trong collection <code>docLogs</code>, sắp xếp mới nhất lên đầu).</li>
+          <li>Hiển thị: <strong>Thời gian tải</strong>, <strong>Họ và tên</strong>, <strong>MSSV</strong>, <strong>Nhóm</strong>, <strong>Biểu mẫu đã tải</strong>, <strong>Tổng điểm</strong> tự chấm theo Phụ lục 04 (<code>/100</code>), <strong>Mức đề xuất</strong>.</li>
+          <li>Cung cấp nút <strong>"Sửa &amp; Tải Hồ sơ"</strong> cho từng lượt và nút <strong>"Xuất lịch sử tạo hồ sơ (.xlsx)"</strong> tải file <code>LichSu_TaoBieuMauOnline_2026.xlsx</code>.</li>
+        </ul>
+      </div>
+
+      <div class="guide-block">
+        <h3><span class="num-circle">2</span> Tab 3 — Cấu hình thời hạn &amp; đường link</h3>
+        <ul class="guide-ul">
+          <li><strong>Thời điểm đếm ngược Hạn cuối kê khai trực tuyến (Bước 1) (<code>DEADLINE_KE_KHAI_ISO</code>):</strong> Chọn ngày/giờ trên ô lịch; ngay khi chọn, ô <strong>Nhãn hiển thị Hạn cuối kê khai trực tuyến (<code>DEADLINE_KE_KHAI_TEXT</code>)</strong> tự động định dạng sang tiếng Việt (ví dụ: <code>20h00 - Thứ 5, ngày 19/11/2026</code>) để đồng bộ ra đồng hồ đếm ngược trên <code>index.html</code> và trang <code>huong-dan.html</code>.</li>
+          <li><strong>Thời hạn nộp hồ sơ bản giấy cho Chi bộ (Bước 2) (<code>DEADLINE_NOP_HO_SO_TEXT</code>):</strong> Ví dụ <code>Sáng Chủ nhật, ngày 22/11/2026</code>.</li>
+          <li><strong>Đường link nút "Tải mẫu trống" (<code>LINK_TAI_TOAN_BO</code>) &amp; nút "Xem hướng dẫn ghi" (<code>LINK_HUONG_DAN_CHUNG</code>):</strong> Dán URL thư mục Google Drive công khai cho Cách 2 trên trang chủ.</li>
+          <li>Bấm <strong>"Lưu cấu hình thời hạn &amp; đường link"</strong> để ghi vào <code>settings/portal</code> trên Cloud Firestore.</li>
+        </ul>
+      </div>
+    </section>
+
+    <div id="phan-4" class="part-heading">Phần IV: Quy chuẩn 16 cột Excel nhập liệu &amp; Giải đáp sự cố (FAQ)</div>
+
+    <section class="section-card">
+      <div class="section-header">
+        <div class="section-header-left">
+          <span class="step-badge">Chuẩn &amp; FAQ</span>
+          <h2 class="section-title">Cấu trúc file Excel nhập danh sách &amp; Xử lý sự cố</h2>
+        </div>
+      </div>
+
+      <p style="font-size: 0.9rem; color: var(--text-secondary);">Khi chuẩn bị danh sách Đảng viên để nhập vào Tab 1, khuyến nghị bấm nút <strong>"Tải mẫu nhập"</strong> để lấy file mẫu chuẩn 16 cột. Các cột được hệ thống tự động nhận diện (không phân biệt chữ hoa/thường):</p>
+
+      <div class="table-wrap">
+        <table class="guide-table">
+          <thead>
+            <tr>
+              <th style="width: 7%;">STT</th>
+              <th style="width: 35%;">Tên cột tiêu đề trong file mẫu 16 cột</th>
+              <th style="width: 15%;">Vai trò</th>
+              <th style="width: 43%;">Định dạng &amp; Lưu ý quan trọng</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td><code>STT</code></td><td>Tùy chọn</td><td>Số thứ tự hiển thị (nếu trống tự đánh số tiếp theo).</td></tr>
+            <tr><td>2</td><td><code>Họ tên</code></td><td><span class="badge badge-red">Bắt buộc</span></td><td>Họ và tên đầy đủ của Đảng viên.</td></tr>
+            <tr><td>3</td><td><code>MSSV</code></td><td><span class="badge badge-red">Khóa chính</span></td><td>Dùng để định danh duy nhất (nếu đã có sẽ <strong>cập nhật</strong>, chưa có sẽ <strong>thêm mới</strong>). Giảng viên dùng mã như <code>GVSV1</code>.</td></tr>
+            <tr><td>4</td><td><code>Ngày sinh</code></td><td>Khuyên có</td><td>Định dạng chuỗi <code>dd/MM/yyyy</code> (VD: <code>01/04/2004</code>).</td></tr>
+            <tr><td>5</td><td><code>Giới tính</code></td><td>Tùy chọn</td><td><code>Nam</code> hoặc <code>Nữ</code>.</td></tr>
+            <tr><td>6</td><td><code>CCCD</code></td><td><span class="badge badge-red">Bắt buộc</span></td><td>Dùng kết hợp MSSV để Đảng viên đăng nhập tra cứu. Định dạng cột kiểu Text trong Excel để không mất số <code>0</code> đầu.</td></tr>
+            <tr><td>7</td><td><code>Lớp</code></td><td>Khuyên có</td><td>VD: <code>48K22.1</code>, <code>52K01.1</code> (hệ thống nhận diện Khóa <code>52K</code> từ cột này để gợi ý điền Mẫu 6b).</td></tr>
+            <tr><td>8</td><td><code>Khoa</code></td><td>Khuyên có</td><td>Tên Khoa / Trung tâm.</td></tr>
+            <tr><td>9</td><td><code>Nhóm sinh hoạt</code></td><td>Khuyên có</td><td>VD: <code>Chi ủy</code>, <code>Nhóm 1</code>, <code>Nhóm 2</code>... (tự động tạo bộ lọc Nhóm trên Admin).</td></tr>
+            <tr><td>10</td><td><code>Ngày vào Đảng</code></td><td><span class="badge badge-red">Bắt buộc</span></td><td>Định dạng <code>dd/MM/yyyy</code>. Hệ thống so sánh với mốc <code>21/05/2026</code> để xét <strong>đủ 6 tháng tuổi Đảng</strong>.</td></tr>
+            <tr><td>11</td><td><code>Ngày chính thức</code></td><td>Tùy chọn</td><td><code>dd/MM/yyyy</code> (để trống hoặc ghi <code>Chưa</code> nếu là Đảng viên Dự bị).</td></tr>
+            <tr><td>12</td><td><code>Loại Đảng viên (Dự bị / Chính thức)</code></td><td>Khuyên có</td><td><code>Chính thức</code> hoặc <code>Dự bị</code>.</td></tr>
+            <tr><td>13</td><td><code>Địa chỉ hiện tại đang ở(Nơi đã nộp Giấy 221</code></td><td>Tùy chọn</td><td>Tự động điền sẵn khi Đảng viên kê khai Bước 1.</td></tr>
+            <tr><td>14</td><td><code>Chi bộ nơi cư trú (221)</code></td><td>Tùy chọn</td><td>Tự động điền sẵn vào mục Chi bộ sinh hoạt nơi cư trú.</td></tr>
+            <tr><td>15</td><td><code>Đảng bộ phường/xã</code></td><td>Tùy chọn</td><td>VD: <code>Phường Ngũ Hành Sơn</code>, <code>Xã Hòa Tiến</code>.</td></tr>
+            <tr><td>16</td><td><code>Số thẻ Đảng viên</code></td><td>Tùy chọn</td><td>VD: <code>48.000001</code> (nếu đã cấp thẻ).</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <details class="faq-item" open>
+        <summary>1. Admin thấy nhãn "Dự phòng cục bộ (LocalStorage)" thay vì "Firebase: csdlkiemdiem"?</summary>
+        <div class="faq-answer">
+          Do kết nối tới Cloud Firestore bị chặn hoặc chưa bật Firestore Database. Admin vào <strong>Firebase Console &rarr; Project <code>csdlkiemdiem</code> &rarr; Build &rarr; Firestore Database</strong> kiểm tra đã tạo database chưa và tab <strong>Rules</strong> đã cho phép đọc/ghi các collection <code>settings</code>, <code>members</code>, <code>submissions</code>, <code>docLogs</code> chưa; sau đó quay lại Admin bấm <strong>"Làm mới"</strong>.
+        </div>
+      </details>
+
+      <details class="faq-item" open>
+        <summary>2. Đảng viên báo quên thông tin / không vào được Bước 1 hoặc cần sửa gấp giúp Đảng viên?</summary>
+        <div class="faq-answer">
+          Admin tìm tên hoặc MSSV của đồng chí đó ở <strong>Tab 1</strong>:
+          <br>• Kiểm tra đúng số <code>MSSV</code> và <code>CCCD</code> trong nút <strong>Sửa</strong> (hay gặp lỗi mất số <code>0</code> đầu ở CCCD khi xuất từ Excel).
+          <br>• Nếu cần thao tác thay, bấm <strong>Sửa &rarr; Mở trang Kê khai hộ</strong> hoặc bấm thẳng nút <strong>02c/6b</strong> trên bảng để tạo và xuất file giúp Đảng viên nhờ cơ chế <code>fromAdmin=1</code>.
+        </div>
+      </details>
+
+      <details class="faq-item" open>
+        <summary>3. Khi nhập lại file Excel mới, dữ liệu kê khai cũ của Đảng viên có bị mất không?</summary>
+        <div class="faq-answer">
+          <strong>Không mất.</strong> Thao tác <code>Nhập danh sách (.xlsx/.csv)</code> chỉ cập nhật thông tin vào collection <code>members</code> theo khóa <code>MSSV</code> (và giữ nguyên <code>Số thẻ Đảng viên</code> cũ nếu file Excel mới bỏ trống cột này). Toàn bộ bài đã nộp trong <code>submissions</code> và lịch sử trong <code>docLogs</code> vẫn được bảo toàn nguyên vẹn.
+        </div>
+      </details>
+
+      <details class="faq-item" open>
+        <summary>4. Checklist 5 bước cho Admin trước và trong đợt kiểm điểm 2026</summary>
+        <div class="faq-answer">
+          <ol class="guide-ul" style="margin-top: 4px;">
+            <li>Đăng nhập <code>admin.html</code> và đảm bảo góc phải hiện badge xanh <strong><code>Firebase: csdlkiemdiem</code></strong>.</li>
+            <li>Vào <strong>Tab 3</strong> kiểm tra thời hạn đếm ngược (<code>20h00 - 19/11/2026</code>), hạn nộp giấy (<code>22/11/2026</code>) và mở thử 2 link Google Drive ở chế độ ẩn danh xem đã công khai chưa.</li>
+            <li>Vào <strong>Tab 1</strong> nhập đủ danh sách Đảng viên theo mẫu 16 cột (kiểm tra kỹ <code>CCCD</code> có số <code>0</code> đầu và <code>Ngày vào Đảng</code>).</li>
+            <li>Trước hạn Bước 1, bấm thẻ <strong>"Tỷ lệ hoàn thành (%)"</strong> hoặc lọc <strong>"Chưa kê khai"</strong> và xuất <code>DanhSach_ChuaKeKhai_2026.xlsx</code> gửi từng Nhóm trưởng đôn đốc.</li>
+            <li>Vào <strong>Sáng CN 22/11/2026</strong>, đối chiếu cột <code>✅ Dự hội nghị / ❌ Vắng hội nghị</code>, thu đủ 03 bản cứng (<code>02c + 6b + 6d</code>) và bấm <strong>Xuất TẤT CẢ tổng hợp (.xlsx)</strong> để lưu trữ hồ sơ Chi bộ.</li>
+          </ol>
+        </div>
+      </details>
+    </section>
+
+    <div class="footer-note">
+      <div>Chi bộ Sinh viên 1 — Hướng dẫn Quản trị Hệ thống Kiểm điểm, Đánh giá và Xếp loại Đảng viên năm 2026</div>
+      <div>Đây là hệ thống nội bộ, chỉ dùng cho Đảng viên Chi bộ Sinh viên 1. Vui lòng không phát hành ra bên ngoài.</div>
+      <div>Bản quyền thuộc về &copy; 2026 - Lê Vĩnh Diện</div>
+    </div>
+  </div>
+
+  <!-- LIGHTBOX TOÀN MÀN HÌNH -->
+  <div id="bpmnLightbox" class="bpmn-lightbox hidden" onclick="if(event.target===this) closeBpmnLightbox()">
+    <div class="bpmn-lb-bar">
+      <strong id="bpmnLbTitle" style="color: var(--crimson); text-transform: uppercase; font-size: 0.95rem;">Sơ đồ quy trình BPMN 2.0</strong>
+      <div class="zoom-pill">
+        <button type="button" class="zoom-btn" onclick="bpmnLbCtrl.stepZoom(-0.5)" title="Thu nhỏ">−</button>
+        <button type="button" id="bpmnLbZoomBadge" class="zoom-readout" onclick="bpmnLbCtrl.reset()" title="Nhấn để đặt lại 100%">100%</button>
+        <button type="button" class="zoom-btn" onclick="bpmnLbCtrl.stepZoom(0.5)" title="Phóng to">+</button>
+        <button type="button" class="zoom-btn zoom-expand" onclick="closeBpmnLightbox()" title="Đóng (ESC)">✕</button>
+      </div>
+    </div>
+    <div id="bpmnLbViewport" class="bpmn-lb-viewport">
+      <img id="bpmnLbImg" src="so-do-bpmn-admin-2026.svg" alt="Sơ đồ quy trình BPMN 2.0" class="bpmn-lb-img">
+    </div>
+  </div>
+
+  <script>
+    function createZoomPanController(wrapEl, imgEl, badgeEl) {
+      let zoom = 1;
+      let tx = 0;
+      let ty = 0;
+      let dragging = false;
+      let startX = 0;
+      let startY = 0;
+      let originTx = 0;
+      let originTy = 0;
+      const MIN_Z = 1;
+      const MAX_Z = 4;
+
+      function clampTransform(nextZoom, nextTx, nextTy) {
+        const wrapW = wrapEl.clientWidth;
+        const wrapH = wrapEl.clientHeight;
+        const baseW = imgEl.offsetWidth;
+        const baseH = imgEl.offsetHeight;
+        const ox = imgEl.offsetLeft;
+        const oy = imgEl.offsetTop;
+        const scaledW = baseW * nextZoom;
+        const scaledH = baseH * nextZoom;
+
+        let clampedTx = nextTx;
+        let clampedTy = nextTy;
+
+        if (scaledW <= wrapW) {
+          clampedTx = (wrapW - scaledW) / 2 - ox;
+        } else {
+          const minTx = wrapW - scaledW - ox;
+          const maxTx = -ox;
+          clampedTx = Math.max(minTx, Math.min(maxTx, nextTx));
+        }
+
+        if (scaledH <= wrapH) {
+          clampedTy = (wrapH - scaledH) / 2 - oy;
+        } else {
+          const minTy = wrapH - scaledH - oy;
+          const maxTy = -oy;
+          clampedTy = Math.max(minTy, Math.min(maxTy, nextTy));
+        }
+
+        return { tx: clampedTx, ty: clampedTy };
+      }
+
+      function render() {
+        const c = clampTransform(zoom, tx, ty);
+        tx = c.tx;
+        ty = c.ty;
+        imgEl.style.transform = `translate(${tx}px, ${ty}px) scale(${zoom})`;
+        if (badgeEl) badgeEl.textContent = `${Math.round(zoom * 100)}%`;
+        wrapEl.style.cursor = zoom > 1 ? (dragging ? 'grabbing' : 'grab') : 'zoom-in';
+      }
+
+      function setZoomAt(targetZoom, focalX, focalY) {
+        const nextZoom = Math.max(MIN_Z, Math.min(MAX_Z, Math.round(targetZoom * 100) / 100));
+        if (nextZoom === 1) {
+          zoom = 1;
+          tx = 0;
+          ty = 0;
+          render();
+          return;
+        }
+        const ox = imgEl.offsetLeft;
+        const oy = imgEl.offsetTop;
+        const cx = (focalX !== undefined ? focalX : wrapEl.clientWidth / 2) - ox;
+        const cy = (focalY !== undefined ? focalY : wrapEl.clientHeight / 2) - oy;
+        const ratio = nextZoom / zoom;
+        tx = cx - (cx - tx) * ratio;
+        ty = cy - (cy - ty) * ratio;
+        zoom = nextZoom;
+        render();
+      }
+
+      wrapEl.addEventListener('wheel', e => {
+        e.preventDefault();
+        const rect = wrapEl.getBoundingClientRect();
+        const fx = e.clientX - rect.left;
+        const fy = e.clientY - rect.top;
+        const delta = e.deltaY < 0 ? 0.25 : -0.25;
+        setZoomAt(zoom + delta, fx, fy);
+      }, { passive: false });
+
+      wrapEl.addEventListener('pointerdown', e => {
+        if (zoom <= 1) return;
+        dragging = true;
+        startX = e.clientX;
+        startY = e.clientY;
+        originTx = tx;
+        originTy = ty;
+        wrapEl.setPointerCapture(e.pointerId);
+        render();
+      });
+
+      wrapEl.addEventListener('pointermove', e => {
+        if (!dragging) return;
+        tx = originTx + (e.clientX - startX);
+        ty = originTy + (e.clientY - startY);
+        render();
+      });
+
+      function endDrag() {
+        if (!dragging) return;
+        dragging = false;
+        render();
+      }
+      wrapEl.addEventListener('pointerup', endDrag);
+      wrapEl.addEventListener('pointercancel', endDrag);
+
+      wrapEl.addEventListener('dblclick', e => {
+        const rect = wrapEl.getBoundingClientRect();
+        const fx = e.clientX - rect.left;
+        const fy = e.clientY - rect.top;
+        if (zoom > 1) setZoomAt(1);
+        else setZoomAt(2.5, fx, fy);
+      });
+
+      window.addEventListener('resize', render);
+
+      return {
+        setZoom: z => setZoomAt(z),
+        stepZoom: d => setZoomAt(zoom + d),
+        reset: () => setZoomAt(1),
+        refresh: render
+      };
+    }
+
+    const bpmnAdminCtrl = createZoomPanController(
+      document.getElementById('bpmnAdminWrap'),
+      document.getElementById('bpmnAdminImg'),
+      document.getElementById('bpmnAdminZoomBadge')
+    );
+
+    const bpmnMemberCtrl = createZoomPanController(
+      document.getElementById('bpmnMemberWrap'),
+      document.getElementById('bpmnMemberImg'),
+      document.getElementById('bpmnMemberZoomBadge')
+    );
+
+    const bpmnLbCtrl = createZoomPanController(
+      document.getElementById('bpmnLbViewport'),
+      document.getElementById('bpmnLbImg'),
+      document.getElementById('bpmnLbZoomBadge')
+    );
+
+    function openLightbox(imgSrc, titleText) {
+      const lbImg = document.getElementById('bpmnLbImg');
+      const lbTitle = document.getElementById('bpmnLbTitle');
+      if (lbImg) lbImg.src = imgSrc;
+      if (lbTitle) lbTitle.textContent = titleText || 'Sơ đồ quy trình BPMN 2.0';
+      document.getElementById('bpmnLightbox').classList.remove('hidden');
+      bpmnLbCtrl.reset();
+    }
+
+    function closeBpmnLightbox() {
+      document.getElementById('bpmnLightbox').classList.add('hidden');
+    }
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeBpmnLightbox();
+    });
+  </script>
+</body>
+</html>

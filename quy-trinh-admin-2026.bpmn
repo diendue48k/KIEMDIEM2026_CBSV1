@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+  id="Definitions_Admin2026"
+  targetNamespace="http://cbsv1.kiemdiem2026/bpmn-admin">
+
+  <bpmn:collaboration id="Collaboration_Admin2026">
+    <bpmn:participant id="Participant_AdminSystem" name="QUY TRÌNH QUẢN TRỊ &amp; ĐIỀU HÀNH HỆ THỐNG KIỂM ĐIỂM ĐẢNG VIÊN NĂM 2026 — CHI BỘ SINH VIÊN 1" processRef="Process_Admin2026" />
+  </bpmn:collaboration>
+
+  <bpmn:process id="Process_Admin2026" isExecutable="false">
+    <bpmn:laneSet id="LaneSet_Admin">
+      <bpmn:lane id="Lane_Admin" name="Cấp ủy / Admin (admin.html)">
+        <bpmn:flowNodeRef>StartEvent_Admin</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_AdminLogin</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>GW_AndSplit</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_ConfigDeadlineLinks</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_ImportMembers</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>GW_AndJoin</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_MonitorDashboard</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>GW_AdminAction</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_ExportPending</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_EditActAs</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_ViewDetailLogs</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>GW_AdminActionJoin</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Timer_HoiNghi2211</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_FinalExport</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>EndEvent_Admin</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_System" name="Hệ thống &amp; Firebase Cloud Firestore (csdlkiemdiem)">
+        <bpmn:flowNodeRef>Task_AuthCheck</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>GW_FirebaseCheck</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_FirebaseOnline</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_LocalFallback</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>GW_FirebaseJoin</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_SaveLinksImport</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_SaveMemberData</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_AdminWriteReset</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Member" name="Đảng viên Sinh viên">
+        <bpmn:flowNodeRef>StartEvent_Member</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_MemberStep1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Timer_Deadline1911</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_MemberStep2</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_MemberSubmitPaper</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>EndEvent_Member</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+
+    <bpmn:dataStoreReference id="DataStore_Local" name="LocalStorage (CBSV1_MOCK_DB_2026)" />
+    <bpmn:dataStoreReference id="DataStore_FirestoreMeta" name="Firestore (settings + members)" />
+    <bpmn:dataStoreReference id="DataStore_FirestoreSub" name="Firestore (submissions + docLogs)" />
+    <bpmn:dataObjectReference id="DataObj_TemplateXlsx" name="Mau_Nhap_DanhSach_DangVien.xlsx (16 cột)" dataObjectRef="DataObject_TemplateXlsx" />
+    <bpmn:dataObject id="DataObject_TemplateXlsx" />
+    <bpmn:dataObjectReference id="DataObj_SummaryXlsx" name="TongHop_KeKhai_DangVien_2026.xlsx (32 cột)" dataObjectRef="DataObject_SummaryXlsx" />
+    <bpmn:dataObject id="DataObject_SummaryXlsx" />
+
+    <bpmn:startEvent id="StartEvent_Admin" name="Bắt đầu (Mở admin.html)">
+      <bpmn:outgoing>Flow_A1</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:userTask id="Task_AdminLogin" name="Đăng nhập Quản trị (CBSV1@2026 / CBSV2@2026)">
+      <bpmn:incoming>Flow_A1</bpmn:incoming>
+      <bpmn:outgoing>Flow_A2</bpmn:outgoing>
+    </bpmn:userTask>
+
+    <bpmn:serviceTask id="Task_AuthCheck" name="adminDashboard: Kiểm tra mật khẩu &amp; Thử kết nối Firestore">
+      <bpmn:incoming>Flow_A2</bpmn:incoming>
+      <bpmn:outgoing>Flow_A3</bpmn:outgoing>
+    </bpmn:serviceTask>
+
+    <bpmn:exclusiveGateway id="GW_FirebaseCheck" name="Firestore sẵn sàng?">
+      <bpmn:incoming>Flow_A3</bpmn:incoming>
+      <bpmn:outgoing>Flow_FbOk</bpmn:outgoing>
+      <bpmn:outgoing>Flow_FbFallback</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:serviceTask id="Task_FirebaseOnline" name="Badge Firebase: csdlkiemdiem (Đọc 4 collections trực tuyến)">
+      <bpmn:incoming>Flow_FbOk</bpmn:incoming>
+      <bpmn:outgoing>Flow_FbOkJoin</bpmn:outgoing>
+    </bpmn:serviceTask>
+
+    <bpmn:serviceTask id="Task_LocalFallback" name="Dự phòng LocalStorage &amp; Hiện Banner kiểm tra Rules">
+      <bpmn:incoming>Flow_FbFallback</bpmn:incoming>
+      <bpmn:outgoing>Flow_FbFailJoin</bpmn:outgoing>
+    </bpmn:serviceTask>
+
+    <bpmn:exclusiveGateway id="GW_FirebaseJoin">
+      <bpmn:incoming>Flow_FbOkJoin</bpmn:incoming>
+      <bpmn:incoming>Flow_FbFailJoin</bpmn:incoming>
+      <bpmn:outgoing>Flow_A4</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:parallelGateway id="GW_AndSplit" name="Thiết lập đầu kỳ">
+      <bpmn:incoming>Flow_A4</bpmn:incoming>
+      <bpmn:outgoing>Flow_Setup1</bpmn:outgoing>
+      <bpmn:outgoing>Flow_Setup2</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:userTask id="Task_ConfigDeadlineLinks" name="Tab 3: Cấu hình đếm ngược Bước 1 (19/11), Hạn giấy (22/11) &amp; 2 link Drive">
+      <bpmn:incoming>Flow_Setup1</bpmn:incoming>
+      <bpmn:outgoing>Flow_Setup1Done</bpmn:outgoing>
+    </bpmn:userTask>
+
+    <bpmn:userTask id="Task_ImportMembers" name="Tab 1: Tải mẫu 16 cột, nhập .xlsx/.csv hoặc + Thêm Đảng viên">
+      <bpmn:incoming>Flow_Setup2</bpmn:incoming>
+      <bpmn:outgoing>Flow_Setup2Done</bpmn:outgoing>
+    </bpmn:userTask>
+
+    <bpmn:parallelGateway id="GW_AndJoin">
+      <bpmn:incoming>Flow_Setup1Done</bpmn:incoming>
+      <bpmn:incoming>Flow_Setup2Done</bpmn:incoming>
+      <bpmn:outgoing>Flow_A5</bpmn:outgoing>
+    </bpmn:parallelGateway>
+
+    <bpmn:serviceTask id="Task_SaveLinksImport" name="adminSaveLinks &amp; adminImportMembers (Batch 400 lên Firestore)">
+      <bpmn:incoming>Flow_A5</bpmn:incoming>
+      <bpmn:outgoing>Flow_A6</bpmn:outgoing>
+    </bpmn:serviceTask>
+
+    <bpmn:userTask id="Task_MonitorDashboard" name="Theo dõi Dashboard (4 Thẻ Stats, Lọc Nhóm, Tìm kiếm, Phân trang)">
+      <bpmn:incoming>Flow_A6</bpmn:incoming>
+      <bpmn:outgoing>Flow_A7</bpmn:outgoing>
+    </bpmn:userTask>
+
+    <bpmn:exclusiveGateway id="GW_AdminAction" name="Nghiệp vụ xử lý?">
+      <bpmn:incoming>Flow_A7</bpmn:incoming>
+      <bpmn:outgoing>Flow_ActPending</bpmn:outgoing>
+      <bpmn:outgoing>Flow_ActEdit</bpmn:outgoing>
+      <bpmn:outgoing>Flow_ActView</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:userTask id="Task_ExportPending" name="Đôn đốc theo Nhóm &amp; Xuất DS Chưa kê khai (.xlsx)">
+      <bpmn:incoming>Flow_ActPending</bpmn:incoming>
+      <bpmn:outgoing>Flow_Act1Join</bpmn:outgoing>
+    </bpmn:userTask>
+
+    <bpmn:userTask id="Task_EditActAs" name="Sửa 16 cột / Kê khai hộ (fromAdmin=1) / Sửa nháp 02c-6b / Reset / Xóa ĐV">
+      <bpmn:incoming>Flow_ActEdit</bpmn:incoming>
+      <bpmn:outgoing>Flow_Act2ToSys</bpmn:outgoing>
+    </bpmn:userTask>
+
+    <bpmn:serviceTask id="Task_AdminWriteReset" name="adminSaveMember / Delete / Reset (1 ĐV hoặc Toàn bộ)">
+      <bpmn:incoming>Flow_Act2ToSys</bpmn:incoming>
+      <bpmn:outgoing>Flow_Act2Join</bpmn:outgoing>
+    </bpmn:serviceTask>
+
+    <bpmn:userTask id="Task_ViewDetailLogs" name="Xem Modal 4 thẻ chi tiết &amp; Tab 2: Lịch sử tạo biểu mẫu online">
+      <bpmn:incoming>Flow_ActView</bpmn:incoming>
+      <bpmn:outgoing>Flow_Act3Join</bpmn:outgoing>
+    </bpmn:userTask>
+
+    <bpmn:exclusiveGateway id="GW_AdminActionJoin">
+      <bpmn:incoming>Flow_Act1Join</bpmn:incoming>
+      <bpmn:incoming>Flow_Act2Join</bpmn:incoming>
+      <bpmn:incoming>Flow_Act3Join</bpmn:incoming>
+      <bpmn:outgoing>Flow_A8</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:intermediateCatchEvent id="Timer_HoiNghi2211" name="Hội nghị Chi bộ: Sáng CN 22/11/2026">
+      <bpmn:incoming>Flow_A8</bpmn:incoming>
+      <bpmn:outgoing>Flow_A9</bpmn:outgoing>
+      <bpmn:timerEventDefinition id="TimerDef_HN" />
+    </bpmn:intermediateCatchEvent>
+
+    <bpmn:userTask id="Task_FinalExport" name="Đối soát 03 bản giấy &amp; Xuất TẤT CẢ tổng hợp (.xlsx 32 cột)">
+      <bpmn:incoming>Flow_A9</bpmn:incoming>
+      <bpmn:outgoing>Flow_A10</bpmn:outgoing>
+    </bpmn:userTask>
+
+    <bpmn:endEvent id="EndEvent_Admin" name="Hoàn thành Kiểm điểm 2026">
+      <bpmn:incoming>Flow_A10</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <!-- Member Lane Nodes -->
+    <bpmn:startEvent id="StartEvent_Member" name="Mở đợt kê khai">
+      <bpmn:outgoing>Flow_M1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:userTask id="Task_MemberStep1" name="Kê khai Bước 1 (kekhai.html): MSSV+CCCD, Điểm 25-26, Xếp loại, Dự hội nghị">
+      <bpmn:incoming>Flow_M1</bpmn:incoming>
+      <bpmn:outgoing>Flow_M2</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:intermediateCatchEvent id="Timer_Deadline1911" name="Hạn Bước 1: 20h00 - Thứ 5, 19/11/2026">
+      <bpmn:incoming>Flow_M2</bpmn:incoming>
+      <bpmn:outgoing>Flow_M3</bpmn:outgoing>
+      <bpmn:timerEventDefinition id="TimerDef_1911" />
+    </bpmn:intermediateCatchEvent>
+    <bpmn:userTask id="Task_MemberStep2" name="Tạo Hồ sơ in (mau-02c/6b): Chấm điểm PL04, Lưu nháp, Xuất .zip">
+      <bpmn:incoming>Flow_M3</bpmn:incoming>
+      <bpmn:outgoing>Flow_M4</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="Task_SaveMemberData" name="Lưu submissions, docDraft &amp; ghi docLogs lên Firestore">
+      <bpmn:incoming>Flow_M4</bpmn:incoming>
+      <bpmn:outgoing>Flow_M5</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:userTask id="Task_MemberSubmitPaper" name="In 02c+6b, lấy Mẫu 6d &amp; Nộp Chi bộ sáng CN 22/11">
+      <bpmn:incoming>Flow_M5</bpmn:incoming>
+      <bpmn:outgoing>Flow_M6</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:endEvent id="EndEvent_Member" name="Đảng viên hoàn tất">
+      <bpmn:incoming>Flow_M6</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <!-- Sequence Flows -->
+    <bpmn:sequenceFlow id="Flow_A1" sourceRef="StartEvent_Admin" targetRef="Task_AdminLogin" />
+    <bpmn:sequenceFlow id="Flow_A2" sourceRef="Task_AdminLogin" targetRef="Task_AuthCheck" />
+    <bpmn:sequenceFlow id="Flow_A3" sourceRef="Task_AuthCheck" targetRef="GW_FirebaseCheck" />
+    <bpmn:sequenceFlow id="Flow_FbOk" name="Kết nối" sourceRef="GW_FirebaseCheck" targetRef="Task_FirebaseOnline" />
+    <bpmn:sequenceFlow id="Flow_FbFallback" name="Dự phòng" sourceRef="GW_FirebaseCheck" targetRef="Task_LocalFallback" />
+    <bpmn:sequenceFlow id="Flow_FbOkJoin" sourceRef="Task_FirebaseOnline" targetRef="GW_FirebaseJoin" />
+    <bpmn:sequenceFlow id="Flow_FbFailJoin" sourceRef="Task_LocalFallback" targetRef="GW_FirebaseJoin" />
+    <bpmn:sequenceFlow id="Flow_A4" sourceRef="GW_FirebaseJoin" targetRef="GW_AndSplit" />
+    <bpmn:sequenceFlow id="Flow_Setup1" sourceRef="GW_AndSplit" targetRef="Task_ConfigDeadlineLinks" />
+    <bpmn:sequenceFlow id="Flow_Setup2" sourceRef="GW_AndSplit" targetRef="Task_ImportMembers" />
+    <bpmn:sequenceFlow id="Flow_Setup1Done" sourceRef="Task_ConfigDeadlineLinks" targetRef="GW_AndJoin" />
+    <bpmn:sequenceFlow id="Flow_Setup2Done" sourceRef="Task_ImportMembers" targetRef="GW_AndJoin" />
+    <bpmn:sequenceFlow id="Flow_A5" sourceRef="GW_AndJoin" targetRef="Task_SaveLinksImport" />
+    <bpmn:sequenceFlow id="Flow_A6" sourceRef="Task_SaveLinksImport" targetRef="Task_MonitorDashboard" />
+    <bpmn:sequenceFlow id="Flow_A7" sourceRef="Task_MonitorDashboard" targetRef="GW_AdminAction" />
+    <bpmn:sequenceFlow id="Flow_ActPending" name="Đôn đốc" sourceRef="GW_AdminAction" targetRef="Task_ExportPending" />
+    <bpmn:sequenceFlow id="Flow_ActEdit" name="Sửa hộ" sourceRef="GW_AdminAction" targetRef="Task_EditActAs" />
+    <bpmn:sequenceFlow id="Flow_ActView" name="Đối soát" sourceRef="GW_AdminAction" targetRef="Task_ViewDetailLogs" />
+    <bpmn:sequenceFlow id="Flow_Act1Join" sourceRef="Task_ExportPending" targetRef="GW_AdminActionJoin" />
+    <bpmn:sequenceFlow id="Flow_Act2ToSys" sourceRef="Task_EditActAs" targetRef="Task_AdminWriteReset" />
+    <bpmn:sequenceFlow id="Flow_Act2Join" sourceRef="Task_AdminWriteReset" targetRef="GW_AdminActionJoin" />
+    <bpmn:sequenceFlow id="Flow_Act3Join" sourceRef="Task_ViewDetailLogs" targetRef="GW_AdminActionJoin" />
+    <bpmn:sequenceFlow id="Flow_A8" sourceRef="GW_AdminActionJoin" targetRef="Timer_HoiNghi2211" />
+    <bpmn:sequenceFlow id="Flow_A9" sourceRef="Timer_HoiNghi2211" targetRef="Task_FinalExport" />
+    <bpmn:sequenceFlow id="Flow_A10" sourceRef="Task_FinalExport" targetRef="EndEvent_Admin" />
+
+    <bpmn:sequenceFlow id="Flow_M1" sourceRef="StartEvent_Member" targetRef="Task_MemberStep1" />
+    <bpmn:sequenceFlow id="Flow_M2" sourceRef="Task_MemberStep1" targetRef="Timer_Deadline1911" />
+    <bpmn:sequenceFlow id="Flow_M3" sourceRef="Timer_Deadline1911" targetRef="Task_MemberStep2" />
+    <bpmn:sequenceFlow id="Flow_M4" sourceRef="Task_MemberStep2" targetRef="Task_SaveMemberData" />
+    <bpmn:sequenceFlow id="Flow_M5" sourceRef="Task_SaveMemberData" targetRef="Task_MemberSubmitPaper" />
+    <bpmn:sequenceFlow id="Flow_M6" sourceRef="Task_MemberSubmitPaper" targetRef="EndEvent_Member" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Admin2026">
+    <bpmndi:BPMNPlane id="BPMNPlane_Admin2026" bpmnElement="Collaboration_Admin2026">
+      <bpmndi:BPMNShape id="Participant_AdminSystem_di" bpmnElement="Participant_AdminSystem" isHorizontal="true">
+        <dc:Bounds x="24" y="24" width="2212" height="860" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Admin_di" bpmnElement="Lane_Admin" isHorizontal="true">
+        <dc:Bounds x="54" y="24" width="2182" height="350" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_System_di" bpmnElement="Lane_System" isHorizontal="true">
+        <dc:Bounds x="54" y="374" width="2182" height="290" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Member_di" bpmnElement="Lane_Member" isHorizontal="true">
+        <dc:Bounds x="54" y="664" width="2182" height="220" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="StartEvent_Admin_di" bpmnElement="StartEvent_Admin">
+        <dc:Bounds x="140" y="162" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AdminLogin_di" bpmnElement="Task_AdminLogin">
+        <dc:Bounds x="225" y="140" width="145" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AuthCheck_di" bpmnElement="Task_AuthCheck">
+        <dc:Bounds x="225" y="420" width="145" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="GW_FirebaseCheck_di" bpmnElement="GW_FirebaseCheck" isMarkerVisible="true">
+        <dc:Bounds x="420" y="435" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_FirebaseOnline_di" bpmnElement="Task_FirebaseOnline">
+        <dc:Bounds x="505" y="388" width="160" height="56" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_LocalFallback_di" bpmnElement="Task_LocalFallback">
+        <dc:Bounds x="505" y="488" width="160" height="56" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="GW_FirebaseJoin_di" bpmnElement="GW_FirebaseJoin" isMarkerVisible="true">
+        <dc:Bounds x="680" y="435" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="GW_AndSplit_di" bpmnElement="GW_AndSplit">
+        <dc:Bounds x="755" y="155" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ConfigDeadlineLinks_di" bpmnElement="Task_ConfigDeadlineLinks">
+        <dc:Bounds x="835" y="52" width="190" height="84" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ImportMembers_di" bpmnElement="Task_ImportMembers">
+        <dc:Bounds x="835" y="222" width="190" height="84" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="GW_AndJoin_di" bpmnElement="GW_AndJoin">
+        <dc:Bounds x="1060" y="155" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_SaveLinksImport_di" bpmnElement="Task_SaveLinksImport">
+        <dc:Bounds x="835" y="420" width="190" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_MonitorDashboard_di" bpmnElement="Task_MonitorDashboard">
+        <dc:Bounds x="1145" y="138" width="185" height="84" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="GW_AdminAction_di" bpmnElement="GW_AdminAction" isMarkerVisible="true">
+        <dc:Bounds x="1378" y="155" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ExportPending_di" bpmnElement="Task_ExportPending">
+        <dc:Bounds x="1470" y="42" width="200" height="76" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_EditActAs_di" bpmnElement="Task_EditActAs">
+        <dc:Bounds x="1470" y="140" width="200" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ViewDetailLogs_di" bpmnElement="Task_ViewDetailLogs">
+        <dc:Bounds x="1470" y="242" width="200" height="76" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AdminWriteReset_di" bpmnElement="Task_AdminWriteReset">
+        <dc:Bounds x="1480" y="420" width="185" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="GW_AdminActionJoin_di" bpmnElement="GW_AdminActionJoin" isMarkerVisible="true">
+        <dc:Bounds x="1710" y="155" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Timer_HoiNghi2211_di" bpmnElement="Timer_HoiNghi2211">
+        <dc:Bounds x="1804" y="162" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_FinalExport_di" bpmnElement="Task_FinalExport">
+        <dc:Bounds x="1880" y="138" width="195" height="84" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_Admin_di" bpmnElement="EndEvent_Admin">
+        <dc:Bounds x="2137" y="162" width="36" height="36" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
