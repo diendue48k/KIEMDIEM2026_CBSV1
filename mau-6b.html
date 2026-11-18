@@ -1036,8 +1036,10 @@
       const memberBox = document.getElementById('memberInfoBox');
       const docForm = document.getElementById('docForm');
 
+      const isFromAdmin = new URLSearchParams(window.location.search).get('fromAdmin') === '1' || Boolean(sessionStorage.getItem('CBSV1_ADMIN_PASS'));
+
       alertBox.classList.add('hidden');
-      if (!mssv || !cccd) {
+      if (!mssv || (!cccd && !isFromAdmin)) {
         alertBox.textContent = 'Vui lòng nhập đầy đủ MSSV và CCCD.';
         alertBox.classList.remove('hidden');
         return;
@@ -1048,7 +1050,7 @@
       btn.textContent = 'Đang tải thông tin...';
 
       try {
-        const res = await callGasApi({ action: 'lookup', mssv, cccd });
+        const res = await callGasApi({ action: 'lookup', mssv, cccd, fromAdmin: isFromAdmin });
         if (!res || !res.success) {
           memberBox.classList.add('hidden');
           docForm.classList.add('hidden');
@@ -1060,7 +1062,7 @@
 
         currentMember = res.member;
         lastLookupExisting = res.existing || null;
-        sessionStorage.setItem('CBSV1_AUTH', JSON.stringify({ mssv, cccd }));
+        sessionStorage.setItem('CBSV1_AUTH', JSON.stringify({ mssv, cccd: cccd || (currentMember && currentMember.cccd) || '' }));
         document.getElementById('hoTen').value = currentMember.hoTen || '';
         document.getElementById('ngaySinh').value = currentMember.ngaySinh || '';
 
@@ -1221,16 +1223,34 @@
       try {
         const params = new URLSearchParams(window.location.search);
         const urlMssv = (params.get('mssv') || '').trim();
+        const urlCccd = (params.get('cccd') || '').trim();
         const fromAdminParam = params.get('fromAdmin') === '1';
         const actAs = JSON.parse(localStorage.getItem('CBSV1_ADMIN_ACT_AS') || 'null');
         const isAdminSession = Boolean(sessionStorage.getItem('CBSV1_ADMIN_PASS'));
 
-        if (actAs && actAs.mssv && actAs.cccd && (fromAdminParam || (urlMssv && actAs.mssv === urlMssv))) {
-          sessionStorage.setItem('CBSV1_AUTH', JSON.stringify({ mssv: actAs.mssv, cccd: actAs.cccd }));
-        }
         if (fromAdminParam || isAdminSession) {
           const banner = document.getElementById('adminModeBanner');
           if (banner) banner.classList.remove('hidden');
+        }
+
+        if (urlMssv) {
+          let cccdToUse = urlCccd;
+          if (!cccdToUse && actAs && String(actAs.mssv).trim() === urlMssv && actAs.cccd) {
+            cccdToUse = actAs.cccd;
+          }
+          if (!cccdToUse) {
+            const saved = JSON.parse(sessionStorage.getItem('CBSV1_AUTH') || 'null');
+            if (saved && String(saved.mssv).trim() === urlMssv && saved.cccd) {
+              cccdToUse = saved.cccd;
+            }
+          }
+          sessionStorage.setItem('CBSV1_AUTH', JSON.stringify({ mssv: urlMssv, cccd: cccdToUse || '' }));
+          document.getElementById('mssv').value = urlMssv;
+          document.getElementById('cccd').value = cccdToUse || '';
+          if (cccdToUse || fromAdminParam || isAdminSession) {
+            handleLookup();
+          }
+          return;
         }
 
         const saved = JSON.parse(sessionStorage.getItem('CBSV1_AUTH') || 'null');

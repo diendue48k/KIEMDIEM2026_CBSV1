@@ -421,7 +421,8 @@ const MOCK_API = (function () {
     if (body.action === 'lookup') {
       const mssv = String(body.mssv || '').trim();
       const cccd = String(body.cccd || '').trim();
-      const m = db.members.find(x => x.mssv === mssv && x.cccd === cccd);
+      const fromAdmin = Boolean(body.fromAdmin);
+      const m = db.members.find(x => x.mssv === mssv && (fromAdmin || x.cccd === cccd));
       if (!m) {
         return { success: false, message: 'Không tìm thấy Đảng viên khớp với MSSV và CCCD đã nhập. Vui lòng kiểm tra lại.' };
       }
@@ -680,7 +681,8 @@ const MOCK_API = (function () {
     if (body.action === 'lookup') {
       const mssv = String(body.mssv || '').trim();
       const cccd = String(body.cccd || '').trim();
-      if (!mssv || !cccd) {
+      const fromAdmin = Boolean(body.fromAdmin);
+      if (!mssv || (!cccd && !fromAdmin)) {
         return { success: false, message: 'Vui lòng nhập đầy đủ MSSV và CCCD.' };
       }
       const safeId = docSafeId(mssv);
@@ -693,10 +695,10 @@ const MOCK_API = (function () {
         'Quá thời gian tra cứu dữ liệu Đảng viên từ Firestore.'
       );
       if (!memberDoc.exists) {
-        return { success: false, message: 'Không tìm thấy Đảng viên khớp với MSSV và CCCD đã nhập. Vui lòng kiểm tra lại.' };
+        return { success: false, message: 'Không tìm thấy Đảng viên khớp với MSSV này trong hệ thống.' };
       }
       const m = memberDoc.data();
-      if (String(m.cccd || '').trim() !== cccd) {
+      if (!fromAdmin && String(m.cccd || '').trim() !== cccd) {
         return { success: false, message: 'Không tìm thấy Đảng viên khớp với MSSV và CCCD đã nhập. Vui lòng kiểm tra lại.' };
       }
       const rawSub = subDoc.exists ? subDoc.data() : null;
