@@ -1160,9 +1160,19 @@
                   <input type="text" id="cfg_DEADLINE_KE_KHAI_TEXT" placeholder="VD: 20h00 - Thứ 5, ngày 19/11/2026">
                 </div>
               </div>
-              <div class="form-group" style="margin-bottom: 0;">
+              <div class="form-group">
                 <label for="cfg_DEADLINE_NOP_HO_SO_TEXT">Thời hạn nộp hồ sơ bản giấy cho Chi bộ (Bước 2)</label>
                 <input type="text" id="cfg_DEADLINE_NOP_HO_SO_TEXT" placeholder="VD: Chiều Chủ nhật, ngày 22/11/2026">
+              </div>
+              <div class="form-grid-2" style="margin-bottom: 0;">
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label for="cfg_HOI_NGHI_TIME">Thời gian Hội nghị kiểm điểm (hiển thị ở Kê khai)</label>
+                  <input type="text" id="cfg_HOI_NGHI_TIME" placeholder="VD: 8h30 — Ngày 22/11/2026">
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label for="cfg_HOI_NGHI_LOCATION">Địa điểm Hội nghị kiểm điểm</label>
+                  <input type="text" id="cfg_HOI_NGHI_LOCATION" placeholder="VD: Hội trường A">
+                </div>
               </div>
             </div>
 
@@ -2439,6 +2449,8 @@
         DEADLINE_KE_KHAI_ISO: document.getElementById('cfg_DEADLINE_KE_KHAI_ISO').value.trim(),
         DEADLINE_KE_KHAI_TEXT: document.getElementById('cfg_DEADLINE_KE_KHAI_TEXT').value.trim(),
         DEADLINE_NOP_HO_SO_TEXT: document.getElementById('cfg_DEADLINE_NOP_HO_SO_TEXT').value.trim(),
+        HOI_NGHI_TIME: document.getElementById('cfg_HOI_NGHI_TIME').value.trim(),
+        HOI_NGHI_LOCATION: document.getElementById('cfg_HOI_NGHI_LOCATION').value.trim(),
         LINK_TAI_TOAN_BO: document.getElementById('cfg_LINK_TAI_TOAN_BO').value.trim(),
         LINK_HUONG_DAN_CHUNG: document.getElementById('cfg_LINK_HUONG_DAN_CHUNG').value.trim()
       };
