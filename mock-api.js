@@ -7,6 +7,10 @@ const MOCK_API = (function () {
   const STORAGE_KEY = 'CBSV2_MOCK_DB_2026';
   const FIREBASE_SDK_VERSION = '10.14.1';
   const ADMIN_PASSWORD = 'CBSV2@2026';
+  function isValidAdminPassword(pw) {
+    const val = String(pw || '').trim().toUpperCase();
+    return val === 'CBSV1@2026' || val === 'CBSV2@2026';
+  }
 
   const DEFAULT_DB = {
     links: {
@@ -485,14 +489,14 @@ const MOCK_API = (function () {
     }
 
     if (body.action === 'adminDashboard') {
-      if (body.password !== ADMIN_PASSWORD) {
+      if (!isValidAdminPassword(body.password)) {
         return { success: false, message: 'Mật khẩu quản trị không đúng.' };
       }
       return buildDashboardResponse(db, extra);
     }
 
     if (body.action === 'adminSaveLinks') {
-      if (body.password !== ADMIN_PASSWORD) return { success: false, message: 'Mật khẩu quản trị không đúng.' };
+      if (!isValidAdminPassword(body.password)) return { success: false, message: 'Mật khẩu quản trị không đúng.' };
       db.links = normalizeLinks(Object.assign({}, db.links, body.links || {}));
       saveLocalDb(db);
       return {
@@ -505,7 +509,7 @@ const MOCK_API = (function () {
     }
 
     if (body.action === 'adminImportMembers') {
-      if (body.password !== ADMIN_PASSWORD) return { success: false, message: 'Mật khẩu quản trị không đúng.' };
+      if (!isValidAdminPassword(body.password)) return { success: false, message: 'Mật khẩu quản trị không đúng.' };
       const rows = body.rows || [];
       let added = 0;
       let updated = 0;
@@ -527,7 +531,7 @@ const MOCK_API = (function () {
     }
 
     if (body.action === 'adminSaveMember') {
-      if (body.password !== ADMIN_PASSWORD) return { success: false, message: 'Mật khẩu quản trị không đúng.' };
+      if (!isValidAdminPassword(body.password)) return { success: false, message: 'Mật khẩu quản trị không đúng.' };
       const origMssv = String(body.originalMssv || '').trim();
       const input = body.member || {};
       const newMssv = String(input.mssv || '').trim();
@@ -595,7 +599,7 @@ const MOCK_API = (function () {
     }
 
     if (body.action === 'adminDeleteMember') {
-      if (body.password !== ADMIN_PASSWORD) return { success: false, message: 'Mật khẩu quản trị không đúng.' };
+      if (!isValidAdminPassword(body.password)) return { success: false, message: 'Mật khẩu quản trị không đúng.' };
       const mssv = String(body.mssv || '').trim();
       if (!mssv) return { success: false, message: 'Thiếu MSSV cần xóa.' };
       db.members = db.members.filter(x => x.mssv !== mssv);
@@ -612,7 +616,7 @@ const MOCK_API = (function () {
     }
 
     if (body.action === 'adminResetMemberSubmission') {
-      if (body.password !== ADMIN_PASSWORD) return { success: false, message: 'Mật khẩu quản trị không đúng.' };
+      if (!isValidAdminPassword(body.password)) return { success: false, message: 'Mật khẩu quản trị không đúng.' };
       const mssv = String(body.mssv || '').trim();
       if (!mssv) return { success: false, message: 'Thiếu MSSV cần reset kê khai.' };
       if (db.submissions && db.submissions[mssv]) delete db.submissions[mssv];
@@ -628,7 +632,7 @@ const MOCK_API = (function () {
     }
 
     if (body.action === 'adminResetAllSubmissions') {
-      if (body.password !== ADMIN_PASSWORD) return { success: false, message: 'Mật khẩu quản trị không đúng.' };
+      if (!isValidAdminPassword(body.password)) return { success: false, message: 'Mật khẩu quản trị không đúng.' };
       db.submissions = {};
       db.docDrafts = {};
       db.docLogs = [];
@@ -642,7 +646,7 @@ const MOCK_API = (function () {
     }
 
     if (body.action === 'adminResetMembers') {
-      if (body.password !== ADMIN_PASSWORD) return { success: false, message: 'Mật khẩu quản trị không đúng.' };
+      if (!isValidAdminPassword(body.password)) return { success: false, message: 'Mật khẩu quản trị không đúng.' };
       db.members = [];
       db.submissions = {};
       db.docDrafts = {};
@@ -800,7 +804,7 @@ const MOCK_API = (function () {
     }
 
     if (body.action === 'adminDashboard') {
-      if (body.password !== ADMIN_PASSWORD) {
+      if (!isValidAdminPassword(body.password)) {
         return { success: false, message: 'Mật khẩu quản trị không đúng.' };
       }
       const [portalSnap, membersSnap, subsSnap, logsSnap] = await withTimeout(
@@ -848,7 +852,7 @@ const MOCK_API = (function () {
     }
 
     if (body.action === 'adminSaveLinks') {
-      if (body.password !== ADMIN_PASSWORD) return { success: false, message: 'Mật khẩu quản trị không đúng.' };
+      if (!isValidAdminPassword(body.password)) return { success: false, message: 'Mật khẩu quản trị không đúng.' };
       const portalRef = fs.collection('settings').doc('portal');
       const currentSnap = await withTimeout(portalRef.get(), 10000, 'Quá thời gian đọc cấu hình hiện tại trên Firestore.');
       const curData = currentSnap.exists ? currentSnap.data() : {};
@@ -873,7 +877,7 @@ const MOCK_API = (function () {
     }
 
     if (body.action === 'adminImportMembers') {
-      if (body.password !== ADMIN_PASSWORD) return { success: false, message: 'Mật khẩu quản trị không đúng.' };
+      if (!isValidAdminPassword(body.password)) return { success: false, message: 'Mật khẩu quản trị không đúng.' };
       const rows = Array.isArray(body.rows) ? body.rows : [];
       const existingSnap = await withTimeout(
         fs.collection('members').get(),
@@ -937,7 +941,7 @@ const MOCK_API = (function () {
     }
 
     if (body.action === 'adminSaveMember') {
-      if (body.password !== ADMIN_PASSWORD) return { success: false, message: 'Mật khẩu quản trị không đúng.' };
+      if (!isValidAdminPassword(body.password)) return { success: false, message: 'Mật khẩu quản trị không đúng.' };
       const origMssv = String(body.originalMssv || '').trim();
       const input = body.member || {};
       const newMssv = String(input.mssv || '').trim();
@@ -1051,7 +1055,7 @@ const MOCK_API = (function () {
     }
 
     if (body.action === 'adminDeleteMember') {
-      if (body.password !== ADMIN_PASSWORD) return { success: false, message: 'Mật khẩu quản trị không đúng.' };
+      if (!isValidAdminPassword(body.password)) return { success: false, message: 'Mật khẩu quản trị không đúng.' };
       const mssv = String(body.mssv || '').trim();
       if (!mssv) return { success: false, message: 'Thiếu MSSV cần xóa.' };
       const safeId = docSafeId(mssv);
@@ -1092,7 +1096,7 @@ const MOCK_API = (function () {
     }
 
     if (body.action === 'adminResetMemberSubmission') {
-      if (body.password !== ADMIN_PASSWORD) return { success: false, message: 'Mật khẩu quản trị không đúng.' };
+      if (!isValidAdminPassword(body.password)) return { success: false, message: 'Mật khẩu quản trị không đúng.' };
       const mssv = String(body.mssv || '').trim();
       if (!mssv) return { success: false, message: 'Thiếu MSSV cần reset kê khai.' };
       const safeId = docSafeId(mssv);
@@ -1121,7 +1125,7 @@ const MOCK_API = (function () {
     }
 
     if (body.action === 'adminResetAllSubmissions') {
-      if (body.password !== ADMIN_PASSWORD) return { success: false, message: 'Mật khẩu quản trị không đúng.' };
+      if (!isValidAdminPassword(body.password)) return { success: false, message: 'Mật khẩu quản trị không đúng.' };
       await clearFirestoreCollection('submissions');
       await clearFirestoreCollection('docLogs');
       await clearFirestoreCollection('docDrafts');
@@ -1140,7 +1144,7 @@ const MOCK_API = (function () {
     }
 
     if (body.action === 'adminResetMembers') {
-      if (body.password !== ADMIN_PASSWORD) return { success: false, message: 'Mật khẩu quản trị không đúng.' };
+      if (!isValidAdminPassword(body.password)) return { success: false, message: 'Mật khẩu quản trị không đúng.' };
       await clearFirestoreCollection('members');
       await clearFirestoreCollection('submissions');
       await clearFirestoreCollection('docLogs');
@@ -1179,7 +1183,7 @@ const MOCK_API = (function () {
       'adminResetMembers'
     ]);
     if (ADMIN_ACTIONS.has(body.action)) {
-      if (body.password !== ADMIN_PASSWORD) {
+      if (!isValidAdminPassword(body.password)) {
         return { success: false, message: 'Mật khẩu quản trị không đúng.' };
       }
     }
