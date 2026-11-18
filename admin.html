@@ -1,12 +1,48 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cổng Quản Trị - Chi Bộ Sinh Viên 2</title>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.cdnfonts.com/css/gilroy-bold" rel="stylesheet">
   <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
   <style>
+    @font-face {
+      font-family: 'SVN-Gilroy';
+      src: local('SVN-Gilroy'), local('SVN Gilroy'), local('Gilroy-Regular'), url('https://fonts.cdnfonts.com/s/16219/Gilroy-Regular.woff') format('woff');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'SVN-Gilroy';
+      src: local('SVN-Gilroy Medium'), local('SVN Gilroy Medium'), local('Gilroy-Medium'), url('https://fonts.cdnfonts.com/s/16219/Gilroy-Medium.woff') format('woff');
+      font-weight: 500;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'SVN-Gilroy';
+      src: local('SVN-Gilroy SemiBold'), local('SVN Gilroy SemiBold'), local('Gilroy-Bold'), url('https://fonts.cdnfonts.com/s/16219/Gilroy-Bold.woff') format('woff');
+      font-weight: 600;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'SVN-Gilroy';
+      src: local('SVN-Gilroy Bold'), local('SVN Gilroy Bold'), local('Gilroy-Bold'), url('https://fonts.cdnfonts.com/s/16219/Gilroy-Bold.woff') format('woff');
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'SVN-Gilroy';
+      src: local('SVN-Gilroy Heavy'), local('SVN Gilroy Heavy'), local('Gilroy-Heavy'), url('https://fonts.cdnfonts.com/s/16219/Gilroy-Heavy.woff') format('woff');
+      font-weight: 800;
+      font-style: normal;
+      font-display: swap;
+    }
+
     :root {
       --crimson: #9e1b1e;
       --crimson-dark: #781215;
@@ -37,7 +73,7 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: 'SVN-Gilroy', 'SVN Gilroy', 'Gilroy', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       background-color: #fdf9f4;
       background-image:
         radial-gradient(at 0% 20%, rgba(158, 27, 30, 0.05) 0px, transparent 45%),
@@ -742,6 +778,85 @@
       padding: 4px 9px;
       font-size: 0.76rem;
       white-space: nowrap;
+    }
+
+    /* Modern Action Buttons in Table */
+    .table-actions {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: nowrap;
+    }
+
+    .btn-act {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      padding: 5px 10px;
+      font-size: 0.77rem;
+      font-weight: 700;
+      font-family: inherit;
+      border-radius: 6px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      white-space: nowrap;
+      line-height: 1.2;
+      transition: all 0.16s ease;
+      background: #ffffff;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+      text-decoration: none;
+    }
+
+    .btn-act svg {
+      width: 13px;
+      height: 13px;
+      stroke-width: 2.2;
+      stroke: currentColor;
+      fill: none;
+      flex-shrink: 0;
+    }
+
+    /* Nút Sửa: trung tính, cao cấp (Slate) */
+    .btn-act-edit {
+      background: #f8fafc;
+      color: #334155;
+      border-color: #cbd5e1;
+    }
+    .btn-act-edit:hover {
+      background: #f1f5f9;
+      color: #0f172a;
+      border-color: #94a3b8;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+      transform: translateY(-1px);
+    }
+
+    /* Nút Hồ sơ 02c/6b: Màu Đỏ Chi bộ sang trọng, nổi bật */
+    .btn-act-doc {
+      background: #fff5f5;
+      color: var(--crimson-dark);
+      border-color: #fecaca;
+    }
+    .btn-act-doc:hover {
+      background: var(--crimson);
+      color: #ffffff;
+      border-color: var(--crimson);
+      box-shadow: 0 2px 5px rgba(158, 27, 30, 0.22);
+      transform: translateY(-1px);
+    }
+
+    /* Nút Xem chi tiết kê khai: Xanh dương trang nhã */
+    .btn-act-view {
+      background: #eff6ff;
+      color: #1e40af;
+      border-color: #bfdbfe;
+    }
+    .btn-act-view:hover {
+      background: #2563eb;
+      color: #ffffff;
+      border-color: #2563eb;
+      box-shadow: 0 2px 5px rgba(37, 99, 235, 0.22);
+      transform: translateY(-1px);
     }
 
     /* Pagination */
@@ -1762,13 +1877,22 @@
                 ? '<span class="badge" style="background:var(--gold-tint);color:#92400e;border:1px solid #fcd34d;">Đã lưu nháp</span>'
                 : '<span class="badge badge-danger">Chưa tạo</span>')}
           </td>
-          <td>${escapeHtml(m.tuXepLoai || '-')}</td>
+          <td>${m.tuXepLoai === 'Chưa đủ 6 tháng' ? '<span class="badge" style="background:#f1f5f9;color:#475569;border:1px solid #cbd5e1;">Chưa đủ 6 tháng</span>' : escapeHtml(m.tuXepLoai || '-')}</td>
           <td>
-            <div style="display: flex; gap: 5px; flex-wrap: nowrap;">
-              <button class="btn btn-gold btn-xs" onclick="openEditMember('${escapeHtml(m.mssv)}')">Sửa</button>
-              <button class="btn btn-outline btn-xs" style="border-color:#f3b8b9; color:var(--crimson-dark);" onclick="openMemberTool('${escapeHtml(m.mssv)}', 'mau-02c.html')">02c/6b</button>
+            <div class="table-actions">
+              <button type="button" class="btn-act btn-act-edit" onclick="openEditMember('${escapeHtml(m.mssv)}')" title="Sửa thông tin Đảng viên">
+                <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                <span>Sửa</span>
+              </button>
+              <button type="button" class="btn-act btn-act-doc" onclick="openMemberTool('${escapeHtml(m.mssv)}', 'mau-02c.html')" title="Mở, sửa &amp; xuất hồ sơ Mẫu 02c + Mẫu 6b">
+                <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                <span>02c/6b</span>
+              </button>
               ${m.daKeKhai
-                ? `<button class="btn btn-outline btn-xs" onclick="openDetail('${escapeHtml(m.mssv)}')">Xem</button>`
+                ? `<button type="button" class="btn-act btn-act-view" onclick="openDetail('${escapeHtml(m.mssv)}')" title="Xem chi tiết bản kê khai">
+                    <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    <span>Xem</span>
+                   </button>`
                 : ''}
             </div>
           </td>

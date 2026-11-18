@@ -370,7 +370,7 @@ const MOCK_API = (function () {
           'Thành tích 4': fmtAch(achs[3]),
           'Tổng hợp Thành tích đạt được': thanhTichStr,
           'Đóng góp cho Chi bộ': dongGopStr,
-          'Tự xếp loại mức HTNV năm 2026': sub.tuXepLoai || '',
+          'Tự xếp loại mức HTNV năm 2026': sub.tuXepLoai || (!isDu6Thang(m.ngayVaoDang) ? 'Chưa đủ 6 tháng' : ''),
           'Đề xuất, ý kiến': sub.deXuat || '',
           'Tham gia Hội nghị (22/11/2026)': sub.xacNhanThamGiaHoiNghi === 'tham_gia'
             ? 'Có tham gia'
@@ -386,7 +386,7 @@ const MOCK_API = (function () {
       return Object.assign({}, m, {
         daKeKhai: Boolean(sub),
         thoiGianGui: sub ? sub.thoiGianGui : '',
-        tuXepLoai: sub ? sub.tuXepLoai : '',
+        tuXepLoai: sub ? (sub.tuXepLoai || (!isDu6Thang(m.ngayVaoDang) ? 'Chưa đủ 6 tháng' : '')) : (!isDu6Thang(m.ngayVaoDang) ? 'Chưa đủ 6 tháng' : ''),
         xacNhanThamGiaHoiNghi: sub ? (sub.xacNhanThamGiaHoiNghi || '') : '',
         lyDoVangMat: sub ? (sub.lyDoVangMat || '') : '',
         daTaoHoSo: Boolean(docMatch),
