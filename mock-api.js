@@ -118,7 +118,7 @@ const MOCK_API = (function () {
   function isDu6Thang(ngayVaoDang) {
     const d = parseDateVN(ngayVaoDang);
     if (!d) return false;
-    return d.getTime() <= new Date(2026, 4, 21, 23, 59, 59).getTime();
+    return d.getTime() <= new Date(2026, 4, 22, 23, 59, 59).getTime();
   }
 
   function nowVN() {
