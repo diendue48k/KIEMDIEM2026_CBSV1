@@ -2527,13 +2527,39 @@
       XLSX.writeFile(wb, filename);
     }
 
+    function formatExportRowWithMergedAchievements(rawRow) {
+      if (!rawRow || typeof rawRow !== 'object') return rawRow;
+      const out = {};
+      const achParts = ['Thành tích 1', 'Thành tích 2', 'Thành tích 3', 'Thành tích 4']
+        .map(k => String(rawRow[k] || '').trim())
+        .filter(Boolean);
+      const mergedAch = achParts.length
+        ? achParts.map(a => `- ${a}`).join('\n')
+        : String(rawRow['Tổng hợp Thành tích đạt được'] || '').trim();
+
+      let insertedAch = false;
+      Object.keys(rawRow).forEach(k => {
+        if (k === 'Thành tích 1' || k === 'Thành tích 2' || k === 'Thành tích 3' || k === 'Thành tích 4' || k === 'Tổng hợp Thành tích đạt được') {
+          if (!insertedAch) {
+            out['Thành tích đạt được'] = mergedAch;
+            insertedAch = true;
+          }
+          return;
+        }
+        out[k] = rawRow[k];
+      });
+      if (!insertedAch) out['Thành tích đạt được'] = mergedAch;
+      return out;
+    }
+
     function exportSubmissions() {
-      exportToExcel(dashboardData.submissions, 'KetQua_KeKhai_2026.xlsx');
+      const rows = (dashboardData.submissions || []).map(formatExportRowWithMergedAchievements);
+      exportToExcel(rows, 'KetQua_KeKhai_2026.xlsx');
     }
 
     function buildSummaryExportRow(m, idx) {
-      if (m.chiTiet) return m.chiTiet;
-      return {
+      if (m.chiTiet) return formatExportRowWithMergedAchievements(m.chiTiet);
+      return formatExportRowWithMergedAchievements({
         'STT': m.stt || String(idx + 1),
         'Thời gian gửi': '',
         'Họ và tên': m.hoTen || '',
@@ -2565,7 +2591,7 @@
         'Đề xuất, ý kiến': '',
         'Trạng thái tạo hồ sơ in (Mẫu 02c + 6b)': m.daTaoHoSo ? `Đã tải (${m.thoiGianTaoHoSo})` : 'Chưa tạo',
         'Tổng điểm tự chấm (Mẫu 02c)': m.tongDiemHoSo || ''
-      };
+      });
     }
 
     function exportAllSummary() {
