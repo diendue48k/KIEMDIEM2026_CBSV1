@@ -22,10 +22,18 @@ const MIME_TYPES = {
 };
 
 const server = http.createServer((req, res) => {
-  const urlPath = req.url.split('?')[0];
+  const [urlPath, queryString] = req.url.split('?');
   let filePath = path.join(ROOT, urlPath === '/' ? 'index.html' : urlPath);
 
-  if (!fs.existsSync(filePath) && !path.extname(filePath)) {
+  if (fs.existsSync(filePath) && fs.statSync(filePath).isDirectory()) {
+    if (!urlPath.endsWith('/')) {
+      const redirectUrl = urlPath + '/' + (queryString ? '?' + queryString : '');
+      res.writeHead(301, { Location: redirectUrl });
+      res.end();
+      return;
+    }
+    filePath = path.join(filePath, 'index.html');
+  } else if (!fs.existsSync(filePath) && !path.extname(filePath)) {
     filePath += '.html';
   }
 
