@@ -23,6 +23,19 @@ const MIME_TYPES = {
 
 const server = http.createServer((req, res) => {
   const [urlPath, queryString] = req.url.split('?');
+
+  // Alias routes for the 2 party cells
+  if (urlPath === '/vote/cb1' || urlPath === '/vote/cb1/' || urlPath === '/vote/cbsv1' || urlPath === '/vote/cbsv1/') {
+    res.writeHead(302, { Location: '/vote/?cb=1' + (queryString ? '&' + queryString : '') });
+    res.end();
+    return;
+  }
+  if (urlPath === '/vote/cb2' || urlPath === '/vote/cb2/' || urlPath === '/vote/cbsv2' || urlPath === '/vote/cbsv2/') {
+    res.writeHead(302, { Location: '/vote/?cb=2' + (queryString ? '&' + queryString : '') });
+    res.end();
+    return;
+  }
+
   let filePath = path.join(ROOT, urlPath === '/' ? 'index.html' : urlPath);
 
   if (fs.existsSync(filePath) && fs.statSync(filePath).isDirectory()) {
